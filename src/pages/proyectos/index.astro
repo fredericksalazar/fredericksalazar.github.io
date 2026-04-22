@@ -1,0 +1,127 @@
+---
+/**
+ * proyectos/index.astro — Listado del portafolio de proyectos
+ * URL: /proyectos
+ * 
+ * Lee la colección 'proyectos' y los muestra ordenados por campo 'orden'.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title       = 'Proyectos Open Source & Portafolio — Frederick Salazar';
+const description = 'Portafolio de proyectos de Data Engineering, IA y software open source de Frederick Salazar. OllamaFX, DinaWall, análisis de datos y más.';
+
+const allProyectos = await getCollection('proyectos');
+const proyectos    = allProyectos.sort((a, b) => a.data.orden - b.data.orden);
+---
+
+<BaseLayout title={title} description={description}>
+
+  <section aria-labelledby="proyectos-heading">
+    <h1 id="proyectos-heading" class="page-title">Proyectos</h1>
+    <p class="page-subtitle">Software open source, análisis de datos y soluciones de IA.</p>
+  </section>
+
+  {proyectos.length === 0 ? (
+    <p class="empty-state">Los proyectos se cargarán pronto desde los archivos Markdown.</p>
+  ) : (
+    <ul class="projects-list" aria-label="Listado de proyectos">
+      {proyectos.map((proyecto) => (
+        <li class="project-card">
+          <a href={`/proyectos/${proyecto.id}`} class="project-card__link">
+            <h2 class="project-card__title">{proyecto.data.titulo}</h2>
+          </a>
+          <p class="project-card__desc">{proyecto.data.descripcion}</p>
+          <span class="section-label">Tecnologías & Herramientas</span>
+          <div class="tags-row">
+            {proyecto.data.tecnologias.map((t: string) => <span class="tag">{t}</span>)}
+          </div>
+          <div class="project-card__links">
+            {proyecto.data.github && proyecto.data.github !== '' && (
+              <a href={proyecto.data.github} target="_blank" rel="noopener noreferrer" class="project-link">
+                GitHub →
+              </a>
+            )}
+            {proyecto.data.demo && proyecto.data.demo !== '' && (
+              <a href={proyecto.data.demo} target="_blank" rel="noopener noreferrer" class="project-link">
+                Demo →
+              </a>
+            )}
+          </div>
+        </li>
+      ))}
+    </ul>
+  )}
+
+</BaseLayout>
+
+<style>
+  .page-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .page-subtitle {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin-bottom: 2.5rem;
+  }
+  .empty-state {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+  .projects-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .project-card:last-child {
+    border-bottom: none;
+  }
+  .project-card__link {
+    text-decoration: none;
+  }
+  .project-card__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    transition: color 0.15s ease;
+  }
+  .project-card__link:hover .project-card__title {
+    color: var(--color-accent);
+  }
+  .project-card__desc {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    margin-bottom: 0.25rem;
+  }
+  .tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+  .project-card__links {
+    display: flex;
+    gap: 1rem;
+  }
+  .project-link {
+    font-size: 0.825rem;
+    font-weight: 500;
+    color: var(--color-accent);
+  }
+  .project-link:hover {
+    color: var(--color-accent-hover);
+  }
+</style>

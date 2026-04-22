@@ -1,0 +1,119 @@
+---
+/**
+ * SEOHead.astro
+ * Componente centralizado para todas las etiquetas <head> relacionadas con SEO.
+ * Incluye: meta estándar, Open Graph, Twitter Cards y JSON-LD (Person Schema).
+ */
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+}
+
+const {
+  title,
+  description,
+  image = '/og-default.png',
+  type = 'website',
+} = Astro.props;
+
+const SITE_URL    = 'https://fredericksalazar.github.io';
+const SITE_NAME   = 'Frederick Salazar — Data Engineer & Arquitecto de Datos';
+const FULL_TITLE  = `${title} | Frederick Salazar`;
+const CANONICAL   = new URL(Astro.url.pathname, SITE_URL).href;
+const IMAGE_URL   = new URL(image, SITE_URL).href;
+
+// ─── JSON-LD: Person Schema ───────────────────────────────────────────────────
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Ing. Frederick Adolfo Salazar Sánchez',
+  url: SITE_URL,
+  jobTitle: 'Senior Data Engineer & Arquitecto de Datos',
+  description:
+    'Ingeniero y Arquitecto de Datos con más de 9 años de experiencia. Especializado en Data Engineering, Big Data, IA y Analytics en Colombia y LATAM.',
+  image: `${SITE_URL}/profile.jpg`,
+  knowsAbout: [
+    'Data Engineering',
+    'Big Data',
+    'Apache Spark',
+    'Azure Data Factory',
+    'Databricks',
+    'Python',
+    'Machine Learning',
+    'Inteligencia Artificial',
+    'SQL',
+    'Data Architecture',
+  ],
+  sameAs: [
+    'https://www.linkedin.com/in/fredericksalazar',
+    'https://github.com/fredericksalazar',
+    'https://www.kaggle.com/fredericksalazar',
+  ],
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Mercado Libre',
+    url: 'https://www.mercadolibre.com',
+  },
+  alumniOf: {
+    '@type': 'CollegeOrUniversity',
+    name: 'Universitat Oberta de Catalunya',
+    url: 'https://www.uoc.edu',
+  },
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'CO',
+    addressLocality: 'Colombia',
+  },
+};
+---
+
+<!-- ── Charset & Viewport ──────────────────────────────────────────────────── -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- ── Primary SEO ───────────────────────────────────────────────────────────── -->
+<title>{FULL_TITLE}</title>
+<meta name="title" content={FULL_TITLE} />
+<meta name="description" content={description} />
+<meta name="author" content="Frederick Adolfo Salazar Sánchez" />
+<meta name="robots" content="index, follow" />
+<meta name="keywords" content="data engineer colombia, arquitecto de datos, big data latam, apache spark, databricks, azure data, python data engineering, frederick salazar" />
+<link rel="canonical" href={CANONICAL} />
+
+<!-- ── Open Graph ────────────────────────────────────────────────────────────── -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={CANONICAL} />
+<meta property="og:title" content={FULL_TITLE} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={IMAGE_URL} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:locale" content="es_CO" />
+
+<!-- ── Twitter Card ──────────────────────────────────────────────────────────── -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={CANONICAL} />
+<meta name="twitter:title" content={FULL_TITLE} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={IMAGE_URL} />
+<meta name="twitter:creator" content="@fredericksala" />
+
+<!-- ── Favicons ───────────────────────────────────────────────────────────────── -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+
+<!-- ── Google Fonts: Google Sans + JetBrains Mono ───────────────────────────── -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- ── JSON-LD: Person Schema ────────────────────────────────────────────────── -->
+<script type="application/ld+json" set:html={JSON.stringify(personSchema)} />

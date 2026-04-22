@@ -1,0 +1,163 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const wordCount   = post.body?.split(/\s+/).length ?? 0;
+const readingTime = Math.max(1, Math.round(wordCount / 200));
+---
+
+<BaseLayout
+  title={post.data.titulo}
+  description={post.data.descripcion}
+  image={post.data.imagen}
+  type="article"
+>
+  <nav class="breadcrumb"><a href="/blog">← Blog</a></nav>
+
+  <article itemscope itemtype="https://schema.org/Article">
+
+    <header class="art-header">
+      {post.data.etiquetas.length > 0 && (
+        <div class="tags-row">
+          {post.data.etiquetas.map((t: string) => <span class="tag">{t}</span>)}
+        </div>
+      )}
+      <h1 class="art-title" itemprop="headline">{post.data.titulo}</h1>
+      <div class="art-meta">
+        <time datetime={post.data.fecha.toISOString()} itemprop="datePublished">
+          {formatDate(post.data.fecha)}
+        </time>
+        <span aria-hidden="true">·</span>
+        <span>{readingTime} min de lectura</span>
+        <span aria-hidden="true">·</span>
+        <span itemprop="author">{post.data.autor}</span>
+      </div>
+    </header>
+
+    {post.data.imagen && (
+      <div class="art-cover">
+        <img src={post.data.imagen} alt={post.data.titulo} loading="eager" />
+      </div>
+    )}
+
+    <div class="prose" itemprop="articleBody">
+      <Content />
+    </div>
+
+    <footer class="art-footer">
+      <a href="/blog" class="back-link">← Volver al blog</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .breadcrumb { margin-bottom: 1.5rem; font-size: 0.85rem; }
+  .breadcrumb a { color: var(--color-text-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--color-accent); }
+
+  .art-header { margin-bottom: 1.75rem; }
+
+  .art-title {
+    font-size: clamp(1.6rem, 4vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0.75rem 0 0.85rem;
+  }
+
+  .art-meta {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    font-size: 0.825rem;
+    color: var(--color-text-muted);
+    flex-wrap: wrap;
+  }
+
+  .art-cover {
+    margin-bottom: 2rem;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+  }
+  .art-cover img {
+    width: 100%; height: auto;
+    max-height: 420px; object-fit: cover; display: block;
+  }
+
+  /* ── Prose ───────────────────────────────────────────────────────── */
+  .prose {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 720px;
+  }
+  .prose :global(h2) {
+    font-size: 1.4rem; font-weight: 700; color: var(--color-text-primary);
+    margin: 2.25rem 0 0.75rem;
+    padding-bottom: 0.4rem; border-bottom: 1px solid var(--color-border);
+  }
+  .prose :global(h3) {
+    font-size: 1.15rem; font-weight: 600; color: var(--color-text-primary);
+    margin: 1.75rem 0 0.5rem;
+  }
+  .prose :global(p) { margin-bottom: 1.15rem; }
+  .prose :global(a) {
+    color: var(--color-accent); text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .prose :global(ul), .prose :global(ol) { margin: 0.75rem 0 1.15rem 1.5rem; }
+  .prose :global(li) { margin-bottom: 0.35rem; }
+  .prose :global(img) {
+    max-width: 100%; height: auto; border-radius: 0.5rem;
+    margin: 1.75rem auto; display: block;
+    border: 1px solid var(--color-border);
+  }
+  .prose :global(blockquote) {
+    border-left: 3px solid var(--color-accent);
+    padding: 0.5rem 0 0.5rem 1.25rem;
+    margin: 1.5rem 0; color: var(--color-text-muted); font-style: italic;
+  }
+  .prose :global(code) {
+    font-family: var(--font-mono); font-size: 0.85em;
+    background: var(--color-tag-bg); border: 1px solid var(--color-tag-border);
+    padding: 0.15rem 0.4rem; border-radius: 0.3rem;
+  }
+  .prose :global(pre) {
+    background: var(--color-tag-bg); border: 1px solid var(--color-tag-border);
+    border-radius: 0.5rem; padding: 1.25rem; overflow-x: auto; margin: 1.5rem 0;
+  }
+  .prose :global(pre code) { background: none; border: none; padding: 0; }
+  .prose :global(table) {
+    width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;
+  }
+  .prose :global(th), .prose :global(td) {
+    border: 1px solid var(--color-border); padding: 0.5rem 0.85rem;
+  }
+  .prose :global(th) {
+    background: var(--color-hover); font-weight: 600;
+    color: var(--color-text-primary);
+  }
+  .prose :global(hr) { border: none; border-top: 1px solid var(--color-border); margin: 2rem 0; }
+  .prose :global(strong) { color: var(--color-text-primary); font-weight: 600; }
+
+  .art-footer {
+    margin-top: 3rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .back-link { font-size: 0.875rem; color: var(--color-text-muted); }
+  .back-link:hover { color: var(--color-accent); }
+</style>

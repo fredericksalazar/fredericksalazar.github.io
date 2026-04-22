@@ -1,0 +1,298 @@
+---
+/**
+ * Sidebar.astro
+ * Barra lateral fija con perfil, navegación e iconos sociales.
+ * Adapta el highlight activo según la ruta actual.
+ */
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  {
+    label: 'Inicio',
+    href: '/',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+  },
+  {
+    label: 'Experiencia',
+    href: '/experiencia',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`,
+  },
+  {
+    label: 'Proyectos',
+    href: '/proyectos',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+  },
+  {
+    label: 'Blog',
+    href: '/blog',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`,
+  },
+];
+
+const socialLinks = [
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/fredericksalazar',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>`,
+  },
+  {
+    label: 'GitHub',
+    href: 'https://github.com/fredericksalazar',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>`,
+  },
+  {
+    label: 'Kaggle',
+    href: 'https://www.kaggle.com/fredericksalazar',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.353c0-.233.118-.353.354-.353h2.431c.234 0 .351.12.351.353v14.343l6.203-6.272c.165-.165.33-.246.495-.246h3.239c.144 0 .236.06.285.18.046.149.034.255-.036.315l-6.555 6.344 6.836 8.507c.095.104.117.208.07.334"/></svg>`,
+  },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<aside class="sidebar" aria-label="Navegación principal">
+  <!-- ── Perfil ─────────────────────────────────────────────────────────── -->
+  <div class="sidebar__profile">
+    <div class="sidebar__avatar-wrapper">
+      <img
+        src="/profile.jpg"
+        alt="Frederick Salazar — Data Engineer"
+        class="sidebar__avatar"
+        width="56"
+        height="56"
+        loading="eager"
+        onerror="this.src='https://api.dicebear.com/8.x/initials/svg?seed=FS&backgroundColor=1d4ed8'"
+      />
+      <span class="sidebar__status" title="Disponible para proyectos"></span>
+    </div>
+    <div class="sidebar__info">
+      <span class="sidebar__name">Frederick Salazar</span>
+      <span class="sidebar__role">Senior Data Engineer</span>
+    </div>
+  </div>
+
+  <!-- ── Navegación ─────────────────────────────────────────────────────── -->
+  <nav class="sidebar__nav" aria-label="Secciones del sitio">
+    <ul class="sidebar__nav-list">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class={`sidebar__nav-item ${isActive(item.href) ? 'sidebar__nav-item--active' : ''}`}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+          >
+            <span class="sidebar__nav-icon" set:html={item.icon} />
+            <span class="sidebar__nav-label">{item.label}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <!-- ── Redes Sociales ──────────────────────────────────────────────────── -->
+  <div class="sidebar__socials">
+    {socialLinks.map((link) => (
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="sidebar__social-link"
+        aria-label={link.label}
+        title={link.label}
+      >
+        <span set:html={link.icon} />
+      </a>
+    ))}
+  </div>
+</aside>
+
+
+
+<style>
+  /* ── Variables locales ──────────────────────────────────────────────────── */
+  :root {
+    --sidebar-width: 240px;
+  }
+
+  /* ── Sidebar container ──────────────────────────────────────────────────── */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 100dvh;
+    background-color: var(--color-sidebar);
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    padding: 1.75rem 1rem;
+    gap: 2rem;
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  /* ── Perfil ─────────────────────────────────────────────────────────────── */
+  .sidebar__profile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .sidebar__avatar-wrapper {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .sidebar__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-accent);
+  }
+
+  .sidebar__status {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    width: 10px;
+    height: 10px;
+    background: #22c55e;
+    border-radius: 50%;
+    border: 2px solid var(--color-sidebar);
+  }
+
+  .sidebar__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    overflow: hidden;
+  }
+
+  .sidebar__name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sidebar__role {
+    font-size: 0.725rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── Navegación ─────────────────────────────────────────────────────────── */
+  .sidebar__nav {
+    flex: 1;
+  }
+
+  .sidebar__nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .sidebar__nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .sidebar__nav-item:hover {
+    background-color: var(--color-hover);
+    color: var(--color-text-primary);
+  }
+
+  .sidebar__nav-item--active {
+    background-color: var(--color-active-bg);
+    color: var(--color-accent);
+  }
+
+  .sidebar__nav-icon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+
+  .sidebar__nav-label {
+    line-height: 1;
+  }
+
+  /* ── Redes sociales ───────────────────────────────────────────────── */
+  .sidebar__socials {
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .sidebar__social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 0.4rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .sidebar__social-link:hover {
+    background-color: var(--color-hover);
+    color: var(--color-accent);
+  }
+
+  /* ── Mobile: sidebar colapsada ──────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+      flex-direction: row;
+      flex-wrap: wrap;
+      padding: 1rem;
+      gap: 1rem;
+      border-right: none;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .sidebar__profile {
+      padding-bottom: 0;
+      border-bottom: none;
+      flex: 1;
+    }
+    .sidebar__nav {
+      width: 100%;
+      flex: none;
+    }
+    .sidebar__nav-list {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .sidebar__socials {
+      border-top: none;
+      padding-top: 0;
+    }
+  }
+</style>

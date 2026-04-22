@@ -1,0 +1,314 @@
+---
+/**
+ * experiencia.astro — Timeline laboral y certificaciones
+ * URL: /experiencia
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title       = 'Experiencia Profesional & Certificaciones — Frederick Salazar';
+const description = 'Timeline de experiencia laboral de Frederick Salazar como Data Engineer en Mercado Libre, Globant, UBITS, Derco y más. Certificaciones Azure y Databricks.';
+
+const experiencia = [
+  {
+    empresa: 'Mercado Libre',
+    rol: 'Senior Data Engineer',
+    periodo: '2022 — Presente',
+    descripcion: 'Diseño y construcción de arquitecturas de datos escalables. Implementación de pipelines para analítica avanzada y modelos de machine learning que impactan a millones de usuarios en LATAM.',
+    tecnologias: ['Python', 'Spark', 'Databricks', 'Airflow', 'AWS']
+  },
+  {
+    empresa: 'Globant',
+    rol: 'Data Engineer',
+    periodo: '2021 — 2022',
+    descripcion: 'Desarrollo de soluciones de Big Data y consultoría en arquitectura de datos para clientes internacionales. Optimización de procesos ETL y data lakes.',
+    tecnologias: ['Python', 'SQL', 'Hadoop', 'Azure Data Factory']
+  },
+  {
+    empresa: 'UBITS',
+    rol: 'Data Engineer / BI',
+    periodo: '2020 — 2021',
+    descripcion: 'Lideré la estrategia de datos centralizando la información en un Data Warehouse. Implementación de dashboards interactivos para la toma de decisiones ejecutivas.',
+    tecnologias: ['SQL', 'Power BI', 'Python', 'PostgreSQL']
+  },
+  {
+    empresa: 'Derco',
+    rol: 'Business Intelligence Developer',
+    periodo: '2018 — 2020',
+    descripcion: 'Construcción de modelos de datos y reportes de inteligencia de negocios para el sector automotriz, mejorando la visibilidad de ventas y logística.',
+    tecnologias: ['SQL Server', 'SSIS', 'SSAS', 'Power BI']
+  },
+  {
+    empresa: 'Freelance / Consultoría',
+    rol: 'Desarrollador de Software',
+    periodo: '2015 — 2018',
+    descripcion: 'Desarrollo de software empresarial a la medida, automatización de procesos y primeros proyectos de análisis de datos.',
+    tecnologias: ['Java', 'C#', 'SQL', 'JavaScript']
+  }
+];
+
+const certificaciones = [
+  {
+    nombre: 'Azure Data Engineer Associate (DP-203)',
+    emisor: 'Microsoft',
+    fecha: '2023'
+  },
+  {
+    nombre: 'Azure Fundamentals (AZ-900)',
+    emisor: 'Microsoft',
+    fecha: '2022'
+  },
+  {
+    nombre: 'Databricks Certified Data Engineer Associate',
+    emisor: 'Databricks',
+    fecha: '2023'
+  },
+  {
+    nombre: 'Master en Big Data Analytics',
+    emisor: 'Universitat Oberta de Catalunya (UOC)',
+    fecha: '2021'
+  }
+];
+---
+
+<BaseLayout title={title} description={description}>
+
+  <!-- ── Header ─────────────────────────────────────────────────────────── -->
+  <section aria-labelledby="exp-heading" class="exp-header">
+    <h1 id="exp-heading" class="page-title">Experiencia</h1>
+    <p class="page-subtitle">
+      Mi trayectoria como ingeniero de datos, consultor y desarrollador desde 2015.
+    </p>
+  </section>
+
+  <!-- ── Timeline de Experiencia ────────────────────────────────────────── -->
+  <section class="timeline-section" aria-labelledby="timeline-heading">
+    <h2 id="timeline-heading" class="section-title">Trayectoria Profesional</h2>
+    
+    <div class="timeline">
+      {experiencia.map((item, index) => (
+        <div class="timeline__item">
+          <div class="timeline__marker"></div>
+          <div class="timeline__content">
+            <div class="timeline__header">
+              <h3 class="timeline__role">{item.rol}</h3>
+              <span class="timeline__period">{item.periodo}</span>
+            </div>
+            <h4 class="timeline__company">{item.empresa}</h4>
+            <p class="timeline__desc">{item.descripcion}</p>
+            <div class="timeline__tags">
+              {item.tecnologias.map((tech) => (
+                <span class="tag tag--small">{tech}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── Certificaciones ────────────────────────────────────────────────── -->
+  <section class="certs-section" aria-labelledby="certs-heading">
+    <h2 id="certs-heading" class="section-title">Certificaciones & Educación</h2>
+    
+    <div class="certs-grid">
+      {certificaciones.map((cert) => (
+        <div class="cert-card">
+          <div class="cert-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <div class="cert-card__info">
+            <h3 class="cert-card__name">{cert.nombre}</h3>
+            <p class="cert-card__issuer">{cert.emisor} <span class="cert-card__dot">·</span> {cert.fecha}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* ── Headers ────────────────────────────────────────────────────────────── */
+  .exp-header {
+    margin-bottom: 3.5rem;
+  }
+  .page-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .page-subtitle {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    max-width: 600px;
+  }
+  .section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--color-text-primary);
+  }
+
+  /* ── Timeline ───────────────────────────────────────────────────────────── */
+  .timeline-section {
+    margin-bottom: 4.5rem;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+  
+  /* Línea vertical */
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0.5rem;
+    bottom: 0;
+    left: 0.35rem; /* Centrado con el marker */
+    width: 2px;
+    background: var(--color-border);
+    border-radius: 2px;
+  }
+
+  .timeline__item {
+    position: relative;
+    margin-bottom: 2.5rem;
+  }
+  .timeline__item:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Punto en la línea */
+  .timeline__marker {
+    position: absolute;
+    top: 0.35rem;
+    left: -1.5rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-bg);
+    border: 2px solid var(--color-accent);
+    box-shadow: 0 0 0 4px var(--color-bg); /* Espacio alrededor del punto */
+    z-index: 1;
+  }
+
+  .timeline__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .timeline__role {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .timeline__period {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .timeline__company {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-accent);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .timeline__desc {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    max-width: 680px;
+  }
+
+  .timeline__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .tag--small {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    background: transparent;
+    border: 1px solid var(--color-border);
+  }
+
+  /* ── Certificaciones ────────────────────────────────────────────────────── */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .cert-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    background: var(--color-tag-bg);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  
+  .cert-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent);
+  }
+
+  .cert-card__icon {
+    flex-shrink: 0;
+    color: var(--color-accent);
+    padding: 0.5rem;
+    background: var(--color-bg);
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cert-card__name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0 0 0.35rem 0;
+    line-height: 1.3;
+  }
+
+  .cert-card__issuer {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .cert-card__dot {
+    opacity: 0.5;
+    margin: 0 0.25rem;
+  }
+
+  @media (max-width: 600px) {
+    .timeline__header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.25rem;
+    }
+    .certs-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

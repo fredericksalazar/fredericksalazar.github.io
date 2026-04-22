@@ -1,0 +1,7 @@
+/* 
+ * global.css
+ * Punto de entrada principal de estilos.
+ * Importa Tailwind v4 — los design tokens están definidos en BaseLayout.astro
+ * como CSS custom properties globales en :root.
+ */
+@import "tailwindcss";
