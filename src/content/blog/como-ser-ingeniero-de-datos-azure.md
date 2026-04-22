@@ -1,8 +1,9 @@
 ---
-titulo: "Como ser Ingeniero de Datos Azure"
+titulo: "Como ser Ingeniero de Datos Azure"
 fecha: 2024-08-09
 descripcion: "Obtén certificaciones Azure en ingeniería de datos con nuestro roadmap. Aprende sobre AZ-900 y DP-203 para destacar en Big Data y avanzar en tu carrera..."
-etiquetas: []
+imagen: "/images/blog/azure-data-engineer.png"
+etiquetas: ["Azure", "Data Engineering", "Certificaciones", "Roadmap"]
 autor: "Frederick Salazar"
 draft: false
 ---

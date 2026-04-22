@@ -1,8 +1,9 @@
 ---
-titulo: "Tips para no fracasar en el trabajo remoto"
+titulo: "Tips para no fracasar en el trabajo remoto"
 fecha: 2023-05-09
 descripcion: "Descubre cómo optimizar tu trabajo remoto con consejos sobre espacios cómodos, herramientas de productividad, comunicación efectiva, y hábitos saludable..."
-etiquetas: []
+imagen: "/images/blog/trabajo-remoto.png"
+etiquetas: ["Trabajo Remoto", "Productividad", "Desarrollo Profesional", "Salud Mental"]
 autor: "Frederick Salazar"
 draft: false
 ---

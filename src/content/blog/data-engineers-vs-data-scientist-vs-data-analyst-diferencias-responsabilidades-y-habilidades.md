@@ -1,8 +1,9 @@
 ---
-titulo: "Data Engineer, Data Scientist y Data Analyst"
+titulo: "Data Engineer, Data Scientist y Data Analyst"
 fecha: 2023-03-29
-descripcion: "Diferencias entre Data Lake, Data Warehouse y Data Mart. Aprende a elegir la mejor opción para tu empresa y optimizar la toma de decisiones basadas en d..."
-etiquetas: []
+descripcion: "Descubre las diferencias clave entre Data Engineers, Analysts y Scientists, sus roles y habilidades esenciales en la era de la información."
+imagen: "/images/blog/data-engineer-scientis.png"
+etiquetas: ["Roles de Datos", "Data Engineering", "Data Science", "Data Analyst"]
 autor: "Frederick Salazar"
 draft: false
 ---

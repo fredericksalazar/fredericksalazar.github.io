@@ -1,8 +1,9 @@
 ---
-titulo: "Tips y Dimensiones en la Calidad de Datos"
+titulo: "Tips y Dimensiones en la Calidad de Datos"
 fecha: 2024-04-04
 descripcion: "Descubre los problemas de la mala calidad de datos y cómo gestionar la calidad en tu organización. Aprende sobre las dimensiones clave de la calidad de..."
-etiquetas: []
+imagen: "/images/blog/dimensiones-calidad-datos.png"
+etiquetas: ["Data Quality", "Data Governance", "Gestión de Datos", "Estrategia"]
 autor: "Frederick Salazar"
 draft: false
 ---

@@ -1,226 +1,416 @@
 ---
-/**
- * index.astro — Página principal / Sobre Mí
- * URL: /
- * 
- * Hero section + resumen profesional + stack de habilidades por categoría.
- */
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const title       = 'Frederick Salazar — Data Engineer & Arquitecto de Datos en Colombia';
-const description = 'Ingeniero y Arquitecto de Datos con +9 años de experiencia en Data Engineering, Big Data, IA y Analytics. Disponible para proyectos en Colombia y LATAM.';
+const title       = 'Frederick Salazar — Senior Data Engineer';
+const description = 'Senior Data Engineer & Arquitecto de Datos con +9 años de experiencia.';
+
+// Proyectos destacados (los primeros 4 para llenar una cuadrícula de 4 columnas)
+const allProyectos = await getCollection('proyectos');
+const topProyectos = allProyectos.sort((a, b) => a.data.orden - b.data.orden).slice(0, 4);
+
+// Últimos artículos del blog (primeros 3 para una cuadrícula de 3 columnas)
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const latestPosts = allPosts.sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime()).slice(0, 3);
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} fullWidth={true}>
+  
+  <!-- ── Hero Section (Estilo Creativo & Moderno) ── -->
+  <section class="hero-wp">
+    <div class="hero-wp__container">
+      
+      <!-- Columna Izquierda: Perfil -->
+      <div class="hero-wp__profile">
+        <div class="hero-wp__avatar">
+          <img src="/images/profile.png" alt="Frederick Salazar" />
+        </div>
+        <h1 class="hero-wp__name">Frederick Salazar</h1>
+        <p class="hero-wp__title">Senior Data Engineer</p>
+      </div>
 
-  <!-- ── Hero ──────────────────────────────────────────────────────────── -->
-  <section class="hero" aria-labelledby="hero-heading">
-    <p class="hero__greeting">Hola, soy</p>
-    <h1 id="hero-heading" class="hero__name">Frederick Salazar.</h1>
-    <p class="hero__tagline">Construyo arquitecturas de datos<br />que generan valor real.</p>
-    <p class="hero__description">
-      Senior Data Engineer &amp; Arquitecto de Datos con más de 9 años de experiencia 
-      diseñando pipelines escalables, plataformas de datos en la nube y soluciones de IA 
-      para empresas en Colombia y LATAM. Actualmente en <strong>Mercado Libre</strong>.
-    </p>
-    <div class="hero__actions">
-      <a href="/proyectos" id="cta-proyectos" class="btn btn--primary">Ver proyectos</a>
-      <a href="/experiencia" id="cta-experiencia" class="btn btn--outline">Mi experiencia</a>
+      <!-- Columna Derecha: Bio y Certificaciones -->
+      <div class="hero-wp__bio">
+        <h2>¡Hola! Soy Frederick Adolfo Salazar Sanchez</h2>
+        <p>
+          Tengo más de 9 años de experiencia diseñando e implementando soluciones de datos y analítica a gran escala. 
+          Me especializo en arquitectura de datos en la nube, big data y en construir pipelines escalables que 
+          transforman los datos crudos en valor estratégico para el negocio.
+        </p>
+        
+        <!-- Simulador de Certificaciones (puedes reemplazar con imágenes reales) -->
+        <div class="hero-wp__certs">
+          <span class="cert-badge">Microsoft Certified: Azure Data Engineer</span>
+          <span class="cert-badge">Azure Fundamentals</span>
+          <span class="cert-badge">Databricks Lakehouse</span>
+        </div>
+
+        <!-- Botones Sociales -->
+        <div class="hero-wp__socials">
+          <a href="mailto:fsalazars@uoc.edu" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
+          <a href="https://linkedin.com/in/fredericksalazar" target="_blank" title="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
+          <a href="https://github.com/fredericksalazar" target="_blank" title="GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg></a>
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <!-- ── Skills por categoría ───────────────────────────────────────────── -->
-  <section class="skills" aria-labelledby="skills-heading">
-    <h2 id="skills-heading" class="visually-hidden">Habilidades técnicas</h2>
+  <!-- ── Contenedor Principal (Fondo Blanco Clásico) ── -->
+  <div class="content-wrapper">
+    
+    <!-- ── Proyectos Desarrollados (Cuadrícula 4 columnas) ── -->
+    <section class="section-wp">
+      <h2 class="section-title-wp">Proyectos Desarrollados</h2>
+      <div class="grid-4-cols">
+        {topProyectos.map((proyecto) => (
+          <article class="wp-card">
+            <a href={`/proyectos/${proyecto.id}`} class="wp-card__link">
+              <div class="wp-card__img-wrapper">
+                <img src={proyecto.data.imagen || 'https://via.placeholder.com/300x200'} alt={proyecto.data.titulo} loading="lazy" />
+              </div>
+              <h3 class="wp-card__title">{proyecto.data.titulo}</h3>
+              <p class="wp-card__excerpt">{proyecto.data.descripcion}</p>
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
 
-    <div class="skill-category">
-      <div class="skill-category__header">
-        <div class="skill-category__icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
-        </div>
-        <div>
-          <h3 class="skill-category__title">Data Engineering</h3>
-          <span class="section-label">Tecnologías & Herramientas</span>
-        </div>
+    <!-- ── Publicaciones en mi blog (Cuadrícula 3 columnas) ── -->
+    <section class="section-wp">
+      <h2 class="section-title-wp">Publicaciones en mi blog</h2>
+      <div class="grid-3-cols">
+        {latestPosts.map((post) => (
+          <article class="wp-card blog-card">
+            <a href={`/blog/${post.id}`} class="wp-card__link">
+              <div class="wp-card__img-wrapper">
+                <img src={post.data.imagen || 'https://via.placeholder.com/400x250'} alt={post.data.titulo} loading="lazy" />
+              </div>
+              <h3 class="wp-card__title serif-title">{post.data.titulo}</h3>
+              <p class="wp-card__excerpt">{post.data.descripcion}</p>
+            </a>
+          </article>
+        ))}
       </div>
-      <div class="tags-row">
-        {['Apache Spark', 'Databricks', 'Apache Kafka', 'dbt', 'Airflow', 'Delta Lake', 'SQL', 'Python'].map(t => <span class="tag">{t}</span>)}
+      <div class="view-more-container">
+        <a href="/blog" class="btn-wp">Ver más artículos</a>
       </div>
-    </div>
+    </section>
 
-    <div class="skill-category">
-      <div class="skill-category__header">
-        <div class="skill-category__icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
-        </div>
-        <div>
-          <h3 class="skill-category__title">Cloud & DevOps</h3>
-          <span class="section-label">Tecnologías & Herramientas</span>
-        </div>
-      </div>
-      <div class="tags-row">
-        {['Azure', 'Azure Data Factory', 'Azure Synapse', 'Terraform', 'Docker', 'Kubernetes', 'GitHub Actions'].map(t => <span class="tag">{t}</span>)}
-      </div>
-    </div>
-
-    <div class="skill-category">
-      <div class="skill-category__header">
-        <div class="skill-category__icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-        </div>
-        <div>
-          <h3 class="skill-category__title">IA & Machine Learning</h3>
-          <span class="section-label">Tecnologías & Herramientas</span>
-        </div>
-      </div>
-      <div class="tags-row">
-        {['Python', 'Pandas', 'Scikit-learn', 'Matplotlib', 'LLMs', 'Ollama', 'RAG'].map(t => <span class="tag">{t}</span>)}
-      </div>
-    </div>
-  </section>
-
+  </div>
 </BaseLayout>
 
 <style>
-  /* ── Hero ────────────────────────────────────────────────────────────────── */
-  .hero {
-    margin-bottom: 3.5rem;
-    padding-bottom: 3rem;
-    border-bottom: 1px solid var(--color-border);
+  /* ── Tipografía WordPress ── */
+  :root {
+    --font-serif: 'Georgia', 'Playfair Display', 'Times New Roman', serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   }
 
-  .hero__greeting {
-    font-size: 0.95rem;
-    color: var(--color-accent);
-    font-weight: 500;
-    margin-bottom: 0.25rem;
-  }
-
-  .hero__name {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 700;
-    color: var(--color-text-primary);
-    line-height: 1.1;
-    margin-bottom: 0.5rem;
-  }
-
-  .hero__tagline {
-    font-size: clamp(1.25rem, 3vw, 1.75rem);
-    font-weight: 600;
-    color: var(--color-text-secondary);
-    line-height: 1.25;
-    margin-bottom: 1.25rem;
-  }
-
-  .hero__description {
-    font-size: 0.975rem;
-    color: var(--color-text-muted);
-    max-width: 560px;
-    line-height: 1.75;
-    margin-bottom: 1.75rem;
-  }
-
-  .hero__description strong {
-    color: var(--color-text-secondary);
-    font-weight: 600;
-  }
-
-  .hero__actions {
+  /* ── Hero (Fondo Creativo & Premium) ── */
+  .hero-wp {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    /* Un fondo rico y dinámico: Azul profundo y toques magenta (Data/Cloud Theme) */
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+    color: #ffffff;
+    padding: 6rem 2rem 5rem;
     display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   }
 
-  /* ── Buttons ─────────────────────────────────────────────────────────────── */
-  .btn {
-    display: inline-flex;
+  /* Orbes brillantes de fondo para darle un look "Data Tech" */
+  .hero-wp::before, .hero-wp::after {
+    content: '';
+    position: absolute;
+    width: 60vw;
+    height: 60vw;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: 0;
+    opacity: 0.5;
+    animation: float 20s ease-in-out infinite alternate;
+  }
+
+  .hero-wp::before {
+    background: radial-gradient(circle, rgba(56,189,248,0.4) 0%, transparent 70%);
+    top: -20%;
+    left: -10%;
+  }
+
+  .hero-wp::after {
+    background: radial-gradient(circle, rgba(168,85,247,0.4) 0%, transparent 70%);
+    bottom: -20%;
+    right: -10%;
+    animation-delay: -10s;
+  }
+
+  @keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(5%, 10%) scale(1.1); }
+  }
+
+  .hero-wp__container {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    padding: 0.6rem 1.25rem;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    cursor: pointer;
-  }
-  .btn--primary {
-    background: var(--color-accent);
-    color: #fff;
-    border: 1px solid var(--color-accent);
-  }
-  .btn--primary:hover {
-    background: var(--color-accent-hover);
-    border-color: var(--color-accent-hover);
-    color: #fff;
-    box-shadow: 0 0 16px var(--color-accent-glow);
-  }
-  .btn--outline {
-    background: transparent;
-    color: var(--color-text-secondary);
-    border: 1px solid var(--color-border);
-  }
-  .btn--outline:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
+    gap: 6rem;
+    position: relative;
+    z-index: 1;
   }
 
-  /* ── Skills ──────────────────────────────────────────────────────────────── */
-  .skills {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  @media (max-width: 768px) {
+    .hero-wp__container {
+      flex-direction: column;
+      text-align: center;
+      gap: 2rem;
+    }
   }
 
-  .skill-category {
+  .hero-wp__profile {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .hero-wp__avatar {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-wp__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-wp__name {
+    font-family: var(--font-sans);
+    font-size: 1.85rem;
+    font-weight: 800;
+    margin-bottom: 0.25rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  .hero-wp__title {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    color: #94a3b8; /* Gris azulado claro */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .hero-wp__bio {
+    flex: 1;
+    font-family: var(--font-sans);
+  }
+
+  .hero-wp__bio h2 {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #ffffff;
+    line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  .hero-wp__bio p {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: #cbd5e1; /* Gris muy claro */
+    margin-bottom: 2rem;
+  }
+
+  .hero-wp__certs {
+    display: flex;
+    flex-wrap: wrap;
     gap: 0.75rem;
+    margin-bottom: 2.5rem;
   }
 
-  .skill-category__header {
+  @media (max-width: 768px) {
+    .hero-wp__certs { justify-content: center; }
+  }
+
+  .cert-badge {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #f8fafc;
+    backdrop-filter: blur(4px);
+    transition: background 0.3s ease;
+  }
+  
+  .cert-badge:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .hero-wp__socials {
     display: flex;
-    align-items: flex-start;
-    gap: 0.85rem;
+    gap: 1.25rem;
   }
 
-  .skill-category__icon {
+  @media (max-width: 768px) {
+    .hero-wp__socials { justify-content: center; }
+  }
+
+  .hero-wp__socials a {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: var(--color-tag-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 0.5rem;
-    color: var(--color-text-muted);
-    flex-shrink: 0;
-    margin-top: 0.1rem;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
   }
 
-  .skill-category__title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    margin-bottom: 0.15rem;
+  .hero-wp__socials a:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
   }
 
-  .tags-row {
+  /* ── Contenido Principal ── */
+  .content-wrapper {
+    max-width: var(--content-max-width, 1200px);
+    margin: 0 auto;
+    padding: 4rem 2.5rem;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    padding-left: 3.35rem;
+    flex-direction: column;
+    gap: 6rem;
   }
 
-  /* ── Utilidades ──────────────────────────────────────────────────────────── */
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
+  .section-wp {
+    width: 100%;
+  }
+
+  .section-title-wp {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--color-text-primary);
+  }
+
+  /* ── Grillas ── */
+  .grid-4-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 2rem;
+  }
+
+  .grid-3-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2.5rem;
+  }
+
+  /* ── Tarjetas (Cards) ── */
+  .wp-card {
+    background: transparent;
+  }
+
+  .wp-card__link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .wp-card__img-wrapper {
+    width: 100%;
+    aspect-ratio: 16/9;
     overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+
+  .wp-card__img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .wp-card:hover .wp-card__img-wrapper img {
+    transform: scale(1.03);
+  }
+
+  .wp-card__title {
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+    transition: color 0.2s;
+  }
+
+  .wp-card:hover .wp-card__title {
+    color: var(--color-accent);
+  }
+
+  .serif-title {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+  }
+
+  .wp-card__excerpt {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ── Botones ── */
+  .view-more-container {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  .btn-wp {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    background-color: var(--color-text-primary);
+    color: var(--color-bg);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.2s, transform 0.2s;
+  }
+
+  .btn-wp:hover {
+    background-color: var(--color-accent);
+    transform: translateY(-2px);
   }
 </style>

@@ -1,8 +1,9 @@
 ---
-titulo: "Data Lake, Warehouse o Mart: ¿Cuál Elegir?"
+titulo: "Data Lake, Warehouse o Mart: ¿Cuál Elegir?"
 fecha: 2023-05-08
 descripcion: "Descubre las diferencias entre Data Lake, Data Warehouse y Data Mart. Aprende cómo elegir la mejor opción para tu empresa y optimizar la toma de decisio..."
-etiquetas: []
+imagen: "/images/blog/datalake-datawarehouse.png"
+etiquetas: ["Data Lake", "Data Warehouse", "Data Mart", "Arquitectura"]
 autor: "Frederick Salazar"
 draft: false
 ---

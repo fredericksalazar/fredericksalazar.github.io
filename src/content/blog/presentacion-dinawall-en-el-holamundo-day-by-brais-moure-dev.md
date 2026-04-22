@@ -1,8 +1,9 @@
 ---
-titulo: "Presentación de DinaWall en HolaMundo.day"
+titulo: "Presentación de DinaWall en HolaMundo.day"
 fecha: 2023-05-16
 descripcion: "DinaWall en HolaMundo.day, un evento online para desarrolladores organizado por Brais Moure. Recibí gran apoyo de la comunidad global de tech. Mira el v..."
-etiquetas: []
+imagen: "/images/blog/dinawall-holla-mundo-mouredev.png"
+etiquetas: ["DinaWall", "Open Source", "Eventos", "JavaFX"]
 autor: "Frederick Salazar"
 draft: false
 ---

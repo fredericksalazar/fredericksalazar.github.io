@@ -15,9 +15,10 @@ interface Props {
   description: string;
   image?: string;
   type?: 'website' | 'article';
+  fullWidth?: boolean;
 }
 
-const { title, description, image, type } = Astro.props;
+const { title, description, image, type, fullWidth = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -40,7 +41,7 @@ const { title, description, image, type } = Astro.props;
 
       <!-- ── Contenido principal ──────────────────────────────────── -->
       <main id="main-content" class="layout__main" transition:animate="fade">
-        <div class="layout__content">
+        <div class={`layout__content ${fullWidth ? 'layout__content--full' : ''}`}>
           <slot />
         </div>
       </main>
@@ -120,6 +121,11 @@ const { title, description, image, type } = Astro.props;
     max-width: var(--content-max-width);
     padding: 3rem 2.5rem;
     margin: 0 auto;
+  }
+  
+  .layout__content--full {
+    max-width: 100%;
+    padding: 0;
   }
 
   /* ── Mobile responsive ──────────────────────────────────────────────────── */

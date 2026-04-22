@@ -2,7 +2,8 @@
 titulo: "ChatGPT: Potencia Tu Trabajo como Data Engineer"
 fecha: 2024-07-30
 descripcion: "Explora 10 formas en que ChatGPT puede mejorar tu trabajo como ingeniero de datos. Automatiza tareas, optimiza código y soluciona problemas de manera ef..."
-etiquetas: []
+imagen: "/images/blog/chatgpt-data-engineer.png"
+etiquetas: ["ChatGPT", "Data Engineering", "Productividad", "IA"]
 autor: "Frederick Salazar"
 draft: false
 ---

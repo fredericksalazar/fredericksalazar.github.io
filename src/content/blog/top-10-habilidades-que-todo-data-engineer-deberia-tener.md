@@ -1,8 +1,9 @@
 ---
-titulo: "10 Habilidades Clave para Ingenieros de datos"
+titulo: "10 Habilidades Clave para Ingenieros de datos"
 fecha: 2023-03-24
 descripcion: "Descubre las 10 habilidades esenciales que todo ingeniero de datos debe tener para destacar en el diseño, construcción y mantenimiento de sistemas de ge..."
-etiquetas: []
+imagen: "/images/blog/dataengineer-skills.png"
+etiquetas: ["Habilidades", "Data Engineering", "Desarrollo Profesional", "Top 10"]
 autor: "Frederick Salazar"
 draft: false
 ---

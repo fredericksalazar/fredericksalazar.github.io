@@ -1,8 +1,9 @@
 ---
-titulo: "Dark Data en las organizaciones"
+titulo: "Dark Data en las organizaciones"
 fecha: 2024-04-16
 descripcion: "Descubre qué es el Dark Data y cómo puede impactar tu organización. Aprende sobre su origen, clasificación y estrategias para convertirlo en valor con u..."
-etiquetas: []
+imagen: "/images/blog/dark-data.png"
+etiquetas: ["Dark Data", "Gobierno de Datos", "Data Lake", "Estrategia"]
 autor: "Frederick Salazar"
 draft: false
 ---

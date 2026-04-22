@@ -9,8 +9,6 @@ destacado: false
 orden: 99
 ---
 
-![](/images/proyectos/pexels-photo-210607.jpeg)
-
 Comprender la realidad económica de un país es fundamental para diferentes procesos personales, profesionales, empresariales, políticos etc. por eso he desarrollado este proyecto que se basa en datos oficiales del World Bank y que nos permitirá poco a poco ver el desarrollo económico de Colombia desde 1960 hasta el 2023. Para este proyecto hemos usado indicadores económicos como: PIB, exportaciones e importaciones de bienes y servicios desde 1960 a 2023, hemos incluido una lista de todos los presidentes de Colombia con el objetivo de identificar momentos y decisiones políticas importantes.
 
 **Código, fuentes de datos y repositorios**  
