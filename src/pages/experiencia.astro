@@ -10,39 +10,92 @@ const description = 'Timeline de experiencia laboral de Frederick Salazar como D
 
 const experiencia = [
   {
-    empresa: 'Mercado Libre',
+    empresa: 'Globant',
     rol: 'Senior Data Engineer',
-    periodo: '2022 — Presente',
-    descripcion: 'Diseño y construcción de arquitecturas de datos escalables. Implementación de pipelines para analítica avanzada y modelos de machine learning que impactan a millones de usuarios en LATAM.',
-    tecnologias: ['Python', 'Spark', 'Databricks', 'Airflow', 'AWS']
+    periodo: 'nov. 2024 — Presente',
+    descripcion: 'BanReservas: Consultor experto en arquitectura e ingeniería de datos para el sector bancario. Personalización de experiencia de cliente basada en transacciones usando modelos de ML.',
+    tecnologias: ['Estrategia de datos', 'Machine Learning', 'Arquitectura de Datos'],
+    logo: '/logos/globant.png'
   },
   {
-    empresa: 'Globant',
-    rol: 'Data Engineer',
-    periodo: '2021 — 2022',
-    descripcion: 'Desarrollo de soluciones de Big Data y consultoría en arquitectura de datos para clientes internacionales. Optimización de procesos ETL y data lakes.',
-    tecnologias: ['Python', 'SQL', 'Hadoop', 'Azure Data Factory']
+    empresa: 'Mercado Libre',
+    rol: 'Senior Data Engineer',
+    periodo: 'nov. 2023 — oct. 2024',
+    descripcion: 'Integración de datos de billing de diferentes proveedores cloud para el proceso de FinOps, permitiendo identificar costos y uso de servicios.',
+    tecnologias: ['Estrategia de datos', 'Google BigQuery', 'FinOps', 'Cloud Computing'],
+    logo: '/logos/mercado_libre.svg'
   },
   {
     empresa: 'UBITS',
-    rol: 'Data Engineer / BI',
-    periodo: '2020 — 2021',
-    descripcion: 'Lideré la estrategia de datos centralizando la información en un Data Warehouse. Implementación de dashboards interactivos para la toma de decisiones ejecutivas.',
-    tecnologias: ['SQL', 'Power BI', 'Python', 'PostgreSQL']
+    rol: 'Senior Data Engineer',
+    periodo: 'abr. 2023 — nov. 2023',
+    descripcion: 'Desarrollo e implementación de soluciones de ingeniería de datos para la plataforma de capacitación corporativa.',
+    tecnologias: ['NoSQL', 'PySpark', 'Data Engineering'],
+    logo: '/logos/ubits.svg'
   },
   {
-    empresa: 'Derco',
-    rol: 'Business Intelligence Developer',
-    periodo: '2018 — 2020',
-    descripcion: 'Construcción de modelos de datos y reportes de inteligencia de negocios para el sector automotriz, mejorando la visibilidad de ventas y logística.',
-    tecnologias: ['SQL Server', 'SSIS', 'SSAS', 'Power BI']
+    empresa: 'DERCO COLOMBIA',
+    rol: 'Data Engineer',
+    periodo: 'feb. 2022 — abr. 2023',
+    descripcion: 'Construcción de pipelines y procesos de datos para el sector automotriz y retail.',
+    tecnologias: ['PySpark', 'Azure Data Factory'],
+    logo: '/logos/derco_colombia.png'
   },
   {
-    empresa: 'Freelance / Consultoría',
-    rol: 'Desarrollador de Software',
-    periodo: '2015 — 2018',
-    descripcion: 'Desarrollo de software empresarial a la medida, automatización de procesos y primeros proyectos de análisis de datos.',
-    tecnologias: ['Java', 'C#', 'SQL', 'JavaScript']
+    empresa: 'Arkano Software',
+    rol: 'Data Engineer',
+    periodo: 'oct. 2021 — feb. 2022',
+    descripcion: 'Diseño e implementación de arquitectura de datos y soluciones analíticas para clientes externos.',
+    tecnologias: ['Arquitectura de datos', 'PySpark'],
+    logo: '/logos/arkano_software.png'
+  },
+  {
+    empresa: 'Olimpia IT',
+    rol: 'Data Engineer',
+    periodo: 'mar. 2021 — oct. 2021',
+    descripcion: 'Desarrollo de procesos de integración y transformación de datos empresariales.',
+    tecnologias: ['Arquitectura de datos', 'PySpark'],
+    logo: '/logos/olimpia_it.png'
+  },
+  {
+    empresa: 'SuperGIROS',
+    rol: 'Coordinador unidad de gestión de información',
+    periodo: 'ago. 2019 — feb. 2021',
+    descripcion: 'Liderazgo en la gestión de información y analítica de la compañía.',
+    tecnologias: ['QlikView', 'Análisis de datos'],
+    logo: '/logos/supergiros.svg'
+  },
+  {
+    empresa: 'SuperGIROS',
+    rol: 'Ingeniero de datos',
+    periodo: 'abr. 2017 — jul. 2019',
+    descripcion: 'Desarrollo de modelos de datos e integración de sistemas.',
+    tecnologias: ['QlikView', 'PostgreSQL'],
+    logo: '/logos/supergiros.svg'
+  },
+  {
+    empresa: 'Fasttrack SAS',
+    rol: 'Software Developer',
+    periodo: 'ene. 2017 — abr. 2017',
+    descripcion: 'Desarrollo de aplicaciones de software.',
+    tecnologias: ['Java', 'POO'],
+    logo: '/logos/Fasttrack.png'
+  },
+  {
+    empresa: 'Codesa',
+    rol: 'Software Developer',
+    periodo: 'nov. 2015 — dic. 2016',
+    descripcion: 'Desarrollo y mantenimiento de software.',
+    tecnologias: ['Java', 'PL/SQL'],
+    logo: '/logos/codesa.png'
+  },
+  {
+    empresa: 'EPS SOS',
+    rol: 'Administrador BD SIAM',
+    periodo: 'feb. 2014 — jul. 2015',
+    descripcion: 'Administrar la base de datos de afiliados de la EPS SOS, gestionar y actualizar el sistema SIAM para controlar la movilidad de afiliados.',
+    tecnologias: ['Bases de datos', 'PL/SQL'],
+    logo: '/logos/eps_sos.png'
   }
 ];
 
@@ -87,7 +140,18 @@ const certificaciones = [
     <div class="timeline">
       {experiencia.map((item, index) => (
         <div class="timeline__item">
-          <div class="timeline__marker"></div>
+          <div class="timeline__marker">
+            <img 
+              src={item.logo} 
+              alt={`Logo ${item.empresa}`} 
+              class="timeline__logo" 
+              width="100"
+              height="100"
+              style="width: 100%; height: 100%; object-fit: contain; padding: 12%; box-sizing: border-box; background: white;"
+              onerror={`this.onerror=null; this.src='https://ui-avatars.com/api/?name=${item.empresa.replace(/\\s+/g, '+')}&background=random';`}
+              loading="lazy"
+            />
+          </div>
           <div class="timeline__content">
             <div class="timeline__header">
               <h3 class="timeline__role">{item.rol}</h3>
@@ -144,7 +208,7 @@ const certificaciones = [
     font-size: 1rem;
     color: var(--color-text-muted);
     line-height: 1.65;
-    max-width: 600px;
+    max-width: 100%;
   }
   .section-title {
     font-size: 1.4rem;
@@ -160,7 +224,7 @@ const certificaciones = [
 
   .timeline {
     position: relative;
-    padding-left: 1.5rem;
+    padding-left: 8rem;
   }
   
   /* Línea vertical */
@@ -169,7 +233,7 @@ const certificaciones = [
     position: absolute;
     top: 0.5rem;
     bottom: 0;
-    left: 0.35rem; /* Centrado con el marker */
+    left: 4rem; /* Centrado con el marker */
     width: 2px;
     background: var(--color-border);
     border-radius: 2px;
@@ -177,7 +241,8 @@ const certificaciones = [
 
   .timeline__item {
     position: relative;
-    margin-bottom: 2.5rem;
+    margin-bottom: 3.5rem;
+    min-height: 6.25rem;
   }
   .timeline__item:last-child {
     margin-bottom: 0;
@@ -186,15 +251,28 @@ const certificaciones = [
   /* Punto en la línea */
   .timeline__marker {
     position: absolute;
-    top: 0.35rem;
-    left: -1.5rem;
-    width: 12px;
-    height: 12px;
+    top: 0;
+    left: -7.125rem;
+    width: 6.25rem;
+    height: 6.25rem;
     border-radius: 50%;
     background: var(--color-bg);
-    border: 2px solid var(--color-accent);
+    border: 2px solid var(--color-border);
     box-shadow: 0 0 0 4px var(--color-bg); /* Espacio alrededor del punto */
     z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .timeline__logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 12%;
+    box-sizing: border-box;
+    background: white;
   }
 
   .timeline__header {
@@ -231,7 +309,7 @@ const certificaciones = [
     color: var(--color-text-secondary);
     line-height: 1.6;
     margin-bottom: 1rem;
-    max-width: 680px;
+    max-width: 100%;
   }
 
   .timeline__tags {
@@ -301,6 +379,23 @@ const certificaciones = [
     margin: 0 0.25rem;
   }
 
+  @media (max-width: 768px) {
+    .timeline {
+      padding-left: 6rem;
+    }
+    .timeline::before {
+      left: 3rem;
+    }
+    .timeline__marker {
+      width: 4.5rem;
+      height: 4.5rem;
+      left: -5.25rem; /* 3rem - 2.25rem = 0.75rem relative to timeline. 0.75rem - 6rem = -5.25rem */
+    }
+    .timeline__item {
+      min-height: 4.5rem;
+    }
+  }
+
   @media (max-width: 600px) {
     .timeline__header {
       flex-direction: column;
@@ -309,6 +404,21 @@ const certificaciones = [
     }
     .certs-grid {
       grid-template-columns: 1fr;
+    }
+    
+    .timeline {
+      padding-left: 4rem;
+    }
+    .timeline::before {
+      left: 2rem;
+    }
+    .timeline__marker {
+      width: 3.5rem;
+      height: 3.5rem;
+      left: -3.75rem; /* 2rem - 1.75rem = 0.25rem relative to timeline. 0.25rem - 4rem = -3.75rem */
+    }
+    .timeline__item {
+      min-height: 3.5rem;
     }
   }
 </style>

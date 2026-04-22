@@ -1,0 +1,413 @@
+---
+/**
+ * certificaciones.astro — Timeline unificado de certificaciones
+ * URL: /certificaciones
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title       = 'Certificaciones — Frederick Salazar';
+const description = 'Certificaciones profesionales de Frederick Salazar en IA, Google Cloud, Azure, Databricks y más.';
+
+const certificaciones = [
+  {
+    titulo: 'Google AI Professional Certificate',
+    emisor: 'Google',
+    periodo: 'mar. 2026',
+    url: 'https://www.credly.com/badges/5dbbfc8a-ec1d-4b2d-a0cc-7c17535e66e9/linked_in_profile',
+    tecnologias: ['Inteligencia Artificial', 'Prompt Engineering', 'Google AI'],
+    logo: '/logos/google.svg',
+    badge: '/badges/google_ai.png'
+  },
+  {
+    titulo: 'Google Project Management Certificate',
+    emisor: 'Google',
+    periodo: 'mar. 2026',
+    url: 'https://www.credly.com/badges/f6316070-fab5-4449-b367-ef84f65a54c9/linked_in_profile',
+    tecnologias: ['Gestión de Proyectos', 'Metodologías Ágiles', 'Scrum'],
+    logo: '/logos/google.svg',
+    badge: '/badges/google_pm.png'
+  },
+  {
+    titulo: 'MongoDB SI Associate',
+    emisor: 'MongoDB',
+    periodo: 'mar. 2026',
+    url: 'https://learn.mongodb.com/c/yM7PJFTzQv2IH0rwxhyIxg',
+    tecnologias: ['MongoDB', 'NoSQL', 'Base de Datos'],
+    logo: '/logos/mongodb.svg',
+    badge: '/badges/mongodb_si.png',
+    compact: true
+  },
+  {
+    titulo: 'Statistics Foundations',
+    emisor: 'Meta',
+    periodo: 'oct. 2025',
+    url: 'https://www.coursera.org/account/accomplishments/verify/WN21HZM96ATQ',
+    tecnologias: ['Estadística', 'Análisis de Datos', 'Probabilidad'],
+    logo: '/logos/meta.svg',
+    badge: null
+  },
+  {
+    titulo: 'Prompt Engineering',
+    emisor: 'Vanderbilt University',
+    periodo: 'sept. 2024',
+    url: 'https://www.coursera.org/account/accomplishments/verify/6Z5FSMOXQ9SW',
+    tecnologias: ['Prompt Engineering', 'IA Generativa', 'LLMs'],
+    logo: '/logos/vanderbilt.png',
+    badge: null
+  },
+  {
+    titulo: 'Google Cloud Big Data & ML Fundamentals',
+    emisor: 'Google',
+    periodo: 'mar. 2024',
+    url: 'https://www.skills.google/public_profiles/d7cbe2d3-cc94-4605-9a3c-bccb63d46f4e/badges/8253556',
+    tecnologias: ['Google BigQuery', 'Google Cloud', 'Machine Learning'],
+    logo: '/logos/google.svg',
+    badge: null
+  },
+  {
+    titulo: 'Microsoft Certified: Azure AI Fundamentals',
+    emisor: 'Microsoft',
+    periodo: 'ene. 2023',
+    url: 'https://www.credly.com/badges/02c0c899-a64a-44d9-90b6-534753e9f79a/linked_in_profile',
+    tecnologias: ['Azure AI', 'Machine Learning', 'Computer Vision'],
+    logo: '/logos/microsoft.svg',
+    badge: '/badges/azure_ai.png'
+  },
+  {
+    titulo: 'Microsoft Certified: Azure Data Fundamentals',
+    emisor: 'Microsoft',
+    periodo: 'ene. 2023',
+    url: 'https://www.credly.com/badges/21e86391-db6e-4bec-a45f-41a75523d0c4/linked_in_profile',
+    tecnologias: ['Azure SQL', 'Azure Storage', 'Data Concepts'],
+    logo: '/logos/microsoft.svg',
+    badge: '/badges/azure_df.png'
+  },
+  {
+    titulo: 'Databricks Lakehouse Fundamentals',
+    emisor: 'Databricks',
+    periodo: 'dic. 2022',
+    url: 'https://credentials.databricks.com/f1ff1d6b-55ff-474f-9b3d-17e5dd08c328#acc.WybUe9CG',
+    tecnologias: ['Databricks', 'Delta Lake', 'Apache Spark'],
+    logo: '/logos/databricks.png',
+    badge: '/badges/databricks_fundamentals.png',
+    compact: true
+  },
+  {
+    titulo: 'Microsoft Certified: Azure Data Engineer Associate',
+    emisor: 'Microsoft',
+    periodo: 'jul. 2021',
+    url: 'https://www.credly.com/badges/3451c68b-985a-4094-b7dc-dec41644e747/linked_in_profile',
+    tecnologias: ['Azure Data Factory', 'Azure Synapse', 'Data Engineering'],
+    logo: '/logos/microsoft.svg',
+    badge: '/badges/azure_de.png'
+  }
+];
+---
+
+<BaseLayout title={title} description={description}>
+
+  <!-- Header -->
+  <header class="page-header">
+    <h1 class="page-title">Certificaciones</h1>
+    <p class="page-subtitle">
+      Credenciales verificables en ingeniería de datos, inteligencia artificial y cloud.
+      <span class="badge-count">{certificaciones.filter(c => c.badge).length} insignias digitales · {certificaciones.length} certificaciones totales</span>
+    </p>
+  </header>
+
+  <!-- Timeline -->
+  <section aria-label="Historial de certificaciones">
+    <div class="timeline">
+      {certificaciones.map((item) => (
+        <div class={`tl-item ${item.badge ? 'tl-item--has-badge' : 'tl-item--has-logo'}`}>
+
+          <!-- Marcador izquierdo -->
+          <div class="tl-left">
+            {item.badge ? (
+              <a href={item.url} target="_blank" rel="noopener noreferrer" class="tl-badge-link" title={item.titulo}>
+                <img
+                  src={item.badge}
+                  alt={`Insignia: ${item.titulo}`}
+                  class="tl-badge"
+                  style={item.compact ? 'padding: 20%;' : ''}
+                  loading="lazy"
+                />
+              </a>
+            ) : (
+              <div class="tl-logo-circle">
+                <img
+                  src={item.logo}
+                  alt={item.emisor}
+                  class="tl-logo-img"
+                  width="77" height="77"
+                  loading="lazy"
+                />
+              </div>
+            )}
+          </div>
+
+          <!-- Contenido derecho -->
+          <div class="tl-right">
+            <h3 class="tl-title">{item.titulo}</h3>
+
+            <div class="tl-meta">
+              <span class="tl-emisor">
+                <img src={item.logo} alt={item.emisor} class="tl-emisor-logo" width="22" height="22" />
+                {item.emisor}
+              </span>
+              <span class="tl-period">{item.periodo}</span>
+            </div>
+
+            <div class="tl-skills">
+              {item.tecnologias.map(t => <span class="skill-pill">{t}</span>)}
+            </div>
+
+            <a href={item.url} target="_blank" rel="noopener noreferrer" class="tl-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
+              Ver credencial
+            </a>
+          </div>
+
+        </div>
+      ))}
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* ── Page header ─────────────────────────────────────────────────────────── */
+  .page-header {
+    margin-bottom: 3rem;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-title {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 0.4rem;
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .badge-count {
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    color: var(--color-accent);
+  }
+
+  /* Timeline: no padding-left needed, tl-left is part of the flex row */
+  .timeline {
+    position: relative;
+  }
+
+  /* Vertical connecting line */
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 80px;    /* center of the 160px left column */
+    width: 2px;
+    background: linear-gradient(to bottom, var(--color-accent), var(--color-border));
+    opacity: 0.3;
+    border-radius: 2px;
+    z-index: 0;
+  }
+
+  /* ── Timeline item ─────────────────────────────────────────────────────── */
+  .tl-item {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    margin-bottom: 3.5rem;
+    align-items: stretch;
+    position: relative;
+    min-height: 160px;
+  }
+
+  .tl-item:last-child { margin-bottom: 0; }
+
+  /* ── Left column: badge/logo — fixed width, full height ─────────────────── */
+  .tl-left {
+    flex: 0 0 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: stretch;
+    margin-right: 2.5rem;
+  }
+
+  /* ── Badge display: fills full height of tl-left ────────────────────────── */
+  .tl-badge-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+
+  .tl-badge-link:hover {
+    transform: scale(1.05);
+  }
+
+  .tl-badge {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.18));
+    display: block;
+    transform: scale(1.45);
+  }
+
+  /* ── Logo circle (no badge) ─────────────────────────────────────────────── */
+  .tl-logo-circle {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .tl-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 22%;
+    box-sizing: border-box;
+  }
+
+  /* ── Right content ─────────────────────────────────────────────────────── */
+  .tl-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0;
+  }
+
+  .tl-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .tl-emisor {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  .tl-emisor-logo {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+  }
+
+  .tl-emisor {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  .tl-period {
+    font-size: 0.92rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .tl-verified {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #16a34a;
+    background: #dcfce7;
+    border: 1px solid #bbf7d0;
+    border-radius: 999px;
+    padding: 0.1rem 0.5rem;
+  }
+
+  .tl-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .tl-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .skill-pill {
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.22rem 0.7rem;
+    background: var(--color-tag-bg);
+    border: 1px solid var(--color-tag-border);
+    border-radius: 999px;
+    color: var(--color-tag-text);
+  }
+
+  .tl-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    margin: 0;
+    transition: color 0.15s ease;
+  }
+
+  .tl-link:hover { color: var(--color-accent); }
+
+  /* ── Responsive ──────────────────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .timeline { padding-left: 120px; }
+    .timeline::before { left: 50px; }
+
+    .tl-left { left: -120px; width: 100px; }
+    .tl-badge { width: 88px; height: 88px; }
+    .tl-logo-circle { width: 54px; height: 54px; }
+  }
+
+  @media (max-width: 480px) {
+    .timeline { padding-left: 90px; }
+    .timeline::before { left: 38px; }
+
+    .tl-left { left: -90px; width: 76px; }
+    .tl-badge { width: 68px; height: 68px; }
+    .tl-logo-circle { width: 44px; height: 44px; }
+  }
+</style>
