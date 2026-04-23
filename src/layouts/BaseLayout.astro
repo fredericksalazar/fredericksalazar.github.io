@@ -31,6 +31,22 @@ const { title, description, image, type, fullWidth = false } = Astro.props;
       image={image}
       type={type}
     />
+    <!-- Google tag (gtag.js) -->
+    <script is:inline src="https://www.googletagmanager.com/gtag/js?id=G-ZFSVVSZG6K"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-ZFSVVSZG6K');
+
+      // Monitoreo de navegación fluida (View Transitions)
+      document.addEventListener('astro:page-load', () => {
+        gtag('config', 'G-ZFSVVSZG6K', {
+          page_path: window.location.pathname,
+        });
+      });
+    </script>
     <!-- ── View Transitions: navegación fluida con MPA estático ── -->
     <ClientRouter />
   </head>
