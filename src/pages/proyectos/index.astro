@@ -2,39 +2,40 @@
 /**
  * proyectos/index.astro — Listado del portafolio de proyectos
  * URL: /proyectos
- * 
+ *
  * Lee la colección 'proyectos' y los muestra ordenados por campo 'orden'.
  */
-import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const title       = 'Proyectos — Frederick Salazar';
-const description = 'Portafolio de proyectos de Data Engineering, IA y software open source.';
+const title = "Proyectos Open Source & Portafolio — Frederick Salazar";
+const description =
+  "Portafolio de proyectos de Data Engineering, IA y software open source de Frederick Salazar. OllamaFX, DinaWall, análisis de datos y más.";
 
-const allProyectos = await getCollection('proyectos');
-const proyectos    = allProyectos.sort((a, b) => a.data.orden - b.data.orden);
+const allProyectos = await getCollection("proyectos");
+const proyectos = allProyectos.sort((a, b) => a.data.orden - b.data.orden);
 ---
 
 <BaseLayout title={title} description={description} fullWidth={true}>
-
   <!-- Header Hero -->
   <section class="proj-hero">
     <div class="proj-hero__orb proj-hero__orb--left"></div>
     <div class="proj-hero__orb proj-hero__orb--right"></div>
-    
+
     <div class="proj-hero__container">
       <div class="proj-hero__content">
         <span class="proj-hero__badge">
           <span class="proj-hero__badge-dot"></span>
           Portafolio técnico
         </span>
-        
+
         <h1 class="proj-hero__headline">Proyectos</h1>
-        
+
         <p class="proj-hero__subheadline">
-          Software open source, análisis de datos y soluciones de inteligencia artificial.
+          Software open source, análisis de datos y soluciones de inteligencia
+          artificial.
         </p>
-        
+
         <div class="proj-hero__stats">
           <div class="proj-hero__stat">
             <span class="proj-hero__stat-number">{proyectos.length}</span>
@@ -46,107 +47,309 @@ const proyectos    = allProyectos.sort((a, b) => a.data.orden - b.data.orden);
           </div>
         </div>
       </div>
-      
-      <div class="proj-hero__certs">
-        <p class="proj-hero__certs-label">Tecnologías</p>
-        <div class="proj-hero__certs-grid">
-          <img src="/logos/python.svg" alt="Python" class="proj-hero__cert-img" />
-          <img src="/logos/java.svg" alt="Java" class="proj-hero__cert-img" />
-          <img src="/logos/pandas.svg" alt="Pandas" class="proj-hero__cert-img" />
-          <img src="/logos/plotly.svg" alt="Plotly" class="proj-hero__cert-img" />
-          <img src="/logos/jupyter.svg" alt="Jupyter" class="proj-hero__cert-img" />
-          <img src="/logos/git.svg" alt="Git" class="proj-hero__cert-img" />
-        </div>
-      </div>
     </div>
-  </section>
+</section>
 
-  <!-- Projects Grid -->
-  <section class="proj-section">
-    {proyectos.length === 0 ? (
-      <p class="empty-state">Los proyectos se cargarán pronto desde los archivos Markdown.</p>
+  {proyectos.length === 0 ? (
+      <p class="empty-state">
+        Los proyectos se cargarán pronto desde los archivos Markdown.
+      </p>
     ) : (
-      <div class="proj-grid">
+      <div class="projects-grid">
         {proyectos.map((proyecto) => (
-          <article class="proj-card">
-            <a href={`/proyectos/${proyecto.id}`} class="proj-card__link">
+          <article class="project-card">
+            <a
+              href={`/proyectos/${proyecto.id}`}
+              class="project-card__link-wrap"
+            >
               {proyecto.data.imagen && (
-                <div class="proj-card__img-container">
-                  <img 
-                    src={proyecto.data.imagen} 
-                    alt={proyecto.data.titulo}
+                <div class="project-card__img-container">
+                  <img
+                    src={proyecto.data.imagen}
+                    alt={`Imagen de ${proyecto.data.titulo}`}
                     loading="lazy"
-                    class="proj-card__img"
+                    class="project-card__img"
                   />
+                  <div class="project-card__overlay">
+                    <span class="project-card__view-btn">Ver proyecto →</span>
+                  </div>
                 </div>
               )}
-              
-              <div class="proj-card__content">
-                <h2 class="proj-card__title">{proyecto.data.titulo}</h2>
-                <p class="proj-card__desc">{proyecto.data.descripcion}</p>
-                
-                {proyecto.data.tecnologias && proyecto.data.tecnologias.length > 0 && (
-                  <div class="proj-card__tags">
-                    {proyecto.data.tecnologias.map((tech: string) => (
-                      <span class="proj-tag">{tech}</span>
-                    ))}
-                  </div>
-                )}
+              <div class="project-card__content">
+                <h2 class="project-card__title">{proyecto.data.titulo}</h2>
+                <p class="project-card__desc">{proyecto.data.descripcion}</p>
+
+                {proyecto.data.tecnologias &&
+                  proyecto.data.tecnologias.length > 0 && (
+                    <div class="project-card__tags">
+                      {proyecto.data.tecnologias.map((tech: string) => (
+                        <span class="project-card__tag">{tech}</span>
+                      ))}
+                    </div>
+                  )}
               </div>
             </a>
-            
-            <div class="proj-card__actions">
-              {proyecto.data.github && (
-                <a href={proyecto.data.github} target="_blank" rel="noopener noreferrer" class="proj-action">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.243 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                  </svg>
-                  GitHub
-                </a>
-              )}
-              {proyecto.data.demo && (
-                <a href={proyecto.data.demo} target="_blank" rel="noopener noreferrer" class="proj-action proj-action--primary">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                    <polyline points="15 3 21 3 21 9"/>
-                    <line x1="10" y1="14" x2="21" y2="3"/>
-                  </svg>
-                  Demo
-                </a>
-              )}
-            </div>
+
+            {(proyecto.data.github || proyecto.data.demo) && (
+              <div class="project-card__actions">
+                {proyecto.data.github && proyecto.data.github !== "" && (
+                  <a
+                    href={proyecto.data.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="action-link"
+                    aria-label="Ver código en GitHub"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                      <path d="M9 18c-4.51 2-5-2-7-2" />
+                    </svg>
+                    Código
+                  </a>
+                )}
+                {proyecto.data.demo && proyecto.data.demo !== "" && (
+                  <a
+                    href={proyecto.data.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="action-link action-link--primary"
+                    aria-label="Ver demostración"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                      <polyline points="15 3 21 3 21 9" />
+                      <line x1="10" y1="14" x2="21" y2="3" />
+                    </svg>
+                    Demo
+                  </a>
+                )}
+              </div>
+            )}
           </article>
         ))}
       </div>
-    )}
-  </section>
-
+    )
+  }
 </BaseLayout>
 
 <style>
-  /* ── Animaciones de entrada ── */
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+  .page-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+  .page-subtitle {
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 3rem;
+  }
+  .empty-state {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    font-style: italic;
+  }
+
+  /* ── Project Card ─────────────────────────────────────────────────────── */
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg-secondary, #ffffff);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition:
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+  }
+
+  /* Modo oscuro compatibilidad si la variable existe */
+  @media (prefers-color-scheme: dark) {
+    .project-card {
+      background: var(--color-bg-secondary, #1a1a1a);
     }
   }
 
-  @keyframes float {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(3%, 5%) scale(1.05); }
+  .project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
   }
 
-  /* ── Hero ── */
+  .project-card__link-wrap {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  /* ── Image & Overlay ──────────────────────────────────────────────────── */
+  .project-card__img-container {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .project-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .project-card:hover .project-card__img {
+    transform: scale(1.05);
+  }
+
+  .project-card__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(2px);
+  }
+
+  .project-card:hover .project-card__overlay {
+    opacity: 1;
+  }
+
+  .project-card__view-btn {
+    background: rgba(255, 255, 255, 0.95);
+    color: #111;
+    padding: 0.6rem 1.4rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transform: translateY(15px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .project-card:hover .project-card__view-btn {
+    transform: translateY(0);
+  }
+
+  /* ── Content ──────────────────────────────────────────────────────────── */
+  .project-card__content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .project-card__title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+    transition: color 0.2s ease;
+  }
+
+  .project-card__link-wrap:hover .project-card__title {
+    color: var(--color-accent);
+  }
+
+  .project-card__desc {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    flex: 1;
+  }
+
+  /* ── Tags ─────────────────────────────────────────────────────────────── */
+  .project-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .project-card__tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--color-hover);
+    color: var(--color-text-secondary);
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.4rem;
+  }
+
+  /* ── Actions / Links ──────────────────────────────────────────────────── */
+  .project-card__actions {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    margin-top: auto;
+  }
+
+  .action-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    background: var(--color-hover);
+    padding: 0.55rem 1.1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .action-link:hover {
+    background: var(--color-border);
+    color: var(--color-text-primary);
+  }
+
+  .action-link--primary {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  .action-link--primary:hover {
+    background: var(--color-accent-hover);
+    color: #fff;
+  }
+
+  /* ── Hero Section ───────────────────────────────────────────────── */
   .proj-hero {
     position: relative;
     overflow: hidden;
-    background: 
-      radial-gradient(circle at center, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
+    background:
+      radial-gradient(
+        circle at center,
+        rgba(56, 189, 248, 0.08) 0%,
+        transparent 50%
+      ),
       linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
     padding: 6rem 2rem 5rem;
     min-height: 500px;
@@ -154,12 +357,16 @@ const proyectos    = allProyectos.sort((a, b) => a.data.orden - b.data.orden);
     align-items: center;
   }
 
+  /* Blueprint grid pattern - puntos cada 25px */
   .proj-hero::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
-    background-image: 
-      radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    background-image: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.2) 1px,
+      transparent 1px
+    );
     background-size: 25px 25px;
     opacity: 0.6;
     pointer-events: none;
@@ -173,17 +380,24 @@ const proyectos    = allProyectos.sort((a, b) => a.data.orden - b.data.orden);
     filter: blur(100px);
     opacity: 0.4;
     animation: float 20s ease-in-out infinite alternate;
-    z-index: 0;
   }
 
   .proj-hero__orb--left {
-    background: radial-gradient(circle, rgba(56, 189, 248, 0.5) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(56, 189, 248, 0.5) 0%,
+      transparent 70%
+    );
     top: -15%;
     left: -10%;
   }
 
   .proj-hero__orb--right {
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.5) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(168, 85, 247, 0.5) 0%,
+      transparent 70%
+    );
     bottom: -15%;
     right: -10%;
     animation-delay: -10s;
@@ -193,309 +407,125 @@ const proyectos    = allProyectos.sort((a, b) => a.data.orden - b.data.orden);
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 4rem;
-    align-items: center;
+    text-align: center;
     position: relative;
     z-index: 1;
+  }
+
+  .proj-hero__content {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .proj-hero__badge {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(139, 92, 246, 0.15);
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    padding: 0.5rem 1rem;
-    border-radius: 100px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #a78bfa;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #38bdf8;
     margin-bottom: 1.5rem;
-    animation: fadeInUp 0.6s ease-out;
   }
 
   .proj-hero__badge-dot {
-    width: 8px;
-    height: 8px;
-    background: #8b5cf6;
+    width: 6px;
+    height: 6px;
+    background: #38bdf8;
     border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
   }
 
   .proj-hero__headline {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-size: clamp(2.5rem, 6vw, 4rem);
     font-weight: 800;
-    color: #ffffff;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    animation: fadeInUp 0.6s ease-out 0.1s backwards;
+    letter-spacing: -0.03em;
+    color: #f8fafc;
+    margin-bottom: 0.75rem;
   }
 
   .proj-hero__subheadline {
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 2vw, 1.25rem);
     color: #94a3b8;
-    line-height: 1.7;
-    margin-bottom: 2rem;
-    max-width: 480px;
-    animation: fadeInUp 0.6s ease-out 0.2s backwards;
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(20px, -20px);
+    }
   }
 
   .proj-hero__stats {
     display: flex;
+    justify-content: center;
     gap: 3rem;
-    animation: fadeInUp 0.6s ease-out 0.3s backwards;
-    margin-bottom: 2rem;
+    flex-wrap: wrap;
   }
 
   .proj-hero__stat {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    align-items: center;
   }
 
   .proj-hero__stat-number {
     font-size: 2rem;
-    font-weight: 700;
-    color: #ffffff;
+    font-weight: 800;
+    color: #38bdf8;
   }
 
   .proj-hero__stat-label {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #64748b;
+    font-weight: 500;
   }
 
-  /* ── Panel derecho (como certs del home) ── */
-  .proj-hero__certs {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 2rem;
-    backdrop-filter: blur(10px);
-    animation: fadeInUp 0.6s ease-out 0.5s backwards;
-  }
-
-  .proj-hero__certs-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #64748b;
-    margin-bottom: 1.25rem;
-  }
-
-  .proj-hero__certs-grid {
+  .projects-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-  }
-
-  .proj-hero__cert-img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .proj-hero__cert-img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  }
-
-  /* ── Section ── */
-  .proj-section {
-    max-width: 1100px;
-    margin: 4rem auto;
-    padding: 0 2rem 4rem;
-  }
-
-  .empty-state {
-    color: var(--color-text-muted);
-    font-size: 1rem;
-    text-align: center;
-    padding: 3rem;
-  }
-
-  /* ── Grid ── */
-  .proj-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1.5rem;
+    margin-top: 3rem;
+    padding: 0 2rem;
   }
 
-  /* ── Card ── */
-  .proj-card {
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 0.75rem;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: border-color 0.2s ease;
-  }
-
-  .proj-card:hover {
-    border-color: var(--color-accent);
-  }
-
-  .proj-card__link {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .proj-card__img-container {
-    width: 100%;
-    height: 160px;
-    overflow: hidden;
-    background: var(--color-border);
-  }
-
-  .proj-card__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-
-  .proj-card:hover .proj-card__img {
-    transform: scale(1.03);
-  }
-
-  .proj-card__content {
-    padding: 1.25rem;
-    flex: 1;
-  }
-
-  .proj-card__title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    margin-bottom: 0.5rem;
-    line-height: 1.4;
-  }
-
-  .proj-card__link:hover .proj-card__title {
-    color: var(--color-accent);
-  }
-
-  .proj-card__desc {
-    font-size: 0.9rem;
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-    margin-bottom: 0.75rem;
-  }
-
-  .proj-card__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .proj-tag {
-    font-size: 0.75rem;
-    padding: 0.2rem 0.6rem;
-    background: rgba(139, 92, 246, 0.1);
-    border: 1px solid rgba(139, 92, 246, 0.2);
-    border-radius: 100px;
-    color: #8b5cf6;
-  }
-
-  /* ── Actions ── */
-  .proj-card__actions {
-    display: flex;
-    gap: 0.75rem;
-    padding: 1rem 1.25rem;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .proj-action {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--color-text-muted);
-    text-decoration: none;
-    padding: 0.4rem 0.75rem;
-    border-radius: 0.4rem;
-    background: var(--color-hover);
-    transition: all 0.2s ease;
-  }
-
-  .proj-action:hover {
-    color: var(--color-text-primary);
-    background: var(--color-border);
-  }
-
-  .proj-action--primary {
-    background: var(--color-accent);
-    color: #ffffff;
-  }
-
-  .proj-action--primary:hover {
-    background: var(--color-accent-hover);
-    color: #ffffff;
-  }
-
-  /* ── Responsive ── */
   @media (max-width: 1024px) {
-    .proj-hero__content {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-    
-    .proj-hero__info {
-      padding-right: 0;
-      text-align: center;
-    }
-    
-    .proj-hero__subtitle {
-      max-width: 100%;
-    }
-    
-    .proj-hero__stats {
-      justify-content: center;
-    }
-    
-    .proj-hero__techs-panel {
-      max-width: 400px;
-      margin: 0 auto;
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  @media (max-width: 768px) {
-    .proj-hero {
-      padding: 4rem 1.5rem 3rem;
-      min-height: auto;
-    }
-    
-    .proj-hero__techs-panel {
-      padding: 1.5rem;
-      gap: 1rem;
-    }
-    
-    .proj-hero__tech-logo-lg {
-      height: 40px;
-    }
-    
-    .proj-hero__tech-logo-md {
-      height: 32px;
-    }
-    
-    .proj-hero__tech-logo-sm {
-      height: 24px;
-    }
-    
-    .proj-section {
-      padding: 0 1.5rem 3rem;
-    }
-    
-    .proj-grid {
+  @media (max-width: 640px) {
+    .projects-grid {
       grid-template-columns: 1fr;
+      padding: 0 1rem;
     }
   }
 </style>
