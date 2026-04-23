@@ -1,416 +1,805 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
-const title       = 'Frederick Salazar — Senior Data Engineer';
-const description = 'Senior Data Engineer & Arquitecto de Datos con +9 años de experiencia.';
+const title = "Frederick Salazar — Senior Data Engineer";
+const description =
+  "Senior Data Engineer & Arquitecto de Datos con +9 años de experiencia.";
 
-// Proyectos destacados (los primeros 4 para llenar una cuadrícula de 4 columnas)
-const allProyectos = await getCollection('proyectos');
-const topProyectos = allProyectos.sort((a, b) => a.data.orden - b.data.orden).slice(0, 4);
+// Proyectos destacados
+const allProyectos = await getCollection("proyectos");
+const topProyectos = allProyectos
+  .sort((a, b) => a.data.orden - b.data.orden)
+  .slice(0, 4);
 
-// Últimos artículos del blog (primeros 3 para una cuadrícula de 3 columnas)
-const allPosts = await getCollection('blog', ({ data }) => !data.draft);
-const latestPosts = allPosts.sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime()).slice(0, 3);
+// Últimos artículos del blog
+const allPosts = await getCollection("blog", ({ data }) => !data.draft);
+const latestPosts = allPosts
+  .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime())
+  .slice(0, 3);
 
 const formatDate = (date: Date) =>
-  date.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' });
+  date.toLocaleDateString("es-CO", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+// Tecnologías para cada proyecto
+const techBadges: Record<string, string[]> = {
+  "ollamafx": ["JavaFX", "Java", "RAG", "LLM", "Ollama"],
+  "dinawall-app-2": ["JavaFX", "Java", "Linux", "Windows", "macOS"],
+  "analisis-machine-learning-elecciones-presidenciales-colombia-2022": ["Python", "NLP", "ML", "Twitter API", "Pandas"],
+  "analysis-indicadores-economia-de-colombia": ["Python", "Pandas", "World Bank", "Plotly", "Matplotlib"],
+  "data-analysis-world-population": ["Python", "Pandas", "Plotly", "Seaborn", "World Bank"],
+};
+
+// Certificaciones con imágenes reales
+const certifications = [
+  { name: "Azure Data Engineer", img: "/badges/azure_de.png", alt: "Microsoft Certified: Azure Data Engineer Associate" },
+  { name: "Azure Data Fundamentals", img: "/badges/azure_df.png", alt: "Azure Data Fundamentals" },
+  { name: "Azure AI Fundamentals", img: "/badges/azure_ai.png", alt: "Azure AI Fundamentals" },
+  { name: "Databricks", img: "/badges/databricks_fundamentals.png", alt: "Databricks Lakehouse Fundamentals" },
+  { name: "Google AI", img: "/badges/google_ai.png", alt: "Google AI Essentials" },
+  { name: "MongoDB", img: "/badges/mongodb_si.png", alt: "MongoDB Certified" },
+];
 ---
 
 <BaseLayout title={title} description={description} fullWidth={true}>
-  
-  <!-- ── Hero Section (Estilo Creativo & Moderno) ── -->
-  <section class="hero-wp">
-    <div class="hero-wp__container">
-      
-      <!-- Columna Izquierda: Perfil -->
-      <div class="hero-wp__profile">
-        <div class="hero-wp__avatar">
-          <img src="/images/profile.png" alt="Frederick Salazar" />
-        </div>
-        <h1 class="hero-wp__name">Frederick Salazar</h1>
-        <p class="hero-wp__title">Senior Data Engineer</p>
-      </div>
-
-      <!-- Columna Derecha: Bio y Certificaciones -->
-      <div class="hero-wp__bio">
-        <h2>¡Hola! Soy Frederick Adolfo Salazar Sanchez</h2>
-        <p>
-          Tengo más de 9 años de experiencia diseñando e implementando soluciones de datos y analítica a gran escala. 
-          Me especializo en arquitectura de datos en la nube, big data y en construir pipelines escalables que 
-          transforman los datos crudos en valor estratégico para el negocio.
+  <!-- ── Hero Section ── -->
+  <section class="hero">
+    <div class="hero__orb hero__orb--left"></div>
+    <div class="hero__orb hero__orb--right"></div>
+    
+    <div class="hero__container">
+      <div class="hero__content">
+        <span class="hero__badge">
+          <span class="hero__badge-dot"></span>
+          Disponible para proyectos
+        </span>
+        
+        <h1 class="hero__headline">
+          Transformo datos en decisiones estratégicas
+        </h1>
+        
+        <p class="hero__subheadline">
+          +9 años diseñando arquitecturas de datos escalables, pipelines de ETL/ELT y soluciones de analítica avanzada para Big Data e IA.
         </p>
         
-        <!-- Simulador de Certificaciones (puedes reemplazar con imágenes reales) -->
-        <div class="hero-wp__certs">
-          <span class="cert-badge">Microsoft Certified: Azure Data Engineer</span>
-          <span class="cert-badge">Azure Fundamentals</span>
-          <span class="cert-badge">Databricks Lakehouse</span>
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <span class="hero__stat-number">9+</span>
+            <span class="hero__stat-label">Años de experiencia</span>
+          </div>
+          <div class="hero__stat">
+            <span class="hero__stat-number">5</span>
+            <span class="hero__stat-label">Proyectos</span>
+          </div>
+          <div class="hero__stat">
+            <span class="hero__stat-number">6</span>
+            <span class="hero__stat-label">Certificaciones</span>
+          </div>
         </div>
-
-        <!-- Botones Sociales -->
-        <div class="hero-wp__socials">
-          <a href="mailto:fsalazars@uoc.edu" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
-          <a href="https://linkedin.com/in/fredericksalazar" target="_blank" title="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
-          <a href="https://github.com/fredericksalazar" target="_blank" title="GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg></a>
+        
+        <div class="hero__actions">
+          <a href="/experiencia" class="btn btn--primary">
+            Ver experiencia
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+          <a href="mailto:fsalazars@uoc.edu" class="btn btn--outline">
+            Contactar
+          </a>
         </div>
       </div>
-
+      
+      <div class="hero__certs">
+        <p class="hero__certs-label">Certificaciones</p>
+        <div class="hero__certs-grid">
+          {certifications.map((cert) => (
+            <img 
+              src={cert.img} 
+              alt={cert.alt}
+              class="hero__cert-img"
+              loading="lazy"
+              title={cert.name}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- ── Contenedor Principal (Fondo Blanco Clásico) ── -->
-  <div class="content-wrapper">
+  <!-- ── Proyectos ── -->
+  <section class="section">
+    <div class="section__header">
+      <div class="section__title-group">
+        <span class="section__label">Portfolio</span>
+        <h2 class="section__title">Proyectos destacados</h2>
+      </div>
+      <a href="/proyectos" class="section__link">
+        Ver todos
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
     
-    <!-- ── Proyectos Desarrollados (Cuadrícula 4 columnas) ── -->
-    <section class="section-wp">
-      <h2 class="section-title-wp">Proyectos Desarrollados</h2>
-      <div class="grid-4-cols">
-        {topProyectos.map((proyecto) => (
-          <article class="wp-card">
-            <a href={`/proyectos/${proyecto.id}`} class="wp-card__link">
-              <div class="wp-card__img-wrapper">
-                <img src={proyecto.data.imagen || 'https://via.placeholder.com/300x200'} alt={proyecto.data.titulo} loading="lazy" />
+    <div class="projects-grid">
+      {topProyectos.map((proyecto, index) => {
+        const techs = techBadges[proyecto.id] || [];
+        return (
+          <article class="project-card" style={`--delay: ${index * 100}ms`}>
+            <a href={`/proyectos/${proyecto.id}`} class="project-card__link">
+              <div class="project-card__img-wrapper">
+                <img
+                  src={proyecto.data.imagen || "https://via.placeholder.com/400x250"}
+                  alt={proyecto.data.titulo}
+                  loading="lazy"
+                />
+                <div class="project-card__overlay">
+                  <span class="project-card__view">Ver proyecto</span>
+                </div>
               </div>
-              <h3 class="wp-card__title">{proyecto.data.titulo}</h3>
-              <p class="wp-card__excerpt">{proyecto.data.descripcion}</p>
+              <div class="project-card__body">
+                <h3 class="project-card__title">{proyecto.data.titulo}</h3>
+                <p class="project-card__excerpt">{proyecto.data.descripcion}</p>
+                {techs.length > 0 && (
+                  <div class="project-card__tech">
+                    {techs.slice(0, 4).map((tech) => (
+                      <span class="tech-badge">{tech}</span>
+                    ))}
+                    {techs.length > 4 && (
+                      <span class="tech-badge tech-badge--more">+{techs.length - 4}</span>
+                    )}
+                  </div>
+                )}
+              </div>
             </a>
           </article>
-        ))}
-      </div>
-    </section>
+        );
+      })}
+    </div>
+  </section>
 
-    <!-- ── Publicaciones en mi blog (Cuadrícula 3 columnas) ── -->
-    <section class="section-wp">
-      <h2 class="section-title-wp">Publicaciones en mi blog</h2>
-      <div class="grid-3-cols">
-        {latestPosts.map((post) => (
-          <article class="wp-card blog-card">
-            <a href={`/blog/${post.id}`} class="wp-card__link">
-              <div class="wp-card__img-wrapper">
-                <img src={post.data.imagen || 'https://via.placeholder.com/400x250'} alt={post.data.titulo} loading="lazy" />
-              </div>
-              <h3 class="wp-card__title serif-title">{post.data.titulo}</h3>
-              <p class="wp-card__excerpt">{post.data.descripcion}</p>
-            </a>
-          </article>
-        ))}
+  <!-- ── Blog ── -->
+  <section class="section section--alt">
+    <div class="section__header">
+      <div class="section__title-group">
+        <span class="section__label">Blog técnico</span>
+        <h2 class="section__title">Últimas publicaciones</h2>
       </div>
-      <div class="view-more-container">
-        <a href="/blog" class="btn-wp">Ver más artículos</a>
-      </div>
-    </section>
+      <a href="/blog" class="section__link">
+        Ver todos
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+    
+    <div class="blog-grid">
+      {latestPosts.map((post, index) => (
+        <article class="blog-card" style={`--delay: ${index * 100}ms`}>
+          <a href={`/blog/${post.id}`} class="blog-card__link">
+            <div class="blog-card__img-wrapper">
+              <img
+                src={post.data.imagen || "https://via.placeholder.com/400x250"}
+                alt={post.data.titulo}
+                loading="lazy"
+              />
+            </div>
+            <div class="blog-card__body">
+              <time class="blog-card__date" datetime={post.data.fecha.toISOString()}>
+                {formatDate(post.data.fecha)}
+              </time>
+              <h3 class="blog-card__title">{post.data.titulo}</h3>
+              <p class="blog-card__excerpt">{post.data.descripcion}</p>
+              <span class="blog-card__read-more">
+                Leer más
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </span>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
 
-  </div>
+  <!-- ── CTA ── -->
+  <section class="cta">
+    <div class="cta__content">
+      <h2 class="cta__title">¿Buscas un Data Engineer?</h2>
+      <p class="cta__text">
+        Estoy disponible para proyectos de arquitectura de datos, implementación de pipelines y consultoría en cloud data platforms.
+      </p>
+      <div class="cta__actions">
+        <a href="mailto:fsalazars@uoc.edu" class="btn btn--primary btn--large">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          Enviar email
+        </a>
+        <a href="https://linkedin.com/in/fredericksalazar" target="_blank" class="btn btn--outline btn--large">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  /* ── Tipografía WordPress ── */
-  :root {
-    --font-serif: 'Georgia', 'Playfair Display', 'Times New Roman', serif;
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  /* ── Animaciones de entrada ── */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  /* ── Hero (Fondo Creativo & Premium) ── */
-  .hero-wp {
-    width: 100%;
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(3%, 5%) scale(1.05); }
+  }
+
+  /* ── Hero ── */
+  .hero {
     position: relative;
     overflow: hidden;
-    /* Un fondo rico y dinámico: Azul profundo y toques magenta (Data/Cloud Theme) */
     background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
-    color: #ffffff;
-    padding: 6rem 2rem 5rem;
+    padding: 8rem 2rem 6rem;
+    min-height: 600px;
     display: flex;
-    justify-content: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    align-items: center;
   }
 
-  /* Orbes brillantes de fondo para darle un look "Data Tech" */
-  .hero-wp::before, .hero-wp::after {
-    content: '';
+  .hero__orb {
     position: absolute;
-    width: 60vw;
-    height: 60vw;
+    width: 50vw;
+    height: 50vw;
     border-radius: 50%;
     filter: blur(100px);
-    z-index: 0;
-    opacity: 0.5;
+    opacity: 0.4;
     animation: float 20s ease-in-out infinite alternate;
   }
 
-  .hero-wp::before {
-    background: radial-gradient(circle, rgba(56,189,248,0.4) 0%, transparent 70%);
-    top: -20%;
+  .hero__orb--left {
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.5) 0%, transparent 70%);
+    top: -15%;
     left: -10%;
   }
 
-  .hero-wp::after {
-    background: radial-gradient(circle, rgba(168,85,247,0.4) 0%, transparent 70%);
-    bottom: -20%;
+  .hero__orb--right {
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.5) 0%, transparent 70%);
+    bottom: -15%;
     right: -10%;
     animation-delay: -10s;
   }
 
-  @keyframes float {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(5%, 10%) scale(1.1); }
-  }
-
-  .hero-wp__container {
+  .hero__container {
     max-width: 1200px;
     width: 100%;
-    display: flex;
-    flex-direction: row;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 4rem;
     align-items: center;
-    gap: 6rem;
     position: relative;
     z-index: 1;
   }
 
-  @media (max-width: 768px) {
-    .hero-wp__container {
-      flex-direction: column;
-      text-align: center;
-      gap: 2rem;
-    }
+  .hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #4ade80;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 0.6s ease-out;
   }
 
-  .hero-wp__profile {
+  .hero__badge-dot {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .hero__headline {
+    font-family: var(--font-sans);
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 0.6s ease-out 0.1s backwards;
+  }
+
+  .hero__subheadline {
+    font-size: 1.2rem;
+    color: #94a3b8;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    max-width: 540px;
+    animation: fadeInUp 0.6s ease-out 0.2s backwards;
+  }
+
+  .hero__stats {
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 2.5rem;
+    animation: fadeInUp 0.6s ease-out 0.3s backwards;
+  }
+
+  .hero__stat {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    flex-shrink: 0;
   }
 
-  .hero-wp__avatar {
-    width: 240px;
-    height: 240px;
-    border-radius: 50%;
-    overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    margin-bottom: 1.5rem;
-  }
-
-  .hero-wp__avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .hero-wp__name {
-    font-family: var(--font-sans);
-    font-size: 1.85rem;
+  .hero__stat-number {
+    font-size: 2.5rem;
     font-weight: 800;
-    margin-bottom: 0.25rem;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    color: #ffffff;
+    line-height: 1;
   }
 
-  .hero-wp__title {
-    font-family: var(--font-sans);
-    font-size: 1.05rem;
-    color: #94a3b8; /* Gris azulado claro */
+  .hero__stat-label {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-top: 0.25rem;
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: 1rem;
+    animation: fadeInUp 0.6s ease-out 0.4s backwards;
+  }
+
+  /* ── Certificaciones en Hero ── */
+  .hero__certs {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    animation: fadeInUp 0.6s ease-out 0.5s backwards;
+  }
+
+  .hero__certs-label {
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 0.1em;
+    color: #64748b;
+    margin-bottom: 1.25rem;
   }
 
-  .hero-wp__bio {
-    flex: 1;
-    font-family: var(--font-sans);
+  .hero__certs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
   }
 
-  .hero-wp__bio h2 {
-    font-family: var(--font-serif);
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: #ffffff;
-    line-height: 1.2;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  }
-
-  .hero-wp__bio p {
-    font-size: 1.15rem;
-    line-height: 1.7;
-    color: #cbd5e1; /* Gris muy claro */
-    margin-bottom: 2rem;
-  }
-
-  .hero-wp__certs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-bottom: 2.5rem;
-  }
-
-  @media (max-width: 768px) {
-    .hero-wp__certs { justify-content: center; }
-  }
-
-  .cert-badge {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 0.4rem 1rem;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #f8fafc;
-    backdrop-filter: blur(4px);
-    transition: background 0.3s ease;
-  }
-  
-  .cert-badge:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  .hero-wp__socials {
-    display: flex;
-    gap: 1.25rem;
-  }
-
-  @media (max-width: 768px) {
-    .hero-wp__socials { justify-content: center; }
-  }
-
-  .hero-wp__socials a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    color: #ffffff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-    backdrop-filter: blur(4px);
-  }
-
-  .hero-wp__socials a:hover {
-    transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-  }
-
-  /* ── Contenido Principal ── */
-  .content-wrapper {
-    max-width: var(--content-max-width, 1200px);
-    margin: 0 auto;
-    padding: 4rem 2.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 6rem;
-  }
-
-  .section-wp {
+  .hero__cert-img {
     width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
-  .section-title-wp {
-    font-family: var(--font-serif);
+  .hero__cert-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  /* ── Botones ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn--primary {
+    background: #2563eb;
+    color: #ffffff;
+  }
+
+  .btn--primary:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+  }
+
+  .btn--outline {
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .btn--outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .btn--large {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+
+  /* ── Secciones ── */
+  .section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  .section--alt {
+    background: #f6f8fa;
+    margin: 0;
+    max-width: 100%;
+    padding: 5rem 2rem;
+  }
+
+  .section--alt > * {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+  }
+
+  .section__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #2563eb;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .section__title {
     font-size: 2rem;
     font-weight: 700;
-    text-align: center;
-    margin-bottom: 3rem;
-    color: var(--color-text-primary);
+    color: #1f2328;
+  }
+
+  .section__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+    transition: gap 0.2s ease;
+  }
+
+  .section__link:hover {
+    gap: 0.75rem;
   }
 
   /* ── Grillas ── */
-  .grid-4-cols {
+  .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
   }
 
-  .grid-3-cols {
+  .blog-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2rem;
   }
 
-  /* ── Tarjetas (Cards) ── */
-  .wp-card {
-    background: transparent;
+  /* ── Cards de Proyecto ── */
+  .project-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInUp 0.5s ease-out var(--delay, 0ms) backwards;
   }
 
-  .wp-card__link {
+  .project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .project-card__link {
+    display: block;
     text-decoration: none;
     color: inherit;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
   }
 
-  .wp-card__img-wrapper {
-    width: 100%;
-    aspect-ratio: 16/9;
+  .project-card__img-wrapper {
+    position: relative;
+    aspect-ratio: 16/10;
     overflow: hidden;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
   }
 
-  .wp-card__img-wrapper img {
+  .project-card__img-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.4s ease;
   }
 
-  .wp-card:hover .wp-card__img-wrapper img {
-    transform: scale(1.03);
+  .project-card:hover .project-card__img-wrapper img {
+    transform: scale(1.05);
   }
 
-  .wp-card__title {
-    font-family: var(--font-sans);
+  .project-card__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(15, 23, 42, 0.8), transparent);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .project-card:hover .project-card__overlay {
+    opacity: 1;
+  }
+
+  .project-card__view {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    backdrop-filter: blur(4px);
+  }
+
+  .project-card__body {
+    padding: 1.5rem;
+  }
+
+  .project-card__title {
     font-size: 1.1rem;
     font-weight: 700;
+    color: #1f2328;
     margin-bottom: 0.5rem;
-    line-height: 1.4;
-    transition: color 0.2s;
+    line-height: 1.3;
+    transition: color 0.2s ease;
   }
 
-  .wp-card:hover .wp-card__title {
-    color: var(--color-accent);
+  .project-card:hover .project-card__title {
+    color: #2563eb;
   }
 
-  .serif-title {
+  .project-card__excerpt {
+    font-size: 0.9rem;
+    color: #636c76;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+
+  .project-card__tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tech-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    background: #f0fdf4;
+    color: #166534;
+    border-radius: 4px;
+    border: 1px solid #bbf7d0;
+  }
+
+  .tech-badge--more {
+    background: #f1f5f9;
+    color: #475569;
+    border-color: #cbd5e1;
+  }
+
+  /* ── Cards de Blog ── */
+  .blog-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInUp 0.5s ease-out var(--delay, 0ms) backwards;
+    border-left: 4px solid #8b5cf6;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    border-left-color: #7c3aed;
+  }
+
+  .blog-card__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .blog-card__img-wrapper {
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+
+  .blog-card__img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .blog-card:hover .blog-card__img-wrapper img {
+    transform: scale(1.05);
+  }
+
+  .blog-card__body {
+    padding: 1.5rem;
+  }
+
+  .blog-card__date {
+    font-size: 0.75rem;
+    color: #636c76;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .blog-card__title {
     font-family: var(--font-serif);
-    font-size: 1.3rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2328;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+    transition: color 0.2s ease;
   }
 
-  .wp-card__excerpt {
-    font-family: var(--font-sans);
-    font-size: 0.95rem;
-    color: var(--color-text-secondary);
+  .blog-card:hover .blog-card__title {
+    color: #7c3aed;
+  }
+
+  .blog-card__excerpt {
+    font-size: 0.9rem;
+    color: #636c76;
     line-height: 1.6;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    margin-bottom: 1rem;
   }
 
-  /* ── Botones ── */
-  .view-more-container {
-    text-align: center;
-    margin-top: 3rem;
-  }
-
-  .btn-wp {
-    display: inline-block;
-    padding: 0.8rem 2rem;
-    background-color: var(--color-text-primary);
-    color: var(--color-bg);
-    font-family: var(--font-sans);
+  .blog-card__read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
     font-weight: 600;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.2s, transform 0.2s;
+    color: #7c3aed;
+    transition: gap 0.2s ease;
   }
 
-  .btn-wp:hover {
-    background-color: var(--color-accent);
-    transform: translateY(-2px);
+  .blog-card:hover .blog-card__read-more {
+    gap: 0.75rem;
+  }
+
+  /* ── CTA ── */
+  .cta {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    padding: 5rem 2rem;
+  }
+
+  .cta__content {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .cta__title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 1rem;
+  }
+
+  .cta__text {
+    font-size: 1.1rem;
+    color: #94a3b8;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .cta__actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 1024px) {
+    .hero__container {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    
+    .hero__certs {
+      max-width: 500px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding: 5rem 1.5rem 4rem;
+      min-height: auto;
+    }
+
+    .hero__headline {
+      font-size: 2.25rem;
+    }
+
+    .hero__stats {
+      gap: 2rem;
+    }
+
+    .hero__stat-number {
+      font-size: 2rem;
+    }
+
+    .hero__certs-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .section {
+      padding: 3rem 1.5rem;
+    }
+
+    .section__header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .projects-grid,
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cta__title {
+      font-size: 1.75rem;
+    }
   }
 </style>

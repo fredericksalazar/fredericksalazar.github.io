@@ -1,9 +1,4 @@
 ---
-/**
- * Sidebar.astro
- * Barra lateral fija con perfil, navegación e iconos sociales.
- * Adapta el highlight activo según la ruta actual.
- */
 const currentPath = Astro.url.pathname;
 
 const navItems = [
@@ -52,6 +47,12 @@ const socialLinks = [
   },
 ];
 
+const quickStats = [
+  { label: '9+', value: 'Años' },
+  { label: '6', value: 'Certs' },
+  { label: '5', value: 'Proyectos' },
+];
+
 function isActive(href: string): boolean {
   if (href === '/') return currentPath === '/';
   return currentPath.startsWith(href);
@@ -63,7 +64,7 @@ function isActive(href: string): boolean {
   <div class="sidebar__profile">
     <div class="sidebar__avatar-wrapper">
       <img
-        src="/profile.jpg"
+        src="/images/profile.png"
         alt="Frederick Salazar — Data Engineer"
         class="sidebar__avatar"
         width="56"
@@ -75,8 +76,18 @@ function isActive(href: string): boolean {
     </div>
     <div class="sidebar__info">
       <span class="sidebar__name">Frederick Salazar</span>
-      <span class="sidebar__role">Senior Data Engineer</span>
+      <span class="sidebar__role">Data Engineer</span>
     </div>
+  </div>
+
+  <!-- ── Stats Rápidas ───────────────────────────────────────────────────── -->
+  <div class="sidebar__stats">
+    {quickStats.map((stat) => (
+      <div class="sidebar__stat">
+        <span class="sidebar__stat-value">{stat.label}</span>
+        <span class="sidebar__stat-label">{stat.value}</span>
+      </div>
+    ))}
   </div>
 
   <!-- ── Navegación ─────────────────────────────────────────────────────── -->
@@ -114,15 +125,11 @@ function isActive(href: string): boolean {
   </div>
 </aside>
 
-
-
 <style>
-  /* ── Variables locales ──────────────────────────────────────────────────── */
   :root {
     --sidebar-width: 240px;
   }
 
-  /* ── Sidebar container ──────────────────────────────────────────────────── */
   .sidebar {
     position: fixed;
     top: 0;
@@ -134,17 +141,17 @@ function isActive(href: string): boolean {
     display: flex;
     flex-direction: column;
     padding: 1.75rem 1rem;
-    gap: 2rem;
+    gap: 1.5rem;
     z-index: 100;
     overflow-y: auto;
   }
 
-  /* ── Perfil ─────────────────────────────────────────────────────────────── */
+  /* ── Perfil ── */
   .sidebar__profile {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding-bottom: 1.5rem;
+    padding-bottom: 1.25rem;
     border-bottom: 1px solid var(--color-border);
   }
 
@@ -196,7 +203,38 @@ function isActive(href: string): boolean {
     text-overflow: ellipsis;
   }
 
-  /* ── Navegación ─────────────────────────────────────────────────────────── */
+  /* ── Stats Rápidas ── */
+  .sidebar__stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem;
+    background: var(--color-bg);
+    border-radius: 8px;
+  }
+
+  .sidebar__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .sidebar__stat-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    line-height: 1;
+  }
+
+  .sidebar__stat-label {
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.15rem;
+  }
+
+  /* ── Navegación ── */
   .sidebar__nav {
     flex: 1;
   }
@@ -244,7 +282,7 @@ function isActive(href: string): boolean {
     line-height: 1;
   }
 
-  /* ── Redes sociales ───────────────────────────────────────────────── */
+  /* ── Redes sociales ── */
   .sidebar__socials {
     display: flex;
     gap: 0.5rem;
@@ -269,7 +307,7 @@ function isActive(href: string): boolean {
     color: var(--color-accent);
   }
 
-  /* ── Mobile: sidebar colapsada ──────────────────────────────────────────── */
+  /* ── Mobile ── */
   @media (max-width: 768px) {
     .sidebar {
       width: 100%;
@@ -286,6 +324,9 @@ function isActive(href: string): boolean {
       padding-bottom: 0;
       border-bottom: none;
       flex: 1;
+    }
+    .sidebar__stats {
+      display: none;
     }
     .sidebar__nav {
       width: 100%;
