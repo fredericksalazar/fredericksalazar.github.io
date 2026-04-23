@@ -243,11 +243,25 @@ const certifications = [
   .hero {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+    background: 
+      radial-gradient(circle at center, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
+      linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
     padding: 8rem 2rem 6rem;
     min-height: 600px;
     display: flex;
     align-items: center;
+  }
+
+  /* Blueprint grid pattern - puntos cada 25px */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    background-size: 25px 25px;
+    opacity: 0.6;
+    pointer-events: none;
   }
 
   .hero__orb {
