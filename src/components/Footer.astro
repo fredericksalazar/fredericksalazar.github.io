@@ -1,0 +1,262 @@
+---
+/**
+ * Footer.astro
+ * Footer profesional con blueprint pattern
+ * Aparece en todas las páginas
+ */
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="site-footer__orb site-footer__orb--left"></div>
+  <div class="site-footer__orb site-footer__orb--right"></div>
+  
+  <div class="site-footer__container">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <span class="site-footer__logo">Frederick Salazar</span>
+        <span class="site-footer__role">Data Engineer</span>
+        <p class="site-footer__tagline">
+          Transformando datos en decisiones estratégicas desde 2014.
+        </p>
+      </div>
+      
+      <div class="site-footer__links">
+        <span class="site-footer__heading">Navegación</span>
+        <nav>
+          <a href="/">Inicio</a>
+          <a href="/experiencia">Experiencia</a>
+          <a href="/proyectos">Proyectos</a>
+          <a href="/certificaciones">Certificaciones</a>
+          <a href="/blog">Blog</a>
+        </nav>
+      </div>
+      
+      <div class="site-footer__links">
+        <span class="site-footer__heading">Social</span>
+        <nav>
+          <a href="https://github.com/fredericksalazar" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+          <a href="https://linkedin.com/in/fredericksalazar" target="_blank" rel="noopener noreferrer">
+            LinkedIn
+          </a>
+          <a href="https://twitter.com/fredericksalazar" target="_blank" rel="noopener noreferrer">
+            Twitter
+          </a>
+          <a href="mailto:fsalazars@uoc.edu">Email</a>
+        </nav>
+      </div>
+      
+      <div class="site-footer__contact">
+        <span class="site-footer__heading">Contacto</span>
+        <p>Disponible para nuevos proyectos y oportunidades.</p>
+        <a href="mailto:fsalazars@uoc.edu" class="site-footer__cta">
+          Enviar mensaje
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+    
+    <div class="site-footer__bottom">
+      <p class="site-footer__copy">
+        © {currentYear} Frederick Salazar. Built with data, code & coffee.
+      </p>
+      <p class="site-footer__tech">
+        <span>Stack:</span> Astro + Tailwind + Markdown
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    overflow: hidden;
+    background: 
+      radial-gradient(circle at center, rgba(56, 189, 248, 0.06) 0%, transparent 50%),
+      linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+    padding: 4rem 2rem 2rem;
+    margin-top: 4rem;
+  }
+
+  .site-footer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+    background-size: 25px 25px;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .site-footer__orb {
+    position: absolute;
+    width: 40vw;
+    height: 40vw;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.3;
+    animation: float 20s ease-in-out infinite alternate;
+  }
+
+  .site-footer__orb--left {
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.4) 0%, transparent 70%);
+    top: -20%;
+    left: -10%;
+  }
+
+  .site-footer__orb--right {
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, transparent 70%);
+    bottom: -20%;
+    right: -10%;
+    animation-delay: -10s;
+  }
+
+  @keyframes float {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(20px, -20px); }
+  }
+
+  .site-footer__container {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 3rem;
+  }
+
+  @media (max-width: 900px) {
+    .site-footer__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .site-footer__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .site-footer__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .site-footer__logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #f8fafc;
+  }
+
+  .site-footer__role {
+    font-size: 0.875rem;
+    color: #38bdf8;
+    font-weight: 500;
+  }
+
+  .site-footer__tagline {
+    margin-top: 0.75rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .site-footer__links nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .site-footer__heading {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: #64748b;
+    text-transform: uppercase;
+  }
+
+  .site-footer__links a {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.15s;
+  }
+
+  .site-footer__links a:hover {
+    color: #38bdf8;
+  }
+
+  .site-footer__contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .site-footer__contact p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+  }
+
+  .site-footer__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #2563eb;
+    color: white;
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.15s, transform 0.15s;
+    width: fit-content;
+  }
+
+  .site-footer__cta:hover {
+    background: #1d4ed8;
+    color: white;
+    transform: translateX(4px);
+  }
+
+  .site-footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  @media (max-width: 540px) {
+    .site-footer__bottom {
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+    }
+  }
+
+  .site-footer__copy {
+    color: #64748b;
+    font-size: 0.8rem;
+  }
+
+  .site-footer__tech {
+    color: #475569;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+  }
+
+  .site-footer__tech span {
+    color: #64748b;
+  }
+</style>
