@@ -8,8 +8,8 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const title       = 'Blog de Data Engineering & IA — Frederick Salazar';
-const description = 'Artículos sobre Data Engineering, Inteligencia Artificial, Big Data, Azure y tecnología en Colombia y LATAM. Por Frederick Salazar.';
+const title       = 'Blog de Data Engineering, Machine Learning | Frederick Salazar';
+const description = 'Artículos técnicos sobre Data Engineering, Big Data, Machine Learning, Azure y Analytics. Tutorials, guías y análisis de datos por Frederick Salazar, Data Engineer en Colombia.';
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 const posts    = allPosts.sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
