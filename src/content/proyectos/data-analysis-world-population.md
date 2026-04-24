@@ -1,12 +1,14 @@
 ---
-titulo: "Data Analysis World Population"
-descripcion: "Proyecto Python que analiza el crecimiento poblacional del mundo teniendo en cuenta varias dimensiones como el GDP, nivel de escolaridad,"
-tecnologias: []
-github: ""
-demo: ""
+titulo: "Data Analysis World Population"
+descripcion: "Proyecto Python que analiza el crecimiento poblacional del mundo considerando GDP, nivel de escolaridad, tasas de crecimiento y distribución regional."
+tecnologias: ["Python", "Pandas", "Plotly", "Matplotlib", "Seaborn", "Jupyter"]
+categoria: "data-analysis"
+fecha: "2022-08-01"
+github: "https://github.com/fredericksalazar/dataAnalyst_world_population"
+demo: "https://www.kaggle.com/code/fredericksalazar/data-analysis-population-world"
 imagen: "/images/proyectos/world-map-1.png"
-destacado: false
-orden: 99
+destacado: true
+orden: 3
 ---
 
 Este proyecto nace de la necesidad de aplicar los conocimiento técnicos adquiridos en el campo de la Ingeniería de datos y el análisis de datos con Python, tiene como objetivo fundamental brindar desde los datos una perspectiva descriptiva y de entendimiento acerca de la evolución de la población mundial durante el siglo XXI e intentar identificar factores para el crecimiento o decrecimiento poblacional en el mundo.

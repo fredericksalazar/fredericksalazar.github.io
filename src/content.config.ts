@@ -28,6 +28,8 @@ const proyectos = defineCollection({
     titulo: z.string(),
     descripcion: z.string(),
     tecnologias: z.array(z.string()),
+    categoria: z.enum(['data-analysis', 'ml', 'software', 'data-engineering']).default('software'),
+    fecha: z.coerce.date().optional(),
     github: z.string().refine(v => v === '' || /^https?:\/\//.test(v), { message: 'Debe ser una URL válida o estar vacío.' }).optional().default(''),
     demo: z.string().refine(v => v === '' || /^https?:\/\//.test(v), { message: 'Debe ser una URL válida o estar vacío.' }).optional().default(''),
     imagen: z.string().optional(),

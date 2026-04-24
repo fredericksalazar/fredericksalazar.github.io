@@ -1,12 +1,14 @@
 ---
 titulo: "DinaWall App"
-descripcion: "DinaWall, una aplicación JavaFX open source para wallpapers dinámicos multiplataforma. Cambia el fondo de pantalla según la hora del día en Linux, Windo..."
-tecnologias: []
-github: ""
+descripcion: "Aplicación JavaFX open source para wallpapers dinámicos multiplataforma. Cambia el fondo de pantalla según la hora del día en Linux, Windows y macOS."
+tecnologias: ["Java", "JavaFX", "JSON", "GPL-V3", "Linux", "Windows", "macOS"]
+categoria: "software"
+fecha: "2022-03-01"
+github: "https://github.com/fredericksalazar/dinawall_app"
 demo: ""
 imagen: "/images/proyectos/dinawall-app-1.png"
 destacado: false
-orden: 99
+orden: 5
 ---
 
 DinaWall es una aplicación JavaFX que implementa el concepto de wallpapers dinámicos multiplataforma y open source. Los Wallpapers dinámicos cambian de acuerdo a la hora del día, DinaWall permite crear wallpapers dinámicos basados en un archivo de configuración json en el cual se configura la hora y minuto en el que se debe aplicar la imágen.

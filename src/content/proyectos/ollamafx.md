@@ -1,12 +1,14 @@
 ---
-titulo: "OllamaFX: Cliente de escritorio nativo para Ollama con soporte RAG"
-descripcion: "Interfaz de escritorio nativa para Ollama con soporte RAG. Gestiona modelos LLM locales, chatea con tus PDFs de forma privada y rápida. ¡Pruébalo ya!"
-tecnologias: []
-github: ""
-demo: ""
+titulo: "OllamaFX: Cliente de escritorio nativo para Ollama con soporte RAG"
+descripcion: "Interfaz de escritorio nativa para Ollama con soporte RAG. Gestiona modelos LLM locales, chatea con tus PDFs de forma privada y rápida."
+tecnologias: ["Java", "JavaFX", "Ollama", "RAG", "LLM", "SQLite"]
+categoria: "software"
+fecha: "2024-06-01"
+github: "https://github.com/fredericksalazar/OllamaFX"
+demo: "https://github.com/fredericksalazar/OllamaFX/releases"
 imagen: "/images/proyectos/ollamafx-rag.png"
-destacado: false
-orden: 99
+destacado: true
+orden: 1
 ---
 
 **OllamaFX** es un proyecto personal que nació de una necesidad clara: quería interactuar con mis modelos de lenguaje locales (LLMs) a través de una interfaz que fuera rápida, visualmente atractiva y que no dependiera de un navegador web.

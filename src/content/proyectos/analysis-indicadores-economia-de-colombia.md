@@ -1,12 +1,14 @@
 ---
-titulo: "Análisis Económico de Colombia de 1960 a 2023"
-descripcion: "Explora un estudio detallado de los indicadores económicos de Colombia (1960-2023). Conoce la trayectoria del PIB, el comportamiento de exportaciones e..."
-tecnologias: []
-github: ""
-demo: ""
+titulo: "Análisis Económico de Colombia 1960–2023"
+descripcion: "Estudio detallado de los indicadores económicos de Colombia (1960-2023): trayectoria del PIB, exportaciones, importaciones e inflación por periodos presidenciales."
+tecnologias: ["Python", "Pandas", "Plotly", "Matplotlib", "Jupyter", "World Bank API"]
+categoria: "data-analysis"
+fecha: "2023-10-01"
+github: "https://github.com/fredericksalazar/dataAnalyst_economic_colombia"
+demo: "https://www.kaggle.com/code/fredericksalazar/economic-indicator-of-colombia-analysis"
 imagen: "/images/proyectos/pexels-photo-210607.jpeg"
 destacado: false
-orden: 99
+orden: 4
 ---
 
 Comprender la realidad económica de un país es fundamental para diferentes procesos personales, profesionales, empresariales, políticos etc. por eso he desarrollado este proyecto que se basa en datos oficiales del World Bank y que nos permitirá poco a poco ver el desarrollo económico de Colombia desde 1960 hasta el 2023. Para este proyecto hemos usado indicadores económicos como: PIB, exportaciones e importaciones de bienes y servicios desde 1960 a 2023, hemos incluido una lista de todos los presidentes de Colombia con el objetivo de identificar momentos y decisiones políticas importantes.
