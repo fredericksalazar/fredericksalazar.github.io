@@ -31,6 +31,10 @@ const { title, description, image, type, fullWidth = false } = Astro.props;
       image={image}
       type={type}
     />
+    <!-- Google Sans Flex -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@100..900&display=swap" rel="stylesheet" />
     <!-- Google tag (gtag.js) -->
     <script is:inline src="https://www.googletagmanager.com/gtag/js?id=G-ZFSVVSZG6K"></script>
     <script is:inline>
@@ -95,7 +99,8 @@ const { title, description, image, type, fullWidth = false } = Astro.props;
     --sidebar-width: 240px;
     --content-max-width: 90%;
 
-    --font-sans: 'Google Sans', 'Product Sans', system-ui, -apple-system, sans-serif;
+    --font-sans: 'Google Sans Flex', 'Google Sans', system-ui, -apple-system, sans-serif;
+    --font-serif: 'Google Sans Flex', 'Google Sans', system-ui, -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
     color-scheme: light;
