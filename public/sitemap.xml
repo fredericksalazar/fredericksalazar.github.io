@@ -55,6 +55,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://fredericksalazar.github.io/proyectos/analisis-elecciones-congreso-colombia-2026</loc>
+    <lastmod>2026-04-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://fredericksalazar.github.io/analisis-elecciones-colombia/</loc>
+    <lastmod>2026-04-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://fredericksalazar.github.io/blog</loc>
     <lastmod>2026-04-24</lastmod>
     <changefreq>weekly</changefreq>
