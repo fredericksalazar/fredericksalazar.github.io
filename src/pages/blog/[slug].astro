@@ -6,18 +6,50 @@ export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
   return posts.map((post) => ({
     params: { slug: post.id },
-    props: { post },
+    props: { post, allPosts: posts },
   }));
 }
 
-const { post } = Astro.props;
+const { post, allPosts } = Astro.props;
 const { Content } = await render(post);
+
+const SITE_URL = 'https://fredericksalazar.github.io';
 
 const formatDate = (date: Date) =>
   date.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' });
 
 const wordCount   = post.body?.split(/\s+/).length ?? 0;
 const readingTime = Math.max(1, Math.round(wordCount / 200));
+
+// Artículos relacionados: mismas etiquetas, excluyendo el actual
+const related = allPosts
+  .filter((p) => p.id !== post.id && p.data.etiquetas.some((t: string) => post.data.etiquetas.includes(t)))
+  .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime())
+  .slice(0, 3);
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog` },
+    { '@type': 'ListItem', position: 3, name: post.data.titulo, item: `${SITE_URL}/blog/${post.id}` },
+  ],
+};
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.data.titulo,
+  description: post.data.descripcion,
+  datePublished: post.data.fecha.toISOString(),
+  dateModified: post.data.fecha.toISOString(),
+  author: { '@type': 'Person', name: post.data.autor, url: SITE_URL },
+  image: post.data.imagen ? new URL(post.data.imagen, SITE_URL).href : `${SITE_URL}/og-default.png`,
+  url: `${SITE_URL}/blog/${post.id}`,
+  inLanguage: 'es',
+  keywords: post.data.etiquetas.join(', '),
+};
 ---
 
 <BaseLayout
@@ -26,25 +58,36 @@ const readingTime = Math.max(1, Math.round(wordCount / 200));
   image={post.data.imagen}
   type="article"
 >
-  <nav class="breadcrumb"><a href="/blog">← Blog</a></nav>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 
-  <article itemscope itemtype="https://schema.org/Article">
+  <nav class="breadcrumb">
+    <a href="/">Inicio</a>
+    <span aria-hidden="true"> › </span>
+    <a href="/blog">Blog</a>
+    <span aria-hidden="true"> › </span>
+    <span>{post.data.titulo}</span>
+  </nav>
+
+  <article>
 
     <header class="art-header">
       {post.data.etiquetas.length > 0 && (
         <div class="tags-row">
-          {post.data.etiquetas.map((t: string) => <span class="tag">{t}</span>)}
+          {post.data.etiquetas.map((t: string) => (
+            <a href={`/blog/tag/${encodeURIComponent(t.toLowerCase().replace(/\s+/g, '-'))}`} class="tag">{t}</a>
+          ))}
         </div>
       )}
-      <h1 class="art-title" itemprop="headline">{post.data.titulo}</h1>
+      <h1 class="art-title">{post.data.titulo}</h1>
       <div class="art-meta">
-        <time datetime={post.data.fecha.toISOString()} itemprop="datePublished">
+        <time datetime={post.data.fecha.toISOString()}>
           {formatDate(post.data.fecha)}
         </time>
         <span aria-hidden="true">·</span>
         <span>{readingTime} min de lectura</span>
         <span aria-hidden="true">·</span>
-        <span itemprop="author">{post.data.autor}</span>
+        <span>{post.data.autor}</span>
       </div>
     </header>
 
@@ -54,9 +97,24 @@ const readingTime = Math.max(1, Math.round(wordCount / 200));
       </div>
     )}
 
-    <div class="prose" itemprop="articleBody">
+    <div class="prose">
       <Content />
     </div>
+
+    {related.length > 0 && (
+      <aside class="related">
+        <h2 class="related-title">Artículos relacionados</h2>
+        <div class="related-grid">
+          {related.map((r) => (
+            <a href={`/blog/${r.id}`} class="related-card">
+              {r.data.imagen && <img src={r.data.imagen} alt={r.data.titulo} loading="lazy" />}
+              <span class="related-card__title">{r.data.titulo}</span>
+              <span class="related-card__date">{formatDate(r.data.fecha)}</span>
+            </a>
+          ))}
+        </div>
+      </aside>
+    )}
 
     <footer class="art-footer">
       <a href="/blog" class="back-link">← Volver al blog</a>
@@ -65,9 +123,14 @@ const readingTime = Math.max(1, Math.round(wordCount / 200));
 </BaseLayout>
 
 <style>
-  .breadcrumb { margin-bottom: 1.5rem; font-size: 0.85rem; max-width: 800px; margin-left: auto; margin-right: auto; }
+  .breadcrumb {
+    margin-bottom: 1.5rem; font-size: 0.85rem;
+    max-width: 800px; margin-left: auto; margin-right: auto;
+    color: var(--color-text-muted);
+  }
   .breadcrumb a { color: var(--color-text-muted); text-decoration: none; }
   .breadcrumb a:hover { color: var(--color-accent); }
+  .breadcrumb span:last-child { color: var(--color-text-secondary); }
 
   article {
     max-width: 800px;
@@ -159,6 +222,31 @@ const readingTime = Math.max(1, Math.round(wordCount / 200));
   }
   .prose :global(hr) { border: none; border-top: 1px solid var(--color-border); margin: 2rem 0; }
   .prose :global(strong) { color: var(--color-text-primary); font-weight: 600; }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.75rem; font-weight: 500;
+    padding: 0.2rem 0.65rem;
+    background: var(--color-tag-bg); border: 1px solid var(--color-tag-border);
+    border-radius: 999px; color: var(--color-accent);
+    text-decoration: none; transition: background 0.15s;
+  }
+  .tag:hover { background: var(--color-hover); }
+
+  /* ── Related articles ────────────────────────────────────────────── */
+  .related { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--color-border); }
+  .related-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 1.25rem; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+  .related-card {
+    display: flex; flex-direction: column; gap: 0.5rem;
+    border: 1px solid var(--color-border); border-radius: 0.6rem;
+    overflow: hidden; text-decoration: none; color: inherit;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .related-card:hover { border-color: var(--color-accent); background: var(--color-hover); }
+  .related-card img { width: 100%; height: 120px; object-fit: cover; display: block; }
+  .related-card__title { font-size: 0.875rem; font-weight: 600; padding: 0 0.75rem; line-height: 1.4; }
+  .related-card__date { font-size: 0.75rem; color: var(--color-text-muted); padding: 0 0.75rem 0.75rem; }
 
   .art-footer {
     margin-top: 3rem; padding-top: 1.5rem;

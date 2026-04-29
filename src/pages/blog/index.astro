@@ -54,7 +54,10 @@ const formatDate = (date: Date) =>
               {post.data.etiquetas && post.data.etiquetas.length > 0 && (
                 <div class="post-card__tags">
                   {post.data.etiquetas.map((tag: string) => (
-                    <span class="post-card__tag">{tag}</span>
+                    <a
+                      href={`/blog/tag/${encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-'))}`}
+                      class="post-card__tag"
+                    >{tag}</a>
                   ))}
                 </div>
               )}
