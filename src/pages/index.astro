@@ -93,57 +93,92 @@ const certifications = [
 <BaseLayout title={title} description={description} fullWidth={true}>
   <!-- ── Hero Section ── -->
   <section class="hero">
-    <div class="hero__orb hero__orb--left"></div>
-    <div class="hero__orb hero__orb--right"></div>
+    <!-- Decoraciones de fondo -->
+    <div class="hero__orb hero__orb--tl" aria-hidden="true"></div>
+    <div class="hero__orb hero__orb--br" aria-hidden="true"></div>
+    <div class="hero__arc" aria-hidden="true"></div>
+    <div class="hero__arc hero__arc--2" aria-hidden="true"></div>
 
-    <div class="hero__container">
-      <div class="hero__content">
-        <span class="hero__badge">
-          <span class="hero__badge-dot"></span>
-          Disponible para proyectos
+    <!-- Fila superior (90%): marca + imagen -->
+    <div class="hero__main">
+
+      <!-- Izquierda: marca personal -->
+      <div class="hero__main-content">
+        <span class="hero__status">
+          <span class="hero__status-pulse"></span>
+          Disponible para nuevos proyectos
         </span>
 
-        <h1 class="hero__headline">
-          Transformo datos en decisiones estratégicas
-        </h1>
-
-        <p class="hero__subheadline">
-          +11 años diseñando arquitecturas de datos escalables, pipelines de
-          ETL/ELT y soluciones de analítica avanzada para Big Data e IA.
+        <p class="hero__role">
+          <span class="hero__role-line"></span>
+          Senior Data Engineer &amp; Data Architect
         </p>
 
-        <div class="hero__stats">
-          <div class="hero__stat">
-            <span class="hero__stat-number">11+</span>
-            <span class="hero__stat-label">Años de experiencia</span>
-          </div>
-          <div class="hero__stat">
-            <span class="hero__stat-number">5</span>
-            <span class="hero__stat-label">Proyectos</span>
-          </div>
-          <div class="hero__stat">
-            <span class="hero__stat-number">10</span>
-            <span class="hero__stat-label">Certificaciones</span>
-          </div>
-        </div>
+        <h1 class="hero__name">
+          <span class="hero__name-first">Frederick</span>
+          <span class="hero__name-last">
+            Salazar<span class="hero__name-dot">.</span>
+          </span>
+        </h1>
 
+        <p class="hero__tagline">
+          <span class="hero__tagline-accent">+11 años</span> transformando datos en
+          <em>decisiones estratégicas</em> a través de arquitecturas cloud, pipelines escalables e inteligencia artificial.
+        </p>
+
+        <div class="hero__pills">
+          <span class="hero__pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3 2 9l10 6 10-6-10-6Z"/>
+              <path d="m2 15 10 6 10-6"/>
+              <path d="m2 12 10 6 10-6"/>
+            </svg>
+            Arquitectura
+          </span>
+          <span class="hero__pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <ellipse cx="12" cy="5" rx="9" ry="3"/>
+              <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/>
+              <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/>
+            </svg>
+            Data Engineering
+          </span>
+          <span class="hero__pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/>
+              <path d="M5 3v4M19 17v4M3 5h4M17 19h4"/>
+            </svg>
+            AI &amp; Machine Learning
+          </span>
+          <span class="hero__pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+            </svg>
+            Cloud
+          </span>
+        </div>
+        </div>
       </div>
 
-      <div class="hero__certs">
-        <p class="hero__certs-label">Certificaciones</p>
-        <div class="hero__certs-grid">
-          {
-            certifications.map((cert) => (
-              <img
-                src={cert.img}
-                alt={cert.alt}
-                class="hero__cert-img"
-                loading="lazy"
-                title={cert.name}
-              />
-            ))
-          }
-        </div>
+      <!-- Imagen pegada al borde derecho de la página -->
+      <div class="hero__image-wrapper">
+        <img
+          src="/images/hero_image.png"
+          alt="Arquitectura de datos isométrica"
+          class="hero__main-img"
+          loading="eager"
+        />
+      </div>
+
+      <!-- Fila inferior (10%): partners cloud lineales -->
+      <div class="hero__partners">
+      <span class="hero__partners-label">Cloud Partners</span>
+      <div class="hero__partners-divider" aria-hidden="true"></div>
+      <div class="hero__partners-logos">
+        <img src="/logos/aws.png" alt="AWS" class="hero__partner-logo hero__partner-logo--aws" />
+        <img src="/logos/google.svg" alt="Google Cloud" class="hero__partner-logo hero__partner-logo--google" />
+        <img src="/logos/microsoft.svg" alt="Microsoft Azure" class="hero__partner-logo hero__partner-logo--microsoft" />
+        <img src="/logos/databricks-logo.png" alt="Databricks" class="hero__partner-logo hero__partner-logo--databricks" />
       </div>
     </div>
   </section>
@@ -419,124 +454,16 @@ const certifications = [
 </BaseLayout>
 
 <style>
-  /* ── Animaciones de entrada ── */
+  /* ── Animaciones ── */
   @keyframes fadeInUp {
     from {
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(24px);
     }
     to {
       opacity: 1;
       transform: translateY(0);
     }
-  }
-
-  @keyframes float {
-    0%,
-    100% {
-      transform: translate(0, 0) scale(1);
-    }
-    50% {
-      transform: translate(3%, 5%) scale(1.05);
-    }
-  }
-
-  /* ── Hero ── */
-  .hero {
-    position: relative;
-    overflow: hidden;
-    background:
-      radial-gradient(
-        circle at center,
-        rgba(56, 189, 248, 0.08) 0%,
-        transparent 50%
-      ),
-      linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
-    padding: 6rem 2rem 5rem;
-    min-height: 500px;
-    display: flex;
-    align-items: center;
-  }
-
-  /* Blueprint grid pattern - puntos cada 25px */
-  .hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.2) 1px,
-      transparent 1px
-    );
-    background-size: 25px 25px;
-    opacity: 0.6;
-    pointer-events: none;
-  }
-
-  .hero__orb {
-    position: absolute;
-    width: 50vw;
-    height: 50vw;
-    border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.4;
-    animation: float 20s ease-in-out infinite alternate;
-  }
-
-  .hero__orb--left {
-    background: radial-gradient(
-      circle,
-      rgba(56, 189, 248, 0.5) 0%,
-      transparent 70%
-    );
-    top: -15%;
-    left: -10%;
-  }
-
-  .hero__orb--right {
-    background: radial-gradient(
-      circle,
-      rgba(168, 85, 247, 0.5) 0%,
-      transparent 70%
-    );
-    bottom: -15%;
-    right: -10%;
-    animation-delay: -10s;
-  }
-
-  .hero__container {
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 4rem;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero__badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(34, 197, 94, 0.15);
-    border: 1px solid rgba(34, 197, 94, 0.3);
-    padding: 0.5rem 1rem;
-    border-radius: 100px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #4ade80;
-    margin-bottom: 1.5rem;
-    animation: fadeInUp 0.6s ease-out;
-  }
-
-  .hero__badge-dot {
-    width: 8px;
-    height: 8px;
-    background: #22c55e;
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
   }
 
   @keyframes pulse {
@@ -549,136 +476,404 @@ const certifications = [
     }
   }
 
-  .hero__headline {
-    font-family: var(--font-sans);
-    font-size: 3.5rem;
-    font-weight: 800;
-    color: #ffffff;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    animation: fadeInUp 0.6s ease-out 0.1s backwards;
-  }
-
-  .hero__subheadline {
-    font-size: 1.2rem;
-    color: #94a3b8;
-    line-height: 1.7;
-    margin-bottom: 2.5rem;
-    max-width: 540px;
-    animation: fadeInUp 0.6s ease-out 0.2s backwards;
-  }
-
-  .hero__stats {
+  /* ──────────────────────────────────────────
+   *  HERO — premium edition
+   * ────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    overflow: visible;
+    width: 100%;
+    min-height: 660px;
     display: flex;
-    gap: 3rem;
-    margin-bottom: 2.5rem;
-    animation: fadeInUp 0.6s ease-out 0.3s backwards;
+    align-items: stretch;
+    font-family: "Google Sans Flex", "Google Sans", system-ui, -apple-system,
+      sans-serif;
+    background:
+      radial-gradient(
+        ellipse 70% 60% at 90% -10%,
+        rgba(37, 99, 235, 0.07) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 60% 50% at -10% 110%,
+        rgba(96, 165, 250, 0.08) 0%,
+        transparent 60%
+      ),
+      linear-gradient(180deg, #ffffff 0%, #fafbff 60%, #f5f8ff 100%);
+    border-bottom: 1px solid rgba(37, 99, 235, 0.08);
   }
 
-  .hero__stat {
-    display: flex;
+  /* Blueprint dots */
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.16) 1px,
+      transparent 1px
+    );
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: radial-gradient(
+      ellipse 100% 80% at 50% 50%,
+      black 40%,
+      transparent 100%
+    );
+  }
+
+  /* Decorative orbs (soft glows) */
+  .hero__orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero__orb--tl {
+    top: -180px;
+    left: -180px;
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.12) 0%,
+      transparent 70%
+    );
+  }
+
+  .hero__orb--br {
+    bottom: -200px;
+    right: 5%;
+    width: 540px;
+    height: 540px;
+    background: radial-gradient(
+      circle,
+      rgba(59, 130, 246, 0.1) 0%,
+      transparent 70%
+    );
+  }
+
+  /* Decorative arcs */
+  .hero__arc {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(37, 99, 235, 0.12);
+    pointer-events: none;
+    z-index: 0;
+    bottom: -380px;
+    right: -100px;
+    width: 700px;
+    height: 700px;
+  }
+
+  .hero__arc--2 {
+    bottom: -420px;
+    right: -50px;
+    width: 800px;
+    height: 800px;
+    border-color: rgba(37, 99, 235, 0.07);
+  }
+
+  /* ── Layout 2-rows ── */
+  .hero {
     flex-direction: column;
   }
 
-  .hero__stat-number {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #ffffff;
-    line-height: 1;
-  }
-
-  .hero__stat-label {
-    font-size: 0.875rem;
-    color: #64748b;
-    margin-top: 0.25rem;
-  }
-
-  .hero__actions {
-    display: flex;
-    gap: 1rem;
-    animation: fadeInUp 0.6s ease-out 0.4s backwards;
-  }
-
-  /* ── Certificaciones en Hero ── */
-  .hero__certs {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 2rem;
-    backdrop-filter: blur(10px);
-    animation: fadeInUp 0.6s ease-out 0.5s backwards;
-  }
-
-  .hero__certs-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #64748b;
-    margin-bottom: 1.25rem;
-  }
-
-  .hero__certs-grid {
+  .hero__main {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-  }
-
-  .hero__cert-img {
+    grid-template-columns: 40% 1fr;
     width: 100%;
-    height: auto;
-    border-radius: 8px;
-    transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease;
+    z-index: 1;
+    min-height: 0;
   }
 
-  .hero__cert-img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  /* Izquierda: marca */
+  .hero__main-content {
+    padding: 3.5rem 1.5rem 3.5rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.1rem;
+    position: relative;
+    z-index: 0;
   }
 
-  /* ── Botones ── */
-  .btn {
+  /* Imagen pegada al borde derecho */
+  .hero__image-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 60% !important;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .hero__main-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    object-fit: cover;
+    object-position: right center;
+    display: block;
+    animation: fadeInRight 0.8s ease-out backwards;
+  }
+
+  .hero__status {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.875rem 1.5rem;
+    gap: 0.55rem;
+    padding: 0.4rem 0.9rem;
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 100px;
+    font-size: 0.72rem;
     font-weight: 600;
-    font-size: 0.95rem;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    border: none;
-    cursor: pointer;
+    color: #15803d;
+    letter-spacing: 0.01em;
+    animation: fadeInUp 0.5s ease-out backwards;
   }
 
-  .btn--primary {
-    background: #2563eb;
-    color: #ffffff;
+  .hero__status-pulse {
+    position: relative;
+    width: 7px;
+    height: 7px;
+    background: #22c55e;
+    border-radius: 50%;
   }
 
-  .btn--primary:hover {
-    background: #1d4ed8;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+  .hero__status-pulse::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    background: rgba(34, 197, 94, 0.4);
+    border-radius: 50%;
+    animation: ping 2s ease-out infinite;
   }
 
-  .btn--outline {
-    background: transparent;
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+  .hero__role {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: #475569;
+    text-transform: uppercase;
+    margin: 0;
+    animation: fadeInUp 0.5s ease-out 0.05s backwards;
   }
 
-  .btn--outline:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.5);
+  .hero__role-line {
+    width: 28px;
+    height: 1.5px;
+    background: linear-gradient(90deg, #2563eb, transparent);
+    border-radius: 2px;
   }
 
-  .btn--large {
-    padding: 1rem 2rem;
+  .hero__name {
+    font-family: "Google Sans Flex", "Google Sans", "Product Sans", sans-serif;
+    font-size: clamp(3rem, 5.2vw, 5.5rem);
+    font-weight: 700;
+    font-stretch: 100%;
+    line-height: 0.96;
+    letter-spacing: -0.025em;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    animation: fadeInUp 0.6s ease-out 0.1s backwards;
+  }
+
+  .hero__name-first {
+    color: #0f172a;
+  }
+
+  .hero__name-last {
+    color: #2563eb;
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #1e40af 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero__name-dot {
+    color: #fbbf24;
+    -webkit-text-fill-color: #fbbf24;
+  }
+
+  .hero__tagline {
     font-size: 1rem;
+    font-weight: 400;
+    color: #475569;
+    line-height: 1.55;
+    margin: 0.25rem 0 0;
+    max-width: 480px;
+    animation: fadeInUp 0.5s ease-out 0.18s backwards;
+  }
+
+  .hero__tagline-accent {
+    color: #2563eb;
+    font-weight: 700;
+  }
+
+  .hero__tagline em {
+    color: #0f172a;
+    font-style: normal;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(37, 99, 235, 0.25);
+    padding-bottom: 1px;
+  }
+
+  .hero__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    animation: fadeInUp 0.5s ease-out 0.28s backwards;
+  }
+
+  .hero__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.9rem;
+    background: white;
+    border: 1px solid rgba(37, 99, 235, 0.18);
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #2563eb;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .hero__pill:hover {
+    border-color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.15);
+  }
+
+  /* ── Fila inferior: Cloud Partners (10%) ── */
+  .hero__partners {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1.25rem 3rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(37, 99, 235, 0.12);
+    position: relative;
+    z-index: 2;
+    animation: fadeInUp 0.5s ease-out 0.4s backwards;
+  }
+
+  .hero__partners-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: #2563eb;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .hero__partners-divider {
+    width: 1px;
+    height: 28px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(37, 99, 235, 0.25),
+      transparent
+    );
+    flex-shrink: 0;
+  }
+
+  .hero__partners-logos {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex: 1;
+    gap: 2.5rem;
+    max-width: 720px;
+  }
+
+  .hero__partner-logo {
+    height: 38px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    transition:
+      transform 0.25s ease,
+      filter 0.25s ease;
+    filter: grayscale(0%);
+  }
+
+  .hero__partner-logo:hover {
+    transform: translateY(-2px) scale(1.05);
+  }
+
+  /* Ajustes específicos por logo (cada uno tiene proporciones distintas) */
+  .hero__partner-logo--aws {
+    height: 32px;
+  }
+
+  .hero__partner-logo--google {
+    height: 36px;
+  }
+
+  .hero__partner-logo--microsoft {
+    height: 40px;
+    width: 40px;
+  }
+
+  .hero__partner-logo--databricks {
+    height: 30px;
+  }
+
+  /* Animations */
+  @keyframes fadeInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fadeInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes ping {
+    75%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
   }
 
   /* ── Secciones ── */
@@ -1174,14 +1369,16 @@ const certifications = [
   }
 
   /* ── Responsive ── */
+  @media (max-width: 1100px) {
+    .hero__main {
+      grid-template-columns: 50% 50%;
+    }
+    .hero__main-content {
+      padding: 3rem 2rem;
+    }
+  }
+
   @media (max-width: 1024px) {
-    .hero__container {
-      grid-template-columns: 1fr;
-      gap: 3rem;
-    }
-    .hero__certs {
-      max-width: 500px;
-    }
     .about-container {
       display: flex;
       flex-direction: column;
@@ -1199,24 +1396,39 @@ const certifications = [
 
   @media (max-width: 768px) {
     .hero {
-      padding: 5rem 1.5rem 4rem;
+      min-height: auto;
+    }
+    .hero__main {
+      grid-template-columns: 1fr;
       min-height: auto;
     }
 
-    .hero__headline {
-      font-size: 2.25rem;
+    .hero__main-visual {
+      display: none;
     }
 
-    .hero__stats {
-      gap: 2rem;
+    .hero__main-content {
+      padding: 2.5rem 1.5rem 2rem;
     }
 
-    .hero__stat-number {
-      font-size: 2rem;
+    .hero__name {
+      font-size: 2.75rem;
     }
 
-    .hero__certs-grid {
-      grid-template-columns: repeat(2, 1fr);
+    .hero__partners {
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+    }
+
+    .hero__partners-divider {
+      display: none;
+    }
+
+    .hero__partners-logos {
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .section {
