@@ -2,6 +2,10 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/Hero.astro";
+import IconArchitecture from "../components/icons/IconArchitecture.astro";
+import IconDataEngineering from "../components/icons/IconDataEngineering.astro";
+import IconAI from "../components/icons/IconAI.astro";
+import IconCloud from "../components/icons/IconCloud.astro";
 
 const title = "Frederick Salazar — Senior Data Engineer";
 const description =
@@ -63,18 +67,8 @@ const techBadges: Record<string, string[]> = {
 
 <BaseLayout title={title} description={description} fullWidth={true}>
   <!-- ── Hero Section ── -->
-  <Hero badge={{ text: "Disponible para nuevos proyectos" }}>
+  <Hero>
     <Fragment slot="content">
-      <span class="hero__status">
-        <span class="hero__status-pulse"></span>
-        Disponible para nuevos proyectos
-      </span>
-
-      <p class="hero__role">
-        <span class="hero__role-line"></span>
-        Senior Data Engineer &amp; Data Architect
-      </p>
-
       <h1 class="hero__name">
         <span class="hero__name-first">Frederick</span>
         <span class="hero__name-last">
@@ -82,39 +76,30 @@ const techBadges: Record<string, string[]> = {
         </span>
       </h1>
 
+      <p class="hero__role">
+        <span class="hero__role-line"></span>
+        Experto Data Strategist · Data Architect · Data Engineering
+      </p>
+
       <p class="hero__tagline">
-        <span class="hero__tagline-accent">+11 años</span> transformando datos en
-        <em>decisiones estratégicas</em> a través de arquitecturas cloud, pipelines escalables e inteligencia artificial.
+        <span class="hero__tagline-accent">+11 años</span> transformando datos en <em>decisiones estratégicas</em> con arquitecturas cloud y AI.
       </p>
 
       <div class="hero__pills">
         <span class="hero__pill">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 3 2 9l10 6 10-6-10-6Z"/>
-            <path d="m2 15 10 6 10-6"/>
-            <path d="m2 12 10 6 10-6"/>
-          </svg>
+          <IconArchitecture />
           Arquitectura
         </span>
         <span class="hero__pill">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <ellipse cx="12" cy="5" rx="9" ry="3"/>
-            <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/>
-            <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/>
-          </svg>
+          <IconDataEngineering />
           Data Engineering
         </span>
         <span class="hero__pill">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/>
-            <path d="M5 3v4M19 17v4M3 5h4M17 19h4"/>
-          </svg>
+          <IconAI />
           AI &amp; Machine Learning
         </span>
         <span class="hero__pill">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
-          </svg>
+          <IconCloud />
           Cloud
         </span>
       </div>
@@ -160,7 +145,7 @@ const techBadges: Record<string, string[]> = {
             datos y todo cambió, actualmente me desempeño como Senior Data
             Engineer & Data Architect en Globant, estudie un Master en BigData
             Analytics en la Universitat Oberta de Catalunya (UOC), vivo en Cali,
-            Colombia la capital mundia de la salsa.
+            Colombia la capital mundial de la salsa.
           </p>
           <p class="about-text">
             Especializado en ecosistemas cloud como Azure, AWS y GCP,
@@ -412,59 +397,13 @@ const techBadges: Record<string, string[]> = {
 </BaseLayout>
 
 <style>
-  /* ── Animaciones ── */
+  /* ── Animations ── */
   @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(24px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
   /* ── Custom hero overrides for home ── */
-  .hero__status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    padding: 0.4rem 0.9rem;
-    background: rgba(34, 197, 94, 0.08);
-    border: 1px solid rgba(34, 197, 94, 0.3);
-    border-radius: 100px;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: #15803d;
-    letter-spacing: 0.01em;
-    animation: fadeInUp 0.5s ease-out backwards;
-  }
-
-  .hero__status-pulse {
-    position: relative;
-    width: 7px;
-    height: 7px;
-    background: #22c55e;
-    border-radius: 50%;
-  }
-
-  .hero__status-pulse::before {
-    content: "";
-    position: absolute;
-    inset: -3px;
-    background: rgba(34, 197, 94, 0.4);
-    border-radius: 50%;
-    animation: ping 2s ease-out infinite;
-  }
-
-  @keyframes ping {
-    75%,
-    100% {
-      transform: scale(2.4);
-      opacity: 0;
-    }
-  }
-
   .hero__role {
     display: inline-flex;
     align-items: center;
@@ -472,10 +411,10 @@ const techBadges: Record<string, string[]> = {
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.18em;
-    color: #475569;
+    color: #2563eb;
     text-transform: uppercase;
     margin: 0;
-    animation: fadeInUp 0.5s ease-out 0.05s backwards;
+    animation: fadeInUp 0.5s ease-out 0.15s backwards;
   }
 
   .hero__role-line {
@@ -486,7 +425,6 @@ const techBadges: Record<string, string[]> = {
   }
 
   .hero__name {
-    font-family: "Google Sans Flex", "Google Sans", "Product Sans", sans-serif;
     font-size: clamp(3rem, 5.2vw, 5.5rem);
     font-weight: 700;
     font-stretch: 100%;
@@ -495,19 +433,15 @@ const techBadges: Record<string, string[]> = {
     margin: 0;
     display: flex;
     flex-direction: column;
-    animation: fadeInUp 0.6s ease-out 0.1s backwards;
+    animation: fadeInUp 0.6s ease-out 0.05s backwards;
   }
 
   .hero__name-first {
-    color: #0f172a;
+    color: #2563eb;
   }
 
   .hero__name-last {
     color: #2563eb;
-    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #1e40af 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 
   .hero__name-dot {
@@ -522,7 +456,7 @@ const techBadges: Record<string, string[]> = {
     line-height: 1.55;
     margin: 0.25rem 0 0;
     max-width: 480px;
-    animation: fadeInUp 0.5s ease-out 0.18s backwards;
+    animation: fadeInUp 0.5s ease-out 0.22s backwards;
   }
 
   .hero__tagline-accent {
@@ -543,7 +477,7 @@ const techBadges: Record<string, string[]> = {
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-top: 0.5rem;
-    animation: fadeInUp 0.5s ease-out 0.28s backwards;
+    animation: fadeInUp 0.5s ease-out 0.3s backwards;
   }
 
   .hero__pill {

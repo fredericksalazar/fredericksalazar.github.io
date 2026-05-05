@@ -30,18 +30,19 @@ interface HeroImage {
 }
 
 interface Props {
-  badge: { text: string };
+  badge?: { text: string };
   title?: string;
   subtitle?: string;
   kpis?: KPI[];
   tags?: string[];
   image?: HeroImage;
+  class?: string;
 }
 
-const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
+const { badge, title, subtitle, kpis = [], tags = [], image, class: className } = Astro.props;
 ---
 
-<section class="hero">
+<section class:list={["hero", className]}>
   <!-- Decoraciones de fondo -->
   <div class="hero__orb hero__orb--tl" aria-hidden="true"></div>
   <div class="hero__orb hero__orb--br" aria-hidden="true"></div>
@@ -52,14 +53,14 @@ const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
   <div class="hero__main">
     <div class="hero__content">
       <slot name="content">
-        <!-- Badge de estado -->
-        <span class="hero__badge">
-          <span class="hero__badge-pulse"></span>
-          {badge.text}
-        </span>
+        {badge && (
+          <span class="hero__badge">
+            <span class="hero__badge-pulse"></span>
+            {badge.text}
+          </span>
+        )}
 
-        <!-- Título principal -->
-        {title && <h1 class="hero__title">{title}</h1>}
+        {title && <h2 class="hero__title">{title}</h2>}
 
         <!-- Subtítulo / tagline -->
         {subtitle && <p class="hero__subtitle">{subtitle}</p>}
@@ -98,6 +99,7 @@ const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
             width={image.width ?? 800}
             height={image.height ?? 600}
             loading="eager"
+            fetchpriority="high"
           />
         )}
       </slot>
@@ -173,6 +175,10 @@ const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
     flex-direction: column;
     font-family: "Google Sans Flex", "Google Sans", system-ui, -apple-system,
       sans-serif;
+    --z-hero-bg: 0;
+    --z-hero-visual: 1;
+    --z-hero-content: 2;
+    --z-hero-partners: 3;
     background:
       radial-gradient(
         ellipse 70% 60% at 90% -10%,
@@ -200,7 +206,7 @@ const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
     );
     background-size: 28px 28px;
     pointer-events: none;
-    z-index: 0;
+    z-index: var(--z-hero-bg);
     opacity: 0.12;
     mask-image: radial-gradient(
       ellipse 100% 80% at 50% 50%,
@@ -215,7 +221,7 @@ const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
     border-radius: 50%;
     filter: blur(80px);
     pointer-events: none;
-    z-index: 0;
+    z-index: var(--z-hero-bg);
   }
 
   .hero__orb--tl {
@@ -248,7 +254,7 @@ const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
     border-radius: 50%;
     border: 1px solid rgba(37, 99, 235, 0.12);
     pointer-events: none;
-    z-index: 0;
+    z-index: var(--z-hero-bg);
     bottom: -200px;
     right: -60px;
     width: 500px;
@@ -269,7 +275,7 @@ const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
     grid-template-columns: 45% 1fr;
     flex: 1;
     position: relative;
-    z-index: 1;
+    z-index: var(--z-hero-visual);
     min-height: 0;
   }
 
@@ -282,14 +288,14 @@ const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
     align-items: flex-start;
     gap: 1.1rem;
     position: relative;
-    z-index: 2;
+    z-index: var(--z-hero-content);
   }
 
   /* Derecha: visual */
   .hero__visual {
     position: relative;
     overflow: hidden;
-    z-index: 1;
+    z-index: var(--z-hero-visual);
   }
 
   .hero__image {
@@ -342,7 +348,6 @@ const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
 
   /* ── Título ── */
   .hero__title {
-    font-family: "Google Sans Flex", "Google Sans", "Product Sans", sans-serif;
     font-size: clamp(2.5rem, 5.2vw, 5.5rem);
     font-weight: 700;
     font-stretch: 100%;
@@ -368,7 +373,6 @@ const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
   .hero__kpis {
     display: flex;
     gap: 2.5rem;
-    margin-top: 0.5rem;
     animation: fadeInUp 0.5s ease-out 0.25s backwards;
   }
 
@@ -398,7 +402,6 @@ const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-top: 0.5rem;
     animation: fadeInUp 0.5s ease-out 0.28s backwards;
   }
 
@@ -435,12 +438,17 @@ const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
     gap: 2rem;
     padding: 1.25rem 3rem;
     background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     border-top: 1px solid rgba(37, 99, 235, 0.12);
     position: relative;
-    z-index: 2;
+    z-index: var(--z-hero-partners);
     animation: fadeInUp 0.5s ease-out 0.4s backwards;
+  }
+
+  @supports (backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)) {
+    .hero__partners {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
   }
 
   .hero__partners-label {
@@ -467,7 +475,7 @@ const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
   .hero__partners-logos {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
     flex: 1;
     gap: 2.5rem;
     max-width: 720px;
@@ -488,7 +496,6 @@ const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
     transition:
       transform 0.25s ease,
       filter 0.25s ease;
-    filter: grayscale(0%);
   }
 
   .hero__partner-logo:hover {
@@ -519,6 +526,11 @@ const { badge, title, subtitle, kpis = [], tags = [], image } = Astro.props;
 
   .hero__partner-logo--databricks {
     height: 30px;
+  }
+
+  /* ── Modifier: Constellation (proyectos) ───────────────────────── */
+  .hero--constellation .hero__visual {
+    overflow: visible;
   }
 
   /* ── Responsive ── */
