@@ -4,31 +4,4 @@
 User-agent: *
 Allow: /
 
-# Sitemap
 Sitemap: https://fredericksalazar.github.io/sitemap.xml
-
-# Archivos disallowed (opcional - no hay)
-Disallow: /api/
-
-# Crawl-delay (opcional, para sitios grandes)
-Crawl-delay: 1
-
-# Bing
-User-agent: bingbot
-Allow: /
-
-# Google
-User-agent: Googlebot
-Allow: /
-User-agent: Googlebot-Image
-Allow: /
-User-agent: Googlebot-News
-Allow: /
-User-agent: AdsBot-Google
-Allow: /
-
-# Otros crawlers útiles
-User-agent: Slackbot
-Allow: /
-User-agent: Twitterbot
-Allow: /
