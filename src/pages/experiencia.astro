@@ -4,6 +4,7 @@
  * URL: /experiencia
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
 
 const title = "Experiencia como Data Engineer | Frederick Salazar";
 const description =
@@ -159,50 +160,40 @@ const experienciaData = [
 ---
 
 <BaseLayout title={title} description={description} fullWidth={true}>
-  <!-- Header / Hero Section -->
-  <section class="exp-hero">
-    <div class="exp-hero__orb exp-hero__orb--left"></div>
-    <div class="exp-hero__orb exp-hero__orb--right"></div>
-    
-    <div class="exp-hero__container">
-      <div class="exp-hero__content">
-        <span class="exp-hero__badge">
-          <span class="exp-hero__badge-dot"></span>
-          Trayectoria profesional
-        </span>
-        
-        <h1 class="exp-hero__headline">Experiencia Profesional</h1>
-        
-        <p class="exp-hero__subheadline">
-          +11 años transformando datos en decisiones estratégicas. Desde administrador de bases de datos hasta Senior Data Engineer en los mayores proyectos de LATAM.
-        </p>
-        
-        <div class="exp-hero__stats">
-          <div class="exp-hero__stat">
-            <span class="exp-hero__stat-number">11+</span>
-            <span class="exp-hero__stat-label">Años</span>
-          </div>
-          <div class="exp-hero__stat">
-            <span class="exp-hero__stat-number">8</span>
-            <span class="exp-hero__stat-label">Compañías</span>
-          </div>
-          <div class="exp-hero__stat">
-            <span class="exp-hero__stat-number">3</span>
-            <span class="exp-hero__stat-label">Cloud</span>
-          </div>
+  <!-- Hero Section -->
+  <Hero
+    badge={{ text: "Trayectoria profesional" }}
+    title="Experiencia Profesional"
+    subtitle="+11 años transformando datos en decisiones estratégicas. Desde administrador de bases de datos hasta Senior Data Engineer en los mayores proyectos de LATAM."
+    kpis={[
+      { value: "11+", label: "Años" },
+      { value: "8", label: "Compañías" },
+      { value: "3", label: "Cloud" },
+    ]}
+  >
+    <Fragment slot="visual">
+      <div class="exp-hero__companies">
+        <div class="exp-hero__company-logo" title="Globant">
+          <img src="/logos/globant.png" alt="Globant" width="40" height="40" />
+        </div>
+        <div class="exp-hero__company-logo" title="Mercado Libre">
+          <img src="/logos/mercado_libre.svg" alt="Mercado Libre" width="40" height="40" />
+        </div>
+        <div class="exp-hero__company-logo" title="SuperGIROS">
+          <img src="/logos/supergiros.svg" alt="SuperGIROS" width="40" height="40" />
+        </div>
+        <div class="exp-hero__company-logo" title="UBITS">
+          <img src="/logos/ubits.svg" alt="UBITS" width="40" height="40" />
+        </div>
+        <div class="exp-hero__company-logo" title="DERCO Colombia">
+          <img src="/logos/derco_colombia.png" alt="DERCO Colombia" width="40" height="40" />
+        </div>
+        <div class="exp-hero__company-logo" title="Arkano Software">
+          <img src="/logos/arkano_software.png" alt="Arkano Software" width="40" height="40" />
         </div>
       </div>
-      
-      <div class="exp-hero__certs">
-        <p class="exp-hero__certs-label">Cloud Providers</p>
-        <div class="exp-hero__certs-grid">
-          <img src="/logos/microsoft.svg" alt="Microsoft" class="exp-hero__cert-img" />
-          <img src="/logos/google.svg" alt="Google" class="exp-hero__cert-img" />
-          <img src="/logos/databricks.png" alt="Databricks" class="exp-hero__cert-img" />
-        </div>
-      </div>
-    </div>
-  </section>
+    </Fragment>
+  </Hero>
 
   <!-- ── Data Experience Era ── -->
   <section class="timeline-section" aria-labelledby="data-heading">
@@ -378,171 +369,43 @@ const experienciaData = [
     }
   }
 
-  @keyframes float {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(3%, 5%) scale(1.05); }
-  }
-
-  /* ── Hero Section ── */
-  .exp-hero {
-    position: relative;
-    overflow: hidden;
-    background: 
-      radial-gradient(circle at center, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
-      linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
-    padding: 6rem 2rem 5rem;
-    min-height: 500px;
-    display: flex;
-    align-items: center;
-  }
-
-  .exp-hero::before {
-    content: '';
+  /* ── Logos circulares de empresas ── */
+  .exp-hero__companies {
     position: absolute;
-    inset: 0;
-    background-image: 
-      radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
-    background-size: 25px 25px;
-    opacity: 0.6;
-    pointer-events: none;
-  }
-
-  .exp-hero__orb {
-    position: absolute;
-    width: 50vw;
-    height: 50vw;
-    border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.4;
-    animation: float 20s ease-in-out infinite alternate;
-    z-index: 0;
-  }
-
-  .exp-hero__orb--left {
-    background: radial-gradient(circle, rgba(56, 189, 248, 0.5) 0%, transparent 70%);
-    top: -15%;
-    left: -10%;
-  }
-
-  .exp-hero__orb--right {
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.5) 0%, transparent 70%);
-    bottom: -15%;
-    right: -10%;
-    animation-delay: -10s;
-  }
-
-  .exp-hero__container {
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 4rem;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-  }
-
-  .exp-hero__badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(34, 197, 94, 0.15);
-    border: 1px solid rgba(34, 197, 94, 0.3);
-    padding: 0.5rem 1rem;
-    border-radius: 100px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #4ade80;
-    margin-bottom: 1.5rem;
-    animation: fadeInUp 0.6s ease-out;
-  }
-
-  .exp-hero__badge-dot {
-    width: 8px;
-    height: 8px;
-    background: #22c55e;
-    border-radius: 50%;
-  }
-
-  .exp-hero__headline {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
-    font-weight: 800;
-    color: #ffffff;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    animation: fadeInUp 0.6s ease-out 0.1s backwards;
-  }
-
-  .exp-hero__subheadline {
-    font-size: 1.2rem;
-    color: #94a3b8;
-    line-height: 1.7;
-    margin-bottom: 2rem;
-    max-width: 480px;
-    animation: fadeInUp 0.6s ease-out 0.2s backwards;
-  }
-
-  .exp-hero__stats {
-    display: flex;
-    gap: 3rem;
-    animation: fadeInUp 0.6s ease-out 0.3s backwards;
-    margin-bottom: 2rem;
-  }
-
-  .exp-hero__stat {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .exp-hero__stat-number {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #ffffff;
-  }
-
-  .exp-hero__stat-label {
-    font-size: 0.9rem;
-    color: #64748b;
-  }
-
-  /* ── Panel derecho (como certs del home) ── */
-  .exp-hero__certs {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 2rem;
-    backdrop-filter: blur(10px);
-    animation: fadeInUp 0.6s ease-out 0.5s backwards;
-  }
-
-  .exp-hero__certs-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #64748b;
-    margin-bottom: 1.25rem;
-  }
-
-  .exp-hero__certs-grid {
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    gap: 2rem;
+    padding: 1rem;
   }
 
-  .exp-hero__cert-img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  .exp-hero__company-logo {
+    width: 162px;
+    height: 162px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      transform 0.3s ease,
+      filter 0.3s ease;
+    cursor: default;
   }
 
-  .exp-hero__cert-img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  .exp-hero__company-logo img {
+    width: 97px;
+    height: 97px;
+    object-fit: contain;
+    filter: grayscale(0.3);
+  }
+
+  .exp-hero__company-logo:hover {
+    transform: scale(1.08);
+  }
+
+  .exp-hero__company-logo:hover img {
+    filter: grayscale(0);
   }
 
   /* ── Skills ── */
@@ -562,56 +425,6 @@ const experienciaData = [
     font-size: 0.95rem;
     font-weight: 500;
     color: #60a5fa;
-  }
-
-  /* ── Timeline Styles ── */
-
-  .exp-hero__industries {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 0.35rem;
-  }
-
-  .exp-hero__industries span {
-    font-size: 0.7rem;
-    color: #a78bfa;
-    background: rgba(167, 139, 250, 0.1);
-    border: 1px solid rgba(167, 139, 250, 0.3);
-    padding: 0.2rem 0.6rem;
-    border-radius: 100px;
-  }
-
-  .exp-hero__industries-col {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-  }
-
-  .exp-hero__industries-label {
-    font-size: 0.75rem;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .exp-hero__providers {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    align-items: center;
-  }
-
-  .provider-icon {
-    height: 20px;
-    width: auto;
-  }
-
-  .provider-icon--png {
-    height: 24px;
-    border-radius: 4px;
-    background: white;
-    padding: 2px 4px;
   }
 
   /* ── Section Title ── */
@@ -643,7 +456,7 @@ const experienciaData = [
     color: #16a34a;
   }
 
-  /* Timeline */
+  /* ── Timeline ── */
   .timeline-section {
     max-width: 900px;
     margin: 4rem auto 4.5rem;
@@ -851,12 +664,6 @@ const experienciaData = [
 
   .timeline__desc {
     font-size: 1rem;
-    color: #64748b;
-    line-height: 1.7;
-  }
-
-  .timeline__desc {
-    font-size: 1rem;
     color: var(--color-text-secondary);
     line-height: 1.6;
     margin-bottom: 0.75rem;
@@ -881,28 +688,8 @@ const experienciaData = [
     border-color: rgba(139, 92, 246, 0.5);
   }
 
+  /* ── Responsive ── */
   @media (max-width: 768px) {
-    .exp-hero {
-      padding: 4rem 1.5rem 0;
-    }
-
-    .exp-hero__stats-bar {
-      gap: 1.5rem;
-      padding: 1.5rem;
-    }
-
-    .exp-hero__stat-divider {
-      display: none;
-    }
-
-    .exp-hero__stat {
-      min-width: 80px;
-    }
-
-    .exp-hero__stat-value {
-      font-size: 2rem;
-    }
-
     .timeline {
       padding-left: 6rem;
     }
@@ -927,12 +714,6 @@ const experienciaData = [
     .skill-pill {
       font-size: 0.8rem;
       padding: 0.4rem 0.75rem;
-    }
-
-    .exp-hero__stats-bar {
-      flex-direction: column;
-      align-items: center;
-      gap: 1.25rem;
     }
 
     .timeline__header {

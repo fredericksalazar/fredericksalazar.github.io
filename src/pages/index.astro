@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
 
 const title = "Frederick Salazar — Senior Data Engineer";
 const description =
@@ -58,132 +59,80 @@ const techBadges: Record<string, string[]> = {
     "Electoral Data",
   ],
 };
-
-// Certificaciones con imágenes reales
-const certifications = [
-  {
-    name: "Azure Data Engineer",
-    img: "/badges/azure_de.png",
-    alt: "Microsoft Certified: Azure Data Engineer Associate",
-  },
-  {
-    name: "Azure Data Fundamentals",
-    img: "/badges/azure_df.png",
-    alt: "Azure Data Fundamentals",
-  },
-  {
-    name: "Azure AI Fundamentals",
-    img: "/badges/azure_ai.png",
-    alt: "Azure AI Fundamentals",
-  },
-  {
-    name: "Databricks",
-    img: "/badges/databricks_fundamentals.png",
-    alt: "Databricks Lakehouse Fundamentals",
-  },
-  {
-    name: "Google AI",
-    img: "/badges/google_ai.png",
-    alt: "Google AI Essentials",
-  },
-  { name: "MongoDB", img: "/badges/mongodb_si.png", alt: "MongoDB Certified" },
-];
 ---
 
 <BaseLayout title={title} description={description} fullWidth={true}>
   <!-- ── Hero Section ── -->
-  <section class="hero">
-    <!-- Decoraciones de fondo -->
-    <div class="hero__orb hero__orb--tl" aria-hidden="true"></div>
-    <div class="hero__orb hero__orb--br" aria-hidden="true"></div>
-    <div class="hero__arc" aria-hidden="true"></div>
-    <div class="hero__arc hero__arc--2" aria-hidden="true"></div>
+  <Hero badge={{ text: "Disponible para nuevos proyectos" }}>
+    <Fragment slot="content">
+      <span class="hero__status">
+        <span class="hero__status-pulse"></span>
+        Disponible para nuevos proyectos
+      </span>
 
-    <!-- Fila superior (90%): marca + imagen -->
-    <div class="hero__main">
+      <p class="hero__role">
+        <span class="hero__role-line"></span>
+        Senior Data Engineer &amp; Data Architect
+      </p>
 
-      <!-- Izquierda: marca personal -->
-      <div class="hero__main-content">
-        <span class="hero__status">
-          <span class="hero__status-pulse"></span>
-          Disponible para nuevos proyectos
+      <h1 class="hero__name">
+        <span class="hero__name-first">Frederick</span>
+        <span class="hero__name-last">
+          Salazar<span class="hero__name-dot">.</span>
         </span>
+      </h1>
 
-        <p class="hero__role">
-          <span class="hero__role-line"></span>
-          Senior Data Engineer &amp; Data Architect
-        </p>
+      <p class="hero__tagline">
+        <span class="hero__tagline-accent">+11 años</span> transformando datos en
+        <em>decisiones estratégicas</em> a través de arquitecturas cloud, pipelines escalables e inteligencia artificial.
+      </p>
 
-        <h1 class="hero__name">
-          <span class="hero__name-first">Frederick</span>
-          <span class="hero__name-last">
-            Salazar<span class="hero__name-dot">.</span>
-          </span>
-        </h1>
-
-        <p class="hero__tagline">
-          <span class="hero__tagline-accent">+11 años</span> transformando datos en
-          <em>decisiones estratégicas</em> a través de arquitecturas cloud, pipelines escalables e inteligencia artificial.
-        </p>
-
-        <div class="hero__pills">
-          <span class="hero__pill">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 3 2 9l10 6 10-6-10-6Z"/>
-              <path d="m2 15 10 6 10-6"/>
-              <path d="m2 12 10 6 10-6"/>
-            </svg>
-            Arquitectura
-          </span>
-          <span class="hero__pill">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <ellipse cx="12" cy="5" rx="9" ry="3"/>
-              <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/>
-              <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/>
-            </svg>
-            Data Engineering
-          </span>
-          <span class="hero__pill">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/>
-              <path d="M5 3v4M19 17v4M3 5h4M17 19h4"/>
-            </svg>
-            AI &amp; Machine Learning
-          </span>
-          <span class="hero__pill">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
-            </svg>
-            Cloud
-          </span>
-        </div>
-        </div>
+      <div class="hero__pills">
+        <span class="hero__pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3 2 9l10 6 10-6-10-6Z"/>
+            <path d="m2 15 10 6 10-6"/>
+            <path d="m2 12 10 6 10-6"/>
+          </svg>
+          Arquitectura
+        </span>
+        <span class="hero__pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+            <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/>
+            <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/>
+          </svg>
+          Data Engineering
+        </span>
+        <span class="hero__pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/>
+            <path d="M5 3v4M19 17v4M3 5h4M17 19h4"/>
+          </svg>
+          AI &amp; Machine Learning
+        </span>
+        <span class="hero__pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Cloud
+        </span>
       </div>
+    </Fragment>
 
-      <!-- Imagen pegada al borde derecho de la página -->
-      <div class="hero__image-wrapper">
-        <img
-          src="/images/hero_image.png"
-          alt="Arquitectura de datos isométrica"
-          class="hero__main-img"
-          loading="eager"
-        />
-      </div>
+    <Fragment slot="visual">
+      <img
+        src="/images/hero_image.png"
+        alt="Arquitectura de datos isométrica"
+        class="hero__main-img"
+        width="800"
+        height="600"
+        loading="eager"
+      />
+    </Fragment>
+  </Hero>
 
-      <!-- Fila inferior (10%): partners cloud lineales -->
-      <div class="hero__partners">
-      <span class="hero__partners-label">Cloud Partners</span>
-      <div class="hero__partners-divider" aria-hidden="true"></div>
-      <div class="hero__partners-logos">
-        <img src="/logos/aws.png" alt="AWS" class="hero__partner-logo hero__partner-logo--aws" />
-        <img src="/logos/google.svg" alt="Google Cloud" class="hero__partner-logo hero__partner-logo--google" />
-        <img src="/logos/microsoft.svg" alt="Microsoft Azure" class="hero__partner-logo hero__partner-logo--microsoft" />
-        <img src="/logos/databricks-logo.png" alt="Databricks" class="hero__partner-logo hero__partner-logo--databricks" />
-      </div>
-    </div>
-  </section>
-
-<!-- ── Sobre mí + Tech Stack ── -->
+  <!-- ── Sobre mí + Tech Stack ── -->
   <section class="about-section">
     <div class="about-container">
       <!-- Fila 1: Foto + Descripción -->
@@ -194,6 +143,8 @@ const certifications = [
               src="/images/profile_globant.jpeg"
               alt="Frederick Salazar"
               class="about-profile__image"
+              width="260"
+              height="260"
             />
             <div class="about-profile__status">
               <span class="about-profile__status-dot"></span>
@@ -294,7 +245,6 @@ const certifications = [
                 "Azure",
                 "Google Cloud Platform",
                 "Amazon Web Services",
-
                 "GitHub",
                 "MongoDB",
                 "Linux",
@@ -309,145 +259,153 @@ const certifications = [
 
   <!-- ── Proyectos ── -->
   <section class="section">
-    <div class="section__header">
-      <div class="section__title-group">
-        <span class="section__label">Portfolio</span>
-        <h2 class="section__title">Proyectos destacados</h2>
+    <div class="section__inner">
+      <div class="section__header">
+        <div class="section__title-group">
+          <span class="section__label">Portfolio</span>
+          <h2 class="section__title">Proyectos destacados</h2>
+        </div>
+        <a href="/proyectos" class="section__link">
+          Ver todos
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
+          >
+        </a>
       </div>
-      <a href="/proyectos" class="section__link">
-        Ver todos
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
-        >
-      </a>
-    </div>
 
-    <div class="projects-grid">
-      {
-        topProyectos.map((proyecto, index) => {
-          const techs = techBadges[proyecto.id] || [];
-          return (
-            <article class="project-card" style={`--delay: ${index * 100}ms`}>
-              <a href={`/proyectos/${proyecto.id}`} class="project-card__link">
-                <div class="project-card__img-wrapper">
-                  <img
-                    src={
-                      proyecto.data.imagen ||
-                      "https://via.placeholder.com/400x250"
-                    }
-                    alt={proyecto.data.titulo}
-                    loading="lazy"
-                  />
-                  <div class="project-card__overlay">
-                    <span class="project-card__view">Ver proyecto</span>
-                  </div>
-                </div>
-                <div class="project-card__body">
-                  <h3 class="project-card__title">{proyecto.data.titulo}</h3>
-                  <p class="project-card__excerpt">
-                    {proyecto.data.descripcion}
-                  </p>
-                  {techs.length > 0 && (
-                    <div class="project-card__tech">
-                      {techs.slice(0, 4).map((tech) => (
-                        <span class="tech-badge">{tech}</span>
-                      ))}
-                      {techs.length > 4 && (
-                        <span class="tech-badge tech-badge--more">
-                          +{techs.length - 4}
-                        </span>
-                      )}
+      <div class="projects-grid">
+        {
+          topProyectos.map((proyecto, index) => {
+            const techs = techBadges[proyecto.id] || [];
+            return (
+              <article class="project-card" style={`--delay: ${index * 100}ms`}>
+                <a href={`/proyectos/${proyecto.id}`} class="project-card__link">
+                  <div class="project-card__img-wrapper">
+                    <img
+                      src={
+                        proyecto.data.imagen ||
+                        "https://via.placeholder.com/400x250"
+                      }
+                      alt={proyecto.data.titulo}
+                      width="400"
+                      height="250"
+                      loading="lazy"
+                    />
+                    <div class="project-card__overlay">
+                      <span class="project-card__view">Ver proyecto</span>
                     </div>
-                  )}
-                </div>
-              </a>
-            </article>
-          );
-        })
-      }
+                  </div>
+                  <div class="project-card__body">
+                    <h3 class="project-card__title">{proyecto.data.titulo}</h3>
+                    <p class="project-card__excerpt">
+                      {proyecto.data.descripcion}
+                    </p>
+                    {techs.length > 0 && (
+                      <div class="project-card__tech">
+                        {techs.slice(0, 4).map((tech) => (
+                          <span class="tech-badge">{tech}</span>
+                        ))}
+                        {techs.length > 4 && (
+                          <span class="tech-badge tech-badge--more">
+                            +{techs.length - 4}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </a>
+              </article>
+            );
+          })
+        }
+      </div>
     </div>
   </section>
 
   <!-- ── Blog ── -->
   <section class="section section--alt">
-    <div class="section__header">
-      <div class="section__title-group">
-        <span class="section__label">Blog técnico</span>
-        <h2 class="section__title">Últimas publicaciones</h2>
+    <div class="section__inner">
+      <div class="section__header">
+        <div class="section__title-group">
+          <span class="section__label">Blog técnico</span>
+          <h2 class="section__title">Últimas publicaciones</h2>
+        </div>
+        <a href="/blog" class="section__link">
+          Ver todos
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
+          >
+        </a>
       </div>
-      <a href="/blog" class="section__link">
-        Ver todos
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
-        >
-      </a>
-    </div>
 
-    <div class="blog-grid">
-      {
-        latestPosts.map((post, index) => (
-          <article class="blog-card" style={`--delay: ${index * 100}ms`}>
-            <a href={`/blog/${post.id}`} class="blog-card__link">
-              <div class="blog-card__img-wrapper">
-                <img
-                  src={
-                    post.data.imagen || "https://via.placeholder.com/400x250"
-                  }
-                  alt={post.data.titulo}
-                  loading="lazy"
-                />
-              </div>
-              <div class="blog-card__body">
-                <time
-                  class="blog-card__date"
-                  datetime={post.data.fecha.toISOString()}
-                >
-                  {formatDate(post.data.fecha)}
-                </time>
-                <h3 class="blog-card__title">{post.data.titulo}</h3>
-                <p class="blog-card__excerpt">{post.data.descripcion}</p>
-                <span class="blog-card__read-more">
-                  Leer más
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+      <div class="blog-grid">
+        {
+          latestPosts.map((post, index) => (
+            <article class="blog-card" style={`--delay: ${index * 100}ms`}>
+              <a href={`/blog/${post.id}`} class="blog-card__link">
+                <div class="blog-card__img-wrapper">
+                  <img
+                    src={
+                      post.data.imagen || "https://via.placeholder.com/400x250"
+                    }
+                    alt={post.data.titulo}
+                    width="400"
+                    height="225"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="blog-card__body">
+                  <time
+                    class="blog-card__date"
+                    datetime={post.data.fecha.toISOString()}
                   >
-                    <>
-                      <path d="M5 12h14" />
-                      <path d="m12 5 7 7-7 7" />
-                    </>
-                  </svg>
-                </span>
-              </div>
-            </a>
-          </article>
-        ))
-      }
+                    {formatDate(post.data.fecha)}
+                  </time>
+                  <h3 class="blog-card__title">{post.data.titulo}</h3>
+                  <p class="blog-card__excerpt">{post.data.descripcion}</p>
+                  <span class="blog-card__read-more">
+                    Leer más
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <>
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
+                      </>
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            </article>
+          ))
+        }
+      </div>
     </div>
   </section>
 
@@ -466,168 +424,7 @@ const certifications = [
     }
   }
 
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-  }
-
-  /* ──────────────────────────────────────────
-   *  HERO — premium edition
-   * ────────────────────────────────────────── */
-  .hero {
-    position: relative;
-    overflow: visible;
-    width: 100%;
-    min-height: 660px;
-    display: flex;
-    align-items: stretch;
-    font-family: "Google Sans Flex", "Google Sans", system-ui, -apple-system,
-      sans-serif;
-    background:
-      radial-gradient(
-        ellipse 70% 60% at 90% -10%,
-        rgba(37, 99, 235, 0.07) 0%,
-        transparent 60%
-      ),
-      radial-gradient(
-        ellipse 60% 50% at -10% 110%,
-        rgba(96, 165, 250, 0.08) 0%,
-        transparent 60%
-      ),
-      linear-gradient(180deg, #ffffff 0%, #fafbff 60%, #f5f8ff 100%);
-    border-bottom: 1px solid rgba(37, 99, 235, 0.08);
-  }
-
-  /* Blueprint dots */
-  .hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(
-      circle,
-      rgba(37, 99, 235, 0.16) 1px,
-      transparent 1px
-    );
-    background-size: 28px 28px;
-    pointer-events: none;
-    z-index: 0;
-    mask-image: radial-gradient(
-      ellipse 100% 80% at 50% 50%,
-      black 40%,
-      transparent 100%
-    );
-  }
-
-  /* Decorative orbs (soft glows) */
-  .hero__orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .hero__orb--tl {
-    top: -180px;
-    left: -180px;
-    width: 480px;
-    height: 480px;
-    background: radial-gradient(
-      circle,
-      rgba(37, 99, 235, 0.12) 0%,
-      transparent 70%
-    );
-  }
-
-  .hero__orb--br {
-    bottom: -200px;
-    right: 5%;
-    width: 540px;
-    height: 540px;
-    background: radial-gradient(
-      circle,
-      rgba(59, 130, 246, 0.1) 0%,
-      transparent 70%
-    );
-  }
-
-  /* Decorative arcs */
-  .hero__arc {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid rgba(37, 99, 235, 0.12);
-    pointer-events: none;
-    z-index: 0;
-    bottom: -380px;
-    right: -100px;
-    width: 700px;
-    height: 700px;
-  }
-
-  .hero__arc--2 {
-    bottom: -420px;
-    right: -50px;
-    width: 800px;
-    height: 800px;
-    border-color: rgba(37, 99, 235, 0.07);
-  }
-
-  /* ── Layout 2-rows ── */
-  .hero {
-    flex-direction: column;
-  }
-
-  .hero__main {
-    display: grid;
-    grid-template-columns: 40% 1fr;
-    width: 100%;
-    z-index: 1;
-    min-height: 0;
-  }
-
-  /* Izquierda: marca */
-  .hero__main-content {
-    padding: 3.5rem 1.5rem 3.5rem 3rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 1.1rem;
-    position: relative;
-    z-index: 0;
-  }
-
-  /* Imagen pegada al borde derecho */
-  .hero__image-wrapper {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 60% !important;
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  .hero__main-img {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
-    max-width: none !important;
-    object-fit: cover;
-    object-position: right center;
-    display: block;
-    animation: fadeInRight 0.8s ease-out backwards;
-  }
-
+  /* ── Custom hero overrides for home ── */
   .hero__status {
     display: inline-flex;
     align-items: center;
@@ -658,6 +455,14 @@ const certifications = [
     background: rgba(34, 197, 94, 0.4);
     border-radius: 50%;
     animation: ping 2s ease-out infinite;
+  }
+
+  @keyframes ping {
+    75%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
   }
 
   .hero__role {
@@ -765,96 +570,19 @@ const certifications = [
     box-shadow: 0 6px 16px rgba(37, 99, 235, 0.15);
   }
 
-  /* ── Fila inferior: Cloud Partners (10%) ── */
-  .hero__partners {
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    padding: 1.25rem 3rem;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(37, 99, 235, 0.12);
-    position: relative;
-    z-index: 2;
-    animation: fadeInUp 0.5s ease-out 0.4s backwards;
-  }
-
-  .hero__partners-label {
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    color: #2563eb;
-    text-transform: uppercase;
-    flex-shrink: 0;
-  }
-
-  .hero__partners-divider {
-    width: 1px;
-    height: 28px;
-    background: linear-gradient(
-      to bottom,
-      transparent,
-      rgba(37, 99, 235, 0.25),
-      transparent
-    );
-    flex-shrink: 0;
-  }
-
-  .hero__partners-logos {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    flex: 1;
-    gap: 2.5rem;
-    max-width: 720px;
-  }
-
-  .hero__partner-logo {
-    height: 38px;
+  .hero__main-img {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 100%;
     width: auto;
+    max-width: none;
     object-fit: contain;
+    object-position: right center;
     display: block;
-    transition:
-      transform 0.25s ease,
-      filter 0.25s ease;
-    filter: grayscale(0%);
-  }
-
-  .hero__partner-logo:hover {
-    transform: translateY(-2px) scale(1.05);
-  }
-
-  /* Ajustes específicos por logo (cada uno tiene proporciones distintas) */
-  .hero__partner-logo--aws {
-    height: 32px;
-  }
-
-  .hero__partner-logo--google {
-    height: 36px;
-  }
-
-  .hero__partner-logo--microsoft {
-    height: 40px;
-    width: 40px;
-  }
-
-  .hero__partner-logo--databricks {
-    height: 30px;
-  }
-
-  /* Animations */
-  @keyframes fadeInLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
+    pointer-events: none;
+    animation: fadeInRight 0.8s ease-out backwards;
   }
 
   @keyframes fadeInRight {
@@ -868,42 +596,22 @@ const certifications = [
     }
   }
 
-  @keyframes ping {
-    75%,
-    100% {
-      transform: scale(2.4);
-      opacity: 0;
-    }
-  }
-
   /* ── Secciones ── */
   .section {
     background: #f6f8fa;
     border-bottom: 1px solid var(--color-border);
-    margin: 0;
-    max-width: 100%;
     padding: 5rem 2rem;
   }
 
-  .section > .section__header,
-  .section > .projects-grid {
+  .section__inner {
     max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
   }
 
   .section--alt {
     background: #ffffff;
     border-bottom: 1px solid var(--color-border);
-    margin: 0;
-    max-width: 100%;
     padding: 5rem 2rem;
-  }
-
-  .section--alt > * {
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .section__header {
@@ -1167,39 +875,6 @@ const certifications = [
     gap: 0.75rem;
   }
 
-  /* ── CTA ── */
-  .cta {
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-    padding: 5rem 2rem;
-  }
-
-  .cta__content {
-    max-width: 700px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .cta__title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #ffffff;
-    margin-bottom: 1rem;
-  }
-
-  .cta__text {
-    font-size: 1.1rem;
-    color: #94a3b8;
-    line-height: 1.7;
-    margin-bottom: 2rem;
-  }
-
-  .cta__actions {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
   /* ── Sobre mí + Tech Stack ── */
   .about-section {
     background: #ffffff;
@@ -1215,7 +890,6 @@ const certifications = [
     margin: 0 auto;
   }
 
-  /* Fila 1: Foto + Descripción */
   .about-top {
     display: grid;
     grid-template-columns: 300px 1fr;
@@ -1272,17 +946,18 @@ const certifications = [
     animation: pulse 2s ease-in-out infinite;
   }
 
-  .about-info {
-    padding-top: 0.5rem;
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
   }
 
-  .about-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--color-text-primary);
-    line-height: 1.2;
-    margin-bottom: 1.25rem;
-    margin-top: 0.5rem;
+  .about-info {
+    padding-top: 0.5rem;
   }
 
   .about-text {
@@ -1369,24 +1044,12 @@ const certifications = [
   }
 
   /* ── Responsive ── */
-  @media (max-width: 1100px) {
-    .hero__main {
-      grid-template-columns: 50% 50%;
-    }
-    .hero__main-content {
-      padding: 3rem 2rem;
-    }
-  }
-
   @media (max-width: 1024px) {
-    .about-container {
-      display: flex;
-      flex-direction: column;
-    }
     .about-top {
       grid-template-columns: 1fr;
       gap: 2rem;
     }
+
     .about-profile {
       position: static;
       max-width: 240px;
@@ -1395,40 +1058,8 @@ const certifications = [
   }
 
   @media (max-width: 768px) {
-    .hero {
-      min-height: auto;
-    }
-    .hero__main {
-      grid-template-columns: 1fr;
-      min-height: auto;
-    }
-
-    .hero__main-visual {
-      display: none;
-    }
-
-    .hero__main-content {
-      padding: 2.5rem 1.5rem 2rem;
-    }
-
     .hero__name {
       font-size: 2.75rem;
-    }
-
-    .hero__partners {
-      flex-wrap: wrap;
-      gap: 1rem;
-      padding: 1rem 1.5rem;
-    }
-
-    .hero__partners-divider {
-      display: none;
-    }
-
-    .hero__partners-logos {
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      justify-content: center;
     }
 
     .section {
@@ -1444,10 +1075,6 @@ const certifications = [
     .projects-grid,
     .blog-grid {
       grid-template-columns: 1fr;
-    }
-
-    .cta__title {
-      font-size: 1.75rem;
     }
   }
 </style>
