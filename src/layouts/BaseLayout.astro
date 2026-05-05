@@ -223,6 +223,45 @@ const { title, description, image, type, fullWidth = false } = Astro.props;
     color: var(--color-accent);
   }
 
+  /* ── Pill (hero pills) — redondo, fondo blanco, borde azul ─────────────── */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.9rem;
+    background: white;
+    border: 1px solid rgba(37, 99, 235, 0.18);
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .pill:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px var(--color-accent-glow);
+  }
+
+  /* ── Badge (category badges) — variantes de azul por categoría ──────────── */
+  .badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.4rem;
+  }
+  .badge--data-analysis    { background: rgba(37, 99, 235, 0.08); color: #2563eb; }
+  .badge--ml               { background: rgba(37, 99, 235, 0.12); color: #1d4ed8; }
+  .badge--software         { background: rgba(37, 99, 235, 0.06); color: #3b82f6; }
+  .badge--data-engineering { background: rgba(37, 99, 235, 0.15); color: #1e40af; }
+
   /* ── Section label (estilo "TECHNOLOGIES & TOOLS") ──────────────────────── */
   .section-label {
     font-size: 0.7rem;
