@@ -5,6 +5,7 @@
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/Hero.astro";
+import Card from "../components/Card.astro";
 
 const title = "Certificaciones de Azure, GCP, Databricks | Frederick Salazar";
 const description =
@@ -110,7 +111,7 @@ const empresas = [
         ano: "2025",
         url: "https://www.coursera.org/account/accomplishments/verify/WN21HZM96ATQ",
         tecnologias: ["Estadística", "Análisis de Datos", "Probabilidad"],
-        badge: null,
+        badge: undefined,
         logo: "/logos/meta.svg",
       },
       {
@@ -119,7 +120,7 @@ const empresas = [
         ano: "2024",
         url: "https://www.coursera.org/account/accomplishments/verify/6Z5FSMOXQ9SW",
         tecnologias: ["Prompt Engineering", "IA Generativa", "LLMs"],
-        badge: null,
+        badge: undefined,
         logo: "/logos/Vanderbilt-University-Logo.png",
       },
     ],
@@ -168,45 +169,22 @@ const totalCertificaciones = empresas.reduce(
           </h2>
 
           <div class="cert-group__cards">
-            {empresa.certificaciones.map((cert) => (
-              <div class="cert-card">
-                {cert.badge && (
-                  <div class="cert-card__badge">
-                    <span class="cert-card__ano">{cert.ano}</span>
-                    <img src={cert.badge} alt={cert.titulo} loading="lazy" />
-                  </div>
-                )}
-                {!cert.badge && cert.logo && (
-                  <div class="cert-card__logo">
-                    <span class="cert-card__ano">{cert.ano}</span>
-                    <img
-                      src={cert.logo}
-                      alt={cert.emisor || empresa.nombre}
-                      loading="lazy"
-                    />
-                  </div>
-                )}
-
-                <div class="cert-card__content">
-                  <h3 class="cert-card__title">{cert.titulo}</h3>
-
-                  <div class="cert-card__tags">
-                    {cert.tecnologias.map((t) => (
-                      <span class="cert-tag">{t}</span>
-                    ))}
-                  </div>
-                </div>
-
-                <a
+            {empresa.certificaciones.map((cert) => {
+              const imageAlt = "emisor" in cert && cert.emisor ? cert.emisor : empresa.nombre;
+              return (
+                <Card
+                  variant="cert"
                   href={cert.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="cert-card__link"
-                >
-                  Ver credencial
-                </a>
-              </div>
-            ))}
+                  badge={cert.badge}
+                  logo={cert.logo}
+                  imageAlt={imageAlt}
+                  title={cert.titulo}
+                  tags={cert.tecnologias}
+                  year={cert.ano}
+                  externalLinkText="Ver credencial"
+                />
+              );
+            })}
           </div>
         </div>
       ))
@@ -286,113 +264,6 @@ const totalCertificaciones = empresas.reduce(
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
-  }
-
-  /* ── Card ── */
-  .cert-card {
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 0.75rem;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: border-color 0.2s ease;
-  }
-
-  .cert-card:hover {
-    border-color: var(--color-accent);
-  }
-
-  .cert-card__badge {
-    height: 140px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff;
-    padding: 1rem;
-    position: relative;
-  }
-
-  .cert-card__badge img {
-    height: 100%;
-    width: auto;
-    object-fit: contain;
-  }
-
-  .cert-card__ano {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #2563eb;
-    background: rgba(37, 99, 235, 0.1);
-    border: 1px solid rgba(37, 99, 235, 0.2);
-    padding: 0.2rem 0.5rem;
-    border-radius: 100px;
-  }
-
-  .cert-card__logo {
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff;
-    padding: 1.5rem;
-    border-bottom: 1px solid var(--color-border);
-    position: relative;
-  }
-
-  .cert-card__logo img {
-    height: 60px;
-    width: auto;
-    object-fit: contain;
-  }
-
-  .cert-card__content {
-    padding: 1rem 1.25rem;
-    flex: 1;
-  }
-
-  .cert-card__title {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    margin-bottom: 0.5rem;
-    margin-top: 0.25rem;
-    line-height: 1.4;
-  }
-
-  .cert-card__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .cert-tag {
-    font-size: 0.75rem;
-    padding: 0.2rem 0.6rem;
-    background: rgba(139, 92, 246, 0.1);
-    border: 1px solid rgba(139, 92, 246, 0.2);
-    border-radius: 100px;
-    color: #8b5cf6;
-  }
-
-  .cert-card__link {
-    display: block;
-    padding: 0.75rem 1.25rem;
-    text-align: center;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--color-text-muted);
-    background: var(--color-bg);
-    border-top: 1px solid var(--color-border);
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .cert-card__link:hover {
-    color: var(--color-accent);
   }
 
   /* ── Responsive ── */
