@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/Card.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -106,11 +107,15 @@ const articleSchema = {
         <h2 class="related-title">Artículos relacionados</h2>
         <div class="related-grid">
           {related.map((r) => (
-            <a href={`/blog/${r.id}`} class="related-card">
-              {r.data.imagen && <img src={r.data.imagen} alt={r.data.titulo} loading="lazy" />}
-              <span class="related-card__title">{r.data.titulo}</span>
-              <span class="related-card__date">{formatDate(r.data.fecha)}</span>
-            </a>
+            <Card
+              variant="related"
+              href={`/blog/${r.id}`}
+              image={r.data.imagen}
+              imageAlt={r.data.titulo}
+              title={r.data.titulo}
+              date={r.data.fecha}
+              headingLevel="h3"
+            />
           ))}
         </div>
       </aside>
@@ -237,16 +242,6 @@ const articleSchema = {
   .related { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--color-border); }
   .related-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 1.25rem; }
   .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
-  .related-card {
-    display: flex; flex-direction: column; gap: 0.5rem;
-    border: 1px solid var(--color-border); border-radius: 0.6rem;
-    overflow: hidden; text-decoration: none; color: inherit;
-    transition: border-color 0.15s, background 0.15s;
-  }
-  .related-card:hover { border-color: var(--color-accent); background: var(--color-hover); }
-  .related-card img { width: 100%; height: 120px; object-fit: cover; display: block; }
-  .related-card__title { font-size: 0.875rem; font-weight: 600; padding: 0 0.75rem; line-height: 1.4; }
-  .related-card__date { font-size: 0.75rem; color: var(--color-text-muted); padding: 0 0.75rem 0.75rem; }
 
   .art-footer {
     margin-top: 3rem; padding-top: 1.5rem;

@@ -32,6 +32,8 @@
  *  @param {number} [delay] - Delay en ms para animación de entrada
  *  @param {boolean} [showReadMore] - Mostrar CTA "Leer más" (blog)
  *  @param {boolean} [showTags] - Mostrar tags (default: true)
+ *  @param {boolean} [tagLinks] - Renderizar tags como links (default: false)
+ *  @param {(tag: string) => string} [tagHref] - Función para generar href del tag
  *  @param {string} [class] - Clases CSS adicionales
  *  @param {string} [badge] - URL del badge (certificaciones)
  *  @param {string} [logo] - URL del logo (certificaciones)
@@ -59,6 +61,8 @@ interface Props extends HTMLAttributes<"article"> {
   delay?: number;
   showReadMore?: boolean;
   showTags?: boolean;
+  tagLinks?: boolean;
+  tagHref?: (tag: string) => string;
   badge?: string;
   logo?: string;
   year?: string;
@@ -83,6 +87,8 @@ const {
   delay,
   showReadMore = true,
   showTags = true,
+  tagLinks = false,
+  tagHref,
   badge,
   logo,
   year,
@@ -152,7 +158,11 @@ const HeadingTag = headingLevel;
         {showTags && tags.length > 0 && (
           <div class="card__tags">
             {tags.map((tag) => (
-              <span class="card__tag card__tag--cert">{tag}</span>
+              tagLinks && tagHref ? (
+                <a href={tagHref(tag)} class="card__tag card__tag--link">{tag}</a>
+              ) : (
+                <span class="card__tag card__tag--cert">{tag}</span>
+              )
             ))}
           </div>
         )}
@@ -168,73 +178,79 @@ const HeadingTag = headingLevel;
     </Fragment>
   ) : (
     <!-- Project, Blog, Related: link envuelve toda la card -->
-    <a href={href} class="card__link">
-      {hasImage && (
-        <div class="card__media">
-          <img src={image!} alt={imageAlt || title} loading="lazy" />
-          {variant === "project" && (
-            <div class="card__overlay">
-              <span class="card__overlay-btn">{overlayText}</span>
-            </div>
-          )}
-        </div>
-      )}
-      <div class="card__body">
-        {variant === "blog" && date && (
-          <time class="card__meta" datetime={datetime!}>
-            {formattedDate}
-          </time>
-        )}
-        {category && (
-          <div class="card__meta-row">
-            <span class={`badge badge--${category}`}>{category}</span>
-            {date && (
-              <time class="card__date" datetime={datetime!}>
-                {formattedDate}
-              </time>
+    <Fragment>
+      <a href={href} class="card__link">
+        {hasImage && (
+          <div class="card__media">
+            <img src={image!} alt={imageAlt || title} loading="lazy" />
+            {variant === "project" && (
+              <div class="card__overlay">
+                <span class="card__overlay-btn">{overlayText}</span>
+              </div>
             )}
           </div>
         )}
-        <HeadingTag class="card__title">{title}</HeadingTag>
-        {description && !isCompact && (
-          <p
-            class={`card__description${finalLineClamp ? " card__description--clamp" : ""}`}
-            style={`--line-clamp: ${finalLineClamp}`}
-          >
-            {description}
-          </p>
-        )}
-        {showTags && tags.length > 0 && (
-          <div class="card__tags">
-            {tags.map((tag) => (
-              <span class="card__tag">{tag}</span>
-            ))}
-          </div>
-        )}
-        {variant === "blog" && showReadMore && (
-          <span class="card__cta">
-            {ctaText || "Leer más"}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+        <div class="card__body">
+          {variant === "blog" && date && (
+            <time class="card__meta" datetime={datetime!}>
+              {formattedDate}
+            </time>
+          )}
+          {category && (
+            <div class="card__meta-row">
+              <span class={`badge badge--${category}`}>{category}</span>
+              {date && (
+                <time class="card__date" datetime={datetime!}>
+                  {formattedDate}
+                </time>
+              )}
+            </div>
+          )}
+          <HeadingTag class="card__title">{title}</HeadingTag>
+          {description && !isCompact && (
+            <p
+              class={`card__description${finalLineClamp ? " card__description--clamp" : ""}`}
+              style={`--line-clamp: ${finalLineClamp}`}
             >
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
-          </span>
-        )}
-        {isCompact && date && (
-          <span class="card__date">{formattedDate}</span>
-        )}
-      </div>
-    </a>
+              {description}
+            </p>
+          )}
+          {variant === "blog" && showReadMore && (
+            <span class="card__cta">
+              {ctaText || "Leer más"}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </span>
+          )}
+          {isCompact && date && (
+            <span class="card__date">{formattedDate}</span>
+          )}
+        </div>
+      </a>
+      {showTags && tags.length > 0 && (
+        <div class="card__tags card__tags--footer">
+          {tags.map((tag) => (
+            tagLinks && tagHref ? (
+              <a href={tagHref(tag)} class="card__tag card__tag--link">{tag}</a>
+            ) : (
+              <span class="card__tag">{tag}</span>
+            )
+          ))}
+        </div>
+      )}
+    </Fragment>
   )}
 </article>
 
@@ -518,6 +534,10 @@ const HeadingTag = headingLevel;
     margin-top: auto;
   }
 
+  .card__tags--footer {
+    padding: 0 1.5rem 1.25rem;
+  }
+
   .card__tag {
     font-size: 0.7rem;
     font-weight: 600;
@@ -535,6 +555,22 @@ const HeadingTag = headingLevel;
     border: 1px solid rgba(139, 92, 246, 0.2);
     border-radius: 100px;
     color: #8b5cf6;
+  }
+
+  .card__tag--link {
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--color-hover);
+    color: var(--color-text-secondary);
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.4rem;
+    text-decoration: none;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .card__tag--link:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
   }
 
   /* ============================================
