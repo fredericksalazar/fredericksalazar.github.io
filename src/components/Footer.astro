@@ -14,8 +14,18 @@ const currentYear = new Date().getFullYear();
   <div class="site-footer__container">
     <div class="site-footer__grid">
       <div class="site-footer__brand">
-        <span class="site-footer__logo">Frederick Salazar</span>
-        <span class="site-footer__role">Data Engineer</span>
+        <div class="site-footer__brand-top">
+          <span class="site-footer__logo">Frederick Salazar</span>
+          <img
+            src="/images/profile.png"
+            alt="Frederick Salazar"
+            class="site-footer__avatar"
+            width="48"
+            height="48"
+            loading="lazy"
+          />
+        </div>
+        <span class="site-footer__role">Experto Data Strategist · Data Architect · Data Engineering</span>
         <p class="site-footer__tagline">
           Transformando datos en decisiones estratégicas desde 2014.
         </p>
@@ -37,14 +47,16 @@ const currentYear = new Date().getFullYear();
         <nav>
           <a href="https://github.com/fredericksalazar" target="_blank" rel="noopener noreferrer">
             GitHub
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 2.02-.862-.586-1.131-.148-2.772-.148-2.772 0-.657.235-1.195.619-1.578 1.645-.186 3.355.645 5.002.645 1.647 0 3.357-.831 5.002-1.017.384.383.619.921.619 1.578 0 1.249-.178 2.488-.54 3.624 1.237.927 2.067 2.576 2.067 4.424 0 4.614-2.807 5.627-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           </a>
           <a href="https://linkedin.com/in/fredericksalazar" target="_blank" rel="noopener noreferrer">
             LinkedIn
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
           </a>
-          <a href="https://twitter.com/fredericksalazar" target="_blank" rel="noopener noreferrer">
-            Twitter
+          <a href="https://www.kaggle.com/fredericksalazar" target="_blank" rel="noopener noreferrer">
+            Kaggle
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.353c0-.233.118-.353.354-.353h2.431c.234 0 .351.12.351.353v14.343l6.203-6.272c.165-.165.33-.246.495-.246h3.239c.144 0 .236.06.285.18.046.149.034.255-.036.315l-6.555 6.344 6.836 8.507c.095.104.117.208.07.334"/></svg>
           </a>
-          <a href="mailto:fsalazars@uoc.edu">Email</a>
         </nav>
       </div>
       
@@ -150,16 +162,32 @@ const currentYear = new Date().getFullYear();
     gap: 0.25rem;
   }
 
+  .site-footer__brand-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
   .site-footer__logo {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--color-text-primary);
   }
 
+  .site-footer__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-accent);
+    flex-shrink: 0;
+  }
+
   .site-footer__role {
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     color: var(--color-accent);
     font-weight: 500;
+    line-height: 1.4;
   }
 
   .site-footer__tagline {
@@ -167,13 +195,6 @@ const currentYear = new Date().getFullYear();
     color: var(--color-text-secondary);
     font-size: 0.9rem;
     line-height: 1.5;
-  }
-
-  .site-footer__links nav {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
   }
 
   .site-footer__heading {
@@ -184,15 +205,35 @@ const currentYear = new Date().getFullYear();
     text-transform: uppercase;
   }
 
+  .site-footer__links nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
   .site-footer__links a {
     color: var(--color-text-secondary);
     text-decoration: none;
     font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     transition: color 0.15s;
+  }
+
+  .site-footer__links a svg {
+    flex-shrink: 0;
+    opacity: 0.6;
+    transition: opacity 0.15s;
   }
 
   .site-footer__links a:hover {
     color: var(--color-accent);
+  }
+
+  .site-footer__links a:hover svg {
+    opacity: 1;
   }
 
   .site-footer__contact {
