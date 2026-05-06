@@ -147,11 +147,22 @@ const { badge, title, subtitle, kpis = [], tags = [], image, class: className } 
   @keyframes fadeInRight {
     from {
       opacity: 0;
-      transform: translateX(20px);
+      transform: translateX(40px) scale(0.96);
     }
     to {
       opacity: 1;
-      transform: translateX(0);
+      transform: translateX(0) scale(1);
+    }
+  }
+
+  @keyframes haloIn {
+    from {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 
@@ -170,7 +181,7 @@ const { badge, title, subtitle, kpis = [], tags = [], image, class: className } 
     position: relative;
     overflow: clip;
     width: 100%;
-    min-height: 660px;
+    min-height: 680px;
     display: flex;
     flex-direction: column;
     font-family: "Google Sans Flex", "Google Sans", system-ui, -apple-system,
@@ -201,16 +212,21 @@ const { badge, title, subtitle, kpis = [], tags = [], image, class: className } 
     inset: 0;
     background-image: radial-gradient(
       circle,
-      #2563eb 1px,
-      transparent 1px
+      #0047ab 0.9px,
+      transparent 1.1px
     );
-    background-size: 28px 28px;
+    background-size: 22px 22px;
     pointer-events: none;
     z-index: var(--z-hero-bg);
-    opacity: 0.12;
+    opacity: 0.28;
     mask-image: radial-gradient(
-      ellipse 100% 80% at 50% 50%,
-      black 40%,
+      ellipse 110% 90% at 50% 50%,
+      black 55%,
+      transparent 100%
+    );
+    -webkit-mask-image: radial-gradient(
+      ellipse 110% 90% at 50% 50%,
+      black 55%,
       transparent 100%
     );
   }
@@ -291,26 +307,53 @@ const { badge, title, subtitle, kpis = [], tags = [], image, class: className } 
     z-index: var(--z-hero-content);
   }
 
-  /* Derecha: visual */
+  /* Derecha: visual — contenedor sin padding, imagen llena 100% */
   .hero__visual {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     z-index: var(--z-hero-visual);
   }
 
-  .hero__image {
+  /* Halo / glow detrás de la imagen */
+  .hero__visual::before {
+    content: "";
     position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    inset: 0;
+    margin: auto;
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.22) 0%,
+      rgba(96, 165, 250, 0.1) 35%,
+      transparent 70%
+    );
+    filter: blur(48px);
+    pointer-events: none;
+    z-index: 0;
+    animation: haloIn 1.2s ease-out 0.15s backwards;
+  }
+
+  /* Imagen: llena el cell visual y se centra. Con el hero más alto (min-height 780px),
+     el cell tiene proporción ~4:3 que coincide con la imagen → al usar object-fit:contain
+     con object-position:center, la imagen escala hasta casi llenar el cell, centrada
+     entre el borde de la columna izquierda y el borde derecho de la página.
+     Aplica también al contenido slotted con la misma clase. */
+  .hero__image,
+  .hero__visual :global(.hero__image) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
     height: 100%;
-    width: auto;
-    max-width: none;
     object-fit: contain;
-    object-position: right center;
+    object-position: center center;
     display: block;
     pointer-events: none;
-    animation: fadeInRight 0.8s ease-out backwards;
+    z-index: 1;
+    /* La imagen ya tiene fondo transparente → no necesita mask agresiva.
+       Solo un drop-shadow azul muy sutil para profundidad sin que flote. */
+    filter: drop-shadow(0 6px 18px rgba(37, 99, 235, 0.12));
+    animation: fadeInRight 0.9s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   }
 
   /* ── Badge de estado ── */
@@ -542,6 +585,7 @@ const { badge, title, subtitle, kpis = [], tags = [], image, class: className } 
     .hero__content {
       padding: 3rem 2rem;
     }
+
   }
 
   @media (max-width: 768px) {
