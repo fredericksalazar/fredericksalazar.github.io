@@ -15,6 +15,52 @@ const { Content } = await render(proyecto);
 
 const hasGithub = proyecto.data.github && proyecto.data.github !== '';
 const hasDemo   = proyecto.data.demo   && proyecto.data.demo   !== '';
+
+const SITE_URL = 'https://fredericksalazar.github.io';
+
+const isDataCompass = proyecto.id === 'datacompass';
+const softwareSchema = isDataCompass ? {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'DataCompass',
+  alternateName: 'Data Compass',
+  description: 'Plataforma web gratuita que evalúa la madurez del gobierno de datos de tu organización con el framework CMMI y entrega un diagnóstico ejecutivo accionable en menos de 10 minutos.',
+  url: 'https://data-compass-app.web.app',
+  applicationCategory: 'BusinessApplication',
+  applicationSubCategory: 'Data Governance Assessment',
+  operatingSystem: 'Web',
+  inLanguage: 'es',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+  },
+  author: {
+    '@type': 'Person',
+    name: 'Frederick Salazar',
+    url: SITE_URL,
+  },
+  creator: {
+    '@type': 'Person',
+    name: 'Frederick Salazar',
+    url: SITE_URL,
+  },
+  image: proyecto.data.imagen ? new URL(proyecto.data.imagen, SITE_URL).href : undefined,
+  screenshot: [
+    new URL('/images/proyectos/datacompass-dashboard.png', SITE_URL).href,
+    new URL('/images/proyectos/datacompass-roadmap.png', SITE_URL).href,
+    new URL('/images/proyectos/datacompass-summary.png', SITE_URL).href,
+  ],
+  featureList: [
+    'Evaluación de madurez basada en framework CMMI',
+    'Score global y radar por dominios',
+    'Roadmap de los 5 niveles de madurez',
+    'Resumen ejecutivo con recomendaciones priorizadas',
+    'Diagnóstico en menos de 10 minutos',
+  ],
+  keywords: 'gobierno de datos, data governance, madurez de datos, CMMI, evaluación de datos, diagnóstico de datos, calidad de datos, arquitectura de datos',
+} : null;
 ---
 
 <BaseLayout
@@ -22,6 +68,10 @@ const hasDemo   = proyecto.data.demo   && proyecto.data.demo   !== '';
   description={proyecto.data.descripcion}
   image={proyecto.data.imagen}
 >
+  {softwareSchema && (
+    <script type="application/ld+json" set:html={JSON.stringify(softwareSchema)} />
+  )}
+
   <nav class="breadcrumb"><a href="/proyectos">← Proyectos</a></nav>
 
   <article>
@@ -60,7 +110,7 @@ const hasDemo   = proyecto.data.demo   && proyecto.data.demo   !== '';
             href={proyecto.data.demo}
             target="_blank"
             rel="noopener noreferrer"
-            class="btn btn--outline"
+            class={`btn ${hasGithub ? 'btn--outline' : 'btn--primary'}`}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
@@ -199,6 +249,31 @@ const hasDemo   = proyecto.data.demo   && proyecto.data.demo   !== '';
   .prose :global(th) { background: var(--color-hover); font-weight: 600; color: var(--color-text-primary); }
   .prose :global(hr) { border: none; border-top: 1px solid var(--color-border); margin: 2rem 0; }
   .prose :global(strong) { color: var(--color-text-primary); font-weight: 600; }
+
+  .prose :global(.cta-wrap) {
+    margin: 2rem 0;
+    text-align: center;
+  }
+  .prose :global(.cta-button) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--color-accent);
+    color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 12px var(--color-accent-glow);
+    transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .prose :global(.cta-button:hover) {
+    background: var(--color-accent-hover);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.28);
+  }
 
   .proj-footer {
     margin-top: 3rem; padding-top: 1.5rem;

@@ -8,7 +8,7 @@ github: "https://github.com/fredericksalazar/analisis-elecciones-colombia"
 demo: "https://fredericksalazar.github.io/analisis-elecciones-colombia/"
 imagen: "/images/blog/image-10.png"
 destacado: true
-orden: 1
+orden: 3
 ---
 
 Análisis detallado de las elecciones legislativas en Colombia 2022-2026. Un proyecto de visualización de datos electorales que transforma los resultados oficiales de la Registraduría en conocimiento accionable.

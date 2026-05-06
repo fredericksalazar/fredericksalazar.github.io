@@ -8,7 +8,7 @@ github: "https://github.com/fredericksalazar/OllamaFX"
 demo: "https://github.com/fredericksalazar/OllamaFX/releases"
 imagen: "/images/proyectos/ollamafx-rag.png"
 destacado: true
-orden: 1
+orden: 2
 ---
 
 **OllamaFX** es un proyecto personal que nació de una necesidad clara: quería interactuar con mis modelos de lenguaje locales (LLMs) a través de una interfaz que fuera rápida, visualmente atractiva y que no dependiera de un navegador web.

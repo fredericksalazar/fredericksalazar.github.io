@@ -8,7 +8,7 @@ github: ""
 demo: ""
 imagen: "/images/proyectos/elecciones_presidenciales_colombia_2022.png"
 destacado: true
-orden: 2
+orden: 4
 ---
 
 **Abstract:** Este proyecto es estrictamente académico y no pretende realizar predicciones, emitir conclusiones o juicios, tiene como principal objetivo brindar a los interesados una perspectiva acerca de que escriben los candidatos en sus perfiles de redes sociales. Este proyecto se ha desarrollado usando herramientas como **Machine Learning y NLP (Procesamiento de Lenguaje Natural)** con las cuales se realiza un análisis de las publicaciones realizadas a través de la red social Twitter, se pretende realizar un análisis de emociones y sentimientos asociados a los textos publicados.

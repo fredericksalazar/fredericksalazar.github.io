@@ -8,7 +8,7 @@ github: "https://github.com/fredericksalazar/dataAnalyst_world_population"
 demo: "https://www.kaggle.com/code/fredericksalazar/data-analysis-population-world"
 imagen: "/images/proyectos/world-map-1.png"
 destacado: true
-orden: 3
+orden: 5
 ---
 
 Este proyecto nace de la necesidad de aplicar los conocimiento técnicos adquiridos en el campo de la Ingeniería de datos y el análisis de datos con Python, tiene como objetivo fundamental brindar desde los datos una perspectiva descriptiva y de entendimiento acerca de la evolución de la población mundial durante el siglo XXI e intentar identificar factores para el crecimiento o decrecimiento poblacional en el mundo.
