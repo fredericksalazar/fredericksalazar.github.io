@@ -4,4 +4,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://fredericksalazar.github.io/sitemap.xml
+Sitemap: https://fredericksalazar.github.io/sitemap-index.xml
