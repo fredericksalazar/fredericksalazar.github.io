@@ -1,0 +1,235 @@
+---
+/**
+ * MapaColombia.astro — Visual del Hero del Observatorio.
+ *
+ * Mapa real de Colombia (public/images/co.svg, simplemaps) con las 32 capitales
+ * departamentales emitiendo ondas concéntricas. Sin sweep, sin grid, sin streams.
+ * Animación pura SVG + CSS.
+ */
+import fs from "node:fs";
+import path from "node:path";
+
+const svgFile = path.resolve(process.cwd(), "public/images/co.svg");
+let svgContent = fs.readFileSync(svgFile, "utf-8");
+
+// Limpieza: quita XML decl, comentarios, normaliza viewBox y libera fill/stroke
+svgContent = svgContent
+  .replace(/<\?xml[^>]*\?>/g, "")
+  .replace(/<!--[\s\S]*?-->/g, "")
+  .replace(/viewbox=/gi, "viewBox=")
+  .replace(/\sfill="#6f9c76"/g, "")
+  .replace(/\sstroke="#ffffff"/g, "");
+
+interface Capital {
+  cx: number;
+  cy: number;
+  name: string;
+  size?: "major" | "mid" | "small";
+  color?: "blue" | "deep" | "red";
+  delay: number;
+  rings?: number;
+  reach?: "near" | "far" | "long";
+}
+
+// 32 capitales departamentales (coordenadas tomadas de label_points del SVG).
+// CODC = Bogotá D.C. (capital de Cundinamarca y del país).
+const capitales: Capital[] = [
+  { name: "Bogotá",        cx: 509.6, cy: 506.3, size: "major", color: "deep", delay: 0.0, rings: 4, reach: "long" },
+  { name: "Medellín",      cx: 443.2, cy: 404.2, size: "mid",   color: "blue", delay: 0.4, rings: 3, reach: "far" },
+  { name: "Cali",          cx: 392.4, cy: 552.0, size: "mid",   color: "blue", delay: 0.8, rings: 3, reach: "far" },
+  { name: "Bucaramanga",   cx: 546.1, cy: 399.6, size: "mid",   color: "blue", delay: 1.2, rings: 3, reach: "far" },
+  { name: "Barranquilla",  cx: 465.0, cy: 196.2, size: "mid",   color: "blue", delay: 0.2, rings: 3, reach: "far" },
+  { name: "Cartagena",     cx: 504.7, cy: 300.2,                color: "blue", delay: 1.6, reach: "near" },
+  { name: "Santa Marta",   cx: 492.9, cy: 215.8,                color: "blue", delay: 2.0, reach: "near" },
+  { name: "Riohacha",      cx: 593.5, cy: 155.2,                color: "blue", delay: 0.6, reach: "near" },
+  { name: "Valledupar",    cx: 544.0, cy: 233.8,                color: "blue", delay: 2.4, reach: "near" },
+  { name: "Montería",      cx: 426.9, cy: 321.0,                color: "blue", delay: 1.0, reach: "near" },
+  { name: "Sincelejo",     cx: 466.4, cy: 292.8,                color: "blue", delay: 2.8, reach: "near" },
+  { name: "Manizales",     cx: 442.8, cy: 471.0,                color: "blue", delay: 0.5, reach: "near" },
+  { name: "Pereira",       cx: 414.9, cy: 471.6,                color: "blue", delay: 1.4, reach: "near" },
+  { name: "Armenia",       cx: 428.7, cy: 511.1,                color: "blue", delay: 2.6, reach: "near" },
+  { name: "Tunja",         cx: 554.7, cy: 462.8,                color: "blue", delay: 1.8, reach: "near" },
+  { name: "Ibagué",        cx: 451.9, cy: 540.8,                color: "blue", delay: 0.9, reach: "near" },
+  { name: "Neiva",         cx: 441.3, cy: 599.3,                color: "blue", delay: 2.2, reach: "near" },
+  { name: "Villavicencio", cx: 546.2, cy: 570.8,                color: "blue", delay: 0.3, reach: "far"  },
+  { name: "Yopal",         cx: 637.5, cy: 464.1,                color: "blue", delay: 1.5, reach: "far"  },
+  { name: "Arauca",        cx: 670.1, cy: 403.8,                color: "blue", delay: 0.7, reach: "far"  },
+  { name: "Cúcuta",        cx: 571.5, cy: 323.7,                color: "blue", delay: 2.5, reach: "near" },
+  { name: "Pto. Carreño",  cx: 758.7, cy: 491.8,                color: "blue", delay: 1.1, reach: "far"  },
+  { name: "Pasto",         cx: 318.1, cy: 663.6,                color: "blue", delay: 1.3, reach: "near" },
+  { name: "Popayán",       cx: 367.0, cy: 612.1,                color: "blue", delay: 2.7, reach: "near" },
+  { name: "Quibdó",        cx: 378.5, cy: 455.5,                color: "blue", delay: 1.9, reach: "far"  },
+  { name: "Florencia",     cx: 515.2, cy: 706.2,                color: "blue", delay: 0.1, reach: "near" },
+  { name: "Mocoa",         cx: 429.6, cy: 716.3,                color: "blue", delay: 2.1, reach: "near" },
+  { name: "Mitú",          cx: 681.3, cy: 692.0,                color: "blue", delay: 1.7, reach: "far"  },
+  { name: "S. J. Guaviare", cx: 609.0, cy: 644.7,               color: "blue", delay: 0.5, reach: "near" },
+  { name: "Inírida",       cx: 777.8, cy: 602.0,                color: "blue", delay: 2.3, reach: "far"  },
+  { name: "Leticia",       cx: 650.4, cy: 801.6,                color: "blue", delay: 1.3, rings: 3, reach: "long" },
+  { name: "San Andrés",    cx: 124.8, cy: 99.0,                 color: "blue", delay: 0.7, reach: "far"  },
+];
+---
+
+<div class="mc-wrap" aria-hidden="true">
+  <!-- Mapa real de Colombia (SVG inline) -->
+  <div class="mc-map" set:html={svgContent}></div>
+
+  <!-- Capa de pulsos + capitales -->
+  <svg
+    class="mc-overlay"
+    viewBox="0 0 1000 1000"
+    preserveAspectRatio="xMidYMid meet"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="32 capitales departamentales emitiendo señales de datos"
+  >
+    <defs>
+      <filter id="mc-glow" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="6" result="blur" />
+        <feMerge>
+          <feMergeNode in="blur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+
+    <!-- Capitales (puntos) -->
+    <g class="mc-cities">
+      {capitales.map((c) => (
+        <g class:list={["mc-city", `mc-city--${c.size ?? "small"}`]}>
+          {c.size === "major" && (
+            <circle cx={c.cx} cy={c.cy} r="14" class="mc-dot-ring">
+              <animate
+                attributeName="r"
+                values="14;19;14"
+                keyTimes="0;0.5;1"
+                dur="3s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="opacity"
+                values="0.4;0.85;0.4"
+                keyTimes="0;0.5;1"
+                dur="3s"
+                repeatCount="indefinite"
+              />
+            </circle>
+          )}
+          <circle
+            cx={c.cx}
+            cy={c.cy}
+            r={c.size === "major" ? 9 : c.size === "mid" ? 6.5 : 4.5}
+            class:list={["mc-dot", `mc-dot--${c.color ?? "blue"}`]}
+            filter={c.size === "major" ? "url(#mc-glow)" : undefined}
+          />
+        </g>
+      ))}
+    </g>
+  </svg>
+</div>
+
+<style>
+  .mc-wrap {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ── Mapa real (SVG inline) ── */
+  .mc-map {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: mc-map-in 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+  }
+
+  @keyframes mc-map-in {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .mc-map :global(svg) {
+    width: 100%;
+    height: 100%;
+    max-width: 750px;
+    max-height: 750px;
+    fill: rgba(15, 67, 163, 0.92);
+    stroke: rgba(255, 255, 255, 0.55);
+    stroke-width: 0.6;
+    stroke-linejoin: round;
+  }
+
+  /* Departamentos: hover sutil para profundidad visual */
+  .mc-map :global(svg path) {
+    transition: fill 0.3s ease;
+  }
+
+  /* Oculta los puntos auxiliares del SVG original */
+  .mc-map :global(#points),
+  .mc-map :global(#label_points) {
+    display: none;
+  }
+
+  /* ── Overlay (pulsos + capitales) ── */
+  .mc-overlay {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 750px;
+    max-height: 750px;
+    overflow: visible;
+    z-index: 2;
+  }
+
+  /* ── Capitales (puntos) ── */
+  .mc-cities {
+    opacity: 0;
+    animation: mc-fade 0.8s ease-out 1.2s forwards;
+  }
+
+  .mc-dot--blue,
+  .mc-dot--deep,
+  .mc-dot--red { fill: #ffffff; }
+
+  .mc-dot {
+    stroke: rgba(255, 255, 255, 0.4);
+    stroke-width: 1;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
+  }
+
+  .mc-dot-ring {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.45);
+    stroke-width: 1.5;
+  }
+
+  /* ── Pulsos (ondas concéntricas) ── */
+  /* ── Sonar Ping / Radar effect (SMIL: cross-browser, incluido Safari) ──
+     Los <animate> dentro de cada <circle> animan r, opacity y stroke-width.
+     CSS solo controla color, fill, glow. */
+  .mc-pulse {
+    fill: none;
+    stroke: #ffffff;
+  }
+
+  @keyframes mc-fade {
+    to { opacity: 1; }
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .mc-pulse, .mc-dot-ring, .mc-dot {
+      animation: none !important;
+    }
+    .mc-pulse { display: none; }
+    .mc-map, .mc-cities { opacity: 1; }
+  }
+</style>

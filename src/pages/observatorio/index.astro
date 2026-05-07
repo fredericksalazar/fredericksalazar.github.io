@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
+import MapaColombia from "../../components/observatorio/MapaColombia.astro";
 import DashboardNav from "../../components/observatorio/DashboardNav.astro";
 import KpiRow from "../../components/observatorio/KpiRow.astro";
 import ChartInflacion from "../../components/observatorio/ChartInflacion.astro";
@@ -23,10 +24,12 @@ const ultimoPeriodo = formatPeriodo(obs.metadata.cobertura.ultimo_periodo);
   <Hero
     badge={{ text: "Datos Públicos · Colombia" }}
     title="Observatorio de Datos de Colombia"
-    subtitle="Datos públicos de Colombia consolidados en un solo lugar. Dashboard interactivo, análisis y reportes sobre indicadores económicos, sociales y más."
+    subtitle="El Observatorio de Datos de Colombia consolida, procesa y publica los indicadores macroeconómicos que definen el pulso del país: para que cualquier persona lea la economía colombiana como un gerente lee el dashboard de su empresa."
     tags={["Inflación", "Empleo", "Comercio Exterior", "Sector Fiscal", "Monetario"]}
     showPartners={false}
-  />
+  >
+    <MapaColombia slot="visual" />
+  </Hero>
   <DashboardNav active="inflacion-tasa" />
 
   <div class="observatorio-container">
