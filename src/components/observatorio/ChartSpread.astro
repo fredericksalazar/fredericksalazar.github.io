@@ -1,0 +1,63 @@
+---
+import type { SerieFila } from "../../lib/observatorio/types";
+import { baseLayout, periodoToISODate } from "../../lib/observatorio/charts";
+import ChartContainer from "./ChartContainer.astro";
+import PlotlyChart from "./PlotlyChart.astro";
+
+interface Props {
+  serie: SerieFila[];
+}
+
+const { serie } = Astro.props;
+
+const data = serie.filter((r) => r.inflacion_anual !== null && r.tasa_interes !== null);
+
+const x = data.map((r) => periodoToISODate(r.periodo));
+const spread = data.map((r) => (r.tasa_interes as number) - (r.inflacion_anual as number));
+
+const barColors = spread.map((v) =>
+  v > 0 ? "rgba(214, 39, 40, 0.8)" : v < 0 ? "rgba(0, 160, 80, 0.8)" : "rgba(150, 150, 150, 0.6)",
+);
+
+const traces = [
+  {
+    type: "bar" as const,
+    x,
+    y: spread,
+    marker: { color: barColors },
+    name: "Diferencial",
+    hovertemplate: "<b>%{x|%b %Y}</b><br>Diferencial: %{y:.2f} pp<extra></extra>",
+  },
+];
+
+const layout = baseLayout({
+  margin: { l: 48, r: 24, t: 16, b: 40 },
+  showlegend: false,
+  barmode: "overlay",
+  shapes: [
+    {
+      type: "line",
+      x0: x[0],
+      x1: x[x.length - 1],
+      y0: 0,
+      y1: 0,
+      line: { color: "#1f2328", width: 2, dash: "solid" },
+    },
+  ],
+  hovermode: "x" as const,
+});
+---
+
+<ChartContainer
+  titulo="¿Qué tan 'caro' está el dinero en Colombia?"
+  pregunta="Diferencial entre Tasa del Banco de la República e Inflación (2004-2026). Barras rojas = freno (tasa > inflación), barras verdes = acelerador."
+  fuenteTexto="Cálculo propio sobre DANE (IPC) y Banco de la República (TPM)"
+>
+  <PlotlyChart
+    id="spread-barras"
+    traces={traces}
+    layout={layout}
+    height={500}
+    ariaLabel="Diferencial entre la tasa de intervención y la inflación anual, en puntos porcentuales"
+  />
+</ChartContainer>

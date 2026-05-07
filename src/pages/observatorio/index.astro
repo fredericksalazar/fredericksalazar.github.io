@@ -7,6 +7,7 @@ import KpiRow from "../../components/observatorio/KpiRow.astro";
 import ChartInflacion from "../../components/observatorio/ChartInflacion.astro";
 import ChartTasaInteres from "../../components/observatorio/ChartTasaInteres.astro";
 import ChartFrenoAcelerador from "../../components/observatorio/ChartFrenoAcelerador.astro";
+import ChartSpread from "../../components/observatorio/ChartSpread.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
 import { getObservatorio, getSerieAscending } from "../../lib/observatorio/data";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
@@ -42,6 +43,10 @@ const ultimoPeriodo = formatPeriodo(obs.metadata.cobertura.ultimo_periodo);
 
     <section class="charts-synthesis" aria-label="Síntesis: freno o acelerador">
       <ChartFrenoAcelerador serie={serieAsc} />
+    </section>
+
+    <section class="charts-synthesis" aria-label="Diferencial spread en barras">
+      <ChartSpread serie={serieAsc} />
     </section>
 
     <DashboardFooter metadata={obs.metadata} />
