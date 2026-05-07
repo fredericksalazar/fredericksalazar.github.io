@@ -8,6 +8,7 @@ import ChartInflacion from "../../components/observatorio/ChartInflacion.astro";
 import ChartTasaInteres from "../../components/observatorio/ChartTasaInteres.astro";
 import ChartFrenoAcelerador from "../../components/observatorio/ChartFrenoAcelerador.astro";
 import ChartSpread from "../../components/observatorio/ChartSpread.astro";
+import ChartInflacionHistorica from "../../components/observatorio/ChartInflacionHistorica.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
 import { getObservatorio, getSerieAscending } from "../../lib/observatorio/data";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
@@ -35,6 +36,10 @@ const ultimoPeriodo = formatPeriodo(obs.metadata.cobertura.ultimo_periodo);
 
   <div class="observatorio-container">
     <KpiRow indicadores={obs.indicadores} />
+
+    <section class="charts-synthesis" aria-label="Inflación histórica Colombia">
+      <ChartInflacionHistorica historico={obs.historico} />
+    </section>
 
     <section class="charts-grid" aria-label="Indicadores en columnas">
       <ChartInflacion serie={serieAsc} fuente={obs.metadata.fuentes.inflacion} />

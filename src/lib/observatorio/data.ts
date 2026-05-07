@@ -1,4 +1,4 @@
-import raw from "../../data/observatorio.json";
+import raw from "../../data/data_inflacion.json";
 import type { ObservatorioData, SerieFila } from "./types";
 
 const obs = raw as unknown as ObservatorioData;

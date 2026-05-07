@@ -59,6 +59,7 @@ export interface ObservatorioData {
   metadata: ObservatorioMetadata;
   indicadores: ObservatorioIndicadores;
   serie: SerieFila[];
+  historico: Record<string, number>;
 }
 
 export type SemanticIndicador = "inflacion" | "tasa" | "spread";

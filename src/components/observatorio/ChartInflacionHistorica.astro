@@ -1,0 +1,45 @@
+---
+import { baseLayout } from "../../lib/observatorio/charts";
+import ChartContainer from "./ChartContainer.astro";
+import PlotlyChart from "./PlotlyChart.astro";
+
+interface Props {
+  historico: Record<string, number>;
+}
+
+const { historico } = Astro.props;
+
+const years = Object.keys(historico).sort();
+const valores = years.map((y) => historico[y]);
+
+const traces = [
+  {
+    type: "bar" as const,
+    x: years,
+    y: valores,
+    marker: { color: "#2563eb", line: { color: "#1d4ed8", width: 0.5 } },
+    name: "Inflación anual",
+    hovertemplate: "<b>%{x}</b><br>Inflación: %{y:.2f}%<extra></extra>",
+  },
+];
+
+const layout = baseLayout({
+  margin: { l: 48, r: 24, t: 16, b: 40 },
+  showlegend: false,
+  hovermode: "x" as const,
+});
+---
+
+<ChartContainer
+  titulo="Inflación histórica de Colombia"
+  pregunta="Inflación anual desde 1960 según datos del Banco Mundial. Perspectiva de largo plazo."
+  fuenteTexto="Banco Mundial — World Development Indicators"
+>
+  <PlotlyChart
+    id="inflacion-historica"
+    traces={traces}
+    layout={layout}
+    height={420}
+    ariaLabel="Inflación anual histórica de Colombia desde 1960"
+  />
+</ChartContainer>

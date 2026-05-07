@@ -38,10 +38,11 @@ from pathlib import Path
 import pandas as pd
 
 from ingestion.processing.consolidate import EPSILON
+from ingestion.processing.historico import leer_inflacion_historica
 from ingestion.sources import banrep, dane_ipc
 
 CSV_FILENAME = "indicadores-observatorio-economico-colombia.csv"
-JSON_FILENAME = "observatorio.json"
+JSON_FILENAME = "data_inflacion.json"
 
 
 def actualizar_historico_csv(df_nuevo: pd.DataFrame, path: Path) -> tuple[Path, bool]:
@@ -128,6 +129,12 @@ def generar_observatorio_json(df: pd.DataFrame, path: Path) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     df = df.sort_values("periodo").reset_index(drop=True)
 
+    # Cargar datos históricos del World Bank
+    csv_world_bank = path.parent.parent.parent / "data" / "raw" / "world_bank" / "macro_economics_indicators_2026.csv"
+    historico = {}
+    if csv_world_bank.exists():
+        historico = leer_inflacion_historica(csv_world_bank)
+
     payload = {
         "metadata": {
             "ultima_actualizacion": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -185,6 +192,7 @@ def generar_observatorio_json(df: pd.DataFrame, path: Path) -> Path:
             ),
         },
         "serie": [_fila_a_dict(row) for _, row in df.iloc[::-1].iterrows()],
+        "historico": historico,
     }
 
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
