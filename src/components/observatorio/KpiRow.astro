@@ -1,0 +1,59 @@
+---
+import type { ObservatorioIndicadores } from "../../lib/observatorio/types";
+import { spreadEstadoLabel } from "../../lib/observatorio/formatters";
+import IndicadorCard from "./IndicadorCard.astro";
+
+interface Props {
+  indicadores: ObservatorioIndicadores;
+}
+
+const { indicadores } = Astro.props;
+const spreadValue = indicadores.spread.actual.valor;
+const spreadEstado = spreadEstadoLabel(spreadValue);
+---
+
+<section class="kpi-row" aria-label="Indicadores actuales">
+  <IndicadorCard
+    titulo="Inflación anual"
+    indicador={indicadores.inflacion_anual}
+    semantic="inflacion"
+  />
+  <IndicadorCard
+    titulo="Inflación mensual"
+    indicador={indicadores.inflacion_mensual}
+    semantic="inflacion"
+  />
+  <IndicadorCard
+    titulo="Tasa BanRep"
+    indicador={indicadores.tasa_interes}
+    semantic="tasa"
+  />
+  <IndicadorCard
+    titulo="Spread real"
+    indicador={indicadores.spread}
+    semantic="spread"
+    unidadOverride="pp"
+    subtitle={spreadEstado}
+  />
+</section>
+
+<style>
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin: 0 auto 1.5rem;
+  }
+
+  @media (max-width: 1024px) {
+    .kpi-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .kpi-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

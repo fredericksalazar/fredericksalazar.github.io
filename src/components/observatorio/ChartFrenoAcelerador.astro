@@ -1,0 +1,156 @@
+---
+import type { SerieFila } from "../../lib/observatorio/types";
+import { COLORS, baseLayout, periodoToISODate } from "../../lib/observatorio/charts";
+import ChartContainer from "./ChartContainer.astro";
+import PlotlyChart from "./PlotlyChart.astro";
+
+interface Props {
+  serie: SerieFila[];
+}
+
+const { serie } = Astro.props;
+
+const x = serie.map((r) => periodoToISODate(r.periodo));
+const inflacion = serie.map((r) => r.inflacion_anual);
+const tasa = serie.map((r) => r.tasa_interes);
+
+const tasaWhereFreno = serie.map((r) =>
+  r.tasa_interes !== null &&
+  r.inflacion_anual !== null &&
+  r.tasa_interes > r.inflacion_anual
+    ? r.tasa_interes
+    : null,
+);
+
+const inflacionWhereAcelerador = serie.map((r) =>
+  r.tasa_interes !== null &&
+  r.inflacion_anual !== null &&
+  r.inflacion_anual > r.tasa_interes
+    ? r.inflacion_anual
+    : null,
+);
+
+const traces = [
+  {
+    name: "Inflación anual",
+    x,
+    y: inflacion,
+    mode: "lines",
+    line: { color: COLORS.inflacion, width: 2.2 },
+    hovertemplate: "<b>%{x|%b %Y}</b><br>Inflación anual: %{y:.2f}%<extra></extra>",
+    legendrank: 1,
+  },
+  {
+    name: "Freno (tasa > inflación)",
+    x,
+    y: tasaWhereFreno,
+    mode: "lines",
+    line: { width: 0, color: "rgba(0,0,0,0)" },
+    fill: "tonexty",
+    fillcolor: COLORS.freno,
+    connectgaps: false,
+    hoverinfo: "skip",
+    legendrank: 3,
+  },
+  {
+    name: "Tasa BanRep",
+    x,
+    y: tasa,
+    mode: "lines",
+    line: { color: COLORS.tasa, width: 2.2, shape: "hv" },
+    hovertemplate: "<b>%{x|%b %Y}</b><br>Tasa BanRep: %{y:.2f}%<extra></extra>",
+    legendrank: 2,
+  },
+  {
+    name: "Acelerador (inflación > tasa)",
+    x,
+    y: inflacionWhereAcelerador,
+    mode: "lines",
+    line: { width: 0, color: "rgba(0,0,0,0)" },
+    fill: "tonexty",
+    fillcolor: COLORS.acelerador,
+    connectgaps: false,
+    hoverinfo: "skip",
+    legendrank: 4,
+  },
+];
+
+const layout = baseLayout({
+  margin: { l: 48, r: 24, t: 16, b: 48 },
+  showlegend: true,
+  legend: {
+    orientation: "h",
+    yanchor: "bottom",
+    y: 1.04,
+    xanchor: "left",
+    x: 0,
+    font: { size: 11 },
+    bgcolor: "rgba(0,0,0,0)",
+  },
+  hovermode: "x unified",
+});
+---
+
+<ChartContainer
+  titulo="¿Está el Banco frenando o acelerando la economía?"
+  pregunta="Cuando la tasa BanRep supera a la inflación anual, hay tasa real positiva (freno). Cuando la inflación supera a la tasa, hay tasa real negativa (acelerador)."
+  fuenteTexto="Cálculo propio sobre DANE (IPC) y Banco de la República (TPM)"
+>
+  <PlotlyChart
+    id="freno-acelerador"
+    traces={traces}
+    layout={layout}
+    height={460}
+    ariaLabel="Evolución comparada de la inflación anual y la tasa de intervención BanRep, con áreas coloreadas indicando freno o acelerador monetario"
+  />
+
+  <div class="freno-callout" slot="footer-extra">
+    <div class="freno-callout__legend">
+      <span class="freno-callout__swatch freno-callout__swatch--freno" aria-hidden="true"></span>
+      <span class="freno-callout__label">Freno: <strong>tasa real positiva</strong></span>
+    </div>
+    <div class="freno-callout__legend">
+      <span class="freno-callout__swatch freno-callout__swatch--acelerador" aria-hidden="true"></span>
+      <span class="freno-callout__label">Acelerador: <strong>tasa real negativa</strong></span>
+    </div>
+  </div>
+</ChartContainer>
+
+<style>
+  .freno-callout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+  }
+
+  .freno-callout__legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .freno-callout__swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .freno-callout__swatch--freno {
+    background: rgba(220, 38, 38, 0.35);
+    border: 1px solid rgba(220, 38, 38, 0.5);
+  }
+
+  .freno-callout__swatch--acelerador {
+    background: rgba(34, 197, 94, 0.35);
+    border: 1px solid rgba(34, 197, 94, 0.5);
+  }
+
+  .freno-callout__label strong {
+    color: var(--color-text-secondary);
+    font-weight: 600;
+  }
+</style>

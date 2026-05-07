@@ -1,0 +1,106 @@
+---
+import type { Fuente } from "../../lib/observatorio/types";
+
+interface Props {
+  titulo: string;
+  pregunta?: string;
+  fuente?: Fuente;
+  fuenteTexto?: string;
+}
+
+const { titulo, pregunta, fuente, fuenteTexto } = Astro.props;
+---
+
+<article class="chart-card">
+  <header class="chart-card__header">
+    <h3 class="chart-card__title">{titulo}</h3>
+    {pregunta && <p class="chart-card__question">{pregunta}</p>}
+  </header>
+
+  <div class="chart-card__body">
+    <slot />
+  </div>
+
+  <footer class="chart-card__footer">
+    {fuente ? (
+      <span class="chart-card__source">
+        Fuente:
+        <a href={fuente.url} target="_blank" rel="noopener noreferrer">
+          {fuente.nombre}
+        </a>
+      </span>
+    ) : fuenteTexto ? (
+      <span class="chart-card__source">{fuenteTexto}</span>
+    ) : null}
+    <slot name="footer-extra" />
+  </footer>
+</article>
+
+<style>
+  .chart-card {
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1.25rem 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .chart-card:hover {
+    border-color: rgba(37, 99, 235, 0.3);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  }
+
+  .chart-card__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .chart-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .chart-card__question {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .chart-card__body {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .chart-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 0.625rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .chart-card__source {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .chart-card__source a {
+    color: var(--color-accent);
+    text-decoration: none;
+    margin-left: 0.25rem;
+  }
+
+  .chart-card__source a:hover {
+    text-decoration: underline;
+  }
+</style>

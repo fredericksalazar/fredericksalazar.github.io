@@ -1,0 +1,159 @@
+---
+import type { ObservatorioMetadata } from "../../lib/observatorio/types";
+import { formatPeriodo, formatFechaActualizacion } from "../../lib/observatorio/formatters";
+import { getCommitUrl } from "../../lib/observatorio/data";
+
+interface Props {
+  metadata: ObservatorioMetadata;
+}
+
+const { metadata } = Astro.props;
+const ultimoPeriodo = formatPeriodo(metadata.cobertura.ultimo_periodo);
+const fechaActualizacion = formatFechaActualizacion(metadata.ultima_actualizacion);
+const commitUrl = getCommitUrl();
+---
+
+<section class="obs-hero" aria-label="Encabezado del Observatorio">
+  <div class="obs-hero__inner">
+    <span class="obs-hero__eyebrow">Observatorio Económico · Colombia</span>
+    <h1 class="obs-hero__title">
+      El pulso de la economía colombiana,
+      <span class="obs-hero__title--accent">en tiempo casi real</span>
+    </h1>
+    <p class="obs-hero__subtitle">
+      Indicadores oficiales de inflación y tasa de intervención del Banco de la República,
+      consolidados y actualizados automáticamente cada mes desde fuentes públicas.
+    </p>
+
+    <div class="obs-hero__meta">
+      <span class="obs-hero__meta-item">
+        <strong>Por</strong> Frederick Salazar
+      </span>
+      <span class="obs-hero__meta-divider" aria-hidden="true">·</span>
+      <span class="obs-hero__meta-item">
+        Datos al cierre de <strong>{ultimoPeriodo}</strong>
+      </span>
+      <span class="obs-hero__meta-divider" aria-hidden="true">·</span>
+      <a
+        href={commitUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="obs-hero__commit"
+        title={`Última actualización: ${fechaActualizacion}`}
+      >
+        <span class="obs-hero__pulse" aria-hidden="true"></span>
+        Ver commit más reciente
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .obs-hero {
+    background: linear-gradient(180deg, #ffffff 0%, var(--color-bg) 100%);
+    border-bottom: 1px solid var(--color-border);
+    padding: 2.5rem 1.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .obs-hero::before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    right: -120px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, var(--color-accent-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .obs-hero__inner {
+    max-width: 980px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .obs-hero__eyebrow {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.875rem;
+  }
+
+  .obs-hero__title {
+    font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0 0 0.875rem;
+  }
+
+  .obs-hero__title--accent {
+    color: var(--color-accent);
+  }
+
+  .obs-hero__subtitle {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+    max-width: 720px;
+    margin: 0 0 1.25rem;
+  }
+
+  .obs-hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .obs-hero__meta-item strong {
+    color: var(--color-text-secondary);
+    font-weight: 600;
+  }
+
+  .obs-hero__meta-divider {
+    color: var(--color-border);
+  }
+
+  .obs-hero__commit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .obs-hero__commit:hover {
+    text-decoration: underline;
+  }
+
+  .obs-hero__pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #16a34a;
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+    animation: hero-pulse 2s infinite;
+  }
+
+  @keyframes hero-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.6); }
+    70% { box-shadow: 0 0 0 8px rgba(22, 163, 74, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+  }
+
+  @media (max-width: 640px) {
+    .obs-hero {
+      padding: 2rem 1.25rem 1.5rem;
+    }
+  }
+</style>

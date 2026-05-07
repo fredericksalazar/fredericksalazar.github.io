@@ -1,0 +1,124 @@
+---
+interface Props {
+  active: string;
+}
+
+const { active } = Astro.props;
+
+const dashboards = [
+  { slug: "inflacion-tasa", label: "Inflación vs Tasa", href: "/observatorio" },
+  { slug: "empleo", label: "Empleo", disabled: true, badge: "Próximamente" },
+  { slug: "comercio", label: "Comercio Exterior", disabled: true, badge: "Próximamente" },
+  { slug: "fiscal", label: "Sector Fiscal", disabled: true, badge: "Próximamente" },
+];
+---
+
+<nav class="dashboard-nav" aria-label="Navegación de dashboards">
+  <div class="dashboard-nav__inner">
+    <ul class="dashboard-nav__list">
+      {dashboards.map((d) => {
+        const isActive = d.slug === active;
+        if (d.disabled) {
+          return (
+            <li class="dashboard-nav__item dashboard-nav__item--disabled">
+              <span class="dashboard-nav__label">{d.label}</span>
+              {d.badge && <span class="dashboard-nav__badge">{d.badge}</span>}
+            </li>
+          );
+        }
+        return (
+          <li class={`dashboard-nav__item ${isActive ? "dashboard-nav__item--active" : ""}`}>
+            <a href={d.href} class="dashboard-nav__link">
+              {isActive && <span class="dashboard-nav__dot" aria-hidden="true"></span>}
+              <span class="dashboard-nav__label">{d.label}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</nav>
+
+<style>
+  .dashboard-nav {
+    background: var(--color-sidebar);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.92);
+  }
+
+  .dashboard-nav__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .dashboard-nav__list {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .dashboard-nav__item {
+    flex-shrink: 0;
+  }
+
+  .dashboard-nav__link,
+  .dashboard-nav__item--disabled {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1rem;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .dashboard-nav__link:hover {
+    color: var(--color-accent);
+    border-bottom-color: rgba(37, 99, 235, 0.3);
+  }
+
+  .dashboard-nav__item--active .dashboard-nav__link {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .dashboard-nav__item--disabled {
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+  }
+
+  .dashboard-nav__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  .dashboard-nav__badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    background: var(--color-hover);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+</style>

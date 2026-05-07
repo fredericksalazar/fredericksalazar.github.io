@@ -1,0 +1,167 @@
+---
+import type { Indicador, SemanticIndicador } from "../../lib/observatorio/types";
+import {
+  formatPct,
+  formatPp,
+  formatPeriodoCorto,
+  variacionClass,
+  variacionIcon,
+} from "../../lib/observatorio/formatters";
+
+interface Props {
+  titulo: string;
+  indicador: Indicador;
+  semantic: SemanticIndicador;
+  unidadOverride?: "%" | "pp";
+  subtitle?: string;
+}
+
+const { titulo, indicador, semantic, unidadOverride, subtitle } = Astro.props;
+const { actual, unidad } = indicador;
+
+const unidadFinal = unidadOverride ?? unidad;
+const valorFmt =
+  unidadFinal === "pp"
+    ? `${actual.valor.toFixed(2)} pp`
+    : formatPct(actual.valor, 2);
+
+const deltaFmt = formatPp(actual.delta, 2);
+const varClass = variacionClass(actual.variacion, semantic);
+const icon = variacionIcon(actual.variacion);
+const periodoCorto = formatPeriodoCorto(actual.periodo);
+---
+
+<article class={`kpi-card kpi-card--${semantic}`}>
+  <p class="kpi-card__label">{titulo}</p>
+  <p class="kpi-card__value">
+    <span class="kpi-card__number">{valorFmt}</span>
+    <span class={`kpi-card__icon ${varClass}`} aria-hidden="true">{icon}</span>
+  </p>
+  <p class="kpi-card__delta">
+    <span class={varClass}>{deltaFmt}</span>
+    <span class="kpi-card__period">vs mes anterior</span>
+  </p>
+  {subtitle && <p class="kpi-card__sub">{subtitle}</p>}
+  <p class="kpi-card__stamp">{periodoCorto}</p>
+</article>
+
+<style>
+  .kpi-card {
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1.25rem 1.25rem 1.125rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .kpi-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--color-accent);
+    opacity: 0.85;
+  }
+
+  .kpi-card--inflacion::before {
+    background: #dc2626;
+  }
+
+  .kpi-card--tasa::before {
+    background: var(--color-accent);
+  }
+
+  .kpi-card--spread::before {
+    background: linear-gradient(90deg, #dc2626 0%, #16a34a 100%);
+  }
+
+  .kpi-card:hover {
+    border-color: rgba(37, 99, 235, 0.3);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+    transform: translateY(-1px);
+  }
+
+  .kpi-card__label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+
+  .kpi-card__value {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 0;
+  }
+
+  .kpi-card__number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .kpi-card__icon {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .kpi-card__delta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  .kpi-card__period {
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+  }
+
+  .kpi-card__sub {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    margin: 0.125rem 0 0;
+  }
+
+  .kpi-card__stamp {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    margin: 0.25rem 0 0;
+    letter-spacing: 0.02em;
+  }
+
+  .var-bad {
+    color: #dc2626;
+  }
+
+  .var-good {
+    color: #16a34a;
+  }
+
+  .var-igual {
+    color: var(--color-text-muted);
+  }
+
+  .var-neutral {
+    color: var(--color-accent);
+  }
+
+  .var-none {
+    color: var(--color-text-muted);
+  }
+</style>

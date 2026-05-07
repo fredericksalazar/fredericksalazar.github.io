@@ -1,0 +1,91 @@
+---
+import type { Fuente, SerieFila } from "../../lib/observatorio/types";
+import { COLORS, baseLayout, extractSerie } from "../../lib/observatorio/charts";
+import ChartContainer from "./ChartContainer.astro";
+import PlotlyChart from "./PlotlyChart.astro";
+
+interface Props {
+  serie: SerieFila[];
+  fuente: Fuente;
+}
+
+const { serie, fuente } = Astro.props;
+const { x, y } = extractSerie(serie, "inflacion_anual");
+
+const traces = [
+  {
+    name: "Inflación anual",
+    x,
+    y,
+    mode: "lines",
+    line: { color: COLORS.inflacion, width: 2.2 },
+    fill: "tozeroy",
+    fillcolor: "rgba(220, 38, 38, 0.06)",
+    hovertemplate: "<b>%{x|%b %Y}</b><br>Inflación anual: %{y:.2f}%<extra></extra>",
+  },
+];
+
+const xMin = x[0];
+const xMax = x[x.length - 1];
+
+const layout = baseLayout({
+  shapes: [
+    {
+      type: "rect",
+      xref: "x",
+      yref: "y",
+      x0: xMin,
+      x1: xMax,
+      y0: 2,
+      y1: 4,
+      fillcolor: COLORS.metaBanda,
+      line: { width: 0 },
+      layer: "below",
+    },
+    {
+      type: "line",
+      xref: "x",
+      yref: "y",
+      x0: xMin,
+      x1: xMax,
+      y0: 3,
+      y1: 3,
+      line: {
+        color: COLORS.metaLinea,
+        width: 1,
+        dash: "dot",
+      },
+      layer: "below",
+    },
+  ],
+  annotations: [
+    {
+      x: xMax,
+      y: 3,
+      xref: "x",
+      yref: "y",
+      text: "Meta BanRep · 3%",
+      showarrow: false,
+      font: { size: 10, color: "#16a34a" },
+      bgcolor: "rgba(255,255,255,0.85)",
+      borderpad: 3,
+      xanchor: "right",
+      yanchor: "bottom",
+    },
+  ],
+});
+---
+
+<ChartContainer
+  titulo="Inflación anual"
+  pregunta="¿Cómo ha evolucionado el alza de precios al consumidor?"
+  fuente={fuente}
+>
+  <PlotlyChart
+    id="inflacion-anual"
+    traces={traces}
+    layout={layout}
+    height={340}
+    ariaLabel="Evolución mensual de la inflación anual de Colombia desde 2004"
+  />
+</ChartContainer>

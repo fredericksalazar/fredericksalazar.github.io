@@ -1,0 +1,71 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ObservatorioHero from "../../components/observatorio/ObservatorioHero.astro";
+import DashboardNav from "../../components/observatorio/DashboardNav.astro";
+import KpiRow from "../../components/observatorio/KpiRow.astro";
+import ChartInflacion from "../../components/observatorio/ChartInflacion.astro";
+import ChartTasaInteres from "../../components/observatorio/ChartTasaInteres.astro";
+import ChartFrenoAcelerador from "../../components/observatorio/ChartFrenoAcelerador.astro";
+import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
+import { getObservatorio, getSerieAscending } from "../../lib/observatorio/data";
+
+const obs = getObservatorio();
+const serieAsc = getSerieAscending();
+---
+
+<BaseLayout
+  title="Observatorio Económico de Colombia"
+  description="Dashboard ejecutivo con la inflación y la tasa de intervención del Banco de la República, actualizado cada mes con datos oficiales de DANE y BanRep."
+  fullWidth={true}
+>
+  <ObservatorioHero metadata={obs.metadata} />
+  <DashboardNav active="inflacion-tasa" />
+
+  <div class="observatorio-container">
+    <KpiRow indicadores={obs.indicadores} />
+
+    <section class="charts-grid" aria-label="Indicadores en columnas">
+      <ChartInflacion serie={serieAsc} fuente={obs.metadata.fuentes.inflacion} />
+      <ChartTasaInteres serie={serieAsc} fuente={obs.metadata.fuentes.tasa_interes} />
+    </section>
+
+    <section class="charts-synthesis" aria-label="Síntesis: freno o acelerador">
+      <ChartFrenoAcelerador serie={serieAsc} />
+    </section>
+
+    <DashboardFooter metadata={obs.metadata} />
+  </div>
+
+  <script is:inline src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
+</BaseLayout>
+
+<style>
+  .observatorio-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.75rem 1.5rem 3rem;
+  }
+
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  @media (max-width: 960px) {
+    .charts-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .charts-synthesis {
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .observatorio-container {
+      padding: 1.25rem 1rem 2rem;
+    }
+  }
+</style>

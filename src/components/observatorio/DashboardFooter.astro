@@ -1,0 +1,111 @@
+---
+import type { ObservatorioMetadata } from "../../lib/observatorio/types";
+import { formatFechaActualizacion } from "../../lib/observatorio/formatters";
+import { getCommitUrl } from "../../lib/observatorio/data";
+
+interface Props {
+  metadata: ObservatorioMetadata;
+}
+
+const { metadata } = Astro.props;
+const fechaActualizacion = formatFechaActualizacion(metadata.ultima_actualizacion);
+const commitUrl = getCommitUrl();
+---
+
+<footer class="dashboard-footer" aria-label="Metodología y fuentes">
+  <div class="dashboard-footer__inner">
+    <div class="dashboard-footer__cell">
+      <p class="dashboard-footer__label">Definiciones</p>
+      <p class="dashboard-footer__text">
+        <strong>Spread real</strong> = tasa de intervención − inflación anual,
+        en puntos porcentuales (tasa real ex-post).
+      </p>
+    </div>
+
+    <div class="dashboard-footer__cell">
+      <p class="dashboard-footer__label">Fuentes oficiales</p>
+      <ul class="dashboard-footer__sources">
+        <li>
+          <a href={metadata.fuentes.inflacion.url} target="_blank" rel="noopener noreferrer">
+            {metadata.fuentes.inflacion.indicador} · {metadata.fuentes.inflacion.nombre.split(" — ")[0]}
+          </a>
+        </li>
+        <li>
+          <a href={metadata.fuentes.tasa_interes.url} target="_blank" rel="noopener noreferrer">
+            {metadata.fuentes.tasa_interes.indicador} · {metadata.fuentes.tasa_interes.nombre}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="dashboard-footer__cell">
+      <p class="dashboard-footer__label">Trazabilidad</p>
+      <p class="dashboard-footer__text">
+        Datos versionados en GitHub. Última corrida del pipeline: <br>
+        <a href={commitUrl} target="_blank" rel="noopener noreferrer" class="dashboard-footer__link">
+          {fechaActualizacion} · ver commit →
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .dashboard-footer {
+    margin-top: 1.5rem;
+    padding: 1.5rem 0 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .dashboard-footer__inner {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 880px) {
+    .dashboard-footer__inner {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+  }
+
+  .dashboard-footer__label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 0.4rem;
+  }
+
+  .dashboard-footer__text {
+    font-size: 0.82rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .dashboard-footer__sources {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .dashboard-footer__sources li {
+    font-size: 0.82rem;
+    margin-bottom: 0.3rem;
+    line-height: 1.45;
+  }
+
+  .dashboard-footer__sources a,
+  .dashboard-footer__link {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .dashboard-footer__sources a:hover,
+  .dashboard-footer__link:hover {
+    text-decoration: underline;
+  }
+</style>

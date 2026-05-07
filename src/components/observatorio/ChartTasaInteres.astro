@@ -1,0 +1,47 @@
+---
+import type { Fuente, SerieFila } from "../../lib/observatorio/types";
+import { COLORS, baseLayout, extractSerie } from "../../lib/observatorio/charts";
+import ChartContainer from "./ChartContainer.astro";
+import PlotlyChart from "./PlotlyChart.astro";
+
+interface Props {
+  serie: SerieFila[];
+  fuente: Fuente;
+}
+
+const { serie, fuente } = Astro.props;
+const { x, y } = extractSerie(serie, "tasa_interes");
+
+const traces = [
+  {
+    name: "Tasa BanRep",
+    x,
+    y,
+    mode: "lines",
+    line: {
+      color: COLORS.tasa,
+      width: 2.2,
+      shape: "hv",
+    },
+    fill: "tozeroy",
+    fillcolor: "rgba(37, 99, 235, 0.06)",
+    hovertemplate: "<b>%{x|%b %Y}</b><br>Tasa BanRep: %{y:.2f}%<extra></extra>",
+  },
+];
+
+const layout = baseLayout();
+---
+
+<ChartContainer
+  titulo="Tasa de intervención BanRep"
+  pregunta="¿Cómo se ha movido la tasa de política monetaria del Banco de la República?"
+  fuente={fuente}
+>
+  <PlotlyChart
+    id="tasa-interes"
+    traces={traces}
+    layout={layout}
+    height={340}
+    ariaLabel="Evolución mensual de la tasa de intervención del Banco de la República desde 2004"
+  />
+</ChartContainer>
