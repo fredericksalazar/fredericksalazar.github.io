@@ -1,5 +1,5 @@
 ---
-titulo: "Visualización de Inflación vs Tasas de Interés en Colombia (1960–2025)"
+titulo: "La inflación en Colombia VS Tasas de interes del BanRep"
 fecha: 2026-04-01
 descripcion: "Análisis de datos del Banco Mundial y el Banco de la República sobre la inflación en Colombia y su relación con la tasa de intervención desde 1960."
 etiquetas: ["Análisis de Datos", "Economía", "Colombia", "Visualización", "Python"]
