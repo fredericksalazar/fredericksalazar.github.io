@@ -1,7 +1,6 @@
 ---
 import type { ObservatorioMetadata } from "../../lib/observatorio/types";
 import { formatFechaActualizacion } from "../../lib/observatorio/formatters";
-import { getCommitUrl } from "../../lib/observatorio/data";
 
 interface Props {
   metadata: ObservatorioMetadata;
@@ -9,7 +8,6 @@ interface Props {
 
 const { metadata } = Astro.props;
 const fechaActualizacion = formatFechaActualizacion(metadata.ultima_actualizacion);
-const commitUrl = getCommitUrl();
 ---
 
 <footer class="dashboard-footer" aria-label="Metodología y fuentes">
@@ -41,10 +39,8 @@ const commitUrl = getCommitUrl();
     <div class="dashboard-footer__cell">
       <p class="dashboard-footer__label">Trazabilidad</p>
       <p class="dashboard-footer__text">
-        Datos versionados en GitHub. Última corrida del pipeline: <br>
-        <a href={commitUrl} target="_blank" rel="noopener noreferrer" class="dashboard-footer__link">
-          {fechaActualizacion} · ver commit →
-        </a>
+        Datos versionados y actualizados automáticamente cada mes. <br>
+        Última corrida del pipeline: <strong>{fechaActualizacion}</strong>
       </p>
     </div>
   </div>

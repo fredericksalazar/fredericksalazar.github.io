@@ -37,9 +37,10 @@ interface Props {
   tags?: string[];
   image?: HeroImage;
   class?: string;
+  showPartners?: boolean;
 }
 
-const { badge, title, subtitle, kpis = [], tags = [], image, class: className } = Astro.props;
+const { badge, title, subtitle, kpis = [], tags = [], image, class: className, showPartners = true } = Astro.props;
 ---
 
 <section class:list={["hero", className]}>
@@ -106,7 +107,8 @@ const { badge, title, subtitle, kpis = [], tags = [], image, class: className } 
     </div>
   </div>
 
-  <!-- Fila inferior: Cloud Partners (siempre igual) -->
+  <!-- Fila inferior: Cloud Partners (condicional) -->
+  {showPartners && (
   <div class="hero__partners">
     <span class="hero__partners-label">Cloud Partners</span>
     <div class="hero__partners-divider" aria-hidden="true"></div>
@@ -129,6 +131,7 @@ const { badge, title, subtitle, kpis = [], tags = [], image, class: className } 
       </div>
     </div>
   </div>
+  )}
 </section>
 
 <style>
