@@ -1,6 +1,6 @@
 ---
 import type { SerieFila } from "../../lib/observatorio/types";
-import { COLORS, baseLayout, periodoToISODate } from "../../lib/observatorio/charts";
+import { baseLayout, periodoToISODate } from "../../lib/observatorio/charts";
 import ChartContainer from "./ChartContainer.astro";
 import PlotlyChart from "./PlotlyChart.astro";
 
@@ -10,68 +10,73 @@ interface Props {
 
 const { serie } = Astro.props;
 
-const x = serie.map((r) => periodoToISODate(r.periodo));
-const inflacion = serie.map((r) => r.inflacion_anual);
-const tasa = serie.map((r) => r.tasa_interes);
+const data = serie.filter((r) => r.inflacion_anual !== null && r.tasa_interes !== null);
 
-const tasaWhereFreno = serie.map((r) =>
-  r.tasa_interes !== null &&
-  r.inflacion_anual !== null &&
-  r.tasa_interes > r.inflacion_anual
-    ? r.tasa_interes
-    : null,
-);
+const x = data.map((r) => periodoToISODate(r.periodo));
+const inflacionVal = data.map((r) => r.inflacion_anual as number);
+const tasaVal = data.map((r) => r.tasa_interes as number);
 
-const inflacionWhereAcelerador = serie.map((r) =>
-  r.tasa_interes !== null &&
-  r.inflacion_anual !== null &&
-  r.inflacion_anual > r.tasa_interes
-    ? r.inflacion_anual
-    : null,
-);
+// Enfoque del script Python: usar max/min para nunca tener nulls
+const tasaRestrictiva = data.map((r) => Math.max(r.tasa_interes!, r.inflacion_anual!));
+const tasaExpansiva = data.map((r) => Math.min(r.tasa_interes!, r.inflacion_anual!));
 
 const traces = [
+  // ── Traza base invisible: inflación (línea de referencia para tonexty) ──
   {
-    name: "Inflación anual",
     x,
-    y: inflacion,
+    y: inflacionVal,
     mode: "lines",
-    line: { color: COLORS.inflacion, width: 2.2 },
-    hovertemplate: "<b>%{x|%b %Y}</b><br>Inflación anual: %{y:.2f}%<extra></extra>",
-    legendrank: 1,
+    line: { width: 0 },
+    showlegend: false,
+    hoverinfo: "skip" as const,
   },
+  // ── Sombreado ROJO: Tasa > Inflación (Política Contractiva / Freno) ──
   {
-    name: "Freno (tasa > inflación)",
+    name: "Tasa > Inflación (freno, tasa real positiva)",
     x,
-    y: tasaWhereFreno,
+    y: tasaRestrictiva,
     mode: "lines",
-    line: { width: 0, color: "rgba(0,0,0,0)" },
-    fill: "tonexty",
-    fillcolor: COLORS.freno,
-    connectgaps: false,
-    hoverinfo: "skip",
-    legendrank: 3,
+    fill: "tonexty" as const,
+    fillcolor: "rgba(214, 39, 40, 0.25)",
+    line: { width: 0 },
+    hoverinfo: "skip" as const,
   },
+  // ── Reset de base: otra inflación invisible ──
+  {
+    x,
+    y: inflacionVal,
+    mode: "lines",
+    line: { width: 0 },
+    showlegend: false,
+    hoverinfo: "skip" as const,
+  },
+  // ── Sombreado VERDE: Inflación > Tasa (Política Expansiva / Acelerador) ──
+  {
+    name: "Inflación > Tasa (acelerador, tasa real negativa)",
+    x,
+    y: tasaExpansiva,
+    mode: "lines",
+    fill: "tonexty" as const,
+    fillcolor: "rgba(0, 180, 80, 0.25)",
+    line: { width: 0 },
+    hoverinfo: "skip" as const,
+  },
+  // ── Líneas principales ENCIMA de los sombreados ──
   {
     name: "Tasa BanRep",
     x,
-    y: tasa,
+    y: tasaVal,
     mode: "lines",
-    line: { color: COLORS.tasa, width: 2.2, shape: "hv" },
+    line: { color: "#2563eb", width: 2.2, shape: "hv" },
     hovertemplate: "<b>%{x|%b %Y}</b><br>Tasa BanRep: %{y:.2f}%<extra></extra>",
-    legendrank: 2,
   },
   {
-    name: "Acelerador (inflación > tasa)",
+    name: "Inflación anual",
     x,
-    y: inflacionWhereAcelerador,
+    y: inflacionVal,
     mode: "lines",
-    line: { width: 0, color: "rgba(0,0,0,0)" },
-    fill: "tonexty",
-    fillcolor: COLORS.acelerador,
-    connectgaps: false,
-    hoverinfo: "skip",
-    legendrank: 4,
+    line: { color: "#dc2626", width: 2.2 },
+    hovertemplate: "<b>%{x|%b %Y}</b><br>Inflación anual: %{y:.2f}%<extra></extra>",
   },
 ];
 
@@ -140,13 +145,13 @@ const layout = baseLayout({
   }
 
   .freno-callout__swatch--freno {
-    background: rgba(220, 38, 38, 0.35);
-    border: 1px solid rgba(220, 38, 38, 0.5);
+    background: rgba(214, 39, 40, 0.35);
+    border: 1px solid rgba(214, 39, 40, 0.5);
   }
 
   .freno-callout__swatch--acelerador {
-    background: rgba(34, 197, 94, 0.35);
-    border: 1px solid rgba(34, 197, 94, 0.5);
+    background: rgba(0, 180, 80, 0.35);
+    border: 1px solid rgba(0, 180, 80, 0.5);
   }
 
   .freno-callout__label strong {
