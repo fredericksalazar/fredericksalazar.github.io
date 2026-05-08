@@ -1,0 +1,2432 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import DashboardNav from "../../components/observatorio/DashboardNav.astro";
+
+const capacidades = [
+  {
+    titulo: "Consolidación de fuentes",
+    desc: "Integración de información proveniente de entidades públicas, sistemas estadísticos y organismos nacionales en una única capa estructurada.",
+    icon: "layers",
+  },
+  {
+    titulo: "Series históricas",
+    desc: "Indicadores organizados a lo largo del tiempo para analizar tendencias, cambios y comportamientos del país.",
+    icon: "history",
+  },
+  {
+    titulo: "Actualización automatizada",
+    desc: "Procesos automáticos detectan y sincronizan nuevas publicaciones oficiales para mantener los indicadores al día.",
+    icon: "refresh",
+  },
+  {
+    titulo: "Visualización clara",
+    desc: "Herramientas visuales que permiten consultar y comprender indicadores complejos desde una experiencia intuitiva.",
+    icon: "chart",
+  },
+  {
+    titulo: "Análisis e interpretación",
+    desc: "Análisis basados en datos para facilitar la comprensión de fenómenos económicos, sociales y territoriales.",
+    icon: "lens",
+  },
+  {
+    titulo: "Acceso centralizado",
+    desc: "Toda la información se presenta desde una única plataforma estructurada, accesible y abierta.",
+    icon: "globe",
+  },
+];
+
+const principios = [
+  { titulo: "Transparencia", desc: "Cada indicador mantiene trazabilidad sobre su origen, fecha de actualización y fuente oficial." },
+  { titulo: "Rigor técnico", desc: "Priorizamos consistencia, validación y estructuración de la información procesada." },
+  { titulo: "Neutralidad", desc: "Presentamos información basada en datos públicos verificables, sin orientación política o partidista." },
+  { titulo: "Acceso abierto", desc: "El conocimiento basado en datos debe ser accesible para cualquier persona." },
+  { titulo: "Contexto histórico", desc: "Los datos adquieren valor cuando pueden analizarse en el tiempo y dentro de un contexto más amplio." },
+  { titulo: "Evolución continua", desc: "Diseñado para incorporar nuevas fuentes, indicadores y capacidades analíticas de forma progresiva." },
+];
+
+const fricciones = [
+  "Dificultad para acceder a datos históricos consolidados.",
+  "Diferencias de formatos y estructuras entre entidades.",
+  "Baja interoperabilidad entre fuentes de información.",
+  "Procesos manuales para consultar y actualizar indicadores.",
+  "Limitaciones para realizar análisis comparativos y longitudinales.",
+  "Barreras técnicas para ciudadanos y organizaciones no especializadas.",
+];
+
+const pipeline = [
+  { paso: "01", label: "Recolección" },
+  { paso: "02", label: "Normalización" },
+  { paso: "03", label: "Transformación" },
+  { paso: "04", label: "Estructuración" },
+  { paso: "05", label: "Versionado" },
+  { paso: "06", label: "Almacenamiento" },
+];
+
+const fuentesNacionales = [
+  { sigla: "DANE", nombre: "Departamento Administrativo Nacional de Estadística" },
+  { sigla: "BanRep", nombre: "Banco de la República" },
+  { sigla: "MinHacienda", nombre: "Ministerio de Hacienda y Crédito Público" },
+  { sigla: "DIAN", nombre: "Dirección de Impuestos y Aduanas Nacionales" },
+  { sigla: "SFC", nombre: "Superintendencia Financiera de Colombia" },
+  { sigla: "SuperSociedades", nombre: "Superintendencia de Sociedades" },
+  { sigla: "Sectoriales", nombre: "Ministerios y entidades sectoriales" },
+  { sigla: "Datos Abiertos", nombre: "Sistemas abiertos de datos públicos" },
+];
+
+const fuentesInternacionales = [
+  { sigla: "Banco Mundial", nombre: "World Bank Open Data — indicadores de desarrollo" },
+  { sigla: "FMI", nombre: "Fondo Monetario Internacional" },
+  { sigla: "CEPAL", nombre: "Comisión Económica para América Latina y el Caribe" },
+  { sigla: "OCDE", nombre: "Organización para la Cooperación y el Desarrollo Económicos" },
+];
+
+const audiencias = [
+  { titulo: "Investigadores", desc: "Series históricas trazables para estudios académicos y publicaciones.", icon: "research" },
+  { titulo: "Periodistas", desc: "Datos verificables con cita de fuente para reportajes y análisis.", icon: "news" },
+  { titulo: "Estudiantes", desc: "Material estructurado para tesis, ensayos y trabajos de curso.", icon: "student" },
+  { titulo: "Analistas", desc: "Indicadores listos para modelado, segmentación y tableros propios.", icon: "analyst" },
+  { titulo: "Empresas", desc: "Contexto macroeconómico para decisiones de inversión y estrategia.", icon: "business" },
+  { titulo: "Tomadores de decisión", desc: "Información comparable para diseñar política y planeación pública.", icon: "decision" },
+  { titulo: "Entidades públicas", desc: "Referencias cruzadas con otras entidades del Estado colombiano.", icon: "gov" },
+  { titulo: "Ciudadanía", desc: "Acceso abierto y comprensible para entender la realidad del país.", icon: "people" },
+];
+
+const metodologia = [
+  "Integración automatizada de fuentes",
+  "Estandarización de estructuras",
+  "Control de calidad",
+  "Validación de formatos",
+  "Versionado de datos",
+  "Monitoreo de actualizaciones",
+  "Trazabilidad histórica de indicadores",
+];
+---
+
+<BaseLayout
+  title="Acerca del Observatorio de Datos de Colombia"
+  description="Quiénes somos, misión, visión, principios y metodología del Observatorio de Datos de Colombia: una infraestructura abierta para entender el país a través de datos."
+  fullWidth={true}
+>
+  <Hero
+    badge={{ text: "Proyecto independiente · Colombia" }}
+    title="Acerca del Observatorio"
+    subtitle="Una infraestructura abierta para entender Colombia a través de datos públicos consolidados, históricos y verificables."
+    tags={["Independiente", "Datos abiertos", "Trazabilidad", "Contexto histórico"]}
+    showPartners={false}
+  >
+    <div slot="visual" class="acerca-hero-visual" aria-hidden="true">
+      <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg" class="acerca-hero-svg">
+        <defs>
+          <linearGradient id="grad-card" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="100%" stop-color="#eef4ff" />
+          </linearGradient>
+          <linearGradient id="grad-bar" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.25" />
+            <stop offset="100%" stop-color="#2563eb" stop-opacity="1" />
+          </linearGradient>
+        </defs>
+        <!-- Card principal -->
+        <rect x="60" y="60" width="360" height="240" rx="16" fill="url(#grad-card)" stroke="#cbd5ff" stroke-width="1.5" />
+        <!-- Header card -->
+        <circle cx="84" cy="86" r="6" fill="#2563eb" />
+        <rect x="100" y="80" width="120" height="12" rx="3" fill="#cbd5ff" />
+        <rect x="100" y="98" width="80" height="8" rx="2" fill="#dbe5ff" />
+        <!-- Línea -->
+        <polyline points="80,220 130,180 180,200 230,150 280,170 330,120 380,140" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+        <!-- Puntos -->
+        <g fill="#2563eb">
+          <circle cx="80" cy="220" r="4" />
+          <circle cx="130" cy="180" r="4" />
+          <circle cx="180" cy="200" r="4" />
+          <circle cx="230" cy="150" r="4" />
+          <circle cx="280" cy="170" r="4" />
+          <circle cx="330" cy="120" r="4" />
+          <circle cx="380" cy="140" r="4" />
+        </g>
+        <!-- Barras pequeñas -->
+        <rect x="100" y="260" width="14" height="20" rx="2" fill="url(#grad-bar)" />
+        <rect x="120" y="250" width="14" height="30" rx="2" fill="url(#grad-bar)" />
+        <rect x="140" y="240" width="14" height="40" rx="2" fill="url(#grad-bar)" />
+        <rect x="160" y="255" width="14" height="25" rx="2" fill="url(#grad-bar)" />
+        <rect x="180" y="245" width="14" height="35" rx="2" fill="url(#grad-bar)" />
+        <!-- Card flotante -->
+        <rect x="280" y="240" width="120" height="56" rx="10" fill="#ffffff" stroke="#cbd5ff" stroke-width="1.5" />
+        <text x="294" y="262" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#64748b" letter-spacing="1">FUENTES</text>
+        <text x="294" y="284" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#2563eb">8+</text>
+        <!-- Nodos satélite -->
+        <circle cx="40" cy="120" r="14" fill="#ffffff" stroke="#2563eb" stroke-width="1.5" />
+        <circle cx="40" cy="120" r="4" fill="#2563eb" />
+        <circle cx="440" cy="80" r="10" fill="#ffffff" stroke="#2563eb" stroke-width="1.5" />
+        <circle cx="440" cy="80" r="3" fill="#2563eb" />
+        <circle cx="430" cy="320" r="12" fill="#ffffff" stroke="#2563eb" stroke-width="1.5" />
+        <circle cx="430" cy="320" r="3.5" fill="#2563eb" />
+      </svg>
+    </div>
+  </Hero>
+
+  <DashboardNav active="acerca" />
+
+  <main class="acerca">
+
+    <!-- ─── Stat strip ─── -->
+    <section class="stat-strip" aria-label="Indicadores del Observatorio">
+      <div class="stat-strip__inner">
+        <div class="stat-strip__item">
+          <span class="stat-strip__value">8+</span>
+          <span class="stat-strip__label">Fuentes oficiales integradas</span>
+        </div>
+        <div class="stat-strip__divider" aria-hidden="true"></div>
+        <div class="stat-strip__item">
+          <span class="stat-strip__value">100%</span>
+          <span class="stat-strip__label">Información pública verificable</span>
+        </div>
+        <div class="stat-strip__divider" aria-hidden="true"></div>
+        <div class="stat-strip__item">
+          <span class="stat-strip__value">Histórico</span>
+          <span class="stat-strip__label">Series longitudinales por indicador</span>
+        </div>
+        <div class="stat-strip__divider" aria-hidden="true"></div>
+        <div class="stat-strip__item">
+          <span class="stat-strip__value">
+            <span class="stat-strip__live" aria-hidden="true"></span>
+            En vivo
+          </span>
+          <span class="stat-strip__label">Actualización automatizada</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Quiénes somos ─── -->
+    <section class="acerca-section acerca-intro">
+      <div class="acerca-section__inner">
+        <div class="intro-grid">
+          <div class="intro-grid__lead">
+            <span class="section-index" aria-hidden="true">01</span>
+            <span class="eyebrow">Quiénes somos</span>
+            <h2 class="intro-h2">
+              Una plataforma <em>independiente</em> para integrar y comprender la información pública de Colombia.
+            </h2>
+          </div>
+          <div class="intro-grid__body">
+            <p>
+              El <strong>Observatorio de Datos de Colombia</strong> es una plataforma independiente de integración, procesamiento, análisis y visualización de información pública del país. Es un proyecto creado y mantenido por <a href="#creador" class="acerca-link">Frederick Salazar</a>, Data Engineer.
+            </p>
+            <p>
+              Su objetivo es consolidar en un solo lugar los principales indicadores económicos, sociales y territoriales de Colombia, ofreciendo acceso a datos históricos, actualizados y verificables desde una experiencia clara, moderna y accesible.
+            </p>
+            <a href="/observatorio" class="intro-link">
+              Explorar el dashboard
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Por qué nace (sección oscura) ─── -->
+    <section class="acerca-section acerca-section--dark" aria-label="El problema">
+      <div class="acerca-dark__grid" aria-hidden="true"></div>
+      <div class="acerca-dark__orb acerca-dark__orb--a" aria-hidden="true"></div>
+      <div class="acerca-dark__orb acerca-dark__orb--b" aria-hidden="true"></div>
+
+      <div class="acerca-section__inner acerca-dark__inner">
+        <div class="problema-grid">
+          <header class="problema-header">
+            <span class="section-index section-index--light" aria-hidden="true">02</span>
+            <span class="eyebrow eyebrow--light">Por qué nace</span>
+            <h2 class="problema-h2">
+              Los datos existen.<br />
+              <em>Convertirlos en información útil, no.</em>
+            </h2>
+            <p class="problema-lead">
+              Múltiples entidades oficiales publican información de alto valor, pero está distribuida entre plataformas, formatos y estructuras que dificultan su consulta, integración y análisis histórico.
+            </p>
+            <p class="problema-tag">El Observatorio nace para resolver esa fragmentación.</p>
+          </header>
+
+          <ul class="fricciones-list" aria-label="Fricciones identificadas">
+            {fricciones.map((f, i) => (
+              <li class="friccion-item">
+                <span class="friccion-item__num">{String(i + 1).padStart(2, "0")}</span>
+                <span class="friccion-item__text">{f}</span>
+                <span class="friccion-item__bar" aria-hidden="true"></span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Misión y Visión ─── -->
+    <section class="acerca-section">
+      <div class="acerca-section__inner">
+        <div class="mv-header">
+          <span class="section-index" aria-hidden="true">03</span>
+          <span class="eyebrow">Propósito</span>
+          <h2 class="acerca-h2">Misión y visión del Observatorio</h2>
+        </div>
+        <div class="mision-vision">
+          <article class="mv-card mv-card--mision">
+            <div class="mv-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            </div>
+            <span class="eyebrow">Nuestra misión</span>
+            <h3 class="mv-card__title">Democratizar el acceso a información pública confiable</h3>
+            <p>
+              Construir una plataforma que permita comprender la evolución económica y social de Colombia a través de indicadores históricos, visualizaciones y análisis basados en datos verificables.
+            </p>
+          </article>
+
+          <article class="mv-card mv-card--vision">
+            <div class="mv-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <span class="eyebrow">Nuestra visión</span>
+            <h3 class="mv-card__title">Convertirnos en una referencia nacional de inteligencia pública abierta</h3>
+            <p>
+              Construir una infraestructura abierta de datos que ciudadanos, investigadores, periodistas, empresas, estudiantes y tomadores de decisión puedan usar para interpretar la realidad del país desde información estructurada, histórica y accesible.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Qué hacemos ─── -->
+    <section class="acerca-section acerca-section--alt">
+      <div class="acerca-section__inner">
+        <div class="caps-header">
+          <div>
+            <span class="section-index" aria-hidden="true">04</span>
+            <span class="eyebrow">Qué hacemos</span>
+            <h2 class="acerca-h2">Seis capacidades, una infraestructura</h2>
+          </div>
+          <p class="acerca-lead acerca-lead--inline">
+            Consolidamos información pública proveniente de entidades oficiales y construimos una capa unificada de datos estructurados y actualizados.
+          </p>
+        </div>
+
+        <div class="capacidades">
+          {capacidades.map((c, i) => (
+            <article class="capacidad">
+              <span class="capacidad__index">{String(i + 1).padStart(2, "0")}</span>
+              <div class="capacidad__icon" aria-hidden="true">
+                {c.icon === "layers" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                )}
+                {c.icon === "history" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><polyline points="3 3 3 8 8 8"/><polyline points="12 7 12 12 15 14"/></svg>
+                )}
+                {c.icon === "refresh" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                )}
+                {c.icon === "chart" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                )}
+                {c.icon === "lens" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                )}
+                {c.icon === "globe" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                )}
+              </div>
+              <h3 class="capacidad__title">{c.titulo}</h3>
+              <p class="capacidad__desc">{c.desc}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Principios ─── -->
+    <section class="acerca-section">
+      <div class="acerca-section__inner">
+        <div class="princ-header">
+          <span class="section-index" aria-hidden="true">05</span>
+          <span class="eyebrow">Principios</span>
+          <h2 class="acerca-h2">Los compromisos que guían el Observatorio</h2>
+          <p class="acerca-lead">
+            Reglas claras sobre cómo se trata la información, sin ambigüedades.
+          </p>
+        </div>
+
+        <div class="principios">
+          {principios.map((p, i) => (
+            <article class="principio">
+              <header class="principio__head">
+                <span class="principio__index">{String(i + 1).padStart(2, "0")}</span>
+                <span class="principio__bar" aria-hidden="true"></span>
+              </header>
+              <h3 class="principio__title">{p.titulo}</h3>
+              <p>{p.desc}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Cómo funciona (pipeline · oscura) ─── -->
+    <section class="acerca-section acerca-section--dark" aria-label="Cómo funciona">
+      <div class="acerca-dark__grid" aria-hidden="true"></div>
+      <div class="acerca-dark__orb acerca-dark__orb--a" aria-hidden="true"></div>
+      <div class="acerca-dark__orb acerca-dark__orb--b" aria-hidden="true"></div>
+
+      <div class="acerca-section__inner acerca-dark__inner">
+        <div class="pipe-header">
+          <span class="section-index section-index--light" aria-hidden="true">06</span>
+          <span class="eyebrow eyebrow--light">Cómo funciona</span>
+          <h2 class="problema-h2">
+            Del dato disperso al <em>indicador histórico</em>.
+          </h2>
+          <p class="problema-lead">
+            Procesos automatizados recolectan información publicada por entidades oficiales y la transforman en indicadores históricos consistentes y trazables.
+          </p>
+        </div>
+
+        <ol class="pipe-flow pipe-flow--dark" aria-label="Pasos del procesamiento de datos">
+          <span class="pipe-flow__line pipe-flow__line--dark" aria-hidden="true"></span>
+          {pipeline.map((p) => (
+            <li class="pipe-node pipe-node--dark">
+              <span class="pipe-node__circle pipe-node__circle--dark">
+                <span class="pipe-node__num pipe-node__num--dark">{p.paso}</span>
+              </span>
+              <span class="pipe-node__label pipe-node__label--dark">{p.label}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- ─── Fuentes ─── -->
+    <section class="acerca-section">
+      <div class="acerca-section__inner">
+        <div class="src-header">
+          <span class="section-index" aria-hidden="true">07</span>
+          <span class="eyebrow">Fuentes oficiales</span>
+          <h2 class="acerca-h2">Datos de entidades públicas y organismos internacionales</h2>
+          <p class="acerca-lead">
+            Cada indicador conserva referencia y trazabilidad hacia su fuente original. Integramos información de entidades nacionales y organismos internacionales para enriquecer el contexto.
+          </p>
+        </div>
+
+        <div class="fuentes-group">
+          <div class="fuentes-group__head">
+            <span class="fuentes-group__pill fuentes-group__pill--nacional">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Nacionales · Colombia
+            </span>
+            <span class="fuentes-group__count">{fuentesNacionales.length} fuentes</span>
+          </div>
+          <div class="fuentes-wall">
+            {fuentesNacionales.map((f) => (
+              <article class="fuente-card">
+                <div class="fuente-card__monogram" aria-hidden="true">
+                  <span>{f.sigla.slice(0, 2).toUpperCase()}</span>
+                </div>
+                <div class="fuente-card__body">
+                  <span class="fuente-card__sigla">{f.sigla}</span>
+                  <span class="fuente-card__nombre">{f.nombre}</span>
+                </div>
+                <span class="fuente-card__check" aria-label="Verificada">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div class="fuentes-group">
+          <div class="fuentes-group__head">
+            <span class="fuentes-group__pill fuentes-group__pill--internacional">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              Internacionales
+            </span>
+            <span class="fuentes-group__count">{fuentesInternacionales.length} fuentes</span>
+          </div>
+          <div class="fuentes-wall">
+            {fuentesInternacionales.map((f) => (
+              <article class="fuente-card fuente-card--intl">
+                <div class="fuente-card__monogram fuente-card__monogram--intl" aria-hidden="true">
+                  <span>{f.sigla.slice(0, 2).toUpperCase()}</span>
+                </div>
+                <div class="fuente-card__body">
+                  <span class="fuente-card__sigla">{f.sigla}</span>
+                  <span class="fuente-card__nombre">{f.nombre}</span>
+                </div>
+                <span class="fuente-card__check" aria-label="Verificada">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Metodología (oscura) ─── -->
+    <section class="acerca-section acerca-section--dark" aria-label="Metodología">
+      <div class="acerca-dark__grid" aria-hidden="true"></div>
+      <div class="acerca-dark__orb acerca-dark__orb--a" aria-hidden="true"></div>
+      <div class="acerca-dark__orb acerca-dark__orb--b" aria-hidden="true"></div>
+
+      <div class="acerca-section__inner acerca-dark__inner">
+        <div class="metodologia">
+          <div class="metodologia__intro">
+            <span class="section-index section-index--light" aria-hidden="true">08</span>
+            <span class="eyebrow eyebrow--light">Metodología y calidad</span>
+            <h2 class="problema-h2">
+              Procesos de <em>validación</em> y estructuración.
+            </h2>
+            <p class="problema-lead">
+              La plataforma evoluciona continuamente para mejorar la calidad, cobertura y profundidad analítica de la información publicada. Cada indicador es trazable hasta su fuente original.
+            </p>
+          </div>
+          <ul class="metodologia__lista metodologia__lista--dark">
+            {metodologia.map((m, i) => (
+              <li>
+                <span class="metodologia__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="metodologia__txt">{m}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Para quién ─── -->
+    <section class="acerca-section">
+      <div class="acerca-section__inner">
+        <div class="audience-header">
+          <span class="section-index" aria-hidden="true">09</span>
+          <span class="eyebrow">Para quién</span>
+          <h2 class="acerca-h2">Construido para cualquier persona que necesite comprender Colombia a través de datos</h2>
+          <p class="acerca-lead">
+            Cada perfil encuentra valor distinto en el Observatorio. La plataforma reduce las barreras técnicas tradicionalmente asociadas al análisis de información pública.
+          </p>
+        </div>
+
+        <div class="audience-grid">
+          {audiencias.map((a) => (
+            <article class="audience-card">
+              <div class="audience-card__icon" aria-hidden="true">
+                {a.icon === "research" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                )}
+                {a.icon === "news" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/></svg>
+                )}
+                {a.icon === "student" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                )}
+                {a.icon === "analyst" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/></svg>
+                )}
+                {a.icon === "business" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2M3 13h18"/></svg>
+                )}
+                {a.icon === "decision" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                )}
+                {a.icon === "gov" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>
+                )}
+                {a.icon === "people" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                )}
+              </div>
+              <h3 class="audience-card__title">{a.titulo}</h3>
+              <p class="audience-card__desc">{a.desc}</p>
+              <span class="audience-card__corner" aria-hidden="true"></span>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Pull quote ─── -->
+    <section class="acerca-section acerca-quote-section">
+      <div class="acerca-section__inner">
+        <blockquote class="pull-quote">
+          <span class="pull-quote__mark" aria-hidden="true">“</span>
+          <p>
+            Más que gráficos, contexto y análisis. <strong>Los datos adquieren verdadero valor cuando ayudan a entender cómo evoluciona el país.</strong>
+          </p>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- ─── Creador (simple, oscura) ─── -->
+    <section class="acerca-section acerca-section--dark" id="creador" aria-label="Creador del Observatorio">
+      <div class="acerca-dark__grid" aria-hidden="true"></div>
+      <div class="acerca-dark__orb acerca-dark__orb--a" aria-hidden="true"></div>
+      <div class="acerca-dark__orb acerca-dark__orb--b" aria-hidden="true"></div>
+
+      <div class="acerca-section__inner acerca-dark__inner">
+        <div class="lead-creator">
+          <div class="lead-creator__photo-wrap">
+            <div class="lead-creator__halo" aria-hidden="true"></div>
+            <img
+              src="/images/profile.png"
+              alt="Frederick Salazar"
+              class="lead-creator__photo"
+              width="200"
+              height="200"
+              loading="lazy"
+            />
+          </div>
+
+          <div class="lead-creator__text">
+            <span class="section-index section-index--light" aria-hidden="true">10</span>
+            <span class="eyebrow eyebrow--light">Iniciativa liderada por</span>
+            <h2 class="lead-creator__name">Frederick Salazar</h2>
+            <p class="lead-creator__role">Senior Data Architect & Data Engineer · +8 años en LATAM</p>
+            <p class="lead-creator__bio">
+              El Observatorio de Datos de Colombia es una iniciativa creada y liderada por Frederick Salazar con un propósito claro: <strong>democratizar el acceso a la información pública y al análisis basado en datos</strong>, para que cualquier persona — sin importar su perfil técnico — pueda comprender la evolución económica y social del país.
+            </p>
+
+            <p class="lead-creator__mission">
+              <span class="lead-creator__mission-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+              </span>
+              <span>
+                <strong>Combatir la desinformación con datos.</strong> Promover una conversación pública informada, basada en evidencia trazable y verificable.
+              </span>
+            </p>
+
+            <div class="lead-creator__links">
+              <a href="https://www.linkedin.com/in/fredericksalazar" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.28V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+              </a>
+              <a href="https://github.com/fredericksalazar" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.7.8 1.3 1.9 1.3 3.1 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.2.9 2.3v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3z"/></svg>
+              </a>
+              <a href="/" aria-label="Portafolio">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</BaseLayout>
+
+<style>
+  .acerca {
+    --color-acc: #2563eb;
+    --color-acc-soft: rgba(37, 99, 235, 0.08);
+    --color-acc-border: rgba(37, 99, 235, 0.18);
+    font-family: "Google Sans Flex", "Google Sans", system-ui, -apple-system, sans-serif;
+    color: #1e293b;
+  }
+
+  /* ── Hero visual SVG ── */
+  .acerca-hero-visual {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    z-index: 1;
+  }
+  .acerca-hero-svg {
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    filter: drop-shadow(0 10px 30px rgba(37, 99, 235, 0.18));
+  }
+
+  /* ── Sections base ── */
+  .acerca-section {
+    padding: 4.5rem 1.5rem;
+  }
+  .acerca-section--alt {
+    background: linear-gradient(180deg, #fafbff 0%, #f5f8ff 100%);
+    border-top: 1px solid rgba(37, 99, 235, 0.06);
+    border-bottom: 1px solid rgba(37, 99, 235, 0.06);
+  }
+  .acerca-section__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .acerca-section__inner--center {
+    text-align: center;
+  }
+  .acerca-section__inner--center .audiencia {
+    justify-content: center;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-acc);
+    margin-bottom: 0.85rem;
+  }
+
+  .acerca-h2 {
+    font-size: clamp(1.6rem, 2.6vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+    margin: 0 0 1.25rem;
+    max-width: 780px;
+  }
+  .acerca-section__inner--center .acerca-h2 {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .acerca-lead {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: #475569;
+    max-width: 720px;
+    margin: 0 0 2.25rem;
+  }
+  .acerca-section__inner--center .acerca-lead {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── Intro ── */
+  .acerca-intro__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+    margin-top: 1.25rem;
+  }
+  .acerca-intro__grid p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #475569;
+    margin: 0;
+  }
+
+  /* ── Fricciones ── */
+  .fricciones {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0.85rem;
+  }
+  .friccion {
+    display: flex;
+    gap: 0.85rem;
+    padding: 1rem 1.1rem;
+    background: #ffffff;
+    border: 1px solid var(--color-acc-border);
+    border-radius: 10px;
+    align-items: flex-start;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .friccion:hover {
+    border-color: var(--color-acc);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.08);
+  }
+  .friccion__num {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-acc);
+    background: var(--color-acc-soft);
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    flex-shrink: 0;
+    letter-spacing: 0.05em;
+  }
+  .friccion__text {
+    font-size: 0.92rem;
+    color: #334155;
+    line-height: 1.5;
+  }
+
+  /* ── Misión / Visión ── */
+  .mision-vision {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .mv-card {
+    position: relative;
+    padding: 2.25rem;
+    border-radius: 16px;
+    border: 1px solid var(--color-acc-border);
+    background: #ffffff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .mv-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.1);
+  }
+  .mv-card--mision {
+    background: linear-gradient(180deg, #ffffff 0%, #f0f6ff 100%);
+  }
+  .mv-card--vision {
+    background: linear-gradient(180deg, #ffffff 0%, #eef4ff 100%);
+  }
+  .mv-card__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-acc);
+    color: white;
+    margin-bottom: 1rem;
+  }
+  .mv-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .mv-card__title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0.4rem 0 0.85rem;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  .mv-card p {
+    font-size: 0.97rem;
+    line-height: 1.65;
+    color: #475569;
+    margin: 0;
+  }
+
+  /* ── Capacidades ── */
+  .capacidades {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .capacidad {
+    padding: 1.5rem;
+    background: #ffffff;
+    border: 1px solid var(--color-acc-border);
+    border-radius: 12px;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .capacidad:hover {
+    border-color: var(--color-acc);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.08);
+  }
+  .capacidad__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 9px;
+    background: var(--color-acc-soft);
+    color: var(--color-acc);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.85rem;
+  }
+  .capacidad__icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  .capacidad__title {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.4rem;
+  }
+  .capacidad__desc {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: #475569;
+    margin: 0;
+  }
+
+  /* ── Principios ── */
+  .principios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .principio {
+    position: relative;
+    padding: 1.6rem 1.5rem 1.5rem;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid var(--color-acc-border);
+    border-left: 3px solid var(--color-acc);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .principio:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(37, 99, 235, 0.08);
+  }
+  .principio__index {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-acc);
+    letter-spacing: 0.08em;
+  }
+  .principio__title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0.3rem 0 0.45rem;
+  }
+  .principio p {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: #475569;
+    margin: 0;
+  }
+
+  /* ── Pipeline ── */
+  .pipeline {
+    list-style: none;
+    margin: 0;
+    padding: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 0.5rem;
+    justify-content: center;
+    background: #ffffff;
+    border: 1px solid var(--color-acc-border);
+    border-radius: 14px;
+  }
+  .pipe-step {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.6rem 0.95rem;
+    background: var(--color-acc-soft);
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .pipe-step:hover {
+    background: rgba(37, 99, 235, 0.14);
+    border-color: var(--color-acc-border);
+  }
+  .pipe-step__num {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-acc);
+    background: white;
+    padding: 0.18rem 0.42rem;
+    border-radius: 5px;
+    letter-spacing: 0.04em;
+  }
+  .pipe-step__label {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #1e293b;
+  }
+  .pipe-step__arrow {
+    font-size: 1.1rem;
+    color: var(--color-acc);
+    margin-left: 0.4rem;
+    opacity: 0.7;
+  }
+
+  /* ── Fuentes ── */
+  .fuentes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.85rem;
+  }
+  .fuente {
+    padding: 1rem 1.2rem;
+    background: #ffffff;
+    border: 1px solid var(--color-acc-border);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .fuente:hover {
+    border-color: var(--color-acc);
+    transform: translateY(-2px);
+  }
+  .fuente__sigla {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-acc);
+    letter-spacing: -0.01em;
+  }
+  .fuente__nombre {
+    font-size: 0.82rem;
+    color: #64748b;
+    line-height: 1.4;
+  }
+
+  /* ── Metodología ── */
+  .metodologia {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .metodologia__intro p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #475569;
+    margin: 0;
+    max-width: 480px;
+  }
+  .metodologia__lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.65rem;
+  }
+  .metodologia__lista li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    background: #ffffff;
+    border: 1px solid var(--color-acc-border);
+    border-radius: 8px;
+    font-size: 0.93rem;
+    color: #334155;
+    font-weight: 500;
+  }
+  .metodologia__lista svg {
+    width: 18px;
+    height: 18px;
+    color: var(--color-acc);
+    flex-shrink: 0;
+  }
+
+  /* ── Audiencia chips ── */
+  .audiencia {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+  }
+  .audiencia__chip {
+    padding: 0.55rem 1.1rem;
+    background: #ffffff;
+    border: 1px solid var(--color-acc-border);
+    border-radius: 100px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-acc);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .audiencia__chip:hover {
+    border-color: var(--color-acc);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.12);
+  }
+
+  /* ── Pull quote ── */
+  .acerca-quote-section {
+    padding: 3rem 1.5rem;
+  }
+  .pull-quote {
+    position: relative;
+    margin: 0;
+    padding: 2.5rem 2rem 2.5rem 4.5rem;
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    border-radius: 16px;
+    color: white;
+    overflow: hidden;
+  }
+  .pull-quote::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.18) 1px, transparent 1.2px);
+    background-size: 22px 22px;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .pull-quote__mark {
+    position: absolute;
+    top: 0.5rem;
+    left: 1.5rem;
+    font-size: 6rem;
+    font-family: Georgia, serif;
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.35);
+  }
+  .pull-quote p {
+    font-size: 1.35rem;
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0;
+    position: relative;
+    max-width: 820px;
+    letter-spacing: -0.01em;
+  }
+  .pull-quote strong {
+    font-weight: 700;
+  }
+
+  /* ── Estado ── */
+  .estado {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .estado__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.95rem;
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #15803d;
+    margin-bottom: 1rem;
+  }
+  .estado__dot {
+    width: 7px;
+    height: 7px;
+    background: #22c55e;
+    border-radius: 50%;
+  }
+  .estado__cta {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.75rem 1.4rem;
+    background: var(--color-acc);
+    color: white;
+    font-weight: 600;
+    font-size: 0.92rem;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .estado__cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+  }
+
+  /* ── Section index numbering ── */
+  .section-index {
+    display: block;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--color-acc);
+    margin-bottom: 0.45rem;
+    opacity: 0.85;
+  }
+  .section-index--light {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* ── Stat strip ── */
+  .stat-strip {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f5ff 100%);
+    border-bottom: 1px solid var(--color-acc-border);
+  }
+  .stat-strip__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.4rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+  }
+  .stat-strip__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .stat-strip__value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-acc);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .stat-strip__live {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+    animation: founderPulse 2.4s ease-out infinite;
+  }
+  .stat-strip__label {
+    font-size: 0.78rem;
+    color: #64748b;
+    line-height: 1.3;
+  }
+  .stat-strip__divider {
+    width: 1px;
+    height: 36px;
+    background: linear-gradient(to bottom, transparent, var(--color-acc-border), transparent);
+  }
+
+  /* ── Intro grid ── */
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 3.5rem;
+    align-items: start;
+  }
+  .intro-h2 {
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+    margin: 0;
+  }
+  .intro-h2 em {
+    color: var(--color-acc);
+    font-style: normal;
+    background: linear-gradient(180deg, transparent 65%, rgba(37, 99, 235, 0.15) 65%);
+  }
+  .intro-grid__body p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #475569;
+    margin: 0 0 1rem;
+  }
+  .intro-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--color-acc);
+    text-decoration: none;
+    margin-top: 0.5rem;
+    transition: gap 0.2s ease;
+  }
+  .intro-link svg {
+    width: 18px;
+    height: 18px;
+  }
+  .intro-link:hover {
+    gap: 0.85rem;
+  }
+
+  /* ── Sección oscura (Problema) ── */
+  .acerca-section--dark {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 80% 60% at 80% -10%, rgba(37, 99, 235, 0.35) 0%, transparent 60%),
+      linear-gradient(180deg, #0b1633 0%, #0e1a3d 50%, #0a1430 100%);
+    color: #e2e8f0;
+    padding: 5.5rem 1.5rem;
+  }
+  .acerca-dark__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse 100% 80% at 50% 50%, black 50%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 100% 80% at 50% 50%, black 50%, transparent 100%);
+    pointer-events: none;
+  }
+  .acerca-dark__orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+  }
+  .acerca-dark__orb--a {
+    top: -120px;
+    right: -80px;
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.45) 0%, transparent 70%);
+  }
+  .acerca-dark__orb--b {
+    bottom: -100px;
+    left: -100px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%);
+  }
+  .acerca-dark__inner {
+    position: relative;
+    z-index: 1;
+  }
+  .eyebrow--light {
+    color: #93c5fd;
+  }
+  .problema-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .problema-h2 {
+    font-size: clamp(1.9rem, 3.2vw, 2.7rem);
+    font-weight: 700;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin: 0 0 1.25rem;
+  }
+  .problema-h2 em {
+    color: #93c5fd;
+    font-style: normal;
+  }
+  .problema-lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #cbd5e1;
+    margin: 0 0 1rem;
+    max-width: 520px;
+  }
+  .problema-tag {
+    display: inline-block;
+    margin: 0.6rem 0 0;
+    padding: 0.5rem 0.95rem;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(96, 165, 250, 0.35);
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #bfdbfe;
+  }
+  .fricciones-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .friccion-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.95rem 1.1rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+  .friccion-item:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(96, 165, 250, 0.35);
+    transform: translateX(4px);
+  }
+  .friccion-item__num {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #60a5fa;
+    letter-spacing: 0.05em;
+  }
+  .friccion-item__text {
+    font-size: 0.92rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+  }
+  .friccion-item__bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, #60a5fa, #3b82f6);
+    transform: scaleY(0.3);
+    transform-origin: center;
+    transition: transform 0.25s ease;
+  }
+  .friccion-item:hover .friccion-item__bar {
+    transform: scaleY(1);
+  }
+
+  /* ── Misión/Visión header ── */
+  .mv-header {
+    margin-bottom: 1.75rem;
+    max-width: 720px;
+  }
+
+  /* ── Capacidades header ── */
+  .caps-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: end;
+    margin-bottom: 2rem;
+  }
+  .acerca-lead--inline {
+    margin: 0 0 0.25rem;
+    max-width: 480px;
+  }
+  .capacidad {
+    position: relative;
+  }
+  .capacidad__index {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.4rem;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--color-acc);
+    opacity: 0.4;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── Principios refinados ── */
+  .princ-header {
+    margin-bottom: 2rem;
+  }
+  .principios .principio {
+    border-left: none;
+    padding: 1.75rem 1.5rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .principio__head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.85rem;
+  }
+  .principio__index {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-acc);
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .principio__bar {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, var(--color-acc) 0%, transparent 100%);
+    opacity: 0.35;
+    transition: opacity 0.25s ease;
+  }
+  .principio:hover .principio__bar {
+    opacity: 0.8;
+  }
+
+  /* ── Pipeline rediseñado ── */
+  .pipe-header {
+    margin-bottom: 2.5rem;
+    max-width: 720px;
+  }
+  .pipe-flow {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 1rem 0;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5rem;
+  }
+  .pipe-flow__line {
+    position: absolute;
+    top: calc(1rem + 28px);
+    left: 8.33%;
+    right: 8.33%;
+    height: 2px;
+    background: linear-gradient(to right,
+      transparent 0%,
+      var(--color-acc) 10%,
+      var(--color-acc) 90%,
+      transparent 100%);
+    z-index: 0;
+  }
+  .pipe-node {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .pipe-node__circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid var(--color-acc);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+  .pipe-node:hover .pipe-node__circle {
+    transform: translateY(-3px) scale(1.05);
+    background: var(--color-acc);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+  }
+  .pipe-node__num {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-acc);
+    letter-spacing: 0.04em;
+    transition: color 0.2s ease;
+  }
+  .pipe-node:hover .pipe-node__num {
+    color: white;
+  }
+  .pipe-node__label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1e293b;
+    text-align: center;
+  }
+
+  /* ── Fuentes monogram-wall ── */
+  .src-header {
+    margin-bottom: 2rem;
+    max-width: 720px;
+  }
+  .fuentes-wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 0.85rem;
+  }
+  .fuente-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.95rem;
+    padding: 0.95rem 1.1rem;
+    background: #ffffff;
+    border: 1px solid var(--color-acc-border);
+    border-radius: 12px;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .fuente-card:hover {
+    border-color: var(--color-acc);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.1);
+  }
+  .fuente-card__monogram {
+    width: 44px;
+    height: 44px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+    flex-shrink: 0;
+  }
+  .fuente-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+  .fuente-card__sigla {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .fuente-card__nombre {
+    font-size: 0.78rem;
+    color: #64748b;
+    line-height: 1.35;
+  }
+  .fuente-card__check {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(34, 197, 94, 0.12);
+    color: #16a34a;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .fuente-card__check svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* ── Fuentes: agrupación nacional/internacional ── */
+  .fuentes-group {
+    margin-top: 1.5rem;
+  }
+  .fuentes-group:first-of-type {
+    margin-top: 0;
+  }
+  .fuentes-group__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px dashed var(--color-acc-border);
+  }
+  .fuentes-group__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .fuentes-group__pill svg {
+    width: 14px;
+    height: 14px;
+  }
+  .fuentes-group__pill--nacional {
+    background: var(--color-acc-soft);
+    color: var(--color-acc);
+    border: 1px solid var(--color-acc-border);
+  }
+  .fuentes-group__pill--internacional {
+    background: rgba(168, 85, 247, 0.1);
+    color: #7c3aed;
+    border: 1px solid rgba(168, 85, 247, 0.25);
+  }
+  .fuentes-group__count {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #64748b;
+    letter-spacing: 0.04em;
+  }
+  .fuente-card--intl:hover {
+    border-color: #7c3aed;
+    box-shadow: 0 10px 22px rgba(168, 85, 247, 0.12);
+  }
+  .fuente-card__monogram--intl {
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    box-shadow: 0 4px 10px rgba(168, 85, 247, 0.28);
+  }
+
+  /* ── Transiciones suaves entre claras y oscuras ── */
+  .acerca-section--dark + .acerca-section,
+  .acerca-section + .acerca-section--dark {
+    position: relative;
+  }
+  .acerca-section--dark::before,
+  .acerca-section--dark::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 60px;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .acerca-section--dark::before {
+    top: 0;
+    background: linear-gradient(180deg, rgba(11, 22, 51, 1) 0%, rgba(11, 22, 51, 0) 100%);
+    /* La sección oscura ya cubre el fondo; el gradiente añade un fade desde la sección anterior */
+    display: none;
+  }
+  .acerca-section--dark::after {
+    bottom: -1px;
+    background: linear-gradient(180deg, rgba(10, 20, 48, 0) 0%, rgba(255, 255, 255, 0) 100%);
+    display: none;
+  }
+
+  /* ── Pipeline dark ── */
+  .pipe-flow--dark {
+    margin-top: 2.5rem;
+  }
+  .pipe-flow__line--dark {
+    background: linear-gradient(to right,
+      transparent 0%,
+      #60a5fa 10%,
+      #93c5fd 50%,
+      #60a5fa 90%,
+      transparent 100%);
+    box-shadow: 0 0 12px rgba(96, 165, 250, 0.5);
+    height: 2px;
+  }
+  .pipe-node__circle--dark {
+    background: rgba(255, 255, 255, 0.06);
+    border: 2px solid rgba(96, 165, 250, 0.55);
+    box-shadow:
+      0 0 0 0 rgba(96, 165, 250, 0),
+      0 8px 22px rgba(15, 23, 42, 0.5),
+      inset 0 0 14px rgba(96, 165, 250, 0.18);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .pipe-node--dark:hover .pipe-node__circle--dark {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    border-color: #93c5fd;
+    transform: translateY(-3px) scale(1.06);
+    box-shadow:
+      0 0 0 6px rgba(96, 165, 250, 0.18),
+      0 14px 30px rgba(37, 99, 235, 0.5);
+  }
+  .pipe-node__num--dark {
+    color: #93c5fd;
+    transition: color 0.2s ease;
+  }
+  .pipe-node--dark:hover .pipe-node__num--dark {
+    color: white;
+  }
+  .pipe-node__label--dark {
+    color: #e2e8f0;
+    font-weight: 600;
+  }
+
+  /* ── Metodología dark ── */
+  .metodologia__lista--dark {
+    display: grid;
+    gap: 0.55rem;
+  }
+  .metodologia__lista--dark li {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.95rem 1.1rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    color: #e2e8f0;
+    font-weight: 500;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+  .metodologia__lista--dark li:hover {
+    background: rgba(59, 130, 246, 0.12);
+    border-color: rgba(96, 165, 250, 0.4);
+    transform: translateX(4px);
+  }
+  .metodologia__num {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #60a5fa;
+    letter-spacing: 0.05em;
+  }
+  .metodologia__lista--dark svg {
+    width: 18px;
+    height: 18px;
+    color: #22c55e;
+    flex-shrink: 0;
+  }
+  .metodologia__txt {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: #e2e8f0;
+  }
+  .metodologia__intro p {
+    color: #cbd5e1;
+  }
+
+  /* ── Audiencia con check (legacy chip — sin uso) ── */
+  .audiencia__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .audiencia__chip svg {
+    width: 14px;
+    height: 14px;
+    color: var(--color-acc);
+  }
+
+  /* ── Audience grid (rediseño) ── */
+  .audience-header {
+    margin-bottom: 2rem;
+    max-width: 760px;
+  }
+  .audience-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 0.9rem;
+  }
+  .audience-card {
+    position: relative;
+    padding: 1.6rem 1.4rem 1.5rem;
+    background: #ffffff;
+    border: 1px solid var(--color-acc-border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .audience-card:hover {
+    border-color: var(--color-acc);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(37, 99, 235, 0.12);
+  }
+  .audience-card:hover .audience-card__icon {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    color: white;
+    transform: scale(1.05);
+  }
+  .audience-card:hover .audience-card__corner {
+    transform: translate(-4px, 4px);
+    opacity: 1;
+  }
+  .audience-card__icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-acc-soft);
+    color: var(--color-acc);
+    margin-bottom: 1rem;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  }
+  .audience-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .audience-card__title {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.4rem;
+    letter-spacing: -0.01em;
+  }
+  .audience-card__desc {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: #475569;
+    margin: 0;
+  }
+  .audience-card__corner {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--color-acc-soft);
+    opacity: 0;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+  .audience-card__corner::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    border-top: 2px solid var(--color-acc);
+    border-right: 2px solid var(--color-acc);
+    transform: translate(-60%, -40%) rotate(45deg);
+  }
+
+  /* ── Link inline ── */
+  .acerca-link {
+    color: var(--color-acc);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(37, 99, 235, 0.35);
+    transition: border-color 0.2s ease;
+  }
+  .acerca-link:hover {
+    border-bottom-color: var(--color-acc);
+  }
+
+  /* ── Founder Card ── */
+  @keyframes founderPulse {
+    0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
+    70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+  }
+
+  .founder-card {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    background: #ffffff;
+    border: 1px solid var(--color-acc-border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.8) inset,
+      0 24px 60px -20px rgba(37, 99, 235, 0.18),
+      0 8px 20px rgba(15, 23, 42, 0.04);
+  }
+
+  /* Banda izquierda */
+  .founder-card__visual {
+    position: relative;
+    padding: 2.5rem 2rem;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 30%, rgba(37, 99, 235, 0.18) 0%, transparent 70%),
+      linear-gradient(160deg, #1e3a8a 0%, #2563eb 55%, #3b82f6 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.75rem;
+    overflow: hidden;
+  }
+
+  .founder-card__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 50%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 50%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .founder-card__halo {
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.22) 0%, transparent 65%);
+    filter: blur(28px);
+    pointer-events: none;
+  }
+
+  .founder-card__photo-frame {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .founder-card__photo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.95);
+    box-shadow:
+      0 0 0 6px rgba(255, 255, 255, 0.12),
+      0 20px 50px rgba(15, 23, 42, 0.35);
+  }
+
+  .founder-card__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.35rem 0.8rem;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .founder-card__status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: founderPulse 2.4s ease-out infinite;
+  }
+
+  .founder-card__signature {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    width: 100%;
+  }
+  .founder-card__signature-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .founder-card__signature-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .founder-card__signature-handle {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  /* Banda derecha */
+  .founder-card__body {
+    padding: 2.5rem 2.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .founder-card__role-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .founder-card__role-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    background: var(--color-acc);
+    color: white;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .founder-card__role-pill svg {
+    width: 13px;
+    height: 13px;
+  }
+  .founder-card__role-pill--soft {
+    background: var(--color-acc-soft);
+    color: var(--color-acc);
+    border: 1px solid var(--color-acc-border);
+  }
+
+  .founder-card__quote {
+    position: relative;
+    margin: 0;
+    padding: 0.25rem 0 0.25rem 1.25rem;
+    font-size: 1.08rem;
+    line-height: 1.55;
+    color: #0f172a;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    border-left: 3px solid var(--color-acc);
+  }
+  .founder-card__quote-mark {
+    position: absolute;
+    top: -10px;
+    left: 8px;
+    font-family: Georgia, serif;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--color-acc);
+    opacity: 0.35;
+  }
+
+  .founder-card__bio {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: #475569;
+    margin: 0;
+  }
+
+  .founder-stats {
+    margin: 0.4rem 0 0;
+    padding: 1rem 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    border-top: 1px solid var(--color-acc-border);
+    border-bottom: 1px solid var(--color-acc-border);
+  }
+  .founder-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .founder-stat dt {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+  .founder-stat dd {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0f172a;
+  }
+  .founder-stat__live {
+    color: #22c55e;
+    font-size: 0.7rem;
+    margin-right: 2px;
+  }
+
+  .founder-card__actions {
+    margin-top: 0.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .founder-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.95rem;
+    background: white;
+    color: #1e293b;
+    border: 1px solid var(--color-acc-border);
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  }
+  .founder-btn svg {
+    width: 16px;
+    height: 16px;
+    color: var(--color-acc);
+  }
+  .founder-btn:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-acc);
+    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.12);
+  }
+  .founder-btn--primary {
+    background: var(--color-acc);
+    color: white;
+    border-color: var(--color-acc);
+  }
+  .founder-btn--primary svg {
+    color: white;
+  }
+  .founder-btn--primary:hover {
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.32);
+  }
+  .founder-btn--ghost {
+    background: transparent;
+  }
+
+  /* ── Creador simple (oscuro) ── */
+  .lead-creator {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 3rem;
+    align-items: center;
+    max-width: 920px;
+  }
+  .lead-creator__photo-wrap {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+  }
+  .lead-creator__halo {
+    position: absolute;
+    inset: -22px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(96, 165, 250, 0.45) 0%, rgba(59, 130, 246, 0.15) 50%, transparent 75%);
+    filter: blur(28px);
+    z-index: 0;
+  }
+  .lead-creator__photo {
+    position: relative;
+    z-index: 1;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.95);
+    box-shadow:
+      0 0 0 6px rgba(96, 165, 250, 0.18),
+      0 24px 50px rgba(0, 0, 0, 0.45);
+  }
+  .lead-creator__text {
+    color: #e2e8f0;
+  }
+  .lead-creator__name {
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin: 0 0 0.4rem;
+  }
+  .lead-creator__role {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #93c5fd;
+    margin: 0 0 1.25rem;
+    letter-spacing: 0.005em;
+  }
+  .lead-creator__bio {
+    font-size: 1.02rem;
+    line-height: 1.7;
+    color: #cbd5e1;
+    margin: 0;
+    max-width: 620px;
+  }
+  .lead-creator__bio strong {
+    color: #ffffff;
+    font-weight: 600;
+  }
+  .lead-creator__mission {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin: 1.25rem 0 0;
+    padding: 0.95rem 1.1rem;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.18) 0%, rgba(96, 165, 250, 0.08) 100%);
+    border: 1px solid rgba(96, 165, 250, 0.35);
+    border-left: 3px solid #60a5fa;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: #e2e8f0;
+    max-width: 620px;
+  }
+  .lead-creator__mission strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+  .lead-creator__mission-icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(96, 165, 250, 0.2);
+    color: #93c5fd;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lead-creator__mission-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .lead-creator__links {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 1.4rem;
+  }
+  .lead-creator__links a {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #cbd5e1;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  }
+  .lead-creator__links a svg {
+    width: 18px;
+    height: 18px;
+  }
+  .lead-creator__links a:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: #60a5fa;
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  /* ── Founder card · variante DARK ── */
+  .founder-header {
+    margin-bottom: 2rem;
+    max-width: 760px;
+  }
+  .founder-card--dark {
+    margin-top: 0;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.06) inset,
+      0 30px 70px -20px rgba(0, 0, 0, 0.55),
+      0 12px 30px rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .founder-card--dark .founder-card__visual {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 20%, rgba(96, 165, 250, 0.4) 0%, transparent 65%),
+      linear-gradient(160deg, #0f1f4a 0%, #1e3a8a 50%, #2563eb 100%);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .founder-card--dark .founder-card__body {
+    background: transparent;
+    color: #e2e8f0;
+  }
+  .founder-card--dark .founder-card__role-pill {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  .founder-card--dark .founder-card__role-pill--soft {
+    background: rgba(255, 255, 255, 0.06);
+    color: #93c5fd;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .founder-card--dark .founder-card__quote {
+    color: #ffffff;
+    border-left-color: #60a5fa;
+    font-weight: 500;
+  }
+  .founder-card--dark .founder-card__quote-mark {
+    color: #60a5fa;
+    opacity: 0.6;
+  }
+  .founder-card--dark .founder-card__bio {
+    color: #cbd5e1;
+  }
+  .founder-card--dark .founder-card__bio strong {
+    color: #ffffff;
+  }
+  .founder-card--dark .founder-stats {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .founder-card--dark .founder-stat dt {
+    color: #94a3b8;
+  }
+  .founder-card--dark .founder-stat dd {
+    color: #ffffff;
+  }
+  .founder-card--dark .founder-btn {
+    background: rgba(255, 255, 255, 0.05);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .founder-card--dark .founder-btn svg {
+    color: #93c5fd;
+  }
+  .founder-card--dark .founder-btn:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: #60a5fa;
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.35);
+  }
+  .founder-card--dark .founder-btn--primary {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    color: white;
+    border-color: #3b82f6;
+  }
+  .founder-card--dark .founder-btn--primary svg {
+    color: white;
+  }
+  .founder-card--dark .founder-btn--primary:hover {
+    box-shadow: 0 14px 32px rgba(37, 99, 235, 0.55);
+  }
+  .founder-card--dark .founder-btn--ghost {
+    background: transparent;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 860px) {
+    .acerca-section {
+      padding: 3rem 1.25rem;
+    }
+    .acerca-intro__grid,
+    .mision-vision,
+    .metodologia {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    .pull-quote {
+      padding: 2rem 1.4rem 2rem 1.4rem;
+    }
+    .pull-quote__mark {
+      display: none;
+    }
+    .pull-quote p {
+      font-size: 1.1rem;
+    }
+    .stat-strip__inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem 1rem;
+    }
+    .stat-strip__divider {
+      display: none;
+    }
+    .intro-grid,
+    .problema-grid,
+    .caps-header {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .pipe-flow {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem 0.5rem;
+    }
+    .pipe-flow__line {
+      display: none;
+    }
+    .acerca-section--dark {
+      padding: 3.5rem 1.25rem;
+    }
+    .lead-creator {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      text-align: center;
+    }
+    .lead-creator__bio {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .lead-creator__links {
+      justify-content: center;
+    }
+    .founder-card {
+      grid-template-columns: 1fr;
+    }
+    .founder-card__visual {
+      padding: 2rem 1.5rem;
+    }
+    .founder-card__photo {
+      width: 160px;
+      height: 160px;
+    }
+    .founder-card__body {
+      padding: 1.75rem 1.4rem;
+    }
+    .founder-stats {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    .founder-card__quote {
+      font-size: 1rem;
+    }
+  }
+</style>
