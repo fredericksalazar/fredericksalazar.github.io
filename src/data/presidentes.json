@@ -1,0 +1,130 @@
+{
+  "fuente": "Registraduría Nacional del Estado Civil — Presidentes de Colombia",
+  "nota": "Cada año calendario se atribuye al presidente que gobernó la mayor parte del año. Las posesiones presidenciales en Colombia ocurren el 7 de agosto, por lo que el año de cambio se atribuye al presidente saliente (gobernó ~7 meses).",
+  "presidentes": [
+    {
+      "id": "lleras-camargo",
+      "nombre": "Alberto Lleras Camargo",
+      "partido": "Liberal",
+      "periodo": "Frente Nacional",
+      "inicio": "1958-08-07",
+      "fin": "1962-08-07",
+      "color": "#dc2626"
+    },
+    {
+      "id": "valencia",
+      "nombre": "Guillermo León Valencia",
+      "partido": "Conservador",
+      "periodo": "Frente Nacional",
+      "inicio": "1962-08-07",
+      "fin": "1966-08-07",
+      "color": "#1e40af"
+    },
+    {
+      "id": "lleras-restrepo",
+      "nombre": "Carlos Lleras Restrepo",
+      "partido": "Liberal",
+      "periodo": "Frente Nacional",
+      "inicio": "1966-08-07",
+      "fin": "1970-08-07",
+      "color": "#ea580c"
+    },
+    {
+      "id": "pastrana-borrero",
+      "nombre": "Misael Pastrana Borrero",
+      "partido": "Conservador",
+      "periodo": "Frente Nacional",
+      "inicio": "1970-08-07",
+      "fin": "1974-08-07",
+      "color": "#0d9488"
+    },
+    {
+      "id": "lopez-michelsen",
+      "nombre": "Alfonso López Michelsen",
+      "partido": "Liberal",
+      "inicio": "1974-08-07",
+      "fin": "1978-08-07",
+      "color": "#db2777"
+    },
+    {
+      "id": "turbay",
+      "nombre": "Julio César Turbay Ayala",
+      "partido": "Liberal",
+      "inicio": "1978-08-07",
+      "fin": "1982-08-07",
+      "color": "#ca8a04"
+    },
+    {
+      "id": "betancur",
+      "nombre": "Belisario Betancur",
+      "partido": "Conservador",
+      "inicio": "1982-08-07",
+      "fin": "1986-08-07",
+      "color": "#7c3aed"
+    },
+    {
+      "id": "barco",
+      "nombre": "Virgilio Barco Vargas",
+      "partido": "Liberal",
+      "inicio": "1986-08-07",
+      "fin": "1990-08-07",
+      "color": "#059669"
+    },
+    {
+      "id": "gaviria",
+      "nombre": "César Gaviria Trujillo",
+      "partido": "Liberal",
+      "inicio": "1990-08-07",
+      "fin": "1994-08-07",
+      "color": "#0284c7"
+    },
+    {
+      "id": "samper",
+      "nombre": "Ernesto Samper Pizano",
+      "partido": "Liberal",
+      "inicio": "1994-08-07",
+      "fin": "1998-08-07",
+      "color": "#9f1239"
+    },
+    {
+      "id": "pastrana-arango",
+      "nombre": "Andrés Pastrana Arango",
+      "partido": "Conservador",
+      "inicio": "1998-08-07",
+      "fin": "2002-08-07",
+      "color": "#4338ca"
+    },
+    {
+      "id": "uribe",
+      "nombre": "Álvaro Uribe Vélez",
+      "partido": "Primero Colombia / U",
+      "inicio": "2002-08-07",
+      "fin": "2010-08-07",
+      "color": "#f97316"
+    },
+    {
+      "id": "santos",
+      "nombre": "Juan Manuel Santos",
+      "partido": "Partido de la U",
+      "inicio": "2010-08-07",
+      "fin": "2018-08-07",
+      "color": "#16a34a"
+    },
+    {
+      "id": "duque",
+      "nombre": "Iván Duque Márquez",
+      "partido": "Centro Democrático",
+      "inicio": "2018-08-07",
+      "fin": "2022-08-07",
+      "color": "#475569"
+    },
+    {
+      "id": "petro",
+      "nombre": "Gustavo Petro",
+      "partido": "Pacto Histórico",
+      "inicio": "2022-08-07",
+      "fin": "2026-08-07",
+      "color": "#a21caf"
+    }
+  ]
+}

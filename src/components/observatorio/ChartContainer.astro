@@ -13,8 +13,13 @@ const { titulo, pregunta, fuente, fuenteTexto } = Astro.props;
 
 <article class="chart-card">
   <header class="chart-card__header">
-    <h3 class="chart-card__title">{titulo}</h3>
-    {pregunta && <p class="chart-card__question">{pregunta}</p>}
+    <div class="chart-card__header-row">
+      <div class="chart-card__header-text">
+        <h3 class="chart-card__title">{titulo}</h3>
+        {pregunta && <p class="chart-card__question">{pregunta}</p>}
+      </div>
+      <slot name="header-extra" />
+    </div>
   </header>
 
   <div class="chart-card__body">
@@ -57,6 +62,21 @@ const { titulo, pregunta, fuente, fuenteTexto } = Astro.props;
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+  }
+
+  .chart-card__header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .chart-card__header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+    flex: 1;
   }
 
   .chart-card__title {
