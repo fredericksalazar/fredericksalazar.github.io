@@ -29,7 +29,7 @@ const dashboards = [
         }
         return (
           <li class={`dashboard-nav__item ${isActive ? "dashboard-nav__item--active" : ""}`}>
-            <a href={d.href} class="dashboard-nav__link">
+            <a href={d.href} class="dashboard-nav__link" data-astro-reload>
               {isActive && <span class="dashboard-nav__dot" aria-hidden="true"></span>}
               <span class="dashboard-nav__label">{d.label}</span>
             </a>
