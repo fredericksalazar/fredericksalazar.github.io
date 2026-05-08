@@ -7,9 +7,10 @@ import PlotlyChart from "./PlotlyChart.astro";
 interface Props {
   serie: SerieFila[];
   fuente: Fuente;
+  embedded?: boolean;
 }
 
-const { serie, fuente } = Astro.props;
+const { serie, fuente, embedded = false } = Astro.props;
 const { x, y } = extractSerie(serie, "inflacion_anual");
 
 const traces = [
@@ -80,6 +81,7 @@ const layout = baseLayout({
   titulo="Inflación anual"
   pregunta="¿Cómo ha evolucionado el alza de precios al consumidor?"
   fuente={fuente}
+  embedded={embedded}
 >
   <PlotlyChart
     id="inflacion-anual"

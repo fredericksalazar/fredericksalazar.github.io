@@ -1,0 +1,166 @@
+---
+import type { Fuente } from "../../lib/observatorio/types";
+
+interface Props {
+  fuenteInflacion: Fuente;
+  fuenteTasa: Fuente;
+  primerPeriodo: string;
+  ultimoPeriodo: string;
+}
+
+const { fuenteInflacion, fuenteTasa, primerPeriodo, ultimoPeriodo } = Astro.props;
+
+const terminos = [
+  {
+    titulo: "Inflación anual",
+    desc: "Cuánto subieron los precios al consumidor en los últimos 12 meses. La calcula el DANE con el IPC.",
+  },
+  {
+    titulo: "Tasa de intervención",
+    desc: "Tasa que fija el Banco de la República para prestar a los bancos. Es la herramienta principal de política monetaria.",
+  },
+  {
+    titulo: "Spread o tasa real",
+    desc: "Diferencia entre tasa de intervención e inflación. Mide qué tan caro está el dinero en términos reales.",
+  },
+  {
+    titulo: "Política monetaria",
+    desc: "Decisiones del Banco para mantener la inflación cerca de la meta del 3% y proteger el valor del peso.",
+  },
+];
+---
+
+<section class="glosario-block" aria-label="Glosario y fuentes">
+  <header class="glosario-block__header">
+    <span class="glosario-block__eyebrow">Referencia</span>
+    <h2 class="glosario-block__titulo">Glosario y fuentes</h2>
+  </header>
+
+  <div class="glosario-grid">
+    {terminos.map((t) => (
+      <article class="glosario-card">
+        <h3 class="glosario-card__titulo">{t.titulo}</h3>
+        <p class="glosario-card__desc">{t.desc}</p>
+      </article>
+    ))}
+  </div>
+
+  <footer class="glosario-block__footer">
+    <span>
+      <strong>Fuentes:</strong>
+      <a href={fuenteInflacion.url} target="_blank" rel="noopener noreferrer">DANE — IPC</a>
+      ·
+      <a href={fuenteTasa.url} target="_blank" rel="noopener noreferrer">Banco de la República — TPM</a>
+    </span>
+    <span class="glosario-block__cobertura">
+      Cobertura: {primerPeriodo} → {ultimoPeriodo}
+    </span>
+  </footer>
+</section>
+
+<style>
+  .glosario-block {
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .glosario-block__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .glosario-block__eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .glosario-block__titulo {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--color-text-primary);
+    letter-spacing: -0.015em;
+  }
+
+  .glosario-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .glosario-card {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    background: var(--color-bg, #fff);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .glosario-card:hover {
+    border-color: rgba(37, 99, 235, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .glosario-card__titulo {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 0.4rem;
+  }
+
+  .glosario-card__desc {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .glosario-block__footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .glosario-block__footer a {
+    color: var(--color-accent);
+    text-decoration: none;
+    margin: 0 0.15rem;
+  }
+
+  .glosario-block__footer a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 1024px) {
+    .glosario-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .glosario-block {
+      padding: 1.25rem;
+      border-radius: 14px;
+    }
+    .glosario-grid {
+      grid-template-columns: 1fr;
+    }
+    .glosario-block__titulo {
+      font-size: 1.3rem;
+    }
+  }
+</style>

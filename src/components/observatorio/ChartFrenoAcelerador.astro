@@ -6,9 +6,10 @@ import PlotlyChart from "./PlotlyChart.astro";
 
 interface Props {
   serie: SerieFila[];
+  embedded?: boolean;
 }
 
-const { serie } = Astro.props;
+const { serie, embedded = false } = Astro.props;
 
 const data = serie.filter((r) => r.inflacion_anual !== null && r.tasa_interes !== null);
 
@@ -100,6 +101,7 @@ const layout = baseLayout({
   titulo="¿Está el Banco frenando o acelerando la economía?"
   pregunta="Cuando la tasa BanRep supera a la inflación anual, hay tasa real positiva (freno). Cuando la inflación supera a la tasa, hay tasa real negativa (acelerador)."
   fuenteTexto="Cálculo propio sobre DANE (IPC) y Banco de la República (TPM)"
+  embedded={embedded}
 >
   <PlotlyChart
     id="freno-acelerador"

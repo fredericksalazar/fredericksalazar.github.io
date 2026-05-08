@@ -1,0 +1,198 @@
+---
+import type { Fuente } from "../../lib/observatorio/types";
+
+interface Props {
+  numero: string;
+  eyebrow: string;
+  titulo: string;
+  lead?: string;
+  fuente?: Fuente;
+  fuenteTexto?: string;
+}
+
+const { numero, eyebrow, titulo, lead, fuente, fuenteTexto } = Astro.props;
+---
+
+<section class="indicador-panel" aria-label={titulo}>
+  <header class="indicador-panel__header">
+    <div class="indicador-panel__numero" aria-hidden="true">{numero}</div>
+    <div class="indicador-panel__heading">
+      <span class="indicador-panel__eyebrow">{eyebrow}</span>
+      <h2 class="indicador-panel__titulo">{titulo}</h2>
+      {lead && <p class="indicador-panel__lead">{lead}</p>}
+    </div>
+  </header>
+
+  <div class="indicador-panel__text">
+    <slot name="text" />
+  </div>
+
+  <div class="indicador-panel__visual">
+    <slot name="visual" />
+  </div>
+
+  <footer class="indicador-panel__footer">
+    {fuente ? (
+      <span class="indicador-panel__fuente">
+        Fuente:
+        <a href={fuente.url} target="_blank" rel="noopener noreferrer">
+          {fuente.nombre}
+        </a>
+        {fuente.indicador && <span class="indicador-panel__fuente-extra"> · {fuente.indicador}</span>}
+      </span>
+    ) : fuenteTexto ? (
+      <span class="indicador-panel__fuente">{fuenteTexto}</span>
+    ) : null}
+    <slot name="footer-extra" />
+  </footer>
+</section>
+
+<style>
+  .indicador-panel {
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 24px;
+    padding: 2rem 2.25rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .indicador-panel__header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    align-items: start;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .indicador-panel__numero {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--color-accent);
+    opacity: 0.32;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .indicador-panel__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+
+  .indicador-panel__eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .indicador-panel__titulo {
+    font-size: 1.7rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0;
+    color: var(--color-text-primary);
+    letter-spacing: -0.015em;
+  }
+
+  .indicador-panel__lead {
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0.25rem 0 0;
+    max-width: 90ch;
+  }
+
+  .indicador-panel__text :global(p) {
+    margin: 0 0 0.85rem;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 90ch;
+  }
+
+  .indicador-panel__text :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .indicador-panel__text :global(strong) {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  .indicador-panel__text :global(ul) {
+    margin: 0 0 0.5rem;
+    padding-left: 1.1rem;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 90ch;
+  }
+
+  .indicador-panel__text :global(li) {
+    margin-bottom: 0.4rem;
+  }
+
+  .indicador-panel__text :global(li::marker) {
+    color: var(--color-accent);
+  }
+
+  .indicador-panel__visual {
+    min-width: 0;
+  }
+
+  .indicador-panel__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+  }
+
+  .indicador-panel__fuente a {
+    color: var(--color-accent);
+    text-decoration: none;
+    margin-left: 0.25rem;
+  }
+
+  .indicador-panel__fuente a:hover {
+    text-decoration: underline;
+  }
+
+  .indicador-panel__fuente-extra {
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 768px) {
+    .indicador-panel {
+      padding: 1.25rem 1.25rem;
+      border-radius: 18px;
+      gap: 1rem;
+    }
+    .indicador-panel__header {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      padding-bottom: 1rem;
+    }
+    .indicador-panel__numero {
+      font-size: 2rem;
+    }
+    .indicador-panel__titulo {
+      font-size: 1.3rem;
+    }
+    .indicador-panel__lead {
+      font-size: 0.98rem;
+    }
+  }
+</style>

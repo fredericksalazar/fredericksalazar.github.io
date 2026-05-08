@@ -1,0 +1,71 @@
+---
+interface Props {
+  eyebrow: string;
+  hint?: string;
+}
+
+const { eyebrow, hint } = Astro.props;
+---
+
+<section class="page-header" aria-label="Resumen del estado actual">
+  <span class="page-header__eyebrow">{eyebrow}</span>
+  <h2 class="page-header__lead"><slot /></h2>
+  {hint && <p class="page-header__hint">{hint}</p>}
+  <slot name="hint" />
+</section>
+
+<style>
+  .page-header {
+    background: linear-gradient(
+      135deg,
+      var(--color-sidebar) 0%,
+      rgba(37, 99, 235, 0.04) 100%
+    );
+    border: 1px solid var(--color-border);
+    border-radius: 24px;
+    padding: 2rem 2.25rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .page-header__eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .page-header__lead {
+    font-size: 1.55rem;
+    font-weight: 600;
+    line-height: 1.45;
+    margin: 0;
+    color: var(--color-text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .page-header__lead :global(strong) {
+    color: var(--color-accent);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .page-header__hint {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .page-header {
+      padding: 1.25rem 1.25rem;
+      border-radius: 18px;
+    }
+    .page-header__lead {
+      font-size: 1.15rem;
+    }
+  }
+</style>

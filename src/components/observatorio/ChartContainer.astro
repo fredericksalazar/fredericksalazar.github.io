@@ -6,11 +6,20 @@ interface Props {
   pregunta?: string;
   fuente?: Fuente;
   fuenteTexto?: string;
+  embedded?: boolean;
 }
 
-const { titulo, pregunta, fuente, fuenteTexto } = Astro.props;
+const { titulo, pregunta, fuente, fuenteTexto, embedded = false } = Astro.props;
 ---
 
+{embedded ? (
+  <div class="chart-embedded">
+    <div class="chart-embedded__extra">
+      <slot name="header-extra" />
+    </div>
+    <slot />
+  </div>
+) : (
 <article class="chart-card">
   <header class="chart-card__header">
     <div class="chart-card__header-row">
@@ -40,8 +49,23 @@ const { titulo, pregunta, fuente, fuenteTexto } = Astro.props;
     <slot name="footer-extra" />
   </footer>
 </article>
+)}
 
 <style>
+  .chart-embedded {
+    width: 100%;
+  }
+
+  .chart-embedded__extra {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+  }
+
+  .chart-embedded__extra:empty {
+    display: none;
+  }
+
   .chart-card {
     background: var(--color-sidebar);
     border: 1px solid var(--color-border);

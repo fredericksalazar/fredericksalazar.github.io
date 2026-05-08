@@ -6,9 +6,10 @@ import { getPresidentes, presidenteForYear } from "../../lib/observatorio/presid
 
 interface Props {
   historico: Record<string, number>;
+  embedded?: boolean;
 }
 
-const { historico } = Astro.props;
+const { historico, embedded = false } = Astro.props;
 const presidentes = getPresidentes();
 
 const years = Object.keys(historico).sort();
@@ -127,6 +128,7 @@ const colorsJson = JSON.stringify(colorsPorPresidente);
   titulo="Inflación histórica de Colombia"
   pregunta="Inflación anual desde 1960 según datos del Banco Mundial. Coloreada por presidente que gobernó la mayor parte del año."
   fuenteTexto="Banco Mundial — World Development Indicators · Presidentes: Registraduría Nacional"
+  embedded={embedded}
 >
   <label slot="header-extra" class="pres-toggle" data-pres-toggle-for="inflacion-historica">
     <span class="pres-toggle__label">Color por presidente</span>

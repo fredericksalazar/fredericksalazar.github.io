@@ -6,9 +6,10 @@ import PlotlyChart from "./PlotlyChart.astro";
 
 interface Props {
   serie: SerieFila[];
+  embedded?: boolean;
 }
 
-const { serie } = Astro.props;
+const { serie, embedded = false } = Astro.props;
 
 const data = serie.filter((r) => r.inflacion_anual !== null && r.tasa_interes !== null);
 
@@ -52,6 +53,7 @@ const layout = baseLayout({
   titulo="¿Qué tan 'caro' está el dinero en Colombia?"
   pregunta="Diferencial entre Tasa del Banco de la República e Inflación (2004-2026). Barras rojas = freno (tasa > inflación), barras verdes = acelerador."
   fuenteTexto="Cálculo propio sobre DANE (IPC) y Banco de la República (TPM)"
+  embedded={embedded}
 >
   <PlotlyChart
     id="spread-barras"

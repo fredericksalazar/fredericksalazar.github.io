@@ -7,9 +7,10 @@ import PlotlyChart from "./PlotlyChart.astro";
 interface Props {
   serie: SerieFila[];
   fuente: Fuente;
+  embedded?: boolean;
 }
 
-const { serie, fuente } = Astro.props;
+const { serie, fuente, embedded = false } = Astro.props;
 const { x, y } = extractSerie(serie, "tasa_interes");
 
 const traces = [
@@ -36,6 +37,7 @@ const layout = baseLayout();
   titulo="Tasa de intervención BanRep"
   pregunta="¿Cómo se ha movido la tasa de política monetaria del Banco de la República?"
   fuente={fuente}
+  embedded={embedded}
 >
   <PlotlyChart
     id="tasa-interes"
