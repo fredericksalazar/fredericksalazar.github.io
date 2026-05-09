@@ -48,12 +48,16 @@ def _scalar(value):
 
 
 def _calcular_diffs(df: pd.DataFrame) -> pd.DataFrame:
-    """Añade columnas {col}_delta y {col}_variacion para cada indicador."""
+    """Añade columnas {col}_delta y {col}_variacion para cada indicador.
+    
+    Comparación interanual (shift 12): variación respecto al mismo mes del año anterior.
+    Práctica estándar internacional (DANE, BLS, Eurostat) para eliminar estacionalidad.
+    """
     df = df.sort_values("periodo").reset_index(drop=True)
     for col in COLUMNAS_VALOR:
         delta_col = f"{col}_delta"
         var_col = f"{col}_variacion"
-        df[delta_col] = (df[col] - df[col].shift(1)).round(4)
+        df[delta_col] = (df[col] - df[col].shift(12)).round(4)
         df[var_col] = df[delta_col].apply(clasificar_variacion)
     return df
 

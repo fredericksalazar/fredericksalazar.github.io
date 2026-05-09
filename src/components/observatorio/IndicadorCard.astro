@@ -14,9 +14,10 @@ interface Props {
   semantic: SemanticIndicador;
   unidadOverride?: "%" | "pp";
   subtitle?: string;
+  deltaLabel?: string;
 }
 
-const { titulo, indicador, semantic, unidadOverride, subtitle } = Astro.props;
+const { titulo, indicador, semantic, unidadOverride, subtitle, deltaLabel = "vs mes anterior" } = Astro.props;
 const { actual, unidad } = indicador;
 
 const unidadFinal = unidadOverride ?? unidad;
@@ -41,7 +42,7 @@ const periodoCorto = formatPeriodoCorto(actual.periodo);
   </p>
   <p class="kpi-card__delta">
     <span class={varClass}>{deltaFmt}</span>
-    <span class="kpi-card__period">vs mes anterior</span>
+    <span class="kpi-card__period">{deltaLabel}</span>
   </p>
   {subtitle && <p class="kpi-card__sub">{subtitle}</p>}
   <p class="kpi-card__stamp">{periodoCorto}</p>
