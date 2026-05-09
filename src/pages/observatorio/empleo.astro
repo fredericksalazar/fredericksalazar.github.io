@@ -1,0 +1,441 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import MapaColombia from "../../components/observatorio/MapaColombia.astro";
+import DashboardNav from "../../components/observatorio/DashboardNav.astro";
+import IndicadorCard from "../../components/observatorio/IndicadorCard.astro";
+import PageHeader from "../../components/observatorio/PageHeader.astro";
+import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
+import ChartDesempleo from "../../components/observatorio/ChartDesempleo.astro";
+import ChartDesempleoHistorico from "../../components/observatorio/ChartDesempleoHistorico.astro";
+import ChartTGPTODual from "../../components/observatorio/ChartTGPTODual.astro";
+import ChartBrechaLaboral from "../../components/observatorio/ChartBrechaLaboral.astro";
+import ChartSubempleo from "../../components/observatorio/ChartSubempleo.astro";
+import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
+import { getEmpleo, getEmpleoSerieAscending } from "../../lib/observatorio/data";
+import { formatPeriodo } from "../../lib/observatorio/formatters";
+
+const emp = getEmpleo();
+const serieAsc = getEmpleoSerieAscending();
+const { indicadores, metadata, historico } = emp;
+
+const desempleoActual = indicadores.tasa_desempleo.actual.valor;
+const ultimoPeriodo = formatPeriodo(metadata.cobertura.ultimo_periodo);
+
+const fuenteEmpleo = metadata.fuentes.empleo;
+const fuenteHistorica = metadata.fuentes.historico;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Dataset",
+      name: "Observatorio de Datos de Colombia — Mercado Laboral",
+      description:
+        "Indicadores del mercado laboral colombiano: tasa de desempleo, TGP, tasa de ocupación e informalidad. Datos del DANE (GEIH) y Banco Mundial.",
+      url: "https://fredericksalazar.com/observatorio/empleo",
+      keywords: [
+        "desempleo Colombia",
+        "TGP Colombia",
+        "tasa de ocupación",
+        "informalidad laboral",
+        "mercado laboral",
+        "GEIH DANE",
+      ],
+      creator: {
+        "@type": "Person",
+        name: "Frederick Salazar",
+        url: "https://fredericksalazar.com/",
+      },
+      isBasedOn: [
+        { "@type": "CreativeWork", name: fuenteEmpleo.nombre, url: fuenteEmpleo.url },
+        { "@type": "CreativeWork", name: fuenteHistorica.nombre, url: fuenteHistorica.url },
+      ],
+      temporalCoverage: `${metadata.cobertura.primer_periodo}/${metadata.cobertura.ultimo_periodo}`,
+      dateModified: metadata.ultima_actualizacion,
+      license: "https://creativecommons.org/licenses/by/4.0/",
+      spatialCoverage: { "@type": "Place", name: "Colombia" },
+    },
+    {
+      "@type": "Article",
+      headline: "Mercado Laboral en Colombia",
+      description:
+        "Explicación sencilla de los indicadores clave del mercado laboral colombiano: tasa de desempleo, TGP, tasa de ocupación e informalidad. Datos oficiales del DANE y Banco Mundial.",
+      author: { "@type": "Person", name: "Frederick Salazar" },
+      datePublished: "2026-05-08",
+      dateModified: metadata.ultima_actualizacion,
+      about: [
+        { "@type": "Thing", name: "Desempleo" },
+        { "@type": "Thing", name: "Mercado laboral" },
+        { "@type": "Place", name: "Colombia" },
+      ],
+      mainEntityOfPage: "https://fredericksalazar.com/observatorio/empleo",
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="Empleo · Observatorio de Datos de Colombia"
+  description="Indicadores del mercado laboral colombiano: tasa de desempleo, TGP, tasa de ocupación e informalidad. Datos del DANE (GEIH) y Banco Mundial."
+  image="/images/observatorio.png"
+  fullWidth={true}
+>
+  <Hero
+    badge={{ text: "Mercado Laboral · Colombia" }}
+    title="Observatorio de Datos de Colombia"
+    subtitle="El Observatorio de Datos de Colombia consolida, procesa y publica los indicadores macroeconómicos que definen el pulso del país: para que cualquier persona lea la economía colombiana como un gerente lee el dashboard de su empresa."
+    tags={["Inflación", "Empleo", "Comercio Exterior", "Sector Fiscal", "Monetario"]}
+    showPartners={false}
+  >
+    <MapaColombia slot="visual" />
+  </Hero>
+  <DashboardNav active="empleo" />
+
+  <div class="observatorio-container">
+    <PageHeader
+      eyebrow={`Actualizado · ${ultimoPeriodo}`}
+      hint={`Tasa de desempleo: ${desempleoActual ?? "—"}% · Datos DANE (GEIH) y Banco Mundial`}
+    >
+      La tasa de desempleo en Colombia se ubica en
+      <strong>{desempleoActual ?? "—"}%</strong>.
+      El mercado laboral colombiano, medido por la Gran Encuesta Integrada de Hogares (GEIH),
+      muestra la dinámica entre la población que busca trabajo, la que está ocupada
+      y la que está por fuera del mercado formal.
+    </PageHeader>
+
+    <section class="kpi-row" aria-label="Indicadores actuales">
+      <IndicadorCard
+        titulo="Tasa de desempleo"
+        indicador={indicadores.tasa_desempleo}
+        semantic="empleo"
+      />
+      <IndicadorCard
+        titulo="TGP"
+        indicador={indicadores.tgp}
+        semantic="ocupacion"
+      />
+      <IndicadorCard
+        titulo="Tasa de ocupación"
+        indicador={indicadores.to}
+        semantic="ocupacion"
+      />
+      <IndicadorCard
+        titulo="Subempleo"
+        indicador={indicadores.subempleo}
+        semantic="empleo"
+      />
+    </section>
+
+    <IndicadorPanel
+      numero="01"
+      eyebrow="Contexto histórico"
+      titulo="El desempleo en Colombia en las últimas tres décadas"
+      lead="Desde los años 90, la tasa de desempleo ha reflejado crisis económicas, bonanzas y reformas estructurales. Cada presidente ha enfrentado un mercado laboral distinto."
+      fuente={fuenteHistorica}
+    >
+      <Fragment slot="text">
+        <p>
+          Colombia ha vivido picos de desempleo superiores al <strong>20 %</strong> durante la crisis
+          de fin de siglo (1999-2000), seguidos de una década de reducción gradual. La pandemia
+          del COVID-19 disparó nuevamente la tasa por encima del <strong>20 % en 2020</strong>.
+        </p>
+        <ul>
+          <li><strong>1999 – 2000:</strong> crisis financiera, desempleo récord sobre 20 %.</li>
+          <li><strong>2010 – 2015:</strong> reducción sostenida, llega a un dígito por primera vez en décadas.</li>
+          <li><strong>2020:</strong> pandemia, confinamientos, desempleo se dispara al 20 %.</li>
+          <li><strong>2021 – 2024:</strong> recuperación gradual del mercado laboral.</li>
+        </ul>
+      </Fragment>
+      <ChartDesempleoHistorico slot="visual" historico={historico} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="02"
+      eyebrow="Evolución reciente"
+      titulo="Tasa de desempleo mensual"
+      lead="El desempleo es el porcentaje de la población económicamente activa que busca trabajo y no lo encuentra. Un indicador clave del bienestar económico."
+      fuente={fuenteEmpleo}
+    >
+      <Fragment slot="text">
+        <p>
+          La <strong>tasa de desempleo</strong> mide la proporción de personas que, estando
+          disponibles para trabajar, no encuentran empleo. Es el indicador más seguido
+          del mercado laboral y uno de los termómetros principales de la economía.
+        </p>
+        <p>
+          En el dato más reciente ({ultimoPeriodo}), la tasa se ubica en
+          <strong> {desempleoActual ?? "—"}%</strong>.
+          Cuando baja, hay más gente trabajando y consumiendo. Cuando sube, hay presión
+          social y menor demanda interna.
+        </p>
+      </Fragment>
+      <ChartDesempleo slot="visual" serie={serieAsc} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="03"
+      eyebrow="Participación vs Ocupación"
+      titulo="TGP y Tasa de Ocupación"
+      lead="La TGP muestra cuántas personas participan en el mercado laboral (trabajando o buscando). La TO mide cuántas están efectivamente ocupadas. La distancia entre ambas es el desempleo."
+      fuente={fuenteEmpleo}
+    >
+      <Fragment slot="text">
+        <p>
+          La <strong>Tasa Global de Participación</strong> refleja la oferta laboral: cuántas
+          personas están activas en el mercado de trabajo. La <strong>Tasa de Ocupación</strong>
+          mide la demanda: cuántas de esas personas encuentran empleo.
+        </p>
+        <p>
+          Cuando la TGP sube más rápido que la TO, el desempleo aumenta porque hay más gente
+          buscando que puestos disponibles. Cuando la TO crece más rápido, el mercado absorbe
+          a los nuevos trabajadores.
+        </p>
+      </Fragment>
+      <ChartTGPTODual slot="visual" serie={serieAsc} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="04"
+      eyebrow="Desequilibrio laboral"
+      titulo="Brecha entre participación y ocupación"
+      lead="TGP menos TO: la diferencia neta entre quienes quieren trabajar y quienes lo logran. Es el termómetro más directo de la salud del mercado laboral."
+      fuente={fuenteEmpleo}
+    >
+      <Fragment slot="text">
+        <p>
+          Esta brecha captura en un solo número el <strong>desequilibrio del mercado laboral</strong>.
+          Una brecha por encima de 10 puntos porcentuales indica un mercado con serios problemas
+          de absorción de mano de obra.
+        </p>
+        <ul>
+          <li><strong>Brecha baja (&lt;8 pp):</strong> mercado laboral saludable, la mayoría de quienes buscan trabajo lo encuentran.</li>
+          <li><strong>Brecha media (8-10 pp):</strong> señales de alerta, el mercado no absorbe toda la oferta.</li>
+          <li><strong>Brecha alta (&gt;10 pp):</strong> crisis de empleo, mucha gente busca pero no encuentra.</li>
+        </ul>
+      </Fragment>
+      <ChartBrechaLaboral slot="visual" serie={serieAsc} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="05"
+      eyebrow="Indicador adelantado"
+      titulo="Subempleo: los que trabajan pero menos de lo que quisieran"
+      lead="El subempleo mide a los ocupados que desean y pueden trabajar más horas. Es un indicador adelantado que suele anticipar cambios en la tasa de desempleo."
+      fuente={fuenteEmpleo}
+    >
+      <Fragment slot="text">
+        <p>
+          Una persona subempleada <strong>ya tiene trabajo</strong> pero está dispuesta a trabajar
+          más horas. Cuando el subempleo sube, suele anticipar que el desempleo también subirá
+          en los meses siguientes, porque indica que el mercado no está generando suficientes
+          horas de trabajo de calidad.
+        </p>
+        <p>
+          En {ultimoPeriodo}, la tasa de subempleo es del <strong>{indicadores.subempleo.actual.valor ?? "—"}%</strong>.
+        </p>
+      </Fragment>
+      <ChartSubempleo slot="visual" serie={serieAsc} embedded={true} />
+    </IndicadorPanel>
+
+    <section class="glosario-block" aria-label="Glosario y fuentes">
+      <header class="glosario-block__header">
+        <span class="glosario-block__eyebrow">Referencia</span>
+        <h2 class="glosario-block__titulo">Glosario y fuentes</h2>
+      </header>
+      <div class="glosario-grid">
+        <article class="glosario-card">
+          <h3 class="glosario-card__titulo">Tasa de desempleo</h3>
+          <p class="glosario-card__desc">Porcentaje de la PEA que busca trabajo y no lo encuentra. Principal indicador del mercado laboral.</p>
+        </article>
+        <article class="glosario-card">
+          <h3 class="glosario-card__titulo">TGP</h3>
+          <p class="glosario-card__desc">Tasa Global de Participación: porcentaje de la población en edad de trabajar que trabaja o busca trabajo.</p>
+        </article>
+        <article class="glosario-card">
+          <h3 class="glosario-card__titulo">Tasa de ocupación</h3>
+          <p class="glosario-card__desc">Porcentaje de la población en edad de trabajar que está efectivamente ocupada.</p>
+        </article>
+        <article class="glosario-card">
+          <h3 class="glosario-card__titulo">Subempleo</h3>
+          <p class="glosario-card__desc">Ocupados que desean trabajar más horas. Indicador adelantado: anticipa cambios en la tasa de desempleo.</p>
+        </article>
+      </div>
+      <footer class="glosario-block__footer">
+        <span>
+          <strong>Fuentes:</strong>
+          <a href={fuenteEmpleo.url} target="_blank" rel="noopener noreferrer">DANE — GEIH</a>
+          ·
+          <a href={fuenteHistorica.url} target="_blank" rel="noopener noreferrer">Banco Mundial — WDI</a>
+        </span>
+        <span class="glosario-block__cobertura">
+          Cobertura: {metadata.cobertura.primer_periodo} → {metadata.cobertura.ultimo_periodo}
+        </span>
+      </footer>
+    </section>
+
+    <DashboardFooter
+      fuentes={[fuenteEmpleo, fuenteHistorica]}
+      ultimaActualizacion={metadata.ultima_actualizacion}
+      definiciones={[
+        {
+          titulo: "Tasa de desempleo",
+          texto: "Porcentaje de la población económicamente activa que busca trabajo y no lo encuentra (DANE — GEIH)."
+        },
+        {
+          titulo: "TGP (Tasa Global de Participación)",
+          texto: "Porcentaje de la población en edad de trabajar que está trabajando o buscando trabajo."
+        },
+        {
+          titulo: "Subempleo",
+          texto: "Porcentaje de ocupados que desean y pueden trabajar más horas. Indicador adelantado del mercado laboral."
+        },
+      ]}
+      cobertura={`${metadata.cobertura.primer_periodo} → ${metadata.cobertura.ultimo_periodo} · ${metadata.cobertura.total_registros} registros`}
+    />
+  </div>
+
+  <script is:inline src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>
+
+<style>
+  .observatorio-container {
+    width: 97%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 1.75rem 0 3rem;
+  }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin: 0 auto 1.5rem;
+  }
+
+  @media (max-width: 1024px) {
+    .kpi-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .kpi-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ── Glosario ── */
+  .glosario-block {
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .glosario-block__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .glosario-block__eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .glosario-block__titulo {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--color-text-primary);
+    letter-spacing: -0.015em;
+  }
+
+  .glosario-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .glosario-card {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    background: var(--color-bg, #fff);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .glosario-card:hover {
+    border-color: rgba(37, 99, 235, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .glosario-card__titulo {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 0.4rem;
+  }
+
+  .glosario-card__desc {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .glosario-block__footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .glosario-block__footer a {
+    color: var(--color-accent);
+    text-decoration: none;
+    margin: 0 0.15rem;
+  }
+
+  .glosario-block__footer a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 1024px) {
+    .glosario-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .glosario-block {
+      padding: 1.25rem;
+      border-radius: 14px;
+    }
+    .glosario-grid {
+      grid-template-columns: 1fr;
+    }
+    .glosario-block__titulo {
+      font-size: 1.3rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .observatorio-container {
+      width: 100%;
+      padding: 1.25rem 1rem 2rem;
+    }
+  }
+</style>

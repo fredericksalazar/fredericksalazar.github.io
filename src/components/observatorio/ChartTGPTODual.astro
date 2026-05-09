@@ -1,0 +1,56 @@
+---
+import type { EmpleoSerieFila } from "../../lib/observatorio/types";
+import { baseLayout, extractSerie } from "../../lib/observatorio/charts";
+import ChartContainer from "./ChartContainer.astro";
+import PlotlyChart from "./PlotlyChart.astro";
+
+interface Props {
+  serie: EmpleoSerieFila[];
+  embedded?: boolean;
+}
+
+const { serie, embedded = false } = Astro.props;
+
+const filtered = serie.filter((r) => r.periodo >= "2000-01");
+const tgp = extractSerie(filtered, "tgp");
+const to = extractSerie(filtered, "to");
+
+const traces = [
+  {
+    name: "TGP",
+    x: tgp.x,
+    y: tgp.y,
+    mode: "lines",
+    line: { color: "#2563eb", width: 2.2 },
+    hovertemplate: "<b>%{x|%b %Y}</b><br>TGP: %{y:.2f}%<extra></extra>",
+  },
+  {
+    name: "Tasa de Ocupación",
+    x: to.x,
+    y: to.y,
+    mode: "lines",
+    line: { color: "#64748b", width: 2.2, dash: "dash" },
+    hovertemplate: "<b>%{x|%b %Y}</b><br>TO: %{y:.2f}%<extra></extra>",
+  },
+];
+
+const layout = baseLayout({
+  showlegend: true,
+  legend: { orientation: "h", yanchor: "bottom", y: 1.04, xanchor: "left", x: 0, font: { size: 11 }, bgcolor: "rgba(0,0,0,0)" },
+});
+---
+
+<ChartContainer
+  titulo="TGP y Tasa de Ocupación"
+  pregunta="La TGP mide cuántas personas trabajan o buscan trabajo. La TO mide cuántas están efectivamente ocupadas. La brecha entre ambas refleja el desempleo."
+  fuenteTexto="DANE — Gran Encuesta Integrada de Hogares (GEIH)"
+  embedded={embedded}
+>
+  <PlotlyChart
+    id="tgp-to-dual"
+    traces={traces}
+    layout={layout}
+    height={340}
+    ariaLabel="Tasa Global de Participación y Tasa de Ocupación mensuales"
+  />
+</ChartContainer>

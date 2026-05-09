@@ -1,38 +1,48 @@
 ---
-import type { ObservatorioMetadata } from "../../lib/observatorio/types";
+import type { Fuente } from "../../lib/observatorio/types";
 import { formatFechaActualizacion } from "../../lib/observatorio/formatters";
 
-interface Props {
-  metadata: ObservatorioMetadata;
+interface Definicion {
+  titulo: string;
+  texto: string;
 }
 
-const { metadata } = Astro.props;
-const fechaActualizacion = formatFechaActualizacion(metadata.ultima_actualizacion);
+interface Props {
+  fuentes: Fuente[];
+  ultimaActualizacion: string;
+  definiciones?: Definicion[];
+  cobertura?: string;
+}
+
+const { fuentes, ultimaActualizacion, definiciones = [], cobertura } = Astro.props;
+const fechaActualizacion = formatFechaActualizacion(ultimaActualizacion);
 ---
 
 <footer class="dashboard-footer" aria-label="Metodología y fuentes">
   <div class="dashboard-footer__inner">
     <div class="dashboard-footer__cell">
       <p class="dashboard-footer__label">Definiciones</p>
-      <p class="dashboard-footer__text">
-        <strong>Spread real</strong> = tasa de intervención − inflación anual,
-        en puntos porcentuales (tasa real ex-post).
-      </p>
+      {definiciones.length > 0 ? (
+        definiciones.map((d) => (
+          <p class="dashboard-footer__text">
+            <strong>{d.titulo}</strong> &mdash; {d.texto}
+          </p>
+        ))
+      ) : (
+        <p class="dashboard-footer__text">—</p>
+      )}
     </div>
 
     <div class="dashboard-footer__cell">
       <p class="dashboard-footer__label">Fuentes oficiales</p>
       <ul class="dashboard-footer__sources">
-        <li>
-          <a href={metadata.fuentes.inflacion.url} target="_blank" rel="noopener noreferrer">
-            {metadata.fuentes.inflacion.indicador} · {metadata.fuentes.inflacion.nombre.split(" — ")[0]}
-          </a>
-        </li>
-        <li>
-          <a href={metadata.fuentes.tasa_interes.url} target="_blank" rel="noopener noreferrer">
-            {metadata.fuentes.tasa_interes.indicador} · {metadata.fuentes.tasa_interes.nombre}
-          </a>
-        </li>
+        {fuentes.map((f) => (
+          <li>
+            <a href={f.url} target="_blank" rel="noopener noreferrer">
+              {f.indicador} · {f.nombre}
+            </a>
+          </li>
+        ))}
       </ul>
     </div>
 
@@ -42,6 +52,11 @@ const fechaActualizacion = formatFechaActualizacion(metadata.ultima_actualizacio
         Datos versionados y actualizados automáticamente cada mes. <br>
         Última corrida del pipeline: <strong>{fechaActualizacion}</strong>
       </p>
+      {cobertura && (
+        <p class="dashboard-footer__text" style="margin-top:0.5rem">
+          Cobertura: {cobertura}
+        </p>
+      )}
     </div>
   </div>
 </footer>
@@ -78,8 +93,11 @@ const fechaActualizacion = formatFechaActualizacion(metadata.ultima_actualizacio
   .dashboard-footer__text {
     font-size: 0.82rem;
     color: var(--color-text-secondary);
-    margin: 0;
+    margin: 0 0 0.4rem;
     line-height: 1.5;
+  }
+  .dashboard-footer__text:last-child {
+    margin-bottom: 0;
   }
 
   .dashboard-footer__sources {

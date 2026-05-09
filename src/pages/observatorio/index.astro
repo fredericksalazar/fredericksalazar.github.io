@@ -237,7 +237,21 @@ const jsonLd = {
       ultimoPeriodo={obs.metadata.cobertura.ultimo_periodo}
     />
 
-    <DashboardFooter metadata={obs.metadata} />
+    <DashboardFooter
+      fuentes={[fuenteInflacion, fuenteTasa]}
+      ultimaActualizacion={obs.metadata.ultima_actualizacion}
+      definiciones={[
+        {
+          titulo: "Spread real",
+          texto: "tasa de intervención − inflación anual, en puntos porcentuales (tasa real ex-post)."
+        },
+        {
+          titulo: "Variación",
+          texto: "subió | bajó | igual respecto al mes inmediatamente anterior."
+        },
+      ]}
+      cobertura={`${obs.metadata.cobertura.primer_periodo} → ${obs.metadata.cobertura.ultimo_periodo} · ${obs.metadata.cobertura.total_registros} registros`}
+    />
   </div>
 
   <script is:inline src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>

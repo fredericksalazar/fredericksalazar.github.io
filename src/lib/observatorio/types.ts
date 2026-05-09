@@ -2,7 +2,7 @@ export type Variacion = "subio" | "bajo" | "igual" | null;
 
 export interface IndicadorActual {
   periodo: string;
-  valor: number;
+  valor: number | null;
   variacion: Variacion;
   delta: number | null;
 }
@@ -62,4 +62,63 @@ export interface ObservatorioData {
   historico: Record<string, number>;
 }
 
-export type SemanticIndicador = "inflacion" | "tasa" | "spread";
+export type SemanticIndicador =
+  | "inflacion"
+  | "tasa"
+  | "spread"
+  | "empleo"
+  | "ocupacion"
+  | "informalidad"
+  | "subempleo";
+
+// ───────────────────────────── EMPLEO ─────────────────────────────
+
+export interface EmpleoSerieFila {
+  periodo: string;
+  tasa_desempleo: number | null;
+  tasa_desempleo_delta: number | null;
+  tasa_desempleo_variacion: Variacion;
+  tgp: number | null;
+  tgp_delta: number | null;
+  tgp_variacion: Variacion;
+  to: number | null;
+  to_delta: number | null;
+  to_variacion: Variacion;
+  subempleo: number | null;
+  subempleo_delta: number | null;
+  subempleo_variacion: Variacion;
+  informalidad: number | null;
+  informalidad_delta: number | null;
+  informalidad_variacion: Variacion;
+}
+
+export interface EmpleoIndicadores {
+  tasa_desempleo: Indicador;
+  tgp: Indicador;
+  to: Indicador;
+  subempleo: Indicador;
+  informalidad: Indicador;
+}
+
+export interface EmpleoMetadata {
+  ultima_actualizacion: string;
+  fuentes: {
+    empleo: Fuente;
+    historico: Fuente;
+  };
+  definiciones: Record<string, string | number>;
+  cobertura: {
+    primer_periodo: string;
+    ultimo_periodo: string;
+    total_registros: number;
+    granularidad: "anual" | "mensual";
+  };
+  notas?: string;
+}
+
+export interface EmpleoData {
+  metadata: EmpleoMetadata;
+  indicadores: EmpleoIndicadores;
+  serie: EmpleoSerieFila[];
+  historico: Record<string, number>;
+}

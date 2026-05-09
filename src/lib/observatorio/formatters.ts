@@ -62,6 +62,10 @@ export const variacionClass = (
   const isUp = v === "subio";
   if (semantic === "inflacion") return isUp ? "var-bad" : "var-good";
   if (semantic === "spread") return isUp ? "var-bad" : "var-good";
+  if (semantic === "empleo") return isUp ? "var-bad" : "var-good";
+  if (semantic === "informalidad") return isUp ? "var-bad" : "var-good";
+  if (semantic === "subempleo") return isUp ? "var-bad" : "var-good";
+  if (semantic === "ocupacion") return isUp ? "var-good" : "var-bad";
   return "var-neutral";
 };
 

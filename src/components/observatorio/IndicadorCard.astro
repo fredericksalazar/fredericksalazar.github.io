@@ -22,7 +22,9 @@ const { actual, unidad } = indicador;
 const unidadFinal = unidadOverride ?? unidad;
 const valorFmt =
   unidadFinal === "pp"
-    ? `${actual.valor.toFixed(2)} pp`
+    ? actual.valor === null
+      ? "—"
+      : `${actual.valor.toFixed(2)} pp`
     : formatPct(actual.valor, 2);
 
 const deltaFmt = formatPp(actual.delta, 2);
@@ -79,6 +81,18 @@ const periodoCorto = formatPeriodoCorto(actual.periodo);
   }
 
   .kpi-card--spread::before {
+    background: var(--color-accent);
+  }
+
+  .kpi-card--empleo::before {
+    background: var(--color-accent);
+  }
+
+  .kpi-card--ocupacion::before {
+    background: var(--color-accent);
+  }
+
+  .kpi-card--informalidad::before {
     background: var(--color-accent);
   }
 

@@ -1,0 +1,45 @@
+---
+import type { EmpleoSerieFila } from "../../lib/observatorio/types";
+import { baseLayout, extractSerie } from "../../lib/observatorio/charts";
+import ChartContainer from "./ChartContainer.astro";
+import PlotlyChart from "./PlotlyChart.astro";
+
+interface Props {
+  serie: EmpleoSerieFila[];
+  embedded?: boolean;
+}
+
+const { serie, embedded = false } = Astro.props;
+const filtered = serie.filter((r) => r.periodo >= "2000-01");
+const { x, y } = extractSerie(filtered, "tasa_desempleo");
+
+const traces = [
+  {
+    name: "Tasa de desempleo",
+    x,
+    y,
+    mode: "lines",
+    line: { color: "#2563eb", width: 2.2 },
+    fill: "tozeroy",
+    fillcolor: "rgba(37, 99, 235, 0.06)",
+    hovertemplate: "<b>%{x|%b %Y}</b><br>Desempleo: %{y:.2f}%<extra></extra>",
+  },
+];
+
+const layout = baseLayout();
+---
+
+<ChartContainer
+  titulo="Tasa de desempleo"
+  pregunta="¿Cómo ha evolucionado el desempleo en Colombia?"
+  fuenteTexto="Banco Mundial — World Development Indicators"
+  embedded={embedded}
+>
+  <PlotlyChart
+    id="desempleo"
+    traces={traces}
+    layout={layout}
+    height={340}
+    ariaLabel="Evolución de la tasa de desempleo en Colombia"
+  />
+</ChartContainer>
