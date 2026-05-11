@@ -1,0 +1,41 @@
+---
+import type { ComercioSerieFila } from "../../lib/observatorio/types";
+import { baseLayout, extractSerie } from "../../lib/observatorio/charts";
+import ChartContainer from "./ChartContainer.astro";
+import PlotlyChart from "./PlotlyChart.astro";
+
+interface Props {
+  serie: ComercioSerieFila[];
+  embedded?: boolean;
+}
+
+const { serie, embedded = false } = Astro.props;
+const expo = extractSerie(serie, "exportaciones");
+const impo = extractSerie(serie, "importaciones");
+const { x, y } = extractSerie(serie, "apertura");
+
+const traces = [
+  {
+    name: "Apertura comercial",
+    x,
+    y,
+    mode: "lines",
+    line: { color: "#2563eb", width: 2.2 },
+    fill: "tozeroy",
+    fillcolor: "rgba(37, 99, 235, 0.06)",
+    hovertemplate: "<b>%{x|%Y}</b><br>Apertura: %{y:.2f}% PIB<extra></extra>",
+  },
+];
+
+const layout = baseLayout();
+---
+
+<ChartContainer
+  titulo="Grado de apertura comercial"
+  pregunta="Exportaciones + Importaciones como % del PIB. Mide qué tan integrada está Colombia al comercio mundial."
+  fuenteTexto="Cálculo propio sobre Banco Mundial — WDI"
+  embedded={embedded}
+>
+  <PlotlyChart id="comercio-apertura" traces={traces} layout={layout} height={340}
+    ariaLabel="Grado de apertura comercial de Colombia" />
+</ChartContainer>

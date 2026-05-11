@@ -69,7 +69,10 @@ export type SemanticIndicador =
   | "empleo"
   | "ocupacion"
   | "informalidad"
-  | "subempleo";
+  | "subempleo"
+  | "comercio"
+  | "deficit"
+  | "superavit";
 
 // ───────────────────────────── EMPLEO ─────────────────────────────
 
@@ -121,4 +124,58 @@ export interface EmpleoData {
   indicadores: EmpleoIndicadores;
   serie: EmpleoSerieFila[];
   historico: Record<string, number>;
+}
+
+// ───────────────────────────── COMERCIO ─────────────────────────────
+
+export interface ComercioSerieFila {
+  periodo: string;
+  exportaciones: number | null;
+  exportaciones_delta: number | null;
+  exportaciones_variacion: Variacion;
+  importaciones: number | null;
+  importaciones_delta: number | null;
+  importaciones_variacion: Variacion;
+  balanza_comercial: number | null;
+  balanza_comercial_delta: number | null;
+  balanza_comercial_variacion: Variacion;
+  apertura: number | null;
+  apertura_delta: number | null;
+  apertura_variacion: Variacion;
+  ied: number | null;
+  ied_delta: number | null;
+  ied_variacion: Variacion;
+}
+
+export interface ComercioIndicadores {
+  exportaciones: Indicador;
+  importaciones: Indicador;
+  balanza_comercial: Indicador;
+  apertura: Indicador;
+  ied: Indicador;
+}
+
+export interface ComercioMetadata {
+  ultima_actualizacion: string;
+  fuentes: {
+    comercio: Fuente;
+    dane: Fuente;
+  };
+  definiciones: Record<string, string | number>;
+  cobertura: {
+    primer_periodo: string;
+    ultimo_periodo: string;
+    total_registros: number;
+    granularidad: "anual" | "mensual";
+  };
+}
+
+export interface ComercioData {
+  metadata: ComercioMetadata;
+  indicadores: ComercioIndicadores;
+  serie: ComercioSerieFila[];
+  historico: Record<string, number>;
+  matriz_exportaciones: Record<string, Record<string, number | null>>;
+  matriz_importaciones: Record<string, Record<string, number | null>>;
+  productos_tradicionales: Record<string, Record<string, number | null>>;
 }

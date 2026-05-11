@@ -66,6 +66,9 @@ export const variacionClass = (
   if (semantic === "informalidad") return isUp ? "var-bad" : "var-good";
   if (semantic === "subempleo") return isUp ? "var-bad" : "var-good";
   if (semantic === "ocupacion") return isUp ? "var-good" : "var-bad";
+  if (semantic === "comercio") return isUp ? "var-good" : "var-bad";
+  if (semantic === "deficit") return isUp ? "var-bad" : "var-good";
+  if (semantic === "superavit") return isUp ? "var-good" : "var-bad";
   return "var-neutral";
 };
 

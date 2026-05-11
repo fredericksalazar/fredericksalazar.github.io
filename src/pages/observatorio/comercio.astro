@@ -1,0 +1,289 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import MapaColombia from "../../components/observatorio/MapaColombia.astro";
+import DashboardNav from "../../components/observatorio/DashboardNav.astro";
+import IndicadorCard from "../../components/observatorio/IndicadorCard.astro";
+import PageHeader from "../../components/observatorio/PageHeader.astro";
+import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
+import ChartExportaciones from "../../components/observatorio/ChartExportaciones.astro";
+import ChartImportaciones from "../../components/observatorio/ChartImportaciones.astro";
+import ChartBalanzaComercial from "../../components/observatorio/ChartBalanzaComercial.astro";
+import ChartApertura from "../../components/observatorio/ChartApertura.astro";
+import ChartComercioHistorico from "../../components/observatorio/ChartComercioHistorico.astro";
+import ChartMatrizComercio from "../../components/observatorio/ChartMatrizComercio.astro";
+import ChartProductosTradicionales from "../../components/observatorio/ChartProductosTradicionales.astro";
+import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
+import { getComercio, getComercioSerieAscending } from "../../lib/observatorio/data";
+import { formatPeriodo } from "../../lib/observatorio/formatters";
+
+const com = getComercio();
+const serieAsc = getComercioSerieAscending();
+const { indicadores, metadata, historico, matriz_exportaciones, matriz_importaciones, productos_tradicionales } = com;
+
+const exportActual = indicadores.exportaciones.actual.valor;
+const importActual = indicadores.importaciones.actual.valor;
+const balanzaActual = indicadores.balanza_comercial.actual.valor;
+const ultimoPeriodo = formatPeriodo(metadata.cobertura.ultimo_periodo);
+
+const fuenteComercio = metadata.fuentes.comercio;
+const fuenteDane = metadata.fuentes.dane;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Dataset",
+      name: "Observatorio de Datos de Colombia — Comercio Exterior",
+      description: "Indicadores de comercio exterior colombiano: exportaciones, importaciones, balanza comercial, apertura y desglose por producto. Datos del Banco Mundial y DANE.",
+      url: "https://fredericksalazar.com/observatorio/comercio",
+      keywords: ["comercio exterior Colombia", "exportaciones Colombia", "importaciones Colombia", "balanza comercial", "apertura comercial"],
+      creator: { "@type": "Person", name: "Frederick Salazar", url: "https://fredericksalazar.com/" },
+      isBasedOn: [
+        { "@type": "CreativeWork", name: fuenteComercio.nombre, url: fuenteComercio.url },
+        { "@type": "CreativeWork", name: fuenteDane.nombre, url: fuenteDane.url },
+      ],
+      temporalCoverage: `${metadata.cobertura.primer_periodo}/${metadata.cobertura.ultimo_periodo}`,
+      dateModified: metadata.ultima_actualizacion,
+      license: "https://creativecommons.org/licenses/by/4.0/",
+      spatialCoverage: { "@type": "Place", name: "Colombia" },
+    },
+    {
+      "@type": "Article",
+      headline: "Comercio Exterior de Colombia",
+      description: "Análisis de la evolución del comercio exterior colombiano: exportaciones, importaciones, balanza comercial y desglose por producto.",
+      author: { "@type": "Person", name: "Frederick Salazar" },
+      datePublished: "2026-05-11",
+      dateModified: metadata.ultima_actualizacion,
+      about: [
+        { "@type": "Thing", name: "Comercio Exterior" },
+        { "@type": "Thing", name: "Exportaciones" },
+        { "@type": "Place", name: "Colombia" },
+      ],
+      mainEntityOfPage: "https://fredericksalazar.com/observatorio/comercio",
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="Comercio Exterior · Observatorio de Datos de Colombia"
+  description="Indicadores de comercio exterior colombiano: exportaciones, importaciones, balanza comercial y grado de apertura. Datos del Banco Mundial y DANE."
+  image="/images/observatorio.png"
+  fullWidth={true}
+>
+  <Hero
+    badge={{ text: "Comercio Exterior · Colombia" }}
+    title="Observatorio de Datos de Colombia"
+    subtitle="El Observatorio de Datos de Colombia consolida, procesa y publica los indicadores macroeconómicos que definen el pulso del país: para que cualquier persona lea la economía colombiana como un gerente lee el dashboard de su empresa."
+    tags={["Inflación", "Empleo", "Comercio Exterior", "Sector Fiscal", "Monetario"]}
+    showPartners={false}
+  >
+    <MapaColombia slot="visual" />
+  </Hero>
+  <DashboardNav active="comercio" />
+
+  <div class="observatorio-container">
+    <PageHeader
+      eyebrow={`Actualizado · ${ultimoPeriodo}`}
+      hint={`Exportaciones: ${exportActual}% PIB · Importaciones: ${importActual}% PIB · Balanza: ${balanzaActual}% PIB`}
+    >
+      Las exportaciones colombianas representan el <strong>{exportActual}% del PIB</strong>.
+      La balanza comercial se ubica en <strong>{balanzaActual}% del PIB</strong>,
+      {balanzaActual !== null && balanzaActual < 0 ? "reflejando un déficit comercial." : "reflejando un superávit comercial."}
+    </PageHeader>
+
+    <section class="kpi-row" aria-label="Indicadores actuales">
+      <IndicadorCard titulo="Exportaciones" indicador={indicadores.exportaciones} semantic="comercio" deltaLabel="vs año anterior" />
+      <IndicadorCard titulo="Importaciones" indicador={indicadores.importaciones} semantic="comercio" deltaLabel="vs año anterior" />
+      <IndicadorCard titulo="Balanza comercial" indicador={indicadores.balanza_comercial} semantic={balanzaActual !== null && balanzaActual < 0 ? "deficit" : "superavit"} deltaLabel="vs año anterior" unidadOverride="pp" />
+      <IndicadorCard titulo="Apertura comercial" indicador={indicadores.apertura} semantic="comercio" deltaLabel="vs año anterior" />
+    </section>
+
+    <IndicadorPanel numero="01" eyebrow="Contexto histórico" titulo="Comercio exterior de Colombia en las últimas seis décadas"
+      lead="Desde 1960, el perfil exportador e importador de Colombia ha cambiado radicalmente: del café al petróleo, de las manufacturas a los servicios. Cada presidente ha gobernado con una economía más o menos abierta al mundo."
+      fuente={fuenteComercio}
+    >
+      <Fragment slot="text">
+        <p>Colombia pasó de ser una economía casi cerrada en los años 60 (exportaciones por debajo del <strong>15% del PIB</strong>) a un pico de apertura en los 2000. La bonanza petrolera y minera de los 2010 cambió la canasta exportadora, y los TLC con EE.UU. y la UE transformaron el mapa comercial.</p>
+        <ul>
+          <li><strong>1960 – 1980:</strong> exportaciones agrícolas (café) dominan. Baja apertura.</li>
+          <li><strong>1990 – 2010:</strong> apertura económica, petróleo y carbón desplazan al café.</li>
+          <li><strong>2010 – 2024:</strong> TLCs, diversificación de destinos, déficit comercial persistente.</li>
+        </ul>
+      </Fragment>
+      <ChartComercioHistorico slot="visual" historico={historico} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="02" eyebrow="Ventas al mundo" titulo="Exportaciones colombianas (% del PIB)"
+      lead="Las exportaciones miden lo que Colombia le vende al mundo. Un mayor porcentaje indica una economía más integrada y competitiva internacionalmente."
+      fuente={fuenteComercio}
+    >
+      <Fragment slot="text">
+        <p>Las <strong>exportaciones</strong> colombianas como porcentaje del PIB reflejan la capacidad del país de competir en mercados internacionales. En {ultimoPeriodo}, representan el <strong>{exportActual}% del PIB</strong>.</p>
+        <p>Colombia es una economía con un grado de apertura moderado comparado con sus pares latinoamericanos. La dependencia de commodities (petróleo, carbón, café) hace que las exportaciones sean vulnerables a los precios internacionales.</p>
+      </Fragment>
+      <ChartExportaciones slot="visual" serie={serieAsc} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="03" eyebrow="Compras al mundo" titulo="Importaciones colombianas (% del PIB)"
+      lead="Las importaciones reflejan lo que Colombia compra del exterior: desde maquinaria hasta bienes de consumo. Un componente clave de la demanda interna."
+      fuente={fuenteComercio}
+    >
+      <Fragment slot="text">
+        <p>Las <strong>importaciones</strong> colombianas representan el <strong>{importActual}% del PIB</strong> en {ultimoPeriodo}. Históricamente superan a las exportaciones, generando un déficit comercial crónico que se financia con inversión extranjera y remesas.</p>
+        <p>El 75% de las importaciones son manufacturas (maquinaria, químicos, vehículos), reflejando la dependencia de la industria colombiana de insumos y bienes de capital extranjeros.</p>
+      </Fragment>
+      <ChartImportaciones slot="visual" serie={serieAsc} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="04" eyebrow="El saldo" titulo="Balanza comercial"
+      lead="La diferencia entre lo que Colombia vende y lo que compra. Un déficit persistente no es necesariamente malo: puede reflejar inversión productiva."
+      fuente={fuenteComercio}
+    >
+      <Fragment slot="text">
+        <p>Colombia ha tenido déficit comercial la mayor parte de su historia reciente. En {ultimoPeriodo}, la balanza es de <strong>{balanzaActual}% del PIB</strong>.</p>
+        <ul>
+          <li><strong>Déficit:</strong> importamos más de lo que exportamos. Se financia con IED y remesas.</li>
+          <li><strong>Superávit:</strong> exportamos más de lo que importamos. Poco frecuente en Colombia.</li>
+          <li><strong>Equilibrio:</strong> la línea en 0 marca el punto donde export = import.</li>
+        </ul>
+      </Fragment>
+      <ChartBalanzaComercial slot="visual" serie={serieAsc} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="05" eyebrow="Integración global" titulo="Grado de apertura comercial"
+      lead="Exportaciones + Importaciones como % del PIB. El termómetro de qué tan conectada está Colombia con la economía mundial."
+      fuente={fuenteComercio}
+    >
+      <Fragment slot="text">
+        <p>El <strong>grado de apertura</strong> suma exportaciones e importaciones y las expresa como porcentaje del PIB. Una economía completamente cerrada tendría 0%; una economía como Singapur supera el 300%.</p>
+        <p>Colombia tiene un grado de apertura de <strong>{indicadores.apertura.actual.valor}%</strong>, típico de economías grandes de América Latina. La tendencia desde los 90 ha sido hacia una mayor integración, con fluctuaciones por crisis globales y precios del petróleo.</p>
+      </Fragment>
+      <ChartApertura slot="visual" serie={serieAsc} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="06"
+      eyebrow="Canasta exportadora"
+      titulo="¿Qué exporta Colombia?"
+      lead="Desglose de las exportaciones en 4 grupos OMC. Colombia pasó de ser un exportador agrícola (café) a depender del petróleo y el carbón."
+      fuente={fuenteDane}
+    >
+      <Fragment slot="text">
+        <p>
+          La canasta exportadora colombiana está dominada por los <strong>combustibles y productos extractivos</strong>
+          (petróleo, carbón), que representan la mayor parte del valor exportado. Los <strong>agropecuarios</strong>
+          (café, flores, banano) mantienen una participación estable, mientras que las
+          <strong>manufacturas</strong> luchan por ganar terreno.
+        </p>
+        <ul>
+          <li><strong>Combustibles:</strong> petróleo crudo y derivados, carbón térmico y metalúrgico.</li>
+          <li><strong>Agropecuarios:</strong> café, flores, banano, aceite de palma, azúcar.</li>
+          <li><strong>Manufacturas:</strong> químicos, plásticos, textiles, metalurgia, vehículos.</li>
+          <li><strong>Otros:</strong> oro no monetario, servicios, productos no clasificados.</li>
+        </ul>
+      </Fragment>
+      <ChartMatrizComercio slot="visual" matriz={matriz_exportaciones} chartId="matriz-expo"
+        titulo="Matriz exportadora" pregunta="Desglose anual de exportaciones colombianas por grupo OMC. Miles de USD FOB." embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="07"
+      eyebrow="Canasta importadora"
+      titulo="¿Qué importa Colombia?"
+      lead="El 75% de las importaciones colombianas son manufacturas: maquinaria, químicos, vehículos y tecnología. Un reflejo de la dependencia industrial externa."
+      fuente={fuenteDane}
+    >
+      <Fragment slot="text">
+        <p>
+          Colombia importa principalmente <strong>bienes de capital e intermedios</strong> que su industria
+          no produce localmente. Las manufacturas representan tres cuartas partes del total importado.
+          Esto refleja la estructura productiva del país: transformamos materias primas pero dependemos
+          del exterior para tecnología y bienes de alto valor agregado.
+        </p>
+        <p>
+          La proporción de combustibles importados fluctúa con los precios del petróleo y la autosuficiencia
+          energética del país. Los agropecuarios importados complementan el consumo interno (trigo, maíz, soya).
+        </p>
+      </Fragment>
+      <ChartMatrizComercio slot="visual" matriz={matriz_importaciones} chartId="matriz-impo"
+        titulo="Matriz importadora" pregunta="Desglose anual de importaciones colombianas por grupo OMC. Miles de USD CIF." embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="08"
+      eyebrow="Tradicionales"
+      titulo="Café, carbón, petróleo y ferroníquel"
+      lead="Los cuatro productos que han sostenido las exportaciones colombianas por décadas. El petróleo desplazó al café como principal producto de exportación a principios de los 90."
+      fuente={fuenteDane}
+    >
+      <Fragment slot="text">
+        <p>
+          Desde 1992, el <strong>petróleo y sus derivados</strong> se convirtieron en el principal producto
+          de exportación, desplazando al café que dominó el siglo XX. El <strong>carbón</strong> creció
+          con la minería a cielo abierto en La Guajira y Cesar. El <strong>ferroníquel</strong>,
+          producido en Cerromatoso (Córdoba), completa el cuarteto tradicional.
+        </p>
+        <p>
+          La dependencia de estos cuatro productos hace a Colombia vulnerable a los ciclos de precios
+          internacionales. La diversificación exportadora sigue siendo un reto estructural.
+        </p>
+      </Fragment>
+      <ChartProductosTradicionales slot="visual" productos={productos_tradicionales} embedded={true} />
+    </IndicadorPanel>
+
+    <section class="glosario-block" aria-label="Glosario y fuentes">
+      <header class="glosario-block__header">
+        <span class="glosario-block__eyebrow">Referencia</span>
+        <h2 class="glosario-block__titulo">Glosario y fuentes</h2>
+      </header>
+      <div class="glosario-grid">
+        <article class="glosario-card"><h3 class="glosario-card__titulo">Exportaciones</h3><p class="glosario-card__desc">Bienes y servicios vendidos al exterior, como % del PIB. Reflejan competitividad internacional.</p></article>
+        <article class="glosario-card"><h3 class="glosario-card__titulo">Importaciones</h3><p class="glosario-card__desc">Bienes y servicios comprados del exterior, como % del PIB. Incluyen insumos y bienes de consumo.</p></article>
+        <article class="glosario-card"><h3 class="glosario-card__titulo">Balanza comercial</h3><p class="glosario-card__desc">Exportaciones − Importaciones. Negativa = déficit, positiva = superávit. Medida en % del PIB.</p></article>
+        <article class="glosario-card"><h3 class="glosario-card__titulo">Apertura comercial</h3><p class="glosario-card__desc">(Export + Import) / PIB. Mide grado de integración con la economía mundial.</p></article>
+      </div>
+      <footer class="glosario-block__footer">
+        <span><strong>Fuentes:</strong> <a href={fuenteComercio.url} target="_blank" rel="noopener noreferrer">Banco Mundial — WDI</a> · <a href={fuenteDane.url} target="_blank" rel="noopener noreferrer">DANE — Comercio Internacional</a></span>
+        <span class="glosario-block__cobertura">Cobertura: {metadata.cobertura.primer_periodo} → {metadata.cobertura.ultimo_periodo}</span>
+      </footer>
+    </section>
+
+    <DashboardFooter
+      fuentes={[fuenteComercio, fuenteDane]}
+      ultimaActualizacion={metadata.ultima_actualizacion}
+      definiciones={[
+        { titulo: "Exportaciones", texto: "Bienes y servicios vendidos al resto del mundo, expresados como porcentaje del PIB (Banco Mundial)." },
+        { titulo: "Balanza comercial", texto: "Diferencia entre exportaciones e importaciones. Déficit = más importaciones que exportaciones." },
+        { titulo: "Apertura", texto: "Suma de exportaciones e importaciones como % del PIB. Mide integración al comercio global." },
+      ]}
+      cobertura={`${metadata.cobertura.primer_periodo} → ${metadata.cobertura.ultimo_periodo} · ${metadata.cobertura.total_registros} registros`}
+    />
+  </div>
+
+  <script is:inline src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>
+
+<style>
+  .observatorio-container { width: 97%; max-width: 1800px; margin: 0 auto; padding: 1.75rem 0 3rem; }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 0 auto 1.5rem; }
+  @media (max-width: 1024px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .kpi-row { grid-template-columns: 1fr; } }
+  .glosario-block { background: var(--color-sidebar); border: 1px solid var(--color-border); border-radius: 18px; padding: 1.75rem 2rem; margin-bottom: 1.25rem; }
+  .glosario-block__header { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.25rem; }
+  .glosario-block__eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent); }
+  .glosario-block__titulo { font-size: 1.6rem; font-weight: 700; margin: 0; color: var(--color-text-primary); letter-spacing: -0.015em; }
+  .glosario-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.25rem; }
+  .glosario-card { border: 1px solid var(--color-border); border-radius: 12px; padding: 1rem 1.1rem; background: var(--color-bg, #fff); transition: border-color 0.2s ease, transform 0.2s ease; }
+  .glosario-card:hover { border-color: rgba(37,99,235,0.3); transform: translateY(-2px); }
+  .glosario-card__titulo { font-size: 0.95rem; font-weight: 700; color: var(--color-text-primary); margin: 0 0 0.4rem; }
+  .glosario-card__desc { font-size: 0.85rem; line-height: 1.55; color: var(--color-text-secondary); margin: 0; }
+  .glosario-block__footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; font-size: 0.85rem; color: var(--color-text-muted); padding-top: 1rem; border-top: 1px solid var(--color-border); }
+  .glosario-block__footer a { color: var(--color-accent); text-decoration: none; margin: 0 0.15rem; }
+  .glosario-block__footer a:hover { text-decoration: underline; }
+  @media (max-width: 1024px) { .glosario-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .glosario-block { padding: 1.25rem; border-radius: 14px; } .glosario-grid { grid-template-columns: 1fr; } .glosario-block__titulo { font-size: 1.3rem; } }
+  @media (max-width: 640px) { .observatorio-container { width: 100%; padding: 1.25rem 1rem 2rem; } }
+</style>
