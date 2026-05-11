@@ -1,0 +1,173 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import MapaColombia from "../../components/observatorio/MapaColombia.astro";
+import DashboardNav from "../../components/observatorio/DashboardNav.astro";
+import IndicadorCard from "../../components/observatorio/IndicadorCard.astro";
+import PageHeader from "../../components/observatorio/PageHeader.astro";
+import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
+import ChartPIBHistorico from "../../components/observatorio/ChartPIBHistorico.astro";
+import ChartPIBTotal from "../../components/observatorio/ChartPIBTotal.astro";
+import ChartCrecimientoPIB from "../../components/observatorio/ChartCrecimientoPIB.astro";
+import ChartPIBPerCapita from "../../components/observatorio/ChartPIBPerCapita.astro";
+import ChartPoblacionPIB from "../../components/observatorio/ChartPoblacionPIB.astro";
+import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
+import { getPIB, getPIBSerieAscending } from "../../lib/observatorio/data";
+import { formatPeriodo } from "../../lib/observatorio/formatters";
+
+const pib = getPIB();
+const serieAsc = getPIBSerieAscending();
+const { indicadores, metadata, historico } = pib;
+
+const pibActual = indicadores.pib_total.actual.valor;
+const crecimientoActual = indicadores.crecimiento_pib.actual.valor;
+const percapitaActual = indicadores.pib_percapita.actual.valor;
+const ultimoPeriodo = formatPeriodo(metadata.cobertura.ultimo_periodo);
+const fuentePIB = metadata.fuentes.pib;
+const fuenteDane = metadata.fuentes.dane;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [{
+    "@type": "Dataset",
+    name: "Observatorio de Datos de Colombia — PIB",
+    description: "Producto Interno Bruto de Colombia: PIB total, crecimiento, PIB per cápita, población y deuda pública. Datos del Banco Mundial y DANE.",
+    url: "https://fredericksalazar.com/observatorio/pib",
+    keywords: ["PIB Colombia", "crecimiento económico", "PIB per cápita", "economía colombiana"],
+    creator: { "@type": "Person", name: "Frederick Salazar", url: "https://fredericksalazar.com/" },
+    temporalCoverage: `${metadata.cobertura.primer_periodo}/${metadata.cobertura.ultimo_periodo}`,
+    dateModified: metadata.ultima_actualizacion,
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    spatialCoverage: { "@type": "Place", name: "Colombia" },
+  }],
+};
+---
+
+<BaseLayout title="PIB · Observatorio de Datos de Colombia"
+  description="Producto Interno Bruto de Colombia: PIB total, crecimiento, PIB per cápita, población y deuda pública. Datos del Banco Mundial desde 1960."
+  image="/images/observatorio.png" fullWidth={true}>
+
+  <Hero badge={{ text: "Cuentas Nacionales · Colombia" }} title="Observatorio de Datos de Colombia"
+    subtitle="El Observatorio de Datos de Colombia consolida, procesa y publica los indicadores macroeconómicos que definen el pulso del país: para que cualquier persona lea la economía colombiana como un gerente lee el dashboard de su empresa."
+    tags={["Inflación", "Empleo", "Comercio Exterior", "PIB", "Monetario"]} showPartners={false}>
+    <MapaColombia slot="visual" />
+  </Hero>
+  <DashboardNav active="pib" />
+
+  <div class="observatorio-container">
+    <PageHeader eyebrow={`Actualizado · ${ultimoPeriodo}`}
+      hint={`PIB: ${pibActual} mil M USD · Crecimiento: ${crecimientoActual}% · Per cápita: $${percapitaActual}`}>
+      El PIB de Colombia alcanzó los <strong>{pibActual} mil millones de USD</strong> en {ultimoPeriodo},
+      con un crecimiento del <strong>{crecimientoActual}%</strong>.
+      El PIB per cápita se ubica en <strong>${percapitaActual} USD</strong>.
+    </PageHeader>
+
+    <section class="kpi-row" aria-label="Indicadores actuales">
+      <IndicadorCard titulo="PIB total" indicador={indicadores.pib_total} semantic="comercio" deltaLabel="vs año anterior" />
+      <IndicadorCard titulo="Crecimiento PIB" indicador={indicadores.crecimiento_pib} semantic="comercio" deltaLabel="vs año anterior" />
+      <IndicadorCard titulo="PIB per cápita" indicador={indicadores.pib_percapita} semantic="comercio" deltaLabel="vs año anterior" />
+      <IndicadorCard titulo="Población" indicador={indicadores.poblacion} semantic="tasa" deltaLabel="vs año anterior" />
+    </section>
+
+    <IndicadorPanel numero="01" eyebrow="Contexto histórico" titulo="El PIB de Colombia en las últimas seis décadas"
+      lead="De $4 mil millones en 1960 a $419 mil millones en 2024. Cada presidente ha gobernado una economía de tamaño y estructura distintos."
+      fuente={fuentePIB}>
+      <Fragment slot="text">
+        <p>Colombia multiplicó su economía <strong>más de 100 veces</strong> en 65 años. Pasó de ser una economía rural basada en el café a una economía de servicios con sectores de minería, industria y tecnología.</p>
+        <ul><li><strong>1960 – 1980:</strong> crecimiento estable, economía rural, café como motor.</li>
+        <li><strong>1990 – 2000:</strong> apertura económica, crisis de fin de siglo, recuperación.</li>
+        <li><strong>2010 – 2024:</strong> bonanza minero-energética, pandemia, recuperación post-COVID.</li></ul>
+      </Fragment>
+      <ChartPIBHistorico slot="visual" historico={historico} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="02" eyebrow="Tamaño de la economía" titulo="PIB total"
+      lead="El PIB mide el valor de todos los bienes y servicios producidos en Colombia durante un año. Es la métrica más usada para medir el tamaño de una economía."
+      fuente={fuentePIB}>
+      <Fragment slot="text">
+        <p>El <strong>PIB nominal</strong> en dólares corrientes pasó de $4,031 millones en 1960 a <strong>$418,818 millones en 2024</strong>. Este crecimiento refleja tanto el aumento real de la producción como la inflación y la devaluación del peso.</p>
+        <p>Para aislar el crecimiento real, el siguiente panel muestra la variación porcentual descontando la inflación.</p>
+      </Fragment>
+      <ChartPIBTotal slot="visual" serie={serieAsc} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="03" eyebrow="El pulso de la economía" titulo="Crecimiento anual del PIB (%)"
+      lead="La variación porcentual del PIB real. Mide si la economía se expande (verde) o se contrae (rojo). La línea en 0 separa crecimiento de recesión."
+      fuente={fuentePIB}>
+      <Fragment slot="text">
+        <p>Colombia solo ha tenido <strong>dos años de contracción</strong> en las últimas décadas: <strong>1999 (−4.2%)</strong> durante la crisis financiera y <strong>2020 (−7.2%)</strong> durante la pandemia. En ambos casos, la economía se recuperó con fuerza al año siguiente.</p>
+        <p>El crecimiento promedio histórico ronda el <strong>3.5% anual</strong>. El reto estructural es elevar ese crecimiento potencial para converger con países de ingreso alto.</p>
+      </Fragment>
+      <ChartCrecimientoPIB slot="visual" serie={serieAsc} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="04" eyebrow="Riqueza por habitante" titulo="PIB per cápita"
+      lead="El PIB dividido por la población: de $258 en 1960 a $7,919 en 2024. Mide el ingreso promedio por colombiano."
+      fuente={fuentePIB}>
+      <Fragment slot="text">
+        <p>El <strong>PIB per cápita</strong> es la mejor medida de bienestar material promedio. Colombia pasó de niveles similares a África subsahariana en los 60 a ser un país de <strong>ingreso medio-alto</strong> según el Banco Mundial.</p>
+        <p>Sin embargo, la brecha con países desarrollados sigue siendo grande: el PIB per cápita de EE.UU. es <strong>10 veces</strong> el colombiano. Cerrar esa brecha requiere décadas de crecimiento sostenido.</p>
+      </Fragment>
+      <ChartPIBPerCapita slot="visual" serie={serieAsc} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="05" eyebrow="Dos caras del desarrollo" titulo="Población y riqueza"
+      lead="La población crece de forma estable mientras el PIB per cápita refleja los vaivenes de la economía. Dos líneas que cuentan la historia del desarrollo colombiano."
+      fuente={fuentePIB}>
+      <Fragment slot="text">
+        <p>Colombia pasó de <strong>16 millones de habitantes en 1960 a 53 millones en 2024</strong>. La población se ha triplicado mientras la economía se ha multiplicado por 100, lo que explica que el PIB per cápita haya crecido de forma significativa.</p>
+        <p>La transición demográfica (menos hijos por mujer, más esperanza de vida) está desacelerando el crecimiento poblacional, lo que facilita que el PIB per cápita crezca más rápido.</p>
+      </Fragment>
+      <ChartPoblacionPIB slot="visual" serie={serieAsc} embedded={true} />
+    </IndicadorPanel>
+
+    <section class="glosario-block" aria-label="Glosario y fuentes">
+      <header class="glosario-block__header">
+        <span class="glosario-block__eyebrow">Referencia</span>
+        <h2 class="glosario-block__titulo">Glosario y fuentes</h2>
+      </header>
+      <div class="glosario-grid">
+        <article class="glosario-card"><h3 class="glosario-card__titulo">PIB nominal</h3><p class="glosario-card__desc">Valor total de bienes y servicios producidos, a precios corrientes de mercado. Incluye el efecto de la inflación.</p></article>
+        <article class="glosario-card"><h3 class="glosario-card__titulo">Crecimiento real</h3><p class="glosario-card__desc">Variación del PIB descontando inflación. Mide el aumento efectivo de la producción de bienes y servicios.</p></article>
+        <article class="glosario-card"><h3 class="glosario-card__titulo">PIB per cápita</h3><p class="glosario-card__desc">PIB dividido por la población total. Indicador aproximado del nivel de vida promedio de un país.</p></article>
+        <article class="glosario-card"><h3 class="glosario-card__titulo">Deuda pública</h3><p class="glosario-card__desc">Deuda del gobierno general como porcentaje del PIB. Mide la sostenibilidad fiscal del país.</p></article>
+      </div>
+      <footer class="glosario-block__footer">
+        <span><strong>Fuentes:</strong> <a href={fuentePIB.url} target="_blank" rel="noopener noreferrer">Banco Mundial — WDI</a> · <a href={fuenteDane.url} target="_blank" rel="noopener noreferrer">DANE — Cuentas Nacionales</a></span>
+        <span class="glosario-block__cobertura">Cobertura: {metadata.cobertura.primer_periodo} → {metadata.cobertura.ultimo_periodo}</span>
+      </footer>
+    </section>
+
+    <DashboardFooter fuentes={[fuentePIB, fuenteDane]} ultimaActualizacion={metadata.ultima_actualizacion}
+      definiciones={[
+        { titulo: "PIB", texto: "Producto Interno Bruto: valor total de bienes y servicios finales producidos en un país durante un año (Banco Mundial, USD corrientes)." },
+        { titulo: "Crecimiento", texto: "Variación porcentual anual del PIB real. Mide la expansión o contracción de la economía." },
+        { titulo: "PIB per cápita", texto: "PIB total dividido por la población. Indicador de ingreso promedio por habitante." },
+      ]}
+      cobertura={`${metadata.cobertura.primer_periodo} → ${metadata.cobertura.ultimo_periodo} · ${metadata.cobertura.total_registros} registros`} />
+  </div>
+  <script is:inline src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>
+
+<style>
+  .observatorio-container{width:97%;max-width:1800px;margin:0 auto;padding:1.75rem 0 3rem}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:0 auto 1.5rem}
+  @media(max-width:1024px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.kpi-row{grid-template-columns:1fr}}
+  .glosario-block{background:var(--color-sidebar);border:1px solid var(--color-border);border-radius:18px;padding:1.75rem 2rem;margin-bottom:1.25rem}
+  .glosario-block__header{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.25rem}
+  .glosario-block__eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent)}
+  .glosario-block__titulo{font-size:1.6rem;font-weight:700;margin:0;color:var(--color-text-primary);letter-spacing:-.015em}
+  .glosario-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.25rem}
+  .glosario-card{border:1px solid var(--color-border);border-radius:12px;padding:1rem 1.1rem;background:var(--color-bg,#fff);transition:border-color .2s,transform .2s}
+  .glosario-card:hover{border-color:rgba(37,99,235,.3);transform:translateY(-2px)}
+  .glosario-card__titulo{font-size:.95rem;font-weight:700;color:var(--color-text-primary);margin:0 0 .4rem}
+  .glosario-card__desc{font-size:.85rem;line-height:1.55;color:var(--color-text-secondary);margin:0}
+  .glosario-block__footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;font-size:.85rem;color:var(--color-text-muted);padding-top:1rem;border-top:1px solid var(--color-border)}
+  .glosario-block__footer a{color:var(--color-accent);text-decoration:none;margin:0 .15rem}
+  .glosario-block__footer a:hover{text-decoration:underline}
+  @media(max-width:1024px){.glosario-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.glosario-block{padding:1.25rem;border-radius:14px}.glosario-grid{grid-template-columns:1fr}.glosario-block__titulo{font-size:1.3rem}}
+  @media(max-width:640px){.observatorio-container{width:100%;padding:1.25rem 1rem 2rem}}
+</style>

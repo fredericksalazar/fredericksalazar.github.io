@@ -1,0 +1,83 @@
+---
+import { baseLayout } from "../../lib/observatorio/charts";
+import ChartContainer from "./ChartContainer.astro";
+import PlotlyChart from "./PlotlyChart.astro";
+import { getPresidentes, presidenteForYear } from "../../lib/observatorio/presidentes";
+
+interface Props {
+  historico: Record<string, number>;
+  embedded?: boolean;
+}
+
+const { historico, embedded = false } = Astro.props;
+const presidentes = getPresidentes();
+const years = Object.keys(historico).sort();
+const valores = years.map((y) => historico[y]);
+
+const presidentesPorAnio = years.map((y) => presidenteForYear(parseInt(y, 10)));
+const colorsPorPresidente = presidentesPorAnio.map((p) => p?.color ?? "#2563eb");
+const customdata = presidentesPorAnio.map((p) => [p?.nombre ?? "Sin datos", p?.partido ?? "—"]);
+const COLOR_BASE = "#2563eb";
+
+const traces = [{
+  type: "bar" as const, x: years, y: valores,
+  marker: { color: colorsPorPresidente, line: { color: "rgba(0,0,0,0.08)", width: 0.5 } },
+  customdata,
+  name: "PIB",
+  hovertemplate: "<b>%{x}</b><br>PIB: <b>%{y:,.1f} mil M USD</b><br>Presidente: %{customdata[0]}<br><span style='color:#94a3b8'>%{customdata[1]}</span><extra></extra>",
+}];
+
+const layout = baseLayout({ margin: { l: 48, r: 24, t: 16, b: 40 }, showlegend: false, hovermode: "x" as const });
+
+const pIds = Array.from(new Set(presidentesPorAnio.filter(p => p).map(p => p!.id)));
+const pLeyenda = pIds.map(id => presidentes.find(p => p.id === id)!).filter(Boolean);
+const colorsJson = JSON.stringify(colorsPorPresidente);
+---
+
+<ChartContainer titulo="PIB histórico de Colombia" pregunta="Producto Interno Bruto en miles de millones de USD desde 1960. Coloreado por presidente."
+  fuenteTexto="Banco Mundial — WDI · Presidentes: Registraduría Nacional" embedded={embedded}>
+  <label slot="header-extra" class="pres-toggle" data-pres-toggle-for="pib-historico">
+    <span class="pres-toggle__label">Color por presidente</span>
+    <input type="checkbox" class="pres-toggle__input" checked />
+    <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
+  </label>
+  <PlotlyChart id="pib-historico" traces={traces} layout={layout} height={420}
+    ariaLabel="PIB histórico de Colombia con color por presidente" />
+  <div class="pres-legend" data-pres-legend-for="pib-historico" data-visible="true">
+    {pLeyenda.map(p => (
+      <span class="pres-chip">
+        <span class="pres-chip__dot" style={`background:${p.color}`}></span>
+        <span class="pres-chip__name">{p.nombre}</span>
+        <span class="pres-chip__period">{new Date(p.inicio).getFullYear()}–{new Date(p.fin).getFullYear()}</span>
+      </span>
+    ))}
+  </div>
+</ChartContainer>
+
+<style>
+  .pres-toggle{position:relative;display:inline-flex;align-items:center;gap:.6rem;cursor:pointer;user-select:none;flex-shrink:0}
+  .pres-toggle__label{font-size:.78rem;font-weight:600;color:var(--color-text-secondary,#475569);letter-spacing:.01em}
+  .pres-toggle__input{position:absolute;opacity:0;pointer-events:none;width:0;height:0}
+  .pres-toggle__switch{position:relative;display:inline-block;width:38px;height:22px;background:#cbd5e1;border-radius:22px;transition:background .25s ease;flex-shrink:0}
+  .pres-toggle__knob{position:absolute;top:2px;left:2px;width:18px;height:18px;background:white;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.2),0 1px 2px rgba(0,0,0,.06);transition:transform .25s cubic-bezier(.4,0,.2,1)}
+  .pres-toggle__input:checked+.pres-toggle__switch{background:#2563eb}
+  .pres-toggle__input:checked+.pres-toggle__switch .pres-toggle__knob{transform:translateX(16px)}
+  .pres-toggle__input:focus-visible+.pres-toggle__switch{outline:2px solid #2563eb;outline-offset:2px}
+  .pres-legend{display:flex;flex-wrap:wrap;gap:.4rem .5rem;margin-top:.85rem;padding-top:.85rem;border-top:1px dashed rgba(37,99,235,.18);transition:opacity .2s,max-height .3s,padding .2s,margin .2s;overflow:hidden}
+  .pres-legend[data-visible=false]{opacity:0;max-height:0;margin-top:0;padding-top:0;border-top-color:transparent;pointer-events:none}
+  .pres-chip{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .65rem;background:white;border:1px solid rgba(37,99,235,.15);border-radius:100px;font-size:.72rem;line-height:1;transition:border-color .15s,box-shadow .15s}
+  .pres-chip:hover{border-color:rgba(37,99,235,.4);box-shadow:0 2px 8px rgba(15,23,42,.05)}
+  .pres-chip__dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+  .pres-chip__name{font-weight:600;color:#1e293b}
+  .pres-chip__period{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.65rem;color:#64748b}
+  @media(max-width:600px){.pres-toggle__label{display:none}}
+</style>
+
+<script define:vars={{ colorsJson, COLOR_BASE }}>
+  const cb=JSON.parse(colorsJson);
+  function ac(t,c){if(!window.Plotly||!t)return;const n=c?cb:cb.map(()=>COLOR_BASE);window.Plotly.restyle(t,{"marker.color":[n]})}
+  function bt(l){if(l.dataset.bound==="true")return;l.dataset.bound="true";const ci=l.getAttribute("data-pres-toggle-for"),i=l.querySelector(".pres-toggle__input"),t=document.getElementById(`chart-${ci}`),lg=document.querySelector(`[data-pres-legend-for="${ci}"]`);if(!i||!t)return;const u=()=>{if(lg)lg.setAttribute("data-visible",i.checked?"true":"false");if(!window.Plotly){window.addEventListener("plotly:loaded",()=>ac(t,i.checked),{once:true});return}ac(t,i.checked)};i.addEventListener("change",u)}
+  function ia(){document.querySelectorAll("[data-pres-toggle-for]").forEach(bt)}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",ia);else ia()
+  document.addEventListener("astro:page-load",ia)
+</script>

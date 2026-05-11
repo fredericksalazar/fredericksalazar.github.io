@@ -1,0 +1,18 @@
+---
+import type { PIBSerieFila } from "../../lib/observatorio/types";
+import { baseLayout, extractSerie } from "../../lib/observatorio/charts";
+import ChartContainer from "./ChartContainer.astro";
+import PlotlyChart from "./PlotlyChart.astro";
+
+interface Props { serie: PIBSerieFila[]; embedded?: boolean; }
+const { serie, embedded = false } = Astro.props;
+const { x, y } = extractSerie(serie, "pib_percapita");
+
+const traces = [{ name: "PIB per cápita", x, y, mode: "lines", line: { color: "#2563eb", width: 2.2 }, fill: "tozeroy", fillcolor: "rgba(37,99,235,0.06)", hovertemplate: "<b>%{x|%Y}</b><br>PIB per cápita: %{y:,.0f} USD<extra></extra>" }];
+const layout = baseLayout();
+---
+
+<ChartContainer titulo="PIB per cápita" pregunta="PIB dividido por la población. Pasó de $258 en 1960 a $7,919 en 2024. Mide la riqueza promedio por habitante."
+  fuenteTexto="Banco Mundial — WDI" embedded={embedded}>
+  <PlotlyChart id="pib-percapita" traces={traces} layout={layout} height={340} ariaLabel="PIB per cápita de Colombia" />
+</ChartContainer>

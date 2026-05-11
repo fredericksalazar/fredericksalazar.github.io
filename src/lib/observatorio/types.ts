@@ -179,3 +179,57 @@ export interface ComercioData {
   matriz_importaciones: Record<string, Record<string, number | null>>;
   productos_tradicionales: Record<string, Record<string, number | null>>;
 }
+
+// ───────────────────────────── PIB ─────────────────────────────
+
+export interface PIBSerieFila {
+  periodo: string;
+  pib_total: number | null;
+  pib_total_delta: number | null;
+  pib_total_variacion: Variacion;
+  crecimiento_pib: number | null;
+  crecimiento_pib_delta: number | null;
+  crecimiento_pib_variacion: Variacion;
+  pib_percapita: number | null;
+  pib_percapita_delta: number | null;
+  pib_percapita_variacion: Variacion;
+  poblacion: number | null;
+  poblacion_delta: number | null;
+  poblacion_variacion: Variacion;
+  deuda_publica: number | null;
+  deuda_publica_delta: number | null;
+  deuda_publica_variacion: Variacion;
+  gini: number | null;
+  gini_delta: number | null;
+  gini_variacion: Variacion;
+}
+
+export interface PIBIndicadores {
+  pib_total: Indicador;
+  crecimiento_pib: Indicador;
+  pib_percapita: Indicador;
+  poblacion: Indicador;
+  deuda_publica: Indicador;
+  gini: Indicador;
+}
+
+export interface PIBMetadata {
+  ultima_actualizacion: string;
+  fuentes: {
+    pib: Fuente;
+    dane: Fuente;
+  };
+  definiciones: Record<string, string | number>;
+  cobertura: {
+    primer_periodo: string;
+    ultimo_periodo: string;
+    total_registros: number;
+  };
+}
+
+export interface PIBData {
+  metadata: PIBMetadata;
+  indicadores: PIBIndicadores;
+  serie: PIBSerieFila[];
+  historico: Record<string, number>;
+}
