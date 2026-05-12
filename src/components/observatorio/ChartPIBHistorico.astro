@@ -27,7 +27,19 @@ const traces = [{
   hovertemplate: "<b>%{x}</b><br>PIB: <b>%{y:,.1f} mil M USD</b><br>Presidente: %{customdata[0]}<br><span style='color:#94a3b8'>%{customdata[1]}</span><extra></extra>",
 }];
 
-const layout = baseLayout({ margin: { l: 48, r: 24, t: 16, b: 40 }, showlegend: false, hovermode: "x" as const });
+const layout = baseLayout({
+  margin: { l: 48, r: 24, t: 16, b: 40 },
+  showlegend: false,
+  hovermode: "x" as const,
+  yaxis: {
+    showgrid: true,
+    gridcolor: "rgba(208, 215, 220, 0.4)",
+    zeroline: false,
+    tickfont: { size: 11, color: "#636c76" },
+    ticksuffix: "",
+    automargin: true,
+  },
+});
 
 const pIds = Array.from(new Set(presidentesPorAnio.filter(p => p).map(p => p!.id)));
 const pLeyenda = pIds.map(id => presidentes.find(p => p.id === id)!).filter(Boolean);

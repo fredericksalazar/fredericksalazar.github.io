@@ -7,7 +7,6 @@ import IndicadorCard from "../../components/observatorio/IndicadorCard.astro";
 import PageHeader from "../../components/observatorio/PageHeader.astro";
 import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
 import ChartPIBHistorico from "../../components/observatorio/ChartPIBHistorico.astro";
-import ChartPIBTotal from "../../components/observatorio/ChartPIBTotal.astro";
 import ChartCrecimientoPIB from "../../components/observatorio/ChartCrecimientoPIB.astro";
 import ChartPIBPerCapita from "../../components/observatorio/ChartPIBPerCapita.astro";
 import ChartPoblacionPIB from "../../components/observatorio/ChartPoblacionPIB.astro";
@@ -81,14 +80,14 @@ const jsonLd = {
       <ChartPIBHistorico slot="visual" historico={historico} embedded={true} />
     </IndicadorPanel>
 
-    <IndicadorPanel numero="02" eyebrow="Tamaño de la economía" titulo="PIB total"
-      lead="El PIB mide el valor de todos los bienes y servicios producidos en Colombia durante un año. Es la métrica más usada para medir el tamaño de una economía."
+    <IndicadorPanel numero="02" eyebrow="Riqueza por habitante" titulo="PIB per cápita"
+      lead="El PIB dividido por la población: de $258 en 1960 a $7,919 en 2024. Mide el ingreso promedio por colombiano y es la mejor métrica de bienestar material."
       fuente={fuentePIB}>
       <Fragment slot="text">
-        <p>El <strong>PIB nominal</strong> en dólares corrientes pasó de $4,031 millones en 1960 a <strong>$418,818 millones en 2024</strong>. Este crecimiento refleja tanto el aumento real de la producción como la inflación y la devaluación del peso.</p>
-        <p>Para aislar el crecimiento real, el siguiente panel muestra la variación porcentual descontando la inflación.</p>
+        <p>El <strong>PIB per cápita</strong> es la mejor medida de bienestar material promedio. Colombia pasó de niveles similares a África subsahariana en los 60 a ser un país de <strong>ingreso medio-alto</strong> según el Banco Mundial.</p>
+        <p>Sin embargo, la brecha con países desarrollados sigue siendo grande: el PIB per cápita de EE.UU. es <strong>10 veces</strong> el colombiano. Cerrar esa brecha requiere décadas de crecimiento sostenido por encima del 5% anual.</p>
       </Fragment>
-      <ChartPIBTotal slot="visual" serie={serieAsc} embedded={true} />
+      <ChartPIBPerCapita slot="visual" serie={serieAsc} embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel numero="03" eyebrow="El pulso de la economía" titulo="Crecimiento anual del PIB (%)"
@@ -99,16 +98,6 @@ const jsonLd = {
         <p>El crecimiento promedio histórico ronda el <strong>3.5% anual</strong>. El reto estructural es elevar ese crecimiento potencial para converger con países de ingreso alto.</p>
       </Fragment>
       <ChartCrecimientoPIB slot="visual" serie={serieAsc} embedded={true} />
-    </IndicadorPanel>
-
-    <IndicadorPanel numero="04" eyebrow="Riqueza por habitante" titulo="PIB per cápita"
-      lead="El PIB dividido por la población: de $258 en 1960 a $7,919 en 2024. Mide el ingreso promedio por colombiano."
-      fuente={fuentePIB}>
-      <Fragment slot="text">
-        <p>El <strong>PIB per cápita</strong> es la mejor medida de bienestar material promedio. Colombia pasó de niveles similares a África subsahariana en los 60 a ser un país de <strong>ingreso medio-alto</strong> según el Banco Mundial.</p>
-        <p>Sin embargo, la brecha con países desarrollados sigue siendo grande: el PIB per cápita de EE.UU. es <strong>10 veces</strong> el colombiano. Cerrar esa brecha requiere décadas de crecimiento sostenido.</p>
-      </Fragment>
-      <ChartPIBPerCapita slot="visual" serie={serieAsc} embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel numero="05" eyebrow="Dos caras del desarrollo" titulo="Población y riqueza"
