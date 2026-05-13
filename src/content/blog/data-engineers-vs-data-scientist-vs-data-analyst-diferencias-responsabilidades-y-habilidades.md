@@ -6,6 +6,8 @@ imagen: "/images/blog/data-engineer-scientis.png"
 etiquetas: ["Roles de Datos", "Data Engineering", "Data Science", "Data Analyst"]
 autor: "Frederick Salazar"
 draft: false
+tipo: "referencia"
+destacado: false
 ---
 
 En la era de la información, la gestión de datos empresariales es fundamental para el éxito de cualquier organización. Pero, ¿qué roles son los más importantes en este ámbito y qué responsabilidades cumplen? En este artículo exploraremos las diferencias clave entre tres roles críticos en la gestión de datos empresariales: Data Engineers, Data Analysts y Data Scientists y que por lo general suelen causar mucha confusión en la organización en todos los niveles.

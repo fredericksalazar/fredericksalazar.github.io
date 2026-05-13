@@ -2,10 +2,12 @@
 titulo: "Gemini App para macOS"
 fecha: 2026-04-17
 descripcion: "Si son como yo, seguramente pasan gran parte de su día saltando entre ventanas, aplicaciones y decenas de pestañas en el navegador solo para hacerle una..."
-etiquetas: []
+etiquetas: ["Gemini", "macOS", "IA", "Productividad"]
 autor: "Frederick Salazar"
 imagen: "/images/blog/macos-gemini-chat.png"
 draft: false
+tipo: "opinion"
+destacado: false
 ---
 
 Si son como yo, seguramente pasan gran parte de su día saltando entre ventanas, aplicaciones y decenas de pestañas en el navegador solo para hacerle una consulta rápida a su asistente de IA favorito, puede ser Gemini, ChatGPT, Perplexity etc. y aunque durante los ultimos años nos llenamos de aplicaciones web y poca atención se le presta a las Apps de escritorio, ayer salió para mi lo que considero una buena noiticia, Google acaba de lanzar oficialmente la **aplicación nativa de Gemini para macOS**.

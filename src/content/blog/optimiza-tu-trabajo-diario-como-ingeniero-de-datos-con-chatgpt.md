@@ -6,6 +6,8 @@ imagen: "/images/blog/chatgpt-data-engineer.png"
 etiquetas: ["ChatGPT", "Data Engineering", "Productividad", "IA"]
 autor: "Frederick Salazar"
 draft: false
+tipo: "tutorial"
+destacado: false
 ---
 
 La llegada de la Inteligencia Artificial y específicamente de los **LLMs (Large Language Models)** como [chatGPT](https://openai.com) están transformando nuestro día a día, está siendo implementado en tantos campos, que no usarlo sería desperdiciar el tiempo y además rezagarte en un mundo cada vez más competitivo, si bien es importante tener en cuenta que es un asistente que puede ayudarte, no debes dejar de lado seguirte preparando cada día, no dejes nunca de aprender nuevas formas y herramientas, sigue preparándote y usa tu creatividad para resolver problemas con la ayuda de un asistente, pero donde eres tu quién comanda el barco. tampoco vayas a abusar, a continuación te dejo 10 formas en las que puedes usar chatGPT como ingeniero de datos.

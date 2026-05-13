@@ -1,0 +1,52 @@
+---
+/**
+ * ReadingProgress.astro — Barra fija superior que indica el progreso de lectura.
+ * Sin dependencias. Lee el scroll del artículo target (default: <article>).
+ */
+---
+
+<div class="reading-progress" aria-hidden="true">
+  <div class="reading-progress__bar" id="reading-progress-bar"></div>
+</div>
+
+<style>
+  .reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: transparent;
+    z-index: 100;
+    pointer-events: none;
+  }
+  .reading-progress__bar {
+    height: 100%;
+    width: 0%;
+    background: var(--color-accent);
+    transition: width 0.08s linear;
+  }
+</style>
+
+<script>
+  const update = () => {
+    const bar = document.getElementById('reading-progress-bar');
+    if (!bar) return;
+    const article = document.querySelector('article');
+    if (!article) return;
+    const rect = article.getBoundingClientRect();
+    const total = rect.height - window.innerHeight;
+    const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
+    const pct = total > 0 ? (scrolled / total) * 100 : 0;
+    bar.style.width = `${pct}%`;
+  };
+
+  const init = () => {
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+  };
+
+  document.addEventListener('astro:page-load', init);
+  init();
+</script>

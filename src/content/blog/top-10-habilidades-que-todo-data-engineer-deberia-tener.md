@@ -6,6 +6,8 @@ imagen: "/images/blog/dataengineer-skills.png"
 etiquetas: ["Habilidades", "Data Engineering", "Desarrollo Profesional", "Top 10"]
 autor: "Frederick Salazar"
 draft: false
+tipo: "referencia"
+destacado: false
 ---
 
 Los Data Engineers son piezas clave en el mundo de los datos. Su trabajo consiste en diseñar, construir y mantener los sistemas que permiten a las empresas gestionar y analizar grandes cantidades de datos. A medida que la demanda de datos crece, la necesidad de buenos Data Engineers también aumenta. Si estás pensando en convertirte en un Data Engineer o quieres contratar uno para tu equipo, aquí te dejamos las 10 habilidades que todo Data Engineer debe tener:

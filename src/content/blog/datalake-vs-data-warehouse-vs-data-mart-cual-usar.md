@@ -6,6 +6,8 @@ imagen: "/images/blog/datalake-datawarehouse.png"
 etiquetas: ["Data Lake", "Data Warehouse", "Data Mart", "Arquitectura"]
 autor: "Frederick Salazar"
 draft: false
+tipo: "referencia"
+destacado: false
 ---
 
 Los datos se han convertido en un activo del alto valor estratégico para todas las empresas, permitiéndoles obtener información valiosa para la toma de decisiones. Para lograrlo, existen diferentes herramientas y conceptos en el mundo de la ingeniería y la ciencia de datos, como son Data Lake, Data Warehouse y Data Mart. En este artículo, te explicaré cada uno de ellos y cuál es la mejor opción.

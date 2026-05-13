@@ -2,10 +2,12 @@
 titulo: "Herramientas del Ingeniero de Datos"
 fecha: 2023-03-27
 descripcion: "Herramientas esenciales para Ingenieros de Datos en 2023. Desde Apache Spark y Kafka hasta SQL y Python, explora cómo estas herramientas clave ayudan en..."
-etiquetas: []
+etiquetas: ["Data Engineering", "Herramientas", "Apache Spark", "Top 10"]
 autor: "Frederick Salazar"
 imagen: "/images/blog/apache_spark_logo.svg_.webp"
 draft: false
+tipo: "referencia"
+destacado: false
 ---
 
 La ingeniería de datos es una parte fundamental del proceso de gestión de información en cualquier organización. Para los Ingenieros de Datos, es crucial tener las herramientas adecuadas para asegurarse de que los datos se recopilen, almacenen y procesen de manera eficiente. En este artículo, te presento las herramientas más importantes que todo data engineer debería conocer en 2023, esta es una guía básica pues la ingeniería de datos es un campo en constante evolución donde existen múltiples formas y herramientas para desarrollar sus actividades.

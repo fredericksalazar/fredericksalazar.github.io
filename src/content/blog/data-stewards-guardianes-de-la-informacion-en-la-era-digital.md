@@ -2,10 +2,12 @@
 titulo: "Data Stewards: Clave en las Organizaciones"
 fecha: 2024-03-06
 descripcion: "Descubre cómo los Data Stewards pueden transformar la calidad de datos en tu organización, reduciendo costos y riesgos. Aprende sobre sus funciones clav..."
-etiquetas: []
+etiquetas: ["Data Stewards", "Data Governance", "Calidad de Datos", "Roles de Datos"]
 autor: "Frederick Salazar"
 imagen: "/images/blog/problemas-calidad-datos.jpg"
 draft: false
+tipo: "analisis"
+destacado: false
 ---
 
 ![Calidad de datos Problemas](/images/blog/problemas-calidad-datos.jpg)

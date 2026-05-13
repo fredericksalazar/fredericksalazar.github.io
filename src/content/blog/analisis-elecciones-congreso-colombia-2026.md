@@ -2,10 +2,12 @@
 titulo: "Elecciones Congreso Colombia 2026: Análisis de Resultados"
 fecha: 2026-03-20
 descripcion: "Las elecciones al Congreso de Colombia en 2026 mostraron un aumento del 12% en votantes, consolidando al Pacto Histórico y al Centro Democrático como fu..."
-etiquetas: []
+etiquetas: ["Análisis de Datos", "Política", "Colombia", "Elecciones"]
 autor: "Frederick Salazar"
 imagen: "/images/blog/image-3.png"
 draft: false
+tipo: "analisis"
+destacado: false
 ---
 
 Colombia ha realizado las primeras elecciones del año 2026, en las cuales se eligió el nuevo congreso de la Republica de Colombia para el periodo 2026-20230 estas elecciones ya tienen unos resultados de pre-conteo (Datos oficiales parciales no legales aún hasta realizar el escrutinio) realizado por la Registraduria Nacional, con base en estos datos he realizado un análisis estadístico descriptivo comparativo con el objetivo de comprender desde un punto de vista técnico y académico los resultados de la pasada elección, cabe señalar que este análisis NO es un análisis con fines y/o propositos políticos o electorales, queda prohibido el uso de los datos, los graficos, y cualquier elemento del proyecto para generar desinformación, fake news etc.

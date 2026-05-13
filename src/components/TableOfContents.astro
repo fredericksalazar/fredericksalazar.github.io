@@ -1,0 +1,148 @@
+---
+/**
+ * TableOfContents.astro — TOC auto-generado a partir de los headings del artículo.
+ *
+ * Astro entrega `headings` desde `await render(post)`. Filtramos H2 y H3,
+ * renderizamos como sidebar pegado en desktop y <details> colapsable en mobile.
+ */
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{items.length > 0 && (
+  <>
+    {/* ── Mobile: bloque colapsable al inicio del artículo ── */}
+    <details class="toc toc--mobile">
+      <summary>Contenidos</summary>
+      <ol>
+        {items.map((h) => (
+          <li class={`toc-item toc-item--h${h.depth}`}>
+            <a href={`#${h.slug}`}>{h.text}</a>
+          </li>
+        ))}
+      </ol>
+    </details>
+
+    {/* ── Desktop: aside sticky a la derecha ── */}
+    <aside class="toc toc--desktop" aria-label="Tabla de contenidos">
+      <p class="toc__title">En esta página</p>
+      <ol>
+        {items.map((h) => (
+          <li class={`toc-item toc-item--h${h.depth}`}>
+            <a href={`#${h.slug}`} data-toc-link={h.slug}>{h.text}</a>
+          </li>
+        ))}
+      </ol>
+    </aside>
+  </>
+)}
+
+<style>
+  .toc ol { list-style: none; margin: 0; padding: 0; }
+  .toc-item { margin: 0.3rem 0; line-height: 1.4; }
+  .toc-item--h3 { padding-left: 1rem; font-size: 0.85rem; }
+  .toc-item--h2 { font-size: 0.9rem; }
+  .toc a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    display: block;
+    padding: 0.2rem 0.5rem;
+    border-left: 2px solid transparent;
+    border-radius: 0 4px 4px 0;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+  .toc a:hover { color: var(--color-accent); background: var(--color-hover); }
+  .toc a.is-active {
+    color: var(--color-accent);
+    border-left-color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  /* Mobile */
+  .toc--mobile {
+    margin: 1rem 0 2rem;
+    padding: 0.75rem 1rem;
+    background: var(--color-hover);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+  }
+  .toc--mobile summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+  }
+  .toc--mobile ol { margin-top: 0.75rem; }
+
+  /* Desktop sidebar */
+  .toc--desktop {
+    display: none;
+  }
+  @media (min-width: 1400px) {
+    .toc--mobile { display: none; }
+    .toc--desktop {
+      display: block;
+      position: fixed;
+      top: 6rem;
+      right: 2.5rem;
+      width: 220px;
+      max-height: calc(100vh - 8rem);
+      overflow-y: auto;
+      font-size: 0.85rem;
+    }
+    .toc__title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-muted);
+      margin: 0 0 0.5rem;
+      padding-left: 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  const initScrollSpy = () => {
+    const links = document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]');
+    if (!links.length) return;
+
+    const bySlug = new Map<string, HTMLAnchorElement>();
+    links.forEach((l) => bySlug.set(l.dataset.tocLink!, l));
+
+    const headings = Array.from(bySlug.keys())
+      .map((slug) => document.getElementById(slug))
+      .filter((el): el is HTMLElement => !!el);
+
+    let current: string | null = null;
+    const update = () => {
+      const offset = 120;
+      let active: string | null = null;
+      for (const h of headings) {
+        if (h.getBoundingClientRect().top - offset <= 0) active = h.id;
+        else break;
+      }
+      if (active !== current) {
+        if (current) bySlug.get(current)?.classList.remove('is-active');
+        if (active) bySlug.get(active)?.classList.add('is-active');
+        current = active;
+      }
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+  };
+
+  document.addEventListener('astro:page-load', initScrollSpy);
+  initScrollSpy();
+</script>

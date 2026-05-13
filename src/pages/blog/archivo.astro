@@ -1,0 +1,143 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+
+const byYear = new Map<number, typeof posts>();
+for (const p of posts) {
+  const y = p.data.fecha.getFullYear();
+  if (!byYear.has(y)) byYear.set(y, []);
+  byYear.get(y)!.push(p);
+}
+const years = Array.from(byYear.keys()).sort((a, b) => b - a);
+
+const TIPO_LABEL: Record<string, string> = {
+  tutorial: 'Tutorial',
+  analisis: 'Análisis',
+  opinion: 'Opinión',
+  'caso-estudio': 'Caso de estudio',
+  referencia: 'Referencia',
+};
+
+const title = 'Archivo del blog | Frederick Salazar';
+const description = 'Listado cronológico de todos los artículos publicados en el blog de Frederick Salazar.';
+---
+
+<BaseLayout {title} {description}>
+
+  <nav class="breadcrumb" aria-label="Migas de pan">
+    <a href="/">Inicio</a>
+    <span aria-hidden="true"> › </span>
+    <a href="/blog">Blog</a>
+    <span aria-hidden="true"> › </span>
+    <span>Archivo</span>
+  </nav>
+
+  <section>
+    <h1 class="page-title">Archivo completo</h1>
+    <p class="page-subtitle">
+      Listado cronológico de los {posts.length} artículos publicados. Agrupados por año.
+    </p>
+  </section>
+
+  {years.map((year) => (
+    <section class="year-block">
+      <h2 class="year">{year} <span class="year__count">{byYear.get(year)!.length}</span></h2>
+      <ul class="post-list">
+        {byYear.get(year)!.map((p) => (
+          <li class="post-item">
+            <time datetime={p.data.fecha.toISOString()} class="post-item__date">
+              {p.data.fecha.toLocaleDateString('es-CO', { month: 'short', day: '2-digit' })}
+            </time>
+            <span class={`tipo-mini tipo-mini--${p.data.tipo}`}>{TIPO_LABEL[p.data.tipo]}</span>
+            <a href={`/blog/${p.id}`} class="post-item__link">{p.data.titulo}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+
+</BaseLayout>
+
+<style>
+  .breadcrumb {
+    margin-bottom: 1.5rem; font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+  .breadcrumb a { color: var(--color-text-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--color-accent); }
+  .breadcrumb span:last-child { color: var(--color-text-secondary); }
+
+  .page-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 800; margin: 0 0 0.5rem; letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+  }
+  .page-subtitle {
+    font-size: 1.05rem; color: var(--color-text-secondary);
+    margin-bottom: 2.5rem;
+  }
+
+  .year-block { margin-bottom: 2.5rem; }
+  .year {
+    font-size: 1.5rem; font-weight: 700;
+    margin: 0 0 1rem;
+    color: var(--color-text-primary);
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .year__count {
+    font-size: 0.8rem;
+    background: var(--color-tag-bg);
+    color: var(--color-text-muted);
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+
+  .post-list { list-style: none; padding: 0; margin: 0; }
+  .post-item {
+    display: grid;
+    grid-template-columns: 80px 110px 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.95rem;
+  }
+  .post-item:last-child { border-bottom: none; }
+  .post-item__date {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .tipo-mini {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.12rem 0.45rem;
+    border-radius: 0.3rem;
+    background: var(--color-accent);
+    color: #fff;
+    text-align: center;
+    justify-self: start;
+  }
+  .tipo-mini--tutorial { background: #16a34a; }
+  .tipo-mini--analisis { background: var(--color-accent); }
+  .tipo-mini--opinion { background: #9333ea; }
+  .tipo-mini--caso-estudio { background: #ea580c; }
+  .tipo-mini--referencia { background: #475569; }
+  .post-item__link {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    line-height: 1.4;
+  }
+  .post-item__link:hover { color: var(--color-accent); text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .post-item { grid-template-columns: 70px 1fr; }
+    .post-item .tipo-mini { display: none; }
+  }
+</style>

@@ -18,6 +18,9 @@ const blog = defineCollection({
     autor: z.string().default('Frederick Salazar'),
     imagen: z.string().optional(),
     draft: z.boolean().default(false),
+    tipo: z.enum(['tutorial', 'analisis', 'opinion', 'caso-estudio', 'referencia']).default('analisis'),
+    resumen: z.string().optional(),
+    destacado: z.boolean().default(false),
   }),
 });
 

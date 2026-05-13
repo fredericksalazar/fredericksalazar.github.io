@@ -6,6 +6,9 @@ etiquetas: ["Análisis de Datos", "Economía", "Colombia", "Visualización", "Py
 autor: "Frederick Salazar"
 imagen: "/images/blog/inflacion-vs-tasas-interes-colombia-cover.png"
 draft: false
+tipo: "caso-estudio"
+destacado: true
+resumen: "Análisis con datos del Banco Mundial y Banco de la República: cómo la tasa de intervención del BanRep ha respondido a la inflación en Colombia desde 1960, visualizado en Python."
 ---
 
 La **inflación** es uno de los indicadores económicos que más afecta la vida cotidiana de los colombianos: define el costo de los alimentos, el valor del salario y la capacidad de ahorro de los hogares. Su control depende de decisiones políticas y, sobre todo, de decisiones de política monetaria que con frecuencia resultan complejas de leer sin un buen apoyo gráfico. En este artículo aplico **ingeniería y visualización de datos** para analizar el comportamiento de la inflación en Colombia desde 1960 y su correlación con la **tasa de intervención del Banco de la República** desde el año 2000 hasta hoy.

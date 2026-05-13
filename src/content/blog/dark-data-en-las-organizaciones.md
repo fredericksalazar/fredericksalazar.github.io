@@ -6,6 +6,8 @@ imagen: "/images/blog/dark-data.png"
 etiquetas: ["Dark Data", "Gobierno de Datos", "Data Lake", "Estrategia"]
 autor: "Frederick Salazar"
 draft: false
+tipo: "analisis"
+destacado: false
 ---
 
 La llegada de la nube y la reducción del costo del almacenamiento, han causado un revuelo nunca antes visto, pasamos del Data WareHouse al DataLake y luego al DataLake House y quien sabe que mas llegará. Pero un punto importante mas allá de las innovaciones tecnológicas o los costos de las mismas, es que hacemos con los datos. Muchas organizaciones en su carrera por ser **Data Driven** han considerado que lo mas importante es almacenar datos, esa es su estrategia y en ese camino se ha creado creado un nuevo concepto el **Dark Data.**

@@ -6,6 +6,8 @@ imagen: "/images/blog/dinawall-holla-mundo-mouredev.png"
 etiquetas: ["DinaWall", "Open Source", "Eventos", "JavaFX"]
 autor: "Frederick Salazar"
 draft: false
+tipo: "opinion"
+destacado: false
 ---
 
 Recientemente, se llevó a cabo un emocionante evento en línea para desarrolladores llamado [Holamundo.day](https://holamundo.day/), organizado por el gran influencer tech y experto desarrollador de software [Brais Moure.](https://mouredev.com/) Este evento reunió a una comunidad global de mentes creativas y apasionadas por la tecnología, que compartieron ideas, conocimientos y experiencias en el campo del desarrollo de software. En este evento tuve la oportunidad de presentar mi Proyecto [DinaWall](https://fredericksalazar.wordpress.com/dinawall-app/) en los Elevator Pitch ante la comunidad, recibiendo gran apoyo y muy buenos comentarios por los cerca de 2000 participantes en linea. te dejo el video de la presentación en la cual expongo el presente y futuro del proyecto.

@@ -6,6 +6,9 @@ imagen: "/images/blog/azure-data-engineer.png"
 etiquetas: ["Azure", "Data Engineering", "Certificaciones", "Roadmap"]
 autor: "Frederick Salazar"
 draft: false
+tipo: "tutorial"
+destacado: false
+resumen: "Roadmap práctico para convertirse en Ingeniero de Datos en Azure: certificaciones AZ-900 y DP-203, habilidades clave y plan de estudios paso a paso."
 ---
 
 Varias personas con diferentes profesiones me han preguntado: ¿cómo pueden convertirse en ingenieros de datos? Esto se debe al auge de esta profesión y su alta demanda en el mercado laboral. Pues bien, al conversar con ellos, les explico la ruta que deben seguir para iniciar en este campo, el cual es fundamental hoy en día para todo tipo de organizaciones. Así que decidí escribir este post con el objetivo de que muchas más personas puedan iniciar esta ruta y tener un nuevo enfoque profesional en el campo de la ingeniería de datos.

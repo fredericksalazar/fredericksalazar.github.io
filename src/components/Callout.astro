@@ -1,0 +1,50 @@
+---
+/**
+ * Callout.astro — Caja de notas/avisos/tips para artículos.
+ * Uso en Markdown: <Callout type="tip" title="Optional title">...</Callout>
+ */
+
+interface Props {
+  type?: 'nota' | 'tip' | 'aviso' | 'importante';
+  title?: string;
+}
+
+const { type = 'nota', title } = Astro.props;
+
+const labels: Record<string, string> = {
+  nota: 'Nota',
+  tip: 'Tip',
+  aviso: 'Aviso',
+  importante: 'Importante',
+};
+---
+
+<aside class={`callout callout--${type}`} role="note">
+  <p class="callout__title">{title ?? labels[type]}</p>
+  <div class="callout__body"><slot /></div>
+</aside>
+
+<style>
+  .callout {
+    margin: 1.75rem 0;
+    padding: 1rem 1.25rem;
+    border-left: 4px solid var(--color-accent);
+    background: var(--color-hover);
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  .callout__title {
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 0.35rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .callout__body :global(p):last-child { margin-bottom: 0; }
+  .callout--tip { border-left-color: #16a34a; }
+  .callout--tip .callout__title { color: #15803d; }
+  .callout--aviso { border-left-color: #d97706; }
+  .callout--aviso .callout__title { color: #b45309; }
+  .callout--importante { border-left-color: #dc2626; }
+  .callout--importante .callout__title { color: #b91c1c; }
+</style>

@@ -6,6 +6,16 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://fredericksalazar.github.io',
+  prefetch: {
+    prefetchAll: false,
+    defaultStrategy: 'hover',
+  },
+  markdown: {
+    shikiConfig: {
+      theme: 'github-light',
+      wrap: true,
+    },
+  },
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/draft'),

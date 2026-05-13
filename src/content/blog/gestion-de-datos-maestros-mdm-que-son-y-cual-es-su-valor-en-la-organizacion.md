@@ -2,10 +2,13 @@
 titulo: "Gestión de Datos Maestros (MDM) en la Empresa"
 fecha: 2023-05-15
 descripcion: "Descubre cómo una estrategia efectiva de Gestión de Datos Maestros (MDM) puede mejorar la eficiencia operativa de tu empresa. Aprende los pasos clave pa..."
-etiquetas: []
+etiquetas: ["MDM", "Gestión de Datos", "Estrategia", "Calidad de Datos"]
 autor: "Frederick Salazar"
 imagen: "/images/blog/image.png"
 draft: false
+tipo: "analisis"
+destacado: false
+resumen: "Master Data Management (MDM) unifica la información crítica del negocio. Veremos qué es, por qué importa y cómo implementar una estrategia efectiva."
 ---
 
 Una buena estrategia en la gestión de datos en una organización puede dar ventajas estratégicas, optimizar procesos, mejorar la competitividad, mejorar el proceso de toma de decisiones entre muchos otros beneficios; Pero una mala o nula estrategia de gestión de datos genera caos, problemas operativos, toma de malas decisiones, perdida de clientes, perdida de dos recursos importantes: tiempo y dinero entre muchos otros males. Dentro de una buena gestión de datos se encuentra la **Gestión de Datos Maestros**, en este articulo trataré de explicar de manera muy muy resumida que es y como esto puede ayudar a tu empresa a ser mas eficiente y eficaz.

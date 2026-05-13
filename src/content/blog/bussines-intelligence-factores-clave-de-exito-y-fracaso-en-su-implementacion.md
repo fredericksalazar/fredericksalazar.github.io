@@ -2,10 +2,12 @@
 titulo: "Factores Clave en Inteligencia de Negocios"
 fecha: 2023-03-23
 descripcion: "Factores clave para el éxito y fracaso en proyectos de Inteligencia de Negocios. Aprende sobre la importancia del equilibrio entre conocimiento, tiempo..."
-etiquetas: []
+etiquetas: ["Business Intelligence", "Estrategia", "Gestión de Datos"]
 autor: "Frederick Salazar"
 imagen: "/images/blog/factores_bussines_intelligence.png"
 draft: false
+tipo: "analisis"
+destacado: false
 ---
 
 Existe un alto grado de fracaso en la implementación de proyectos de BI, según informes de Gartner entre el 70% y el 80% de los proyectos de BI fracasan, se estima que entre el 40% y el 50% de los proyectos que incluyen sistemas de Data Warehouse fallan por no tener en cuenta requerimientos, consideraciones y objetivos claros desde el principio.

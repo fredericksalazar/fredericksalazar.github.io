@@ -2,10 +2,12 @@
 titulo: "Ciclo de vida del dato"
 fecha: 2024-05-02
 descripcion: "¿Qué es el ciclo de vida del dato? Aprende a gestionar tus datos desde su captura hasta la eliminación y mejora tu estrategia de negocio al maximizar su..."
-etiquetas: []
+etiquetas: ["Gestión de Datos", "Ciclo de Vida", "Data Governance"]
 autor: "Frederick Salazar"
 imagen: "/images/blog/ciclo_vida_del_dato.png"
 draft: false
+tipo: "referencia"
+destacado: false
 ---
 
 Todo en la vida tiene un ciclo, incluso la vida misma y los datos no son la excepción, muchas veces las empresas emprenden proyectos ambiciosos de datos sin un norte ni una estrategia y mucho menos sin tener en cuenta el ciclo de vida del dato. En este articulo intentaré explicar de manera resumida que es el ciclo de vida del dato, cuales son sus fases y que significa cada una de ellas.

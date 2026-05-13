@@ -1,0 +1,87 @@
+---
+/**
+ * AuthorBio.astro — Bloque de autor al pie del artículo.
+ * Refuerza señales E-E-A-T (autoridad, experiencia) para SEO y LLMs.
+ */
+---
+
+<aside class="author-bio" aria-label="Sobre el autor">
+  <img
+    class="author-bio__avatar"
+    src="/images/profile.png"
+    alt="Frederick Salazar"
+    width="72"
+    height="72"
+    loading="lazy"
+  />
+  <div class="author-bio__body">
+    <p class="author-bio__name">Frederick Salazar</p>
+    <p class="author-bio__role">Senior Data Engineer & Arquitecto de Datos</p>
+    <p class="author-bio__desc">
+      Más de 11 años diseñando plataformas de datos en Colombia y LATAM.
+      Escribo sobre Data Engineering, IA aplicada, Azure y herramientas para construir productos basados en datos.
+    </p>
+    <div class="author-bio__links">
+      <a href="https://www.linkedin.com/in/fredericksalazar" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <span aria-hidden="true">·</span>
+      <a href="https://github.com/fredericksalazar" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <span aria-hidden="true">·</span>
+      <a href="/rss.xml">RSS</a>
+    </div>
+  </div>
+</aside>
+
+<style>
+  .author-bio {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    padding: 1.5rem;
+    margin: 2.5rem 0;
+    background: var(--color-hover);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+  }
+  .author-bio__avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid var(--color-sidebar, #fff);
+  }
+  .author-bio__body { flex: 1; min-width: 0; }
+  .author-bio__name {
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0;
+    font-size: 1rem;
+  }
+  .author-bio__role {
+    color: var(--color-text-muted);
+    margin: 0.1rem 0 0.5rem;
+    font-size: 0.825rem;
+  }
+  .author-bio__desc {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin: 0 0 0.6rem;
+  }
+  .author-bio__links {
+    font-size: 0.825rem;
+    color: var(--color-text-muted);
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .author-bio__links a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .author-bio__links a:hover { text-decoration: underline; }
+
+  @media (max-width: 540px) {
+    .author-bio { flex-direction: column; gap: 0.75rem; }
+  }
+</style>

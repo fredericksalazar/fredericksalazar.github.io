@@ -1,0 +1,167 @@
+---
+/**
+ * BlogFilters.astro — Filtros client-side para /blog.
+ * Filtra cards de la grid por: búsqueda libre, tag, y tipo de artículo.
+ * Asume que cada card tiene atributos data-tags y data-tipo.
+ */
+
+interface Props {
+  topTags: string[];
+  tipos: { value: string; label: string }[];
+}
+
+const { topTags, tipos } = Astro.props;
+---
+
+<div class="filters" role="search">
+  <div class="filters__row">
+    <label class="filters__search">
+      <span class="filters__icon" aria-hidden="true">⌕</span>
+      <input
+        type="search"
+        id="blog-search"
+        placeholder="Buscar en el blog…"
+        aria-label="Buscar artículos"
+        autocomplete="off"
+      />
+    </label>
+    <select id="blog-tipo" class="filters__select" aria-label="Filtrar por tipo">
+      <option value="">Todos los tipos</option>
+      {tipos.map((t) => <option value={t.value}>{t.label}</option>)}
+    </select>
+  </div>
+  {topTags.length > 0 && (
+    <div class="filters__tags" role="group" aria-label="Filtrar por tema">
+      <button type="button" class="filters__chip filters__chip--active" data-tag="">Todos</button>
+      {topTags.map((tag) => (
+        <button type="button" class="filters__chip" data-tag={tag}>{tag}</button>
+      ))}
+    </div>
+  )}
+</div>
+
+<style>
+  .filters {
+    margin: 0 0 2rem;
+    padding: 1rem 1.25rem;
+    background: var(--color-sidebar, #fff);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    position: sticky;
+    top: 0.5rem;
+    z-index: 10;
+  }
+  .filters__row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .filters__search {
+    flex: 1 1 240px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.85rem;
+    background: var(--color-hover);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+  }
+  .filters__search:focus-within { border-color: var(--color-accent); }
+  .filters__icon { color: var(--color-text-muted); font-size: 1rem; }
+  .filters__search input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font: inherit;
+    color: var(--color-text-primary);
+    min-width: 0;
+  }
+  .filters__select {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    background: var(--color-hover);
+    color: var(--color-text-primary);
+    font: inherit;
+    cursor: pointer;
+  }
+  .filters__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .filters__chip {
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: var(--color-tag-bg);
+    border: 1px solid var(--color-tag-border);
+    border-radius: 999px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    font-family: inherit;
+  }
+  .filters__chip:hover { background: var(--color-hover); color: var(--color-accent); }
+  .filters__chip--active {
+    background: var(--color-accent);
+    color: #fff;
+    border-color: var(--color-accent);
+  }
+</style>
+
+<script>
+  const init = () => {
+    const search = document.getElementById('blog-search') as HTMLInputElement | null;
+    const tipoSel = document.getElementById('blog-tipo') as HTMLSelectElement | null;
+    const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.filters__chip'));
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-post-card]'));
+    const emptyState = document.getElementById('blog-empty');
+    if (!cards.length) return;
+
+    let activeTag = '';
+
+    const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+    const apply = () => {
+      const q = norm(search?.value.trim() ?? '');
+      const tipo = tipoSel?.value ?? '';
+      let visible = 0;
+
+      cards.forEach((card) => {
+        const title = norm(card.dataset.title ?? '');
+        const desc = norm(card.dataset.desc ?? '');
+        const tags = (card.dataset.tags ?? '').split('|').filter(Boolean);
+        const cardTipo = card.dataset.tipo ?? '';
+
+        const matchesQ = !q || title.includes(q) || desc.includes(q) || tags.some((t) => norm(t).includes(q));
+        const matchesTipo = !tipo || cardTipo === tipo;
+        const matchesTag = !activeTag || tags.includes(activeTag);
+
+        const show = matchesQ && matchesTipo && matchesTag;
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+
+      if (emptyState) emptyState.style.display = visible === 0 ? 'block' : 'none';
+    };
+
+    search?.addEventListener('input', apply);
+    tipoSel?.addEventListener('change', apply);
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chips.forEach((c) => c.classList.remove('filters__chip--active'));
+        chip.classList.add('filters__chip--active');
+        activeTag = chip.dataset.tag ?? '';
+        apply();
+      });
+    });
+  };
+
+  document.addEventListener('astro:page-load', init);
+  init();
+</script>

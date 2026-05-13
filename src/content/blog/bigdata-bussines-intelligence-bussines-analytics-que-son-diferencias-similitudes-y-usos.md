@@ -2,10 +2,12 @@
 titulo: "Big Data vs. BI vs. Analytics: Diferencias y Usos"
 fecha: 2023-05-23
 descripcion: "Comprende las diferencias entre Big Data, Business Intelligence y Business Analytics. Descubre cómo aplicar estas herramientas en tu organización según..."
-etiquetas: []
+etiquetas: ["Big Data", "Business Intelligence", "Business Analytics", "Data Analytics"]
 autor: "Frederick Salazar"
 imagen: "/images/blog/tipos_analitica_de_datos.jpg"
 draft: false
+tipo: "analisis"
+destacado: false
 ---
 
 La explosión de datos actual, es por decirlo menos abrumadora, todo absolutamente todo son datos, las organizaciones están ansiosas por subirse a la ola del **BigDat**a, el **Machine Learning** y mas recientemente a la **Inteligencia Artificial**.

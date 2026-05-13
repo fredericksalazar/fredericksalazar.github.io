@@ -6,6 +6,8 @@ imagen: "/images/blog/dimensiones-calidad-datos.png"
 etiquetas: ["Data Quality", "Data Governance", "Gestión de Datos", "Estrategia"]
 autor: "Frederick Salazar"
 draft: false
+tipo: "referencia"
+destacado: false
 ---
 
 > Se entiende por **calidad de datos** el grado en el que los datos cumplen un conjunto de características y/o dimensiones

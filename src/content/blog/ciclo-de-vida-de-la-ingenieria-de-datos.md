@@ -2,10 +2,12 @@
 titulo: "Ciclo de vida de la Ingeniería de datos"
 fecha: 2023-04-24
 descripcion: "Explora el ciclo de vida de la ingeniería de datos, desde la generación y almacenamiento hasta la transformación y uso estratégico de los datos, optimiz..."
-etiquetas: []
+etiquetas: ["Data Engineering", "Ciclo de Vida", "Arquitectura"]
 autor: "Frederick Salazar"
 imagen: "/images/blog/ciclo_vida_ingeneria_datos.png"
 draft: false
+tipo: "referencia"
+destacado: false
 ---
 
 Los datos son la unidad básica de la información, todo experto en datos debería lograr de una manera abstracta, ver los datos como átomos vivientes que fluyen a través de las organizaciones, alimentando procesos, personas y tecnologías. Según Joise, el ciclo de vida de la ingeniería de datos, es un subconjunto del ciclo de vida del dato, por eso es tan importante comprender el ciclo de vida de los datos de una organización, para usarlos de manera estratégica, no solo para la toma de decisiones sino para optimizar procesos empresariales ayudando a aumentar la productividad y eficiencia organizacional. A continuación explicaré de manera resumida cada una de las fases , en post siguientes iremos estudiando cada una de manera detallada.

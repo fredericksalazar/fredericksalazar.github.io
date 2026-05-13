@@ -2,6 +2,10 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Card from '../../components/Card.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import ReadingProgress from '../../components/ReadingProgress.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import AuthorBio from '../../components/AuthorBio.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -12,45 +16,80 @@ export async function getStaticPaths() {
 }
 
 const { post, allPosts } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 
 const SITE_URL = 'https://fredericksalazar.github.io';
+const PAGE_URL = `${SITE_URL}/blog/${post.id}/`;
 
 const formatDate = (date: Date) =>
   date.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' });
 
-const wordCount   = post.body?.split(/\s+/).length ?? 0;
+const wordCount   = post.body?.split(/\s+/).filter(Boolean).length ?? 0;
 const readingTime = Math.max(1, Math.round(wordCount / 200));
 
-// Artículos relacionados: mismas etiquetas, excluyendo el actual
-const related = allPosts
-  .filter((p) => p.id !== post.id && p.data.etiquetas.some((t: string) => post.data.etiquetas.includes(t)))
-  .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime())
-  .slice(0, 3);
+const TIPO_LABEL: Record<string, string> = {
+  tutorial: 'Tutorial',
+  analisis: 'Análisis',
+  opinion: 'Opinión',
+  'caso-estudio': 'Caso de estudio',
+  referencia: 'Referencia',
+};
+const tipoLabel = TIPO_LABEL[post.data.tipo] ?? 'Artículo';
 
+// ── Artículos relacionados (4): por tags compartidos; fallback al mismo `tipo` ──
+const sortedByDate = [...allPosts].sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+const byTags = sortedByDate.filter(
+  (p) => p.id !== post.id && p.data.etiquetas.some((t: string) => post.data.etiquetas.includes(t)),
+);
+const byTipo = sortedByDate.filter(
+  (p) => p.id !== post.id && p.data.tipo === post.data.tipo && !byTags.includes(p),
+);
+const related = [...byTags, ...byTipo].slice(0, 4);
+
+// ── Prev / Next por fecha ──
+const ordered = sortedByDate;
+const idx = ordered.findIndex((p) => p.id === post.id);
+const newer = idx > 0 ? ordered[idx - 1] : null;
+const older = idx >= 0 && idx < ordered.length - 1 ? ordered[idx + 1] : null;
+
+// ── JSON-LD ──
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL },
     { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog` },
-    { '@type': 'ListItem', position: 3, name: post.data.titulo, item: `${SITE_URL}/blog/${post.id}` },
+    { '@type': 'ListItem', position: 3, name: post.data.titulo, item: PAGE_URL },
   ],
 };
 
-const articleSchema = {
+const articleSchema: Record<string, unknown> = {
   '@context': 'https://schema.org',
-  '@type': 'Article',
+  '@type': 'BlogPosting',
   headline: post.data.titulo,
   description: post.data.descripcion,
   datePublished: post.data.fecha.toISOString(),
   dateModified: post.data.fecha.toISOString(),
-  author: { '@type': 'Person', name: post.data.autor, url: SITE_URL },
+  author: {
+    '@type': 'Person',
+    name: post.data.autor,
+    url: SITE_URL,
+  },
+  publisher: {
+    '@type': 'Person',
+    name: 'Frederick Salazar',
+    url: SITE_URL,
+    image: `${SITE_URL}/images/profile.png`,
+  },
   image: post.data.imagen ? new URL(post.data.imagen, SITE_URL).href : `${SITE_URL}/og-default.png`,
-  url: `${SITE_URL}/blog/${post.id}`,
-  inLanguage: 'es',
+  url: PAGE_URL,
+  mainEntityOfPage: { '@type': 'WebPage', '@id': PAGE_URL },
+  inLanguage: 'es-CO',
+  wordCount,
+  articleSection: post.data.etiquetas[0] ?? tipoLabel,
   keywords: post.data.etiquetas.join(', '),
 };
+if (post.data.resumen) articleSchema.abstract = post.data.resumen;
 ---
 
 <BaseLayout
@@ -62,7 +101,9 @@ const articleSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 
-  <nav class="breadcrumb">
+  <ReadingProgress />
+
+  <nav class="breadcrumb" aria-label="Migas de pan">
     <a href="/">Inicio</a>
     <span aria-hidden="true"> › </span>
     <a href="/blog">Blog</a>
@@ -73,20 +114,19 @@ const articleSchema = {
   <article>
 
     <header class="art-header">
-      {post.data.etiquetas.length > 0 && (
-        <div class="tags-row">
-          {post.data.etiquetas.map((t: string) => (
-            <a href={`/blog/tag/${encodeURIComponent(t.toLowerCase().replace(/\s+/g, '-'))}`} class="tag">{t}</a>
-          ))}
-        </div>
-      )}
+      <div class="art-badges">
+        <span class={`tipo-badge tipo-badge--${post.data.tipo}`}>{tipoLabel}</span>
+        {post.data.etiquetas.length > 0 && post.data.etiquetas.slice(0, 4).map((t: string) => (
+          <a href={`/blog/tag/${encodeURIComponent(t.toLowerCase().replace(/\s+/g, '-'))}`} class="tag">{t}</a>
+        ))}
+      </div>
       <h1 class="art-title">{post.data.titulo}</h1>
       <div class="art-meta">
-        <time datetime={post.data.fecha.toISOString()}>
-          {formatDate(post.data.fecha)}
-        </time>
+        <time datetime={post.data.fecha.toISOString()}>{formatDate(post.data.fecha)}</time>
         <span aria-hidden="true">·</span>
         <span>{readingTime} min de lectura</span>
+        <span aria-hidden="true">·</span>
+        <span>{wordCount.toLocaleString('es-CO')} palabras</span>
         <span aria-hidden="true">·</span>
         <span>{post.data.autor}</span>
       </div>
@@ -94,13 +134,49 @@ const articleSchema = {
 
     {post.data.imagen && (
       <div class="art-cover">
-        <img src={post.data.imagen} alt={post.data.titulo} loading="eager" />
+        <img
+          src={post.data.imagen}
+          alt={post.data.titulo}
+          loading="eager"
+          width="1200"
+          height="630"
+        />
       </div>
     )}
+
+    {post.data.resumen && (
+      <aside class="tldr" aria-label="Resumen del artículo">
+        <p class="tldr__label">TL;DR</p>
+        <p class="tldr__body">{post.data.resumen}</p>
+      </aside>
+    )}
+
+    <TableOfContents headings={headings} />
 
     <div class="prose">
       <Content />
     </div>
+
+    <ShareButtons url={PAGE_URL} title={post.data.titulo} />
+
+    <AuthorBio />
+
+    {(newer || older) && (
+      <nav class="prevnext" aria-label="Navegación entre artículos">
+        {older ? (
+          <a class="prevnext__link prevnext__link--prev" href={`/blog/${older.id}`} rel="prev">
+            <span class="prevnext__dir">← Artículo anterior</span>
+            <span class="prevnext__title">{older.data.titulo}</span>
+          </a>
+        ) : <span />}
+        {newer ? (
+          <a class="prevnext__link prevnext__link--next" href={`/blog/${newer.id}`} rel="next">
+            <span class="prevnext__dir">Artículo siguiente →</span>
+            <span class="prevnext__title">{newer.data.titulo}</span>
+          </a>
+        ) : <span />}
+      </nav>
+    )}
 
     {related.length > 0 && (
       <aside class="related">
@@ -144,11 +220,48 @@ const articleSchema = {
 
   .art-header { margin-bottom: 1.75rem; }
 
-  .art-title {
-    font-size: clamp(1.6rem, 4vw, 2.25rem);
+  .art-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .tipo-badge {
+    display: inline-block;
+    font-size: 0.7rem;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.2rem 0.55rem;
+    border-radius: 0.35rem;
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .tipo-badge--tutorial { background: #16a34a; }
+  .tipo-badge--analisis { background: var(--color-accent); }
+  .tipo-badge--opinion { background: #9333ea; }
+  .tipo-badge--caso-estudio { background: #ea580c; }
+  .tipo-badge--referencia { background: #475569; }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.75rem; font-weight: 500;
+    padding: 0.2rem 0.65rem;
+    background: var(--color-tag-bg); border: 1px solid var(--color-tag-border);
+    border-radius: 999px; color: var(--color-accent);
+    text-decoration: none; transition: background 0.15s;
+  }
+  .tag:hover { background: var(--color-hover); }
+
+  .art-title {
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    font-weight: 800;
     line-height: 1.2;
-    margin: 0.75rem 0 0.85rem;
+    letter-spacing: -0.015em;
+    margin: 0.5rem 0 0.85rem;
+    color: var(--color-text-primary);
   }
 
   .art-meta {
@@ -165,10 +278,34 @@ const articleSchema = {
     border-radius: 0.75rem;
     overflow: hidden;
     border: 1px solid var(--color-border);
+    aspect-ratio: 1200 / 630;
   }
   .art-cover img {
-    width: 100%; height: auto;
-    max-height: 420px; object-fit: cover; display: block;
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+
+  /* ── TL;DR block ─────────────────────────────────────────────────── */
+  .tldr {
+    margin: 0 0 2rem;
+    padding: 1rem 1.25rem;
+    background: var(--color-hover);
+    border-left: 4px solid var(--color-accent);
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  .tldr__label {
+    margin: 0 0 0.35rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-accent);
+  }
+  .tldr__body {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
   }
 
   /* ── Prose ───────────────────────────────────────────────────────── */
@@ -179,13 +316,22 @@ const articleSchema = {
     max-width: 100%;
   }
   .prose :global(h2) {
-    font-size: 1.4rem; font-weight: 700; color: var(--color-text-primary);
-    margin: 2.25rem 0 0.75rem;
+    font-size: 1.5rem; font-weight: 700; color: var(--color-text-primary);
+    margin: 2.5rem 0 0.85rem;
     padding-bottom: 0.4rem; border-bottom: 1px solid var(--color-border);
+    scroll-margin-top: 5rem;
+    position: relative;
   }
   .prose :global(h3) {
-    font-size: 1.15rem; font-weight: 600; color: var(--color-text-primary);
-    margin: 1.75rem 0 0.5rem;
+    font-size: 1.2rem; font-weight: 600; color: var(--color-text-primary);
+    margin: 1.9rem 0 0.5rem;
+    scroll-margin-top: 5rem;
+    position: relative;
+  }
+  .prose :global(h2 > a),
+  .prose :global(h3 > a) {
+    text-decoration: none;
+    color: inherit;
   }
   .prose :global(p) { margin-bottom: 1.15rem; }
   .prose :global(a) {
@@ -200,6 +346,14 @@ const articleSchema = {
     border: 1px solid var(--color-border);
     max-height: 500px; object-fit: contain;
   }
+  .prose :global(figure) { margin: 1.75rem 0; }
+  .prose :global(figcaption) {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
   .prose :global(blockquote) {
     border-left: 3px solid var(--color-accent);
     padding: 0.5rem 0 0.5rem 1.25rem;
@@ -211,10 +365,29 @@ const articleSchema = {
     padding: 0.15rem 0.4rem; border-radius: 0.3rem;
   }
   .prose :global(pre) {
-    background: var(--color-tag-bg); border: 1px solid var(--color-tag-border);
+    background: #f6f8fa; border: 1px solid var(--color-border);
     border-radius: 0.5rem; padding: 1.25rem; overflow-x: auto; margin: 1.5rem 0;
+    position: relative;
   }
-  .prose :global(pre code) { background: none; border: none; padding: 0; }
+  .prose :global(pre code) { background: none; border: none; padding: 0; font-size: 0.875em; }
+  .prose :global(pre .copy-btn) {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: var(--color-sidebar, #fff);
+    border: 1px solid var(--color-border);
+    border-radius: 0.3rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s, background 0.15s;
+    font-family: inherit;
+  }
+  .prose :global(pre:hover .copy-btn) { opacity: 1; }
+  .prose :global(pre .copy-btn:hover) { background: var(--color-hover); color: var(--color-accent); }
   .prose :global(table) {
     width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;
   }
@@ -228,15 +401,61 @@ const articleSchema = {
   .prose :global(hr) { border: none; border-top: 1px solid var(--color-border); margin: 2rem 0; }
   .prose :global(strong) { color: var(--color-text-primary); font-weight: 600; }
 
-  .tag {
-    display: inline-block;
-    font-size: 0.75rem; font-weight: 500;
-    padding: 0.2rem 0.65rem;
-    background: var(--color-tag-bg); border: 1px solid var(--color-tag-border);
-    border-radius: 999px; color: var(--color-accent);
-    text-decoration: none; transition: background 0.15s;
+  /* Anchor link icon */
+  .prose :global(.heading-anchor) {
+    position: absolute;
+    left: -1.25rem;
+    top: 0;
+    bottom: 0;
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    font-weight: 400;
   }
-  .tag:hover { background: var(--color-hover); }
+  .prose :global(h2:hover .heading-anchor),
+  .prose :global(h3:hover .heading-anchor) { opacity: 1; }
+
+  /* ── Prev/Next ───────────────────────────────────────────────────── */
+  .prevnext {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 2.5rem 0;
+  }
+  .prevnext__link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 1rem 1.15rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    background: var(--color-sidebar, #fff);
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .prevnext__link:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+  .prevnext__link--next { text-align: right; }
+  .prevnext__dir {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+  .prevnext__title {
+    color: var(--color-text-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+  @media (max-width: 640px) {
+    .prevnext { grid-template-columns: 1fr; }
+    .prevnext__link--next { text-align: left; }
+  }
 
   /* ── Related articles ────────────────────────────────────────────── */
   .related { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--color-border); }
@@ -250,3 +469,48 @@ const articleSchema = {
   .back-link { font-size: 0.875rem; color: var(--color-text-muted); }
   .back-link:hover { color: var(--color-accent); }
 </style>
+
+<script>
+  // Inject "copy" buttons on every <pre> inside .prose
+  const enhanceCodeBlocks = () => {
+    document.querySelectorAll<HTMLElement>('.prose pre').forEach((pre) => {
+      if (pre.querySelector('.copy-btn')) return;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copiar';
+      btn.setAttribute('aria-label', 'Copiar código');
+      btn.addEventListener('click', async () => {
+        const code = pre.querySelector('code')?.innerText ?? pre.innerText;
+        try {
+          await navigator.clipboard.writeText(code);
+          btn.textContent = '¡Copiado!';
+          setTimeout(() => (btn.textContent = 'Copiar'), 1500);
+        } catch {
+          btn.textContent = 'Error';
+        }
+      });
+      pre.appendChild(btn);
+    });
+  };
+
+  // Inject heading-anchor links into h2/h3 with an id
+  const enhanceHeadings = () => {
+    document.querySelectorAll<HTMLHeadingElement>('.prose h2[id], .prose h3[id]').forEach((h) => {
+      if (h.querySelector('.heading-anchor')) return;
+      const a = document.createElement('a');
+      a.href = `#${h.id}`;
+      a.className = 'heading-anchor';
+      a.setAttribute('aria-label', 'Enlace permanente a esta sección');
+      a.textContent = '#';
+      h.prepend(a);
+    });
+  };
+
+  const init = () => {
+    enhanceCodeBlocks();
+    enhanceHeadings();
+  };
+  document.addEventListener('astro:page-load', init);
+  init();
+</script>

@@ -1,0 +1,99 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+
+const tagCounts = new Map<string, { label: string; count: number }>();
+for (const p of posts) {
+  for (const t of p.data.etiquetas) {
+    const slug = t.toLowerCase().replace(/\s+/g, '-');
+    const existing = tagCounts.get(slug);
+    if (existing) existing.count++;
+    else tagCounts.set(slug, { label: t, count: 1 });
+  }
+}
+
+const allTags = Array.from(tagCounts.entries())
+  .map(([slug, { label, count }]) => ({ slug, label, count }))
+  .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+
+const title = 'Todos los temas | Blog · Frederick Salazar';
+const description = 'Índice completo de temas tratados en el blog: Data Engineering, IA, Big Data, Machine Learning, Azure y más.';
+---
+
+<BaseLayout {title} {description}>
+
+  <nav class="breadcrumb" aria-label="Migas de pan">
+    <a href="/">Inicio</a>
+    <span aria-hidden="true"> › </span>
+    <a href="/blog">Blog</a>
+    <span aria-hidden="true"> › </span>
+    <span>Temas</span>
+  </nav>
+
+  <section>
+    <h1 class="page-title">Temas del blog</h1>
+    <p class="page-subtitle">
+      Explora los {allTags.length} temas que cubren los {posts.length} artículos publicados.
+    </p>
+  </section>
+
+  <ul class="tag-cloud">
+    {allTags.map((t) => (
+      <li>
+        <a href={`/blog/tag/${t.slug}`} class="cloud-tag" style={`--w: ${Math.min(1 + t.count * 0.15, 2)}`}>
+          <span class="cloud-tag__label">{t.label}</span>
+          <span class="cloud-tag__count">{t.count}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+
+</BaseLayout>
+
+<style>
+  .breadcrumb {
+    margin-bottom: 1.5rem; font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+  .breadcrumb a { color: var(--color-text-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--color-accent); }
+  .breadcrumb span:last-child { color: var(--color-text-secondary); }
+
+  .page-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 800; margin: 0 0 0.5rem; letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+  }
+  .page-subtitle {
+    font-size: 1.05rem; color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .tag-cloud {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-wrap: wrap; gap: 0.75rem;
+  }
+  .cloud-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 0.95rem;
+    background: var(--color-tag-bg);
+    border: 1px solid var(--color-tag-border);
+    border-radius: 999px;
+    text-decoration: none;
+    color: var(--color-accent);
+    font-size: calc(0.85rem * var(--w, 1));
+    font-weight: 500;
+    transition: background 0.15s, transform 0.15s;
+  }
+  .cloud-tag:hover { background: var(--color-hover); transform: translateY(-1px); }
+  .cloud-tag__count {
+    background: var(--color-accent);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.05rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+</style>

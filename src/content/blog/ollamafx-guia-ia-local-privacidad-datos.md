@@ -2,10 +2,13 @@
 titulo: "OllamaFX: Cómo ejecutar modelos IA en tu PC sin regalar tus datos"
 fecha: 2026-03-05
 descripcion: "¿Te preocupa que tus datos terminen en las nubes de ChatGPT o Gemini? Descubre cómo recuperar tu soberanía digital instalando modelos de IA (LLM) localm..."
-etiquetas: []
+etiquetas: ["IA Local", "Ollama", "Privacidad", "LLM", "OllamaFX"]
 autor: "Frederick Salazar"
 imagen: "/images/blog/ollamafx-disponibles.png"
 draft: false
+tipo: "tutorial"
+destacado: false
+resumen: "Guía para correr LLMs en local con Ollama y la interfaz OllamaFX. Cómo recuperar privacidad sobre tus datos sin renunciar a la potencia de la IA generativa."
 ---
 
 Desde la irrupción de ChatGPT y el desarrollo de modelos de IA como Gemini, Grok, Claude, etc., la IA se ha vuelto una herramienta de uso diario para todos. Sin embargo, esta comodidad tiene un precio invisible: **tus datos** **y la privacidad**. Cada consulta, archivo cargado o código pegado en estos servidores alimenta nubes de terceros en donde pierdes el control de los datos, para muchos profesionales, especialmente en áreas de desarrollo de software, sector financiero, legal entre muchos más, el manejo, la seguridad y privacidad de los datos es una actividad crítica no negociable.

@@ -2,77 +2,359 @@
 /**
  * blog/index.astro — Listado de artículos del blog
  * URL: /blog
- *
- * Lee la colección 'blog', filtra borradores y ordena por fecha descendente.
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Card from '../../components/Card.astro';
+import BlogFilters from '../../components/BlogFilters.astro';
 
 const title       = 'Blog de Data Engineering, Machine Learning | Frederick Salazar';
-const description = 'Artículos técnicos sobre Data Engineering, Big Data, Machine Learning, Azure y Analytics. Tutorials, guías y análisis de datos por Frederick Salazar, Data Engineer en Colombia.';
+const description = 'Artículos técnicos sobre Data Engineering, Big Data, Machine Learning, Azure y Analytics. Tutoriales, guías y análisis de datos por Frederick Salazar, Data Engineer en Colombia.';
+
+const SITE_URL = 'https://fredericksalazar.github.io';
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 const posts    = allPosts.sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
 
-const tagHref = (tag: string) => `/blog/${encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-'))}`;
+const featured = posts.find((p) => p.data.destacado) ?? null;
+const rest = featured ? posts.filter((p) => p.id !== featured.id) : posts;
+
+const tagHref = (tag: string) => `/blog/tag/${encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-'))}`;
+
+const TIPO_LABEL: Record<string, string> = {
+  tutorial: 'Tutorial',
+  analisis: 'Análisis',
+  opinion: 'Opinión',
+  'caso-estudio': 'Caso de estudio',
+  referencia: 'Referencia',
+};
+const tipos = Object.entries(TIPO_LABEL).map(([value, label]) => ({ value, label }));
+
+// Top tags por frecuencia (máx 10)
+const tagCounts = new Map<string, number>();
+posts.forEach((p) => p.data.etiquetas.forEach((t: string) => tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1)));
+const topTags = Array.from(tagCounts.entries())
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 10)
+  .map(([t]) => t);
+
+const wordsOf = (p: typeof posts[number]) => p.body?.split(/\s+/).filter(Boolean).length ?? 0;
+const readingTime = (p: typeof posts[number]) => Math.max(1, Math.round(wordsOf(p) / 200));
+
+// ── JSON-LD: Blog ──
+const blogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: 'Blog · Frederick Salazar',
+  description,
+  url: `${SITE_URL}/blog`,
+  inLanguage: 'es-CO',
+  author: { '@type': 'Person', name: 'Frederick Salazar', url: SITE_URL },
+  blogPost: posts.slice(0, 10).map((p) => ({
+    '@type': 'BlogPosting',
+    headline: p.data.titulo,
+    url: `${SITE_URL}/blog/${p.id}/`,
+    datePublished: p.data.fecha.toISOString(),
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog` },
+  ],
+};
 ---
 
-<BaseLayout title={title} description={description} type="article">
+<BaseLayout title={title} description={description} type="website">
 
-  <section aria-labelledby="blog-heading">
+  <script type="application/ld+json" set:html={JSON.stringify(blogSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <nav class="breadcrumb" aria-label="Migas de pan">
+    <a href="/">Inicio</a>
+    <span aria-hidden="true"> › </span>
+    <span>Blog</span>
+  </nav>
+
+  <section class="blog-hero" aria-labelledby="blog-heading">
     <h1 id="blog-heading" class="page-title">Blog</h1>
     <p class="page-subtitle">
-      Contenido sobre Data Engineering, IA y tecnología para la comunidad en Colombia y LATAM.
+      Artículos técnicos sobre Data Engineering, IA, Big Data y Analytics.
+      Tutoriales, casos de estudio y análisis desde Colombia para LATAM.
+    </p>
+    <p class="blog-hero__stats">
+      <strong>{posts.length}</strong> artículos publicados
+      <span aria-hidden="true">·</span>
+      <a href="/rss.xml" class="rss-link" aria-label="Suscribirse al feed RSS">
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="currentColor">
+          <path d="M5 3a16 16 0 0 1 16 16h-3A13 13 0 0 0 5 6V3Zm0 7a9 9 0 0 1 9 9h-3a6 6 0 0 0-6-6v-3Zm1.5 6a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z" />
+        </svg>
+        RSS
+      </a>
     </p>
   </section>
+
+  {featured && (
+    <section class="featured" aria-labelledby="featured-heading">
+      <p class="featured__eyebrow" id="featured-heading">Artículo destacado</p>
+      <a class="featured__link" href={`/blog/${featured.id}`}>
+        {featured.data.imagen && (
+          <div class="featured__media">
+            <img src={featured.data.imagen} alt={featured.data.titulo} loading="eager" width="1200" height="630" />
+          </div>
+        )}
+        <div class="featured__body">
+          <div class="featured__badges">
+            <span class={`tipo-badge tipo-badge--${featured.data.tipo}`}>{TIPO_LABEL[featured.data.tipo]}</span>
+            {featured.data.etiquetas.slice(0, 3).map((t: string) => (
+              <span class="tag">{t}</span>
+            ))}
+          </div>
+          <h2 class="featured__title">{featured.data.titulo}</h2>
+          <p class="featured__desc">{featured.data.resumen ?? featured.data.descripcion}</p>
+          <p class="featured__meta">
+            <time datetime={featured.data.fecha.toISOString()}>
+              {featured.data.fecha.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </time>
+            <span aria-hidden="true">·</span>
+            <span>{readingTime(featured)} min de lectura</span>
+          </p>
+        </div>
+      </a>
+    </section>
+  )}
+
+  <BlogFilters topTags={topTags} tipos={tipos} />
 
   {posts.length === 0 ? (
     <p class="empty-state">Los artículos se publicarán pronto.</p>
   ) : (
     <div class="blog-grid">
-      {posts.map((post) => (
-        <Card
-          variant="blog"
-          href={`/blog/${post.id}`}
-          image={post.data.imagen}
-          imageAlt={post.data.titulo}
-          title={post.data.titulo}
-          description={post.data.descripcion}
-          date={post.data.fecha}
-          tags={post.data.etiquetas}
-          headingLevel="h2"
-          tagLinks={true}
-          tagHref={tagHref}
-        />
+      {rest.map((post) => (
+        <div
+          data-post-card
+          data-title={post.data.titulo}
+          data-desc={post.data.descripcion}
+          data-tags={post.data.etiquetas.join('|')}
+          data-tipo={post.data.tipo}
+        >
+          <Card
+            variant="blog"
+            href={`/blog/${post.id}`}
+            image={post.data.imagen}
+            imageAlt={post.data.titulo}
+            title={post.data.titulo}
+            description={post.data.descripcion}
+            date={post.data.fecha}
+            tags={post.data.etiquetas}
+            headingLevel="h2"
+            tagLinks={true}
+            tagHref={tagHref}
+            tipoBadge={{ label: TIPO_LABEL[post.data.tipo], value: post.data.tipo }}
+            readingTime={readingTime(post)}
+          />
+        </div>
       ))}
     </div>
   )}
 
+  <p id="blog-empty" class="empty-state empty-state--filtered" style="display:none">
+    No encontramos artículos con esos filtros. <button type="button" id="blog-clear" class="link-btn">Limpiar filtros</button>
+  </p>
+
+  <section class="blog-footer-links" aria-label="Más formas de explorar">
+    <a href="/blog/tags">Ver todos los temas</a>
+    <span aria-hidden="true">·</span>
+    <a href="/blog/archivo">Archivo completo</a>
+    <span aria-hidden="true">·</span>
+    <a href="/rss.xml">RSS</a>
+  </section>
+
 </BaseLayout>
 
+<script>
+  // Botón "Limpiar filtros"
+  const wire = () => {
+    const btn = document.getElementById('blog-clear');
+    if (!btn || btn.dataset.bound) return;
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', () => {
+      const search = document.getElementById('blog-search') as HTMLInputElement | null;
+      const tipo = document.getElementById('blog-tipo') as HTMLSelectElement | null;
+      if (search) search.value = '';
+      if (tipo) tipo.value = '';
+      document.querySelectorAll('.filters__chip').forEach((c, i) => {
+        c.classList.toggle('filters__chip--active', i === 0);
+      });
+      search?.dispatchEvent(new Event('input'));
+    });
+  };
+  document.addEventListener('astro:page-load', wire);
+  wire();
+</script>
+
 <style>
+  .breadcrumb {
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+  .breadcrumb a { color: var(--color-text-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--color-accent); }
+  .breadcrumb span:last-child { color: var(--color-text-secondary); }
+
+  .blog-hero { margin-bottom: 2rem; }
   .page-title {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
     font-weight: 800;
     margin-bottom: 0.5rem;
     letter-spacing: -0.02em;
+    color: var(--color-text-primary);
   }
   .page-subtitle {
     font-size: 1.1rem;
     color: var(--color-text-secondary);
-    margin-bottom: 3rem;
+    margin-bottom: 0.75rem;
+    max-width: 60ch;
+    line-height: 1.55;
   }
-  .empty-state {
+  .blog-hero__stats {
+    font-size: 0.85rem;
     color: var(--color-text-muted);
-    font-size: 1rem;
-    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .blog-hero__stats strong { color: var(--color-text-primary); font-weight: 700; }
+  .rss-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .rss-link:hover { text-decoration: underline; }
+
+  /* ── Featured article ──────────────────────────────────────────── */
+  .featured {
+    margin: 0 0 2.5rem;
+  }
+  .featured__eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent);
+    margin: 0 0 0.75rem;
+  }
+  .featured__link {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 0;
+    background: var(--color-sidebar, #fff);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .featured__link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  }
+  .featured__media { aspect-ratio: 1200 / 630; overflow: hidden; background: var(--color-border); }
+  .featured__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .featured__body { padding: 1.75rem 1.85rem; display: flex; flex-direction: column; justify-content: center; }
+  .featured__badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.85rem; }
+  .featured__title {
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 800;
+    line-height: 1.25;
+    margin: 0 0 0.6rem;
+    color: var(--color-text-primary);
+    letter-spacing: -0.015em;
+  }
+  .featured__desc {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin: 0 0 0.85rem;
+  }
+  .featured__meta {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0;
+  }
+  @media (max-width: 800px) {
+    .featured__link { grid-template-columns: 1fr; }
   }
 
-  /* ── Grid Layout ──────────────────────────────────────────────────────── */
+  .tipo-badge {
+    display: inline-block;
+    font-size: 0.66rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.18rem 0.5rem;
+    border-radius: 0.3rem;
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .tipo-badge--tutorial { background: #16a34a; }
+  .tipo-badge--analisis { background: var(--color-accent); }
+  .tipo-badge--opinion { background: #9333ea; }
+  .tipo-badge--caso-estudio { background: #ea580c; }
+  .tipo-badge--referencia { background: #475569; }
+  .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    padding: 0.18rem 0.55rem;
+    background: var(--color-tag-bg); border: 1px solid var(--color-tag-border);
+    border-radius: 999px; color: var(--color-accent);
+  }
+
+  /* ── Grid ──────────────────────────────────────────────────────── */
   .blog-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 2.5rem;
   }
+  .empty-state {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    font-style: italic;
+    margin: 1.5rem 0;
+  }
+  .empty-state--filtered { font-style: normal; }
+  .link-btn {
+    background: none; border: none; padding: 0;
+    color: var(--color-accent); cursor: pointer; font: inherit;
+    text-decoration: underline;
+  }
+
+  .blog-footer-links {
+    margin: 3rem 0 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+  .blog-footer-links a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .blog-footer-links a:hover { text-decoration: underline; }
 </style>

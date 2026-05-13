@@ -6,6 +6,8 @@ imagen: "/images/blog/trabajo-remoto.png"
 etiquetas: ["Trabajo Remoto", "Productividad", "Desarrollo Profesional", "Salud Mental"]
 autor: "Frederick Salazar"
 draft: false
+tipo: "opinion"
+destacado: false
 ---
 
 La pandemia del COVID-19 sin lugar a dudas ha cambiado nuestras vidas para siempre , incluso nuestra vida profesional y laboral. Las fronteras han desaparecido, internet se ha convertido ahora en nuestra nueva oficina y lo que antes parecía impensable ahora es una realidad. **Trabajar desde casa** se ha convertido en una de las frases mas pronunciadas, y esto realmente tiene muchos impactos en aspectos como la economía, el medio ambiente, la salud física y mental y otro largo etc. Llevo 3 años trabajando remoto y quiero compartir de acuerdo a mi experiencia una serie de consejos que me han ayudado a mantenerme eficiente y productivo en esta nueva realidad, el ultimo tip es el mejor.

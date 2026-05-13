@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Card from '../../../components/Card.astro';
+import { descriptionFor } from '../../../data/tags';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('blog', ({ data }) => !data.draft);
@@ -27,15 +28,66 @@ export async function getStaticPaths() {
   }));
 }
 
-const { tagLabel, posts } = Astro.props;
+const { tagSlug, tagLabel, posts } = Astro.props;
+const SITE_URL = 'https://fredericksalazar.github.io';
+const PAGE_URL = `${SITE_URL}/blog/tag/${tagSlug}/`;
 
+const tagDescription = descriptionFor(tagSlug);
 const title = `Artículos sobre ${tagLabel} | Frederick Salazar`;
-const description = `Todos los artículos de Data Engineering, Big Data y tecnología sobre ${tagLabel} escritos por Frederick Salazar.`;
+const description = tagDescription ?? `Todos los artículos sobre ${tagLabel} en el blog de Frederick Salazar, Data Engineer.`;
+
+const TIPO_LABEL: Record<string, string> = {
+  tutorial: 'Tutorial',
+  analisis: 'Análisis',
+  opinion: 'Opinión',
+  'caso-estudio': 'Caso de estudio',
+  referencia: 'Referencia',
+};
+
+// Conteo por tipo
+const counts: Record<string, number> = {};
+posts.forEach((p) => { counts[p.data.tipo] = (counts[p.data.tipo] ?? 0) + 1; });
+
+const tagHref = (tag: string) => `/blog/tag/${encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-'))}`;
+
+// JSON-LD: CollectionPage + ItemList
+const collectionSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `Artículos sobre ${tagLabel}`,
+  description,
+  url: PAGE_URL,
+  inLanguage: 'es-CO',
+  isPartOf: { '@type': 'Blog', name: 'Blog · Frederick Salazar', url: `${SITE_URL}/blog` },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: posts.length,
+    itemListElement: posts.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: `${SITE_URL}/blog/${p.id}/`,
+      name: p.data.titulo,
+    })),
+  },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog` },
+    { '@type': 'ListItem', position: 3, name: tagLabel, item: PAGE_URL },
+  ],
+};
 ---
 
 <BaseLayout {title} {description}>
 
-  <nav class="breadcrumb">
+  <script type="application/ld+json" set:html={JSON.stringify(collectionSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <nav class="breadcrumb" aria-label="Migas de pan">
     <a href="/">Inicio</a>
     <span aria-hidden="true"> › </span>
     <a href="/blog">Blog</a>
@@ -44,8 +96,15 @@ const description = `Todos los artículos de Data Engineering, Big Data y tecnol
   </nav>
 
   <section>
+    <p class="eyebrow">Tema</p>
     <h1 class="page-title">#{tagLabel}</h1>
-    <p class="page-subtitle">{posts.length} artículo{posts.length !== 1 ? 's' : ''}</p>
+    {tagDescription && <p class="page-subtitle">{tagDescription}</p>}
+    <p class="counts">
+      <strong>{posts.length}</strong> artículo{posts.length !== 1 ? 's' : ''}
+      {Object.entries(counts).map(([tipo, n]) => (
+        <span class="count-pill">{n} {TIPO_LABEL[tipo] ?? tipo}</span>
+      ))}
+    </p>
   </section>
 
   <div class="blog-list">
@@ -62,9 +121,13 @@ const description = `Todos los artículos de Data Engineering, Big Data y tecnol
         tags={post.data.etiquetas}
         headingLevel="h2"
         showReadMore={false}
+        tagLinks={true}
+        tagHref={tagHref}
       />
     ))}
   </div>
+
+  <p class="more-link"><a href="/blog/tags">← Ver todos los temas</a></p>
 
 </BaseLayout>
 
@@ -76,13 +139,47 @@ const description = `Todos los artículos de Data Engineering, Big Data y tecnol
   .breadcrumb a { color: var(--color-text-muted); text-decoration: none; }
   .breadcrumb a:hover { color: var(--color-accent); }
 
+  .eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent);
+    margin: 0 0 0.4rem;
+  }
   .page-title {
     font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-weight: 800; margin-bottom: 0.25rem; letter-spacing: -0.02em;
+    font-weight: 800; margin: 0 0 0.5rem; letter-spacing: -0.02em;
+    color: var(--color-text-primary);
   }
   .page-subtitle {
-    font-size: 0.95rem; color: var(--color-text-muted); margin-bottom: 2.5rem;
+    font-size: 1.05rem; color: var(--color-text-secondary);
+    max-width: 65ch; line-height: 1.55;
+    margin: 0 0 0.85rem;
+  }
+  .counts {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;
+    margin: 0 0 2.5rem;
+  }
+  .counts strong { color: var(--color-text-primary); font-weight: 700; }
+  .count-pill {
+    padding: 0.15rem 0.55rem;
+    background: var(--color-tag-bg);
+    border: 1px solid var(--color-tag-border);
+    border-radius: 999px;
+    font-size: 0.75rem;
   }
 
   .blog-list { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .more-link {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.875rem;
+  }
+  .more-link a { color: var(--color-text-muted); text-decoration: none; }
+  .more-link a:hover { color: var(--color-accent); }
 </style>

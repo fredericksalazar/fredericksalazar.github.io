@@ -67,6 +67,8 @@ interface Props extends HTMLAttributes<"article"> {
   logo?: string;
   year?: string;
   externalLinkText?: string;
+  tipoBadge?: { label: string; value: string };
+  readingTime?: number;
 }
 
 const {
@@ -93,6 +95,8 @@ const {
   logo,
   year,
   externalLinkText = "Ver credencial",
+  tipoBadge,
+  readingTime,
   class: className = "",
   ...rest
 } = Astro.props;
@@ -191,10 +195,18 @@ const HeadingTag = headingLevel;
           </div>
         )}
         <div class="card__body">
-          {variant === "blog" && date && (
-            <time class="card__meta" datetime={datetime!}>
-              {formattedDate}
-            </time>
+          {variant === "blog" && (tipoBadge || readingTime || date) && (
+            <div class="card__meta-row card__meta-row--blog">
+              {tipoBadge && (
+                <span class={`card__tipo card__tipo--${tipoBadge.value}`}>{tipoBadge.label}</span>
+              )}
+              {date && (
+                <time class="card__meta" datetime={datetime!}>{formattedDate}</time>
+              )}
+              {readingTime && (
+                <span class="card__reading">· {readingTime} min</span>
+              )}
+            </div>
           )}
           {category && (
             <div class="card__meta-row">
@@ -744,4 +756,35 @@ const HeadingTag = headingLevel;
       height: 160px;
     }
   }
+
+  /* ============================================
+     Blog meta row (tipo badge + reading time)
+     ============================================ */
+  .card__meta-row--blog {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.6rem;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+  }
+  .card__meta-row--blog .card__meta { font-size: inherit; }
+  .card__reading { color: var(--color-text-muted); }
+  .card__tipo {
+    display: inline-block;
+    font-size: 0.66rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.18rem 0.5rem;
+    border-radius: 0.3rem;
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .card__tipo--tutorial { background: #16a34a; }
+  .card__tipo--analisis { background: var(--color-accent); }
+  .card__tipo--opinion { background: #9333ea; }
+  .card__tipo--caso-estudio { background: #ea580c; }
+  .card__tipo--referencia { background: #475569; }
 </style>
