@@ -19,6 +19,38 @@ export const formatPp = (v: number | null, dec = 2): string => {
   return `${sign}${v.toFixed(dec)} pp`;
 };
 
+const nfEntero = new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 });
+
+export const formatValor = (v: number | null, unidad: string, dec = 2): string => {
+  if (v === null) return "—";
+  switch (unidad) {
+    case "miles de millones USD":
+      return `${v.toFixed(dec)} mil M USD`;
+    case "USD":
+      return `$${nfEntero.format(v)}`;
+    case "personas":
+      return `${nfEntero.format(v)} hab.`;
+    default:
+      return `${v.toFixed(dec)} ${unidad}`;
+  }
+};
+
+export const formatDelta = (v: number | null, unidad: string, dec = 2): string => {
+  if (v === null) return "—";
+  const sign = v >= 0 ? "+" : "−";
+  const abs = Math.abs(v);
+  switch (unidad) {
+    case "miles de millones USD":
+      return `${sign}${abs.toFixed(dec)} mil M USD`;
+    case "USD":
+      return `${sign}$${nfEntero.format(abs)}`;
+    case "personas":
+      return `${sign}${nfEntero.format(abs)} hab.`;
+    default:
+      return `${sign}${abs.toFixed(dec)} ${unidad}`;
+  }
+};
+
 export const formatPeriodo = (p: string): string => {
   const [year, month] = p.split("-");
   const m = parseInt(month, 10) - 1;

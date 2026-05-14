@@ -3,6 +3,8 @@ import type { Indicador, SemanticIndicador } from "../../lib/observatorio/types"
 import {
   formatPct,
   formatPp,
+  formatValor,
+  formatDelta,
   formatPeriodoCorto,
   variacionClass,
   variacionIcon,
@@ -21,14 +23,20 @@ const { titulo, indicador, semantic, unidadOverride, subtitle, deltaLabel = "vs 
 const { actual, unidad } = indicador;
 
 const unidadFinal = unidadOverride ?? unidad;
-const valorFmt =
-  unidadFinal === "pp"
-    ? actual.valor === null
-      ? "—"
-      : `${actual.valor.toFixed(2)} pp`
-    : formatPct(actual.valor, 2);
+const esPorcentaje = unidadFinal === "%" || unidadFinal === "% PIB";
+const esPp = unidadFinal === "pp";
 
-const deltaFmt = formatPp(actual.delta, 2);
+const valorFmt = esPp
+  ? actual.valor === null
+    ? "—"
+    : `${actual.valor.toFixed(2)} pp`
+  : esPorcentaje
+    ? formatPct(actual.valor, 2)
+    : formatValor(actual.valor, unidadFinal, 2);
+
+const deltaFmt = esPorcentaje || esPp
+  ? formatPp(actual.delta, 2)
+  : formatDelta(actual.delta, unidadFinal, 2);
 const varClass = variacionClass(actual.variacion, semantic);
 const icon = variacionIcon(actual.variacion);
 const periodoCorto = formatPeriodoCorto(actual.periodo);
