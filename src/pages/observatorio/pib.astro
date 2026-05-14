@@ -10,12 +10,19 @@ import ChartPIBHistorico from "../../components/observatorio/ChartPIBHistorico.a
 import ChartCrecimientoPIB from "../../components/observatorio/ChartCrecimientoPIB.astro";
 import ChartPIBPerCapita from "../../components/observatorio/ChartPIBPerCapita.astro";
 import ChartPoblacionPIB from "../../components/observatorio/ChartPoblacionPIB.astro";
+import ChartDeudaPublica from "../../components/observatorio/ChartDeudaPublica.astro";
+import ChartPIBComercio from "../../components/observatorio/ChartPIBComercio.astro";
+import ChartLeyOkun from "../../components/observatorio/ChartLeyOkun.astro";
+import ChartPIBInflacion from "../../components/observatorio/ChartPIBInflacion.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
-import { getPIB, getPIBSerieAscending } from "../../lib/observatorio/data";
+import { getPIB, getPIBSerieAscending, getComercioSerieAscending, getEmpleoAnualDiciembre, getInflacionAnualPromedio } from "../../lib/observatorio/data";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
 
 const pib = getPIB();
 const serieAsc = getPIBSerieAscending();
+const serieComercioAsc = getComercioSerieAscending();
+const empleoDiciembre = getEmpleoAnualDiciembre();
+const inflacionAnual = getInflacionAnualPromedio();
 const { indicadores, metadata, historico } = pib;
 
 const pibActual = indicadores.pib_total.actual.valor;
@@ -100,6 +107,16 @@ const jsonLd = {
       <ChartCrecimientoPIB slot="visual" serie={serieAsc} embedded={true} />
     </IndicadorPanel>
 
+    <IndicadorPanel numero="04" eyebrow="Sostenibilidad fiscal" titulo="Deuda pública como % del PIB"
+      lead="Del 17% del PIB en 2000 al 91% en 2020 durante la pandemia. La deuda pública es el termómetro de la salud fiscal — y Colombia hoy se ubica en zona de alerta para mercados emergentes."
+      fuente={fuentePIB}>
+      <Fragment slot="text">
+        <p>La deuda pública colombiana tuvo <strong>tres saltos importantes</strong>: la crisis de fin de siglo (1999), la crisis financiera global (2009) y la <strong>pandemia (2020)</strong>, cuando el gasto extraordinario y la caída del PIB elevaron la razón al <strong>91.2%</strong>, su máximo histórico.</p>
+        <p>El FMI considera que niveles superiores al 60% del PIB son <strong>zona de alerta</strong> para economías emergentes. Hoy Colombia se ubica en <strong>71.5%</strong>, en proceso de consolidación fiscal pero todavía por encima del umbral prudencial.</p>
+      </Fragment>
+      <ChartDeudaPublica slot="visual" serie={serieAsc} embedded={true} />
+    </IndicadorPanel>
+
     <IndicadorPanel numero="05" eyebrow="Dos caras del desarrollo" titulo="Población y riqueza"
       lead="La población crece de forma estable mientras el PIB per cápita refleja los vaivenes de la economía. Dos líneas que cuentan la historia del desarrollo colombiano."
       fuente={fuentePIB}>
@@ -108,6 +125,36 @@ const jsonLd = {
         <p>La transición demográfica (menos hijos por mujer, más esperanza de vida) está desacelerando el crecimiento poblacional, lo que facilita que el PIB per cápita crezca más rápido.</p>
       </Fragment>
       <ChartPoblacionPIB slot="visual" serie={serieAsc} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="06" eyebrow="Apertura económica" titulo="PIB y dependencia exportadora"
+      lead="Las exportaciones colombianas pesan entre 13% y 22% del PIB. Durante el boom petrolero (2007-2014) llegaron al 22%; tras la caída del crudo en 2015 el PIB en USD se desplomó 23%."
+      fuente={fuentePIB}>
+      <Fragment slot="text">
+        <p>Colombia tiene una economía <strong>relativamente cerrada</strong> en comparación con sus pares latinoamericanos. Las exportaciones representan ~16% del PIB, frente al 30% de Chile o el 39% de México.</p>
+        <p>Cuando los precios del <strong>petróleo y el carbón</strong> caen, el PIB nominal en USD se contrae aunque la economía real no lo haga: es lo que pasó en <strong>2015-2016</strong> (-23% en USD) y parcialmente en 2020.</p>
+      </Fragment>
+      <ChartPIBComercio slot="visual" seriePIB={serieAsc} serieComercio={serieComercioAsc} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="07" eyebrow="Macroeconomía aplicada" titulo="Ley de Okun: ¿cuánto crecimiento crea empleo?"
+      lead="La Ley de Okun describe la relación inversa entre crecimiento del PIB y desempleo. En Colombia (1992-2024), cada punto adicional de crecimiento reduce el desempleo en aproximadamente 0.3 pp."
+      fuente={fuentePIB}>
+      <Fragment slot="text">
+        <p>El concepto: cuando la economía <strong>crece por encima de su tasa potencial</strong>, las empresas contratan más rápido de lo que crece la fuerza laboral, y el desempleo cae. Cuando crece por debajo, ocurre lo contrario.</p>
+        <p>Para Colombia, el <strong>umbral de crecimiento neutro</strong> está alrededor del 3% anual. Por debajo de eso, el desempleo sube. Esto explica por qué crecimientos del 1-2% (como 2024) no son suficientes para reducir el desempleo estructural del país (~10%).</p>
+      </Fragment>
+      <ChartLeyOkun slot="visual" seriePIB={serieAsc} empleoDiciembre={empleoDiciembre} embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="08" eyebrow="Ciclo macroeconómico" titulo="Crecimiento e inflación bajo metas de BanRep"
+      lead="Desde 2004, el Banco de la República opera bajo régimen de metas de inflación (3% ±1). El ciclo PIB-inflación revela los momentos de expansión, enfriamiento y los choques externos que han marcado dos décadas."
+      fuente={fuentePIB}>
+      <Fragment slot="text">
+        <p>El año <strong>2022 marcó el pico inflacionario</strong> del siglo XXI en Colombia (13.1%), combinado con un crecimiento del PIB del 7.3% — un <strong>sobrecalentamiento clásico</strong> tras los estímulos pandémicos. BanRep respondió subiendo la tasa de intervención al 13.25%.</p>
+        <p>El régimen de metas ha logrado mantener la inflación promedio en torno a la meta durante la mayor parte del período, salvo los choques de <strong>2008-2009</strong> (crisis global), <strong>2015-2016</strong> (depreciación + sequía) y <strong>2022-2023</strong> (post-COVID).</p>
+      </Fragment>
+      <ChartPIBInflacion slot="visual" seriePIB={serieAsc} inflacionAnual={inflacionAnual} embedded={true} />
     </IndicadorPanel>
 
     <section class="glosario-block" aria-label="Glosario y fuentes">

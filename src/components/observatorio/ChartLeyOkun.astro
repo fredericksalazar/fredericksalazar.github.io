@@ -1,0 +1,121 @@
+---
+import type { PIBSerieFila, EmpleoSerieFila } from "../../lib/observatorio/types";
+import { baseLayout } from "../../lib/observatorio/charts";
+import ChartContainer from "./ChartContainer.astro";
+import PlotlyChart from "./PlotlyChart.astro";
+
+interface Props {
+  seriePIB: PIBSerieFila[];
+  empleoDiciembre: EmpleoSerieFila[];
+  embedded?: boolean;
+}
+const { seriePIB, empleoDiciembre, embedded = false } = Astro.props;
+
+const desempleoPorAnio: Record<string, number> = {};
+for (const r of empleoDiciembre) {
+  const year = r.periodo.slice(0, 4);
+  if (typeof r.tasa_desempleo === "number") desempleoPorAnio[year] = r.tasa_desempleo;
+}
+
+const puntos: { year: string; crecimiento: number; deltaDesempleo: number }[] = [];
+const pibPorAnio: Record<string, number> = {};
+for (const r of seriePIB) {
+  const year = r.periodo.slice(0, 4);
+  if (typeof r.crecimiento_pib === "number") pibPorAnio[year] = r.crecimiento_pib;
+}
+
+const years = Object.keys(desempleoPorAnio).sort();
+for (let i = 1; i < years.length; i++) {
+  const y = years[i], yPrev = years[i - 1];
+  if (parseInt(y, 10) - parseInt(yPrev, 10) !== 1) continue;
+  if (!(y in pibPorAnio)) continue;
+  const dDes = desempleoPorAnio[y] - desempleoPorAnio[yPrev];
+  puntos.push({ year: y, crecimiento: pibPorAnio[y], deltaDesempleo: dDes });
+}
+
+const n = puntos.length;
+const xs = puntos.map((p) => p.crecimiento);
+const ys = puntos.map((p) => p.deltaDesempleo);
+const meanX = xs.reduce((s, v) => s + v, 0) / n;
+const meanY = ys.reduce((s, v) => s + v, 0) / n;
+let num = 0, den = 0;
+for (let i = 0; i < n; i++) { num += (xs[i] - meanX) * (ys[i] - meanY); den += (xs[i] - meanX) ** 2; }
+const slope = num / den;
+const intercept = meanY - slope * meanX;
+const umbral = -intercept / slope;
+
+const xMin = Math.min(...xs) - 0.5;
+const xMax = Math.max(...xs) + 0.5;
+const regX = [xMin, xMax];
+const regY = regX.map((x) => intercept + slope * x);
+
+const traces = [
+  {
+    name: "Año",
+    x: xs, y: ys,
+    mode: "markers+text",
+    type: "scatter",
+    marker: { size: 9, color: "#2563eb", line: { color: "white", width: 1 } },
+    text: puntos.map((p) => p.year.slice(2)),
+    textposition: "top center",
+    textfont: { size: 9, color: "#475569" },
+    hovertemplate: "<b>%{text}</b><br>Crecimiento PIB: %{x:.2f}%<br>Δ Desempleo: %{y:+.2f} pp<extra></extra>",
+  },
+  {
+    name: "Regresión OLS",
+    x: regX, y: regY,
+    mode: "lines",
+    type: "scatter",
+    line: { color: "#dc2626", width: 2, dash: "dash" },
+    hoverinfo: "skip",
+  },
+];
+
+const layout = baseLayout({
+  margin: { l: 56, r: 24, t: 24, b: 48 },
+  showlegend: false,
+  hovermode: "closest",
+  xaxis: {
+    type: "linear",
+    title: { text: "Crecimiento PIB (%)", font: { size: 11, color: "#636c76" } },
+    showgrid: true, gridcolor: "rgba(208,215,220,0.4)",
+    zeroline: true, zerolinecolor: "rgba(100,100,100,0.4)", zerolinewidth: 1,
+    tickfont: { size: 11, color: "#636c76" }, ticksuffix: "%",
+    automargin: true,
+  },
+  yaxis: {
+    title: { text: "Cambio en desempleo (pp)", font: { size: 11, color: "#636c76" } },
+    showgrid: true, gridcolor: "rgba(208,215,220,0.4)",
+    zeroline: true, zerolinecolor: "rgba(100,100,100,0.4)", zerolinewidth: 1,
+    tickfont: { size: 11, color: "#636c76" },
+    automargin: true,
+  },
+  shapes: [
+    { type: "line", xref: "x", yref: "y", x0: umbral, x1: umbral, y0: -3, y1: 3, line: { color: "rgba(22,163,74,0.5)", width: 1, dash: "dot" } },
+  ],
+  annotations: [
+    { x: umbral, y: 2.8, xref: "x", yref: "y", text: `Umbral: <b>${umbral.toFixed(1)}%</b>`, showarrow: false, font: { size: 10, color: "#16a34a" }, bgcolor: "rgba(255,255,255,0.85)", borderpad: 3 },
+  ],
+});
+
+const slopeFmt = slope.toFixed(2);
+const umbralFmt = umbral.toFixed(1);
+---
+
+<ChartContainer
+  titulo="Ley de Okun: crecimiento PIB vs cambio en desempleo"
+  pregunta={`Cada punto adicional de crecimiento del PIB reduce el desempleo en ${(-slope).toFixed(2)} pp. Colombia necesita crecer al menos ${umbralFmt}% para no destruir empleo neto.`}
+  fuenteTexto="DANE — GEIH (desempleo Dic) · Banco Mundial — WDI (crecimiento PIB)" embedded={embedded}>
+  <PlotlyChart id="ley-okun" traces={traces} layout={layout} height={440}
+    ariaLabel="Diagrama de dispersión de crecimiento PIB vs cambio en desempleo con línea de regresión" />
+  <div class="okun-stat" slot="footer-extra">
+    <span><strong>Pendiente OLS:</strong> {slopeFmt}</span>
+    <span><strong>Umbral de crecimiento:</strong> {umbralFmt}%</span>
+    <span><strong>n:</strong> {n} años (1992-2024)</span>
+  </div>
+</ChartContainer>
+
+<style>
+  .okun-stat{display:flex;flex-wrap:wrap;gap:.4rem 1rem;font-size:.72rem;color:var(--color-text-muted)}
+  .okun-stat strong{color:var(--color-text-secondary);font-weight:600}
+</style>
