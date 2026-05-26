@@ -53,7 +53,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def run(args: argparse.Namespace) -> int:
     logger.info("Descargando BanRep (tasa de intervención)...")
-    df_banrep = banrep.fetch(start_year=args.start_year)
+    df_banrep = banrep.fetch(
+        start_year=args.start_year,
+        raw_root=args.data_dir / "raw",
+    )
     logger.info("BanRep: %d filas (%s → %s)",
                 len(df_banrep), df_banrep["periodo"].iloc[0], df_banrep["periodo"].iloc[-1])
 

@@ -6,14 +6,19 @@ https://suameca.banrep.gov.co/archivos/webservices/documento_tecnico_ws_consumo_
 
 from __future__ import annotations
 
+import logging
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from ingestion.exceptions import FuenteNoDisponibleError
+
+logger = logging.getLogger("observatorio")
 
 ENDPOINT = (
     "https://totoro.banrep.gov.co/nsi-jax-ws/rest/data/"
@@ -29,8 +34,43 @@ FUENTE_URL = "https://www.banrep.gov.co/es/estadisticas/tasas-de-interes-de-poli
 INDICADOR_NOMBRE = "Tasa de intervención de política monetaria (TPM)"
 
 
-def fetch(start_year: int = 2003, end_year: int | None = None) -> pd.DataFrame:
+def _build_session() -> requests.Session:
+    """Sesión con retries y backoff para tolerar 5xx transitorios del endpoint SDMX."""
+    retry = Retry(
+        total=5,
+        backoff_factor=2,
+        status_forcelist=[429, 500, 502, 503, 504],
+        allowed_methods=["GET"],
+        raise_on_status=False,
+    )
+    session = requests.Session()
+    session.mount("https://", HTTPAdapter(max_retries=retry))
+    return session
+
+
+def _load_latest_snapshot(raw_root: Path) -> tuple[pd.DataFrame, str] | None:
+    """Devuelve (df, periodo) del último snapshot disponible, o None si no hay ninguno."""
+    snap_dir = raw_root / FUENTE / INDICADOR
+    if not snap_dir.is_dir():
+        return None
+    candidates = sorted(snap_dir.glob(f"{INDICADOR}_*.csv"))
+    if not candidates:
+        return None
+    latest = candidates[-1]
+    df = pd.read_csv(latest)
+    periodo = latest.stem.removeprefix(f"{INDICADOR}_")
+    return df, periodo
+
+
+def fetch(
+    start_year: int = 2003,
+    end_year: int | None = None,
+    raw_root: Path | None = None,
+) -> pd.DataFrame:
     """Descarga la serie histórica mensual de la tasa de intervención.
+
+    Si el endpoint falla tras los reintentos y se pasa ``raw_root``, intenta
+    devolver el último snapshot guardado (modo degradado, log de warning).
 
     Returns:
         DataFrame con columnas [periodo: str YYYY-MM, tasa_interes: float],
@@ -46,8 +86,10 @@ def fetch(start_year: int = 2003, end_year: int | None = None) -> pd.DataFrame:
         "detail": "full",
     }
 
+    fetch_error: str | None = None
     try:
-        resp = requests.get(
+        session = _build_session()
+        resp = session.get(
             ENDPOINT,
             params=params,
             timeout=TIMEOUT_SECONDS,
@@ -55,7 +97,19 @@ def fetch(start_year: int = 2003, end_year: int | None = None) -> pd.DataFrame:
         )
         resp.raise_for_status()
     except requests.RequestException as e:
-        raise FuenteNoDisponibleError("BanRep", f"HTTP error: {e}") from e
+        fetch_error = f"HTTP error: {e}"
+
+    if fetch_error is not None:
+        if raw_root is not None:
+            snapshot = _load_latest_snapshot(raw_root)
+            if snapshot is not None:
+                df_snap, periodo = snapshot
+                logger.warning(
+                    "BanRep no disponible (%s) — usando snapshot %s (modo degradado)",
+                    fetch_error, periodo,
+                )
+                return df_snap
+        raise FuenteNoDisponibleError("BanRep", fetch_error)
 
     try:
         root = ET.fromstring(resp.content)
