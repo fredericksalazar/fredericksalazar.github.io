@@ -19,13 +19,13 @@ Nos enfocaremos en dos áreas. En esta primera parte, abordaremos un modelo de M
 
 ¡Ahora manos a la obra! El set de datos que vamos a usar tiene la siguiente estructura:
 
-![](/images/blog/pib_per_capita_table.png)
+![Aplicación de Machine Learning No Supervisado — Machine Learning en el PIB Per Cápita: Análisis con KMeans (Parte 1)](/images/blog/pib_per_capita_table.png)
 
-No me enfocaré aquí en enseñar el código para aplicar KMeans, sino que compartiré los resultados obtenidos del análisis, para quienes deseen explorar el código desarrollado les comparto el link a la notebook en Kaggle. <https://www.kaggle.com/code/fredericksalazar/machine-learning-applied-to-gdp-per-capita>
+No me enfocaré aquí en enseñar el código para aplicar KMeans, sino que compartiré los resultados obtenidos del análisis, para quienes deseen explorar el código desarrollado les comparto el link a [la notebook de KMeans aplicado al PIB per cápita en Kaggle](https://www.kaggle.com/code/fredericksalazar/machine-learning-applied-to-gdp-per-capita).
 
 ## Distribución del PIB Per Cápita
 
-![](/images/blog/pib_per_capita_distribucion.png)
+![Distribución del PIB Per Cápita — Machine Learning en el PIB Per Cápita: Análisis con KMeans (Parte 1)](/images/blog/pib_per_capita_distribucion.png)
 
 Si analizamos la distribución del PIB per cápita del dataset, podemos observar una gráfica en la que existe un grupo de países con un PIB per cápita superior a **100.000 dólares**. Sin embargo, la gran mayoría de los países del mundo se encuentra entre **0 y 2.500 dólares anuales**.
 
@@ -33,7 +33,7 @@ Si analizamos la distribución del PIB per cápita del dataset, podemos observar
 
 Al enfocarnos en el año **2023**, encontramos que la media del PIB per cápita se sitúa en **20.000 dólares anuales**. A partir de esto, identificamos los **30 países** cuyo PIB supera la media mundial y generamos la siguiente gráfica.
 
-![](/images/blog/pib_per_capita_richest.png)
+![Países mas Ricos del 2023 — Machine Learning en el PIB Per Cápita: Análisis con KMeans (Parte 1)](/images/blog/pib_per_capita_richest.png)
 
 ## Clusterización del dataset usando KMeans
 
@@ -41,23 +41,23 @@ El primer paso es identificar la cantidad óptima de clusters para separar los d
 
 Experimentamos con **3 clusters**, lo que generó un grupo con un solo país. Esto nos confirma que la segmentación correcta es con **dos clusters**. Ahora, veamos la composición de cada grupo.
 
-![](/images/blog/pib_per_capita_innercia.png)
+![Clusterización del dataset usando KMeans — Machine Learning en el PIB Per Cápita: Análisis con KMeans (Parte 1)](/images/blog/pib_per_capita_innercia.png)
 
 ## Países del grupo 0
 
-![](/images/blog/pib_per_capita_0.png)
+![Países del grupo 0 — Machine Learning en el PIB Per Cápita: Análisis con KMeans (Parte 1)](/images/blog/pib_per_capita_0.png)
 
 Este grupo está compuesto por **164 países**, con una media de PIB per cápita de **10.313 dólares**. Además, el PIB per cápita máximo dentro de este grupo es de **40.395 dólares**.
 
 ## Países del grupo 1
 
-![](/images/blog/pib_per_capita_grupo_1.png)
+![Países del grupo 1 — Machine Learning en el PIB Per Cápita: Análisis con KMeans (Parte 1)](/images/blog/pib_per_capita_grupo_1.png)
 
 Este grupo está conformado por **29 países**, con una media de PIB per cápita de **77.000 dólares**. Su PIB mínimo es de **44.690 dólares** y el máximo alcanza los **256.580 dólares**. Claramente, aquí se agrupan los países más ricos del mundo.
 
 ## Visualización del PIB Per Capita según los Clusters
 
-![](/images/blog/pib_per_capita_mundo_2023.png)
+![Mapa mundial de países coloreados por cluster de PIB per cápita en 2023](/images/blog/pib_per_capita_mundo_2023.png)
 
 En el siguiente mapa, ubicamos los países según su cluster:
 

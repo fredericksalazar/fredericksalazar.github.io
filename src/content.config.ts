@@ -12,6 +12,7 @@ const blog = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
   schema: z.object({
     titulo: z.string(),
+    tituloSeo: z.string().optional(),
     fecha: z.coerce.date(),
     descripcion: z.string().max(160, 'La descripción SEO no debe superar 160 caracteres.'),
     etiquetas: z.array(z.string()).default([]),

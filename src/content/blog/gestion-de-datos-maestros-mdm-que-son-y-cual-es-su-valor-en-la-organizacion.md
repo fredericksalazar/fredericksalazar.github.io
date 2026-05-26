@@ -13,14 +13,14 @@ resumen: "Master Data Management (MDM) unifica la información crítica del nego
 
 Una buena estrategia en la gestión de datos en una organización puede dar ventajas estratégicas, optimizar procesos, mejorar la competitividad, mejorar el proceso de toma de decisiones entre muchos otros beneficios; Pero una mala o nula estrategia de gestión de datos genera caos, problemas operativos, toma de malas decisiones, perdida de clientes, perdida de dos recursos importantes: tiempo y dinero entre muchos otros males. Dentro de una buena gestión de datos se encuentra la **Gestión de Datos Maestros**, en este articulo trataré de explicar de manera muy muy resumida que es y como esto puede ayudar a tu empresa a ser mas eficiente y eficaz.
 
-![](/images/blog/image.png)
+![image — Gestión de Datos Maestros (MDM) en la Empresa](/images/blog/image.png)
 > Diaz, J. C. (s/f). *Gestión de datos maestros*. Universitat Oberta de Catalunya.
 
 De los problemas mas graves en todas las empresas es la conformación de silos de información, por ejemplo, cuando todos tienen una visión y entendimiento diferentes de un mismo dato, cuando el total de clientes no es el mismo para todos los procesos de la empresa, cuando los datos significan cosas diferentes para los niveles operativos, tácticos y estratégicos de la empresa, pero es mas grave aun, cuando una organización posee múltiples sistemas operacionales y sus datos no se encuentran integrados entre si, causando densos procesos operativos para el cruce y consolidación de información, que en su gran mayoría son operados de manera manual haciendo uso de excel o cualquier otra herramienta, en estos casos la generación de reportes, informes y la ejecución de procesos de negocio es mucho mas tediosa, lenta y expuesta a fallos lo que causa reprocesos, perdida de tiempo, perdida de clientes etc. y es aquí donde es importante implementar al menos de manera mínima una estrategia para la gestión de datos maestros.
 
 En términos simples, los datos maestros son un conjunto de datos críticos para la empresa que son usados por múltiples sistemas, procesos y personas a lo largo de la organización convirtiéndose en datos transversales a la organización frecuentemente definidos como datos de Oro o golden records.
 
-![](/images/blog/image-1.png)
+![image — Gestión de Datos Maestros (MDM) en la Empresa](/images/blog/image-1.png)
 > Diaz, J. C. (s/f). *Gestión de datos maestros*. Universitat Oberta de Catalunya.
 
 La gestión adecuada de los datos maestros puede proporcionar varios beneficios para la empresa, entre ellos:

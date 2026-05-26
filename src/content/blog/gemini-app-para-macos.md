@@ -14,7 +14,7 @@ Si son como yo, seguramente pasan gran parte de su día saltando entre ventanas,
 
 Con este movimiento, Google finalmente se pone a la par de rivales como ChatGPT y Claude, quienes ya tenían sus propias aplicaciones para Mac. Pero, ¿qué hace tan especial a esta nueva app y por qué deberías instalarla hoy mismo?
 
-![](/images/blog/macos-gemini-chat.png)
+![macos gemini chat — Gemini App para macOS](/images/blog/macos-gemini-chat.png)
 
 ## Velocidad y fluidez: A un atajo de teclado de distancia
 
@@ -22,7 +22,7 @@ Lo primero que notarás es que esta no es una simple página web envuelta en una
 
 La verdadera magia está en la accesibilidad. Ya no necesitas interrumpir tu flujo de trabajo. Simplemente presiona **Option + Espacio** y aparecerá una pequeña barra de búsqueda flotante, muy al estilo de Spotlight. ¿Necesitas algo más profundo? Usa **Option + Shift + Espacio** para abrir la ventana de chat completa.
 
-![](/images/blog/gemini-atajo.png)
+![Velocidad y fluidez: A un atajo de teclado de distancia — Gemini App para macOS](/images/blog/gemini-atajo.png)
 
 ## Inteligencia de escritorio: Gemini ahora ve tu pantalla
 

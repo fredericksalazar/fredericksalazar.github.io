@@ -12,54 +12,54 @@ destacado: false
 
 La ingeniería de datos es una parte fundamental del proceso de gestión de información en cualquier organización. Para los Ingenieros de Datos, es crucial tener las herramientas adecuadas para asegurarse de que los datos se recopilen, almacenen y procesen de manera eficiente. En este artículo, te presento las herramientas más importantes que todo data engineer debería conocer en 2023, esta es una guía básica pues la ingeniería de datos es un campo en constante evolución donde existen múltiples formas y herramientas para desarrollar sus actividades.
 
-![](/images/blog/apache_spark_logo.svg_.webp)
+![apache spark logo.svg — Herramientas del Ingeniero de Datos](/images/blog/apache_spark_logo.svg_.webp)
 
 **Apache Spark**  
 Apache Spark es un framework de procesamiento de datos de código abierto que permite procesar grandes volúmenes de datos de manera rápida y eficiente. Spark es conocido por su capacidad para manejar grandes conjuntos de datos y para el procesamiento en tiempo real.
 
-![](/images/blog/kafka.jpeg)
+![kafka — Herramientas del Ingeniero de Datos](/images/blog/kafka.jpeg)
 
 **Apache Kafka**
 
 Apache Kafka es una plataforma de streaming de datos que se utiliza para procesar y almacenar grandes cantidades de datos en tiempo real. Kafka es conocido por su capacidad para procesar grandes volúmenes de datos en tiempo real y para la integración con otras herramientas de big data.
 
-![](/images/blog/sql.webp)
+![sql — Herramientas del Ingeniero de Datos](/images/blog/sql.webp)
 
 **SQL**
 
 SQL es un lenguaje de programación utilizado para gestionar y manipular bases de datos relacionales. Es esencial para cualquier data engineer ya que muchas herramientas y tecnologías de big data utilizan SQL para la extracción y manipulación de datos, te recomiendo ademas conocer al menos 3 motores de bases de datos: PostgreSQL, SQL Server, Oracle, Mysql, son lo SGBD mas conocidos y usados empresarialmente.
 
-![](/images/blog/python.png)
+![python — Herramientas del Ingeniero de Datos](/images/blog/python.png)
 
 **Python**
 
 Python es un lenguaje de programación de alto nivel que es ampliamente utilizado en la ciencia de datos y el análisis de datos. Es una herramienta esencial para cualquier data engineer ya que se utiliza para crear scripts y aplicaciones para la manipulación de datos y para la automatización de tareas, adicionalmente Apache Spark tiene un API denominada PySpark muy útil para realizar tus ingestas y transformaciones de datos, muchos frameworks y librerías de python son ampliamente usadas en las empresas por su simplicidad y rápida curva de aprendizaje.
 
-![](/images/blog/superset-logo-apache-300x289-1.png)
+![superset logo apache 300x289 — Herramientas del Ingeniero de Datos](/images/blog/superset-logo-apache-300x289-1.png)
 
 **Apache Superset**
 
 Apache Superset es una plataforma de visualización de datos de código abierto que permite a los usuarios crear visualizaciones de datos interactivas y paneles de control de manera rápida y fácil. Es compatible con una amplia gama de fuentes de datos y ofrece una variedad de tipos de visualización para ayudar a los usuarios a comprender mejor sus datos y tomar decisiones informadas. Además, tiene una interfaz de usuario intuitiva y es altamente personalizable, lo que la convierte en una herramienta popular entre los data engineers y los analistas de datos.
 
-![](/images/blog/git-logo.png)
+![git logo — Herramientas del Ingeniero de Datos](/images/blog/git-logo.png)
 
 **Git (Sistema de control de versiones)**
 
 Git es un sistema de control de versiones de código abierto que se utiliza para el seguimiento de cambios en el código fuente. Es fundamental para cualquier data engineer porque permite el seguimiento y la gestión de cambios en el código y la colaboración con otros miembros del equipo.
 
-![](/images/blog/cassandra-1.jpeg)
+![cassandra — Herramientas del Ingeniero de Datos](/images/blog/cassandra-1.jpeg)
 
 **Apache Cassandra**
 
 Apache Cassandra es una base de datos NoSQL escalable y altamente disponible que se utiliza para el almacenamiento y procesamiento de grandes cantidades de datos. Cassandra es esencial para cualquier data engineer porque permite la creación y gestión de bases de datos distribuidas y altamente escalables.
 
-![](/images/blog/jupyter.png)
+![jupyter — Herramientas del Ingeniero de Datos](/images/blog/jupyter.png)
 
 **Jupyter Notebooks**
 
 herramienta de código abierto que permite la creación y el intercambio de documentos interactivos que contienen código, visualizaciones y texto explicativo. Es una herramienta esencial para cualquier data engineer porque permite la creación y el intercambio de documentos que muestran cómo se procesan y analizan los datos.
 
-![](/images/blog/airflow.png)
+![airflow — Herramientas del Ingeniero de Datos](/images/blog/airflow.png)
 
 **Apache Airflow**
 

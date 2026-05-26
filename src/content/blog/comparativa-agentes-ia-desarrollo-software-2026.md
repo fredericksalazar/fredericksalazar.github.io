@@ -1,5 +1,6 @@
 ---
 titulo: "Comparativa de Agentes de IA para Desarrollo de Software 2026: OpenCode vs Claude Code vs Codex vs Gemini Antigravity"
+tituloSeo: "Agentes de IA 2026: Claude Code vs Codex vs Gemini"
 fecha: 2026-05-13
 descripcion: "Análisis técnico y de costos de los 4 agentes de IA líderes en 2026: OpenCode, Claude Code, Codex y Gemini Antigravity. Benchmarks SWE-bench y precios."
 etiquetas: ["Agentes de IA", "Claude Code", "OpenCode", "OpenAI Codex", "Gemini Antigravity", "Desarrollo de Software", "LLM", "SWE-bench"]

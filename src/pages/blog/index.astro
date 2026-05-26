@@ -8,7 +8,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Card from '../../components/Card.astro';
 import BlogFilters from '../../components/BlogFilters.astro';
 
-const title       = 'Blog de Data Engineering, Machine Learning | Frederick Salazar';
+const title       = 'Blog de Data Engineering y Machine Learning';
 const description = 'Artículos técnicos sobre Data Engineering, Big Data, Machine Learning, Azure y Analytics. Tutoriales, guías y análisis de datos por Frederick Salazar, Data Engineer en Colombia.';
 
 const SITE_URL = 'https://fredericksalazar.github.io';
@@ -100,7 +100,7 @@ const breadcrumbSchema = {
   {featured && (
     <section class="featured" aria-labelledby="featured-heading">
       <p class="featured__eyebrow" id="featured-heading">Artículo destacado</p>
-      <a class="featured__link" href={`/blog/${featured.id}`}>
+      <a class="featured__link" href={`/blog/${featured.id}`} aria-label={featured.data.titulo}>
         {featured.data.imagen && (
           <div class="featured__media">
             <img src={featured.data.imagen} alt={featured.data.titulo} loading="eager" width="1200" height="630" />

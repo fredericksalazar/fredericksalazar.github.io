@@ -51,7 +51,7 @@ Chat con modelo LLM Ollama
 
 **Papelera de reciclaje:** una innovación fuerte en OllamaFX ha sido la incorporación de la papelera de reciclaje, puedes eliminar tus chats para limpiar tu workspace, pero este no se irá del todo, pues estará hasta 30 días en la papelera y durante ese tiempo podrás recuperarlo en la carpeta que existía previamente.
 
-![](/images/blog/ollamafx-papelera-reciclaje.png)
+![Papelera de reciclaje de chats en OllamaFX](/images/blog/ollamafx-papelera-reciclaje.png)
 
 ## **4. El “Santo Grial” de la Privacidad: RAG Local**
 
@@ -67,5 +67,5 @@ Instalar un LLM local no es solo una decisión técnica, es una declaración de 
 
 Si quieres dar el paso hacia una IA privada, te invito a explorar el repositorio y probar cómo cambia tu flujo de trabajo cuando la nube ya no es un requisito. OllamaFX es un proyecto nuevo aún en desarrollo, estamos trabajando en seguir puliendo y mejorando la experiencia, este es un proyecto Open Source el cual puedes usar de manera libre, si eres desarrollador y puedes apoyar el proyecto testeando la aplicación, solucionando bugs, implementando nuevas mejoras, ayudando en la documentación etc. eres bienvenido, o si eres un usuario final y tienes ideas, comentarios todos son bienvenidos.
 
-- **Web del Proyecto:** <https://fredericksalazar.wordpress.com/proyectos/ollamafx/>
+- **Web del Proyecto:** [Página oficial de OllamaFX](https://fredericksalazar.wordpress.com/proyectos/ollamafx/)
 - **Código y Descargas:** [GitHub de OllamaFX](https://github.com/fredericksalazar/OllamaFX)

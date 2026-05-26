@@ -16,9 +16,9 @@ export const TAG_DESCRIPTIONS: Record<string, string> = {
   'data-governance':
     'Gobierno de datos, calidad, linaje y gestión del ciclo de vida del dato en la organización.',
   'data-quality':
-    'Calidad de datos: dimensiones, métricas, problemas comunes y estrategias para garantizar datos confiables.',
+    'Data quality: pilares técnicos, frameworks y herramientas (Great Expectations, dbt tests, Deequ) para asegurar la calidad del dato en pipelines modernos.',
   'calidad-de-datos':
-    'Calidad de datos: dimensiones, métricas, problemas comunes y estrategias para garantizar datos confiables.',
+    'Calidad de datos en español: dimensiones, métricas y prácticas para detectar, medir y corregir problemas de datos en organizaciones.',
   'data-warehouse':
     'Diseño, modelado dimensional y operación de Data Warehouses modernos.',
   'data-lake':

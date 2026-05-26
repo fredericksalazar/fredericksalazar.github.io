@@ -20,7 +20,7 @@ Tipos de analítica de datos
 
 Antes de iniciar es importante comprender los diferentes tipo de analítica y su función, vemos en la imagen que el primer paso y mas importante es comprender lo que paso a esto se conoce como **analítica descriptiva**, luego de comprender el pasado podemos entender lo que esta pasando a lo que se conoce como **analítica diagnóstica**, ya cuando queremos predecir lo que va a pasar se define como **analítica predictiva** y con esto estaríamos listo para poder entender de manera automática y sistematizada cual sería la mejor decisión a lo que se conoce como **analítica prescriptiva**. Con esto claro vamos a ver el siguiente cuadro que nos trata de explicar basado en la complejidad de los datos y la capacidad analítica cual sería la estrategia que se debería implementar.
 
-![](/images/blog/bg-bi-ba.png)
+![bg bi ba — Big Data vs. BI vs. Analytics: Diferencias y Usos](/images/blog/bg-bi-ba.png)
 
 En el eje X de izquierda a derecha tenemos el nivel de complejidad de los datos, si los datos están estructurados y su nivel de complejidad es bajo, como tablas de bases de datos, archivos de excel, archivos planos etc. entonces hablaríamos de Bussines Intelligence, cuando el nivel de complejidad aumenta y tenemos datos semi estructurado o no estructurados tales como logs, imágenes, videos, audios, datos de redes sociales, además de datos estructurados entonces llegamos al BigData.
 

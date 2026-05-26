@@ -50,6 +50,6 @@ Si el Dark Data son datos que no conocemos o que no usan las organizaciones, ent
 
 **Referencias:**
 
-[1] (N.d.). [Gartner.com](http://Gartner.com). Retrieved April 16, 2024, from <https://www.gartner.com/en/information-technology/glossary/dark-data>
+[1] (N.d.). Gartner.com. Retrieved April 16, 2024, from [Definición de Dark Data según Gartner](https://www.gartner.com/en/information-technology/glossary/dark-data)
 
-[2] *What is dark data?* (n.d.). [Ibm.com](http://Ibm.com). Retrieved April 16, 2024, from <https://www.ibm.com/topics/dark-data>
+[2] *What is dark data?* (n.d.). IBM.com. Retrieved April 16, 2024, from [Qué es Dark Data según IBM](https://www.ibm.com/topics/dark-data)

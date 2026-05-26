@@ -183,7 +183,7 @@ const HeadingTag = headingLevel;
   ) : (
     <!-- Project, Blog, Related: link envuelve toda la card -->
     <Fragment>
-      <a href={href} class="card__link">
+      <a href={href} class="card__link" aria-label={title}>
         {hasImage && (
           <div class="card__media">
             <img src={image!} alt={imageAlt || title} loading="lazy" />

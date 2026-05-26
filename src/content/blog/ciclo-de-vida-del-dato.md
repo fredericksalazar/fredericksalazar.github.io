@@ -28,7 +28,7 @@ En el caso de los datos como activos de valor estratégico para la toma de decis
 
 ## Fases del Ciclo de vida del dato
 
-![](/images/blog/ciclo_vida_del_dato.png)
+![Fases del Ciclo de vida del dato — Ciclo de vida del dato](/images/blog/ciclo_vida_del_dato.png)
 
 En la imagen anterior, establecemos visualmente las fases por las cuales el dato pasa a través de su vida útil en una organización, comprenderlas nos ayudará a entender completamente su importancia y mas importante aún, podremos definir para nuevos proyectos o los existentes un ciclo de vida que de orden y estrategia a nuestros procesos de negocio y de analítica.
 

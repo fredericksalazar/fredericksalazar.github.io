@@ -42,43 +42,43 @@ Análisis detallado de las elecciones legislativas en Colombia 2022-2026. Un pro
 
 Fuente: Registraduría Nacional del Estado Civil - Resultados electorales 2022 y 2026.
 
-![](/images/blog/image-3.png)
+![Datos Oficiales — Análisis Elecciones Congreso Colombia 2022-2026](/images/blog/image-3.png)
 
 ## Mapa del Poder - Distribución por Departamento
 
 Los resultados electorales dibujan un país fragmentado, donde el poder se define región por región.
 
-![](/images/blog/image-8.png)
+![Mapa del Poder - Distribución por Departamento — Análisis Elecciones Congreso Colombia 2022-2026](/images/blog/image-8.png)
 
 ## Variación Ideológica 2022 vs 2026
 
 Comparativa de la distribución ideológica en el Congreso.
 
-![](/images/blog/image-9.png)
+![Variación Ideológica 2022 vs 2026 — Análisis Elecciones Congreso Colombia 2022-2026](/images/blog/image-9.png)
 
 ## Hemiciclo del Senado
 
 Distribución de las 103 curules del Senado por partido político.
 
-![](/images/blog/image-6.png)
+![Hemiciclo del Senado — Análisis Elecciones Congreso Colombia 2022-2026](/images/blog/image-6.png)
 
 ## Análisis de Eficiencia
 
 El costo por curul revela qué tan bien aprovechó cada partido sus votos.
 
-![](/images/blog/image-7.png)
+![Análisis de Eficiencia — Análisis Elecciones Congreso Colombia 2022-2026](/images/blog/image-7.png)
 
 ## Variación por Departamento
 
 Dinámica de movilización electoral por región.
 
-![](/images/blog/image-8.png)
+![Variación por Departamento — Análisis Elecciones Congreso Colombia 2022-2026](/images/blog/image-8.png)
 
 ## Tablero de Gobernabilidad
 
 El nuevo Congreso: un tablero dividido donde ninguna fuerza tiene mayoría absoluta.
 
-![](/images/blog/image-9.png)
+![Tablero de Gobernabilidad — Análisis Elecciones Congreso Colombia 2022-2026](/images/blog/image-9.png)
 
 ## Metodología
 
@@ -93,5 +93,5 @@ Pipeline de datos transparente y auditable:
 
 ## Repositorio
 
-- **GitHub**: <https://github.com/fredericksalazar/analisis-elecciones-colombia>
-- **Demo**: <https://fredericksalazar.github.io/analisis-elecciones-colombia/>
+- **GitHub**: [Repositorio del análisis de elecciones Colombia](https://github.com/fredericksalazar/analisis-elecciones-colombia)
+- **Demo**: [Dashboard interactivo del análisis de elecciones Colombia](https://fredericksalazar.github.io/analisis-elecciones-colombia/)

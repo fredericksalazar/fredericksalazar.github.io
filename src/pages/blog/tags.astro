@@ -18,7 +18,7 @@ const allTags = Array.from(tagCounts.entries())
   .map(([slug, { label, count }]) => ({ slug, label, count }))
   .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
 
-const title = 'Todos los temas | Blog · Frederick Salazar';
+const title = 'Todos los temas del blog';
 const description = 'Índice completo de temas tratados en el blog: Data Engineering, IA, Big Data, Machine Learning, Azure y más.';
 ---
 

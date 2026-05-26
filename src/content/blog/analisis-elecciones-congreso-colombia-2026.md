@@ -12,9 +12,9 @@ destacado: false
 
 Colombia ha realizado las primeras elecciones del año 2026, en las cuales se eligió el nuevo congreso de la Republica de Colombia para el periodo 2026-20230 estas elecciones ya tienen unos resultados de pre-conteo (Datos oficiales parciales no legales aún hasta realizar el escrutinio) realizado por la Registraduria Nacional, con base en estos datos he realizado un análisis estadístico descriptivo comparativo con el objetivo de comprender desde un punto de vista técnico y académico los resultados de la pasada elección, cabe señalar que este análisis NO es un análisis con fines y/o propositos políticos o electorales, queda prohibido el uso de los datos, los graficos, y cualquier elemento del proyecto para generar desinformación, fake news etc.
 
-Si quieres leer el estudio completo puedes acceder a él a través de este link -> <https://fredericksalazar.github.io/analisis-elecciones-colombia/>  
-  
-Este proyecto es Open Source y Open Data, puedes auditar y verificar los resultados en este repositorio -> <https://github.com/fredericksalazar/analisis-elecciones-colombia>
+Si quieres leer el estudio completo puedes acceder a él a través de [este informe interactivo del análisis de elecciones Colombia](https://fredericksalazar.github.io/analisis-elecciones-colombia/).
+
+Este proyecto es Open Source y Open Data, puedes auditar y verificar los resultados en [el repositorio del análisis de elecciones Colombia en GitHub](https://github.com/fredericksalazar/analisis-elecciones-colombia).
 
 ## Análisis General
 

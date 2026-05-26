@@ -26,7 +26,7 @@ Ahora puedes cargar tus documentos y trabajar con ellos usando los modelos LLM l
 - **Privacidad absoluta:** Sube tus archivos PDF o de texto (`.txt`) y hazles preguntas directamente. Todo el procesamiento ocurre de forma local en tu máquina
 - **Contexto inteligente:** El modelo utilizará el contenido de tus archivos para darte respuestas precisas y fundamentadas, evitando que invente información.
 
-![](/images/proyectos/ollamafx-rag.png)
+![📚 1. Conversa con tus propios documentos (RAG) — OllamaFX: Cliente de escritorio nativo para Ollama con soporte RAG](/images/proyectos/ollamafx-rag.png)
 
 ### 🎨 1. Interfaz moderna y adaptable
 
@@ -35,7 +35,7 @@ Lo primero que notarás es el diseño. No es solo “una ventana más”; está 
 - **Soporte total para Modo Claro/Oscuro:** Se adapta a tus preferencias visuales automáticamente o mediante un clic.
 - **UI Funcional:** La interfaz ha sido pensada y diseñada con base en el minimalismo funcional, elegancia y sobriedad.
 
-![](/images/proyectos/ollamafx-home-dark-1.png)
+![🎨 1. Interfaz moderna y adaptable — OllamaFX: Cliente de escritorio nativo para Ollama con soporte RAG](/images/proyectos/ollamafx-home-dark-1.png)
 
 ### 📦 2. Gestión integral de modelos LLM
 
@@ -46,7 +46,7 @@ Olvídate de recordar comandos para listar o borrar modelos. Desde OllamaFX pued
 - **Administrar:** Visualiza el tamaño, formato y detalles de tus modelos instalados, o elimínalos instantáneamente para liberar espacio.
 - **Feedback inmediato:** La interfaz se actualiza al segundo cuando un modelo es añadido o removido.
 
-![](/images/proyectos/ollamafx-disponibles.png)
+![📦 2. Gestión integral de modelos LLM — OllamaFX: Cliente de escritorio nativo para Ollama con soporte RAG](/images/proyectos/ollamafx-disponibles.png)
 
 ### 💬 3. Experiencia de Chat avanzada
 
@@ -56,7 +56,7 @@ El corazón del proyecto es la interacción. He diseñado el chat para que sea f
 - **Markdown nativo:** Las respuestas de la IA se renderizan correctamente, facilitando la lectura de código y textos estructurados.
 - **Estilo visual:** Burbujas de chat diferenciadas y limpias para que la conversación fluya sin distracciones.
 
-![](/images/proyectos/ollamafx-chat.png)
+![💬 3. Experiencia de Chat avanzada — OllamaFX: Cliente de escritorio nativo para Ollama con soporte RAG](/images/proyectos/ollamafx-chat.png)
 
 ## Cómo empezar a usarlo
 

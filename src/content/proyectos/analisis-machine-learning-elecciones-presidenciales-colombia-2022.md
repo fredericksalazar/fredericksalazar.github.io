@@ -17,12 +17,12 @@ orden: 4
 
 Se desarrolla un proceso de minería de textos sobre los tweets escritos por los candidatos presidenciales desde el 01 de enero de 2022, se analizarán aspectos como frecuencia de publicación de tweets, palabras mas usadas y un análisis de sentimiento sobre los textos de los mismos.   
 Para el desarrollo del proceso de ingesta se configuraron las siguientes cuentas de la red social twitter:  
-– **Gustavo Petro Urrego ->** <https://twitter.com/petrogustavo>  
-– **Sergio Fajardo ->** <https://twitter.com/sergio_fajardo>  
-– **Federico Gutierrez ->** <https://twitter.com/FicoGutierrez>  
-– **Rodolfo Hernandez ->** <https://twitter.com/ingrodolfohdez>
+– **Gustavo Petro Urrego ->** [Cuenta de Gustavo Petro en Twitter](https://twitter.com/petrogustavo)  
+– **Sergio Fajardo ->** [Cuenta de Sergio Fajardo en Twitter](https://twitter.com/sergio_fajardo)  
+– **Federico Gutierrez ->** [Cuenta de Federico Gutiérrez en Twitter](https://twitter.com/FicoGutierrez)  
+– **Rodolfo Hernandez ->** [Cuenta de Rodolfo Hernández en Twitter](https://twitter.com/ingrodolfohdez)
 
-![](/images/proyectos/total_tweets_x_dia.png)
+![Frecuencia de Tweets Por Día](/images/proyectos/total_tweets_x_dia.png)
 
 Frecuencia de Tweets Por Día
 
@@ -30,7 +30,7 @@ Este gráfico nos muestra la frecuencia diaria de escritura de tweets de los 4 c
 
 ### Análisis Sergio Fajardo
 
-![](/images/proyectos/analisis_sergio_fajardo_1-1.png)
+![Frecuencia de palabras](/images/proyectos/analisis_sergio_fajardo_1-1.png)
 
 Frecuencia de palabras
 
@@ -38,7 +38,7 @@ El candidato Sergio Fajardo escribe en promedio un total de 11.2 tweets por día
 
 En la imagen se distinguen dos dimensiones el tamaño de la palabra y el tono de color entre mas grande y mas oscura mas frecuente es. ¿Que otras palabras logras ver?
 
-![](/images/proyectos/analisis_sergio_fajardo_2-1.png)
+![Sentimiento de los tweets](/images/proyectos/analisis_sergio_fajardo_2-1.png)
 
 Sentimiento de los tweets
 
@@ -56,7 +56,7 @@ El candidato Gustavo Petro escribe en promedio un total de 9 tweets por día a u
 
 En la imagen se distinguen dos dimensiones el tamaño de la palabra y el tono de color entre mas grande y mas oscura mas frecuente es. ¿Que otras palabras logras ver?
 
-![](/images/proyectos/analisis_gustavo_petro_2.png)
+![Sentimiento de los tweets](/images/proyectos/analisis_gustavo_petro_2.png)
 
 Sentimiento de los tweets
 
@@ -74,7 +74,7 @@ El candidato Federico Gutierrez escribe en promedio un total de 7 tweets por dí
 
 En la imagen se distinguen dos dimensiones el tamaño de la palabra y el tono de color entre mas grande y mas oscura mas frecuente es. ¿Que otras palabras logras ver?
 
-![](/images/proyectos/analisis_federico_2.png)
+![Sentimiento de los tweets](/images/proyectos/analisis_federico_2.png)
 
 Sentimiento de los tweets
 
@@ -84,7 +84,7 @@ Si bien en la línea de tiempo se evidencia un equilibrio en cuanto a la cantida
 
 ### Análisis Rodolfo Hernandez
 
-![](/images/proyectos/analisis_rodolfo_hernandez_1.png)
+![Frecuencia de palabras](/images/proyectos/analisis_rodolfo_hernandez_1.png)
 
 Frecuencia de palabras
 
@@ -92,7 +92,7 @@ El candidato Rodolfo Hernandez escribe en promedio un total de 4 tweets por día
 
 En la imagen se distinguen dos dimensiones el tamaño de la palabra y el tono de color entre mas grande y mas oscura mas frecuente es. ¿Que otras palabras logras ver?
 
-![](/images/proyectos/rodolfo_hernandez_2.png)
+![Sentimiento de los tweets](/images/proyectos/rodolfo_hernandez_2.png)
 
 Sentimiento de los tweets
 

@@ -93,7 +93,7 @@ if (post.data.resumen) articleSchema.abstract = post.data.resumen;
 ---
 
 <BaseLayout
-  title={post.data.titulo}
+  title={post.data.tituloSeo ?? post.data.titulo}
   description={post.data.descripcion}
   image={post.data.imagen}
   type="article"

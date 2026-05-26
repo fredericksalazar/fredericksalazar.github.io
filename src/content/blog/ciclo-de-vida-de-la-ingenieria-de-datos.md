@@ -16,7 +16,7 @@ En su libro **Fundamentals of Data Engineering de Joise reise & Matt Housley** [
 
 ***Conjunto de etapas relacionadas que convierten los datos en bruto en un producto final útil, listo para el consumo de analistas, científicos de datos, ingenieros de aprendizaje automático y otros.***
 
-![](/images/blog/ciclo_vida_ingeneria_datos.png)
+![En este ciclo de vida se encuentran las siguientes fases:](/images/blog/ciclo_vida_ingeneria_datos.png)
 
 En este ciclo de vida se encuentran las siguientes fases:
 
