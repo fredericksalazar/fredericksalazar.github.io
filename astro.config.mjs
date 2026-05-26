@@ -6,6 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://fredericksalazar.github.io',
+  trailingSlash: 'always',
   prefetch: {
     prefetchAll: false,
     defaultStrategy: 'hover',

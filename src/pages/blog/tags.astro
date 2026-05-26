@@ -27,7 +27,7 @@ const description = 'Índice completo de temas tratados en el blog: Data Enginee
   <nav class="breadcrumb" aria-label="Migas de pan">
     <a href="/">Inicio</a>
     <span aria-hidden="true"> › </span>
-    <a href="/blog">Blog</a>
+    <a href="/blog/">Blog</a>
     <span aria-hidden="true"> › </span>
     <span>Temas</span>
   </nav>
@@ -42,7 +42,7 @@ const description = 'Índice completo de temas tratados en el blog: Data Enginee
   <ul class="tag-cloud">
     {allTags.map((t) => (
       <li>
-        <a href={`/blog/tag/${t.slug}`} class="cloud-tag" style={`--w: ${Math.min(1 + t.count * 0.15, 2)}`}>
+        <a href={`/blog/tag/${t.slug}/`} class="cloud-tag" style={`--w: ${Math.min(1 + t.count * 0.15, 2)}`}>
           <span class="cloud-tag__label">{t.label}</span>
           <span class="cloud-tag__count">{t.count}</span>
         </a>

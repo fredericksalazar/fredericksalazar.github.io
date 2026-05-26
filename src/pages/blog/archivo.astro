@@ -30,7 +30,7 @@ const description = 'Listado cronológico de todos los artículos publicados en 
   <nav class="breadcrumb" aria-label="Migas de pan">
     <a href="/">Inicio</a>
     <span aria-hidden="true"> › </span>
-    <a href="/blog">Blog</a>
+    <a href="/blog/">Blog</a>
     <span aria-hidden="true"> › </span>
     <span>Archivo</span>
   </nav>
@@ -52,7 +52,7 @@ const description = 'Listado cronológico de todos los artículos publicados en 
               {p.data.fecha.toLocaleDateString('es-CO', { month: 'short', day: '2-digit' })}
             </time>
             <span class={`tipo-mini tipo-mini--${p.data.tipo}`}>{TIPO_LABEL[p.data.tipo]}</span>
-            <a href={`/blog/${p.id}`} class="post-item__link">{p.data.titulo}</a>
+            <a href={`/blog/${p.id}/`} class="post-item__link">{p.data.titulo}</a>
           </li>
         ))}
       </ul>

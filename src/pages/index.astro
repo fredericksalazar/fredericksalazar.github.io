@@ -112,7 +112,7 @@ const latestPosts = allPosts
             aplicado.
           </p>
           <div class="about-actions">
-            <a href="/experiencia" class="about-link">
+            <a href="/experiencia/" class="about-link">
               Ver experiencia completa
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +127,7 @@ const latestPosts = allPosts
                 ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
               >
             </a>
-            <a href="/certificaciones" class="about-link about-link--muted"
+            <a href="/certificaciones/" class="about-link about-link--muted"
               >Ver certificaciones →</a
             >
           </div>
@@ -208,7 +208,7 @@ const latestPosts = allPosts
           <span class="section__label">Portfolio</span>
           <h2 class="section__title">Proyectos destacados</h2>
         </div>
-        <a href="/proyectos" class="section__link">
+        <a href="/proyectos/" class="section__link">
           Ver todos
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -230,7 +230,7 @@ const latestPosts = allPosts
           topProyectos.map((proyecto, index) => (
             <Card
               variant="project"
-              href={`/proyectos/${proyecto.id}`}
+              href={`/proyectos/${proyecto.id}/`}
               image={proyecto.data.imagen}
               imageAlt={proyecto.data.titulo}
               title={proyecto.data.titulo}
@@ -252,7 +252,7 @@ const latestPosts = allPosts
           <span class="section__label">Blog técnico</span>
           <h2 class="section__title">Últimas publicaciones</h2>
         </div>
-        <a href="/blog" class="section__link">
+        <a href="/blog/" class="section__link">
           Ver todos
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -274,7 +274,7 @@ const latestPosts = allPosts
           latestPosts.map((post, index) => (
             <Card
               variant="blog"
-              href={`/blog/${post.id}`}
+              href={`/blog/${post.id}/`}
               image={post.data.imagen}
               imageAlt={post.data.titulo}
               title={post.data.titulo}

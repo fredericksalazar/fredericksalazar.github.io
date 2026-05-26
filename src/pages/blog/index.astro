@@ -100,7 +100,7 @@ const breadcrumbSchema = {
   {featured && (
     <section class="featured" aria-labelledby="featured-heading">
       <p class="featured__eyebrow" id="featured-heading">Artículo destacado</p>
-      <a class="featured__link" href={`/blog/${featured.id}`} aria-label={featured.data.titulo}>
+      <a class="featured__link" href={`/blog/${featured.id}/`} aria-label={featured.data.titulo}>
         {featured.data.imagen && (
           <div class="featured__media">
             <img src={featured.data.imagen} alt={featured.data.titulo} loading="eager" width="1200" height="630" />
@@ -143,7 +143,7 @@ const breadcrumbSchema = {
         >
           <Card
             variant="blog"
-            href={`/blog/${post.id}`}
+            href={`/blog/${post.id}/`}
             image={post.data.imagen}
             imageAlt={post.data.titulo}
             title={post.data.titulo}
@@ -166,9 +166,9 @@ const breadcrumbSchema = {
   </p>
 
   <section class="blog-footer-links" aria-label="Más formas de explorar">
-    <a href="/blog/tags">Ver todos los temas</a>
+    <a href="/blog/tags/">Ver todos los temas</a>
     <span aria-hidden="true">·</span>
-    <a href="/blog/archivo">Archivo completo</a>
+    <a href="/blog/archivo/">Archivo completo</a>
     <span aria-hidden="true">·</span>
     <a href="/rss.xml">RSS</a>
   </section>

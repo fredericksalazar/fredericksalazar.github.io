@@ -90,7 +90,7 @@ const breadcrumbSchema = {
   <nav class="breadcrumb" aria-label="Migas de pan">
     <a href="/">Inicio</a>
     <span aria-hidden="true"> › </span>
-    <a href="/blog">Blog</a>
+    <a href="/blog/">Blog</a>
     <span aria-hidden="true"> › </span>
     <span>{tagLabel}</span>
   </nav>
@@ -112,7 +112,7 @@ const breadcrumbSchema = {
       <Card
         variant="blog"
         layout="horizontal"
-        href={`/blog/${post.id}`}
+        href={`/blog/${post.id}/`}
         image={post.data.imagen}
         imageAlt={post.data.titulo}
         title={post.data.titulo}
@@ -127,7 +127,7 @@ const breadcrumbSchema = {
     ))}
   </div>
 
-  <p class="more-link"><a href="/blog/tags">← Ver todos los temas</a></p>
+  <p class="more-link"><a href="/blog/tags/">← Ver todos los temas</a></p>
 
 </BaseLayout>
 
