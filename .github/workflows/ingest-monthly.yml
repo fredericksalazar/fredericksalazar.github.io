@@ -58,7 +58,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          ULTIMO=$(python -c "import json; print(json.load(open('src/data/observatorio.json'))['metadata']['ultimo_periodo'])")
+          ULTIMO=$(python -c "import json; print(json.load(open('src/data/data_inflacion.json'))['metadata']['cobertura']['ultimo_periodo'])")
           git commit -m "data: actualización observatorio económico ($ULTIMO)"
           git push
 
