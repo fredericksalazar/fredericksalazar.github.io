@@ -201,6 +201,6 @@ def generar_comercio_json(path: Path) -> Path:
 
 if __name__ == "__main__":
     repo = Path(__file__).resolve().parent.parent.parent
-    out = repo / "src" / "data" / JSON_FILENAME
+    out = repo / "public" / "data" / JSON_FILENAME
     generar_comercio_json(out)
     print(f"Generado: {out.relative_to(repo)}")

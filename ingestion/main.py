@@ -27,7 +27,7 @@ from ingestion.sources import banrep, dane_ipc
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_DATA_DIR = REPO_ROOT / "data"
-DEFAULT_WEB_DATA_DIR = REPO_ROOT / "src" / "data"
+DEFAULT_WEB_DATA_DIR = REPO_ROOT / "public" / "data"
 
 logger = logging.getLogger("observatorio")
 

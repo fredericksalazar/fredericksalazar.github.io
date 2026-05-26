@@ -1,7 +1,5 @@
-import raw from "../../data/data_inflacion.json";
-import rawEmpleo from "../../data/data_empleo.json";
-import rawComercio from "../../data/data_comercio.json";
-import rawPIB from "../../data/data_pib.json";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import type {
   ObservatorioData,
   SerieFila,
@@ -13,10 +11,15 @@ import type {
   PIBSerieFila,
 } from "./types";
 
-const obs = raw as unknown as ObservatorioData;
-const emp = rawEmpleo as unknown as EmpleoData;
-const com = rawComercio as unknown as ComercioData;
-const pib = rawPIB as unknown as PIBData;
+function readPublicJSON<T>(name: string): T {
+  const path = resolve(process.cwd(), "public", "data", `${name}.json`);
+  return JSON.parse(readFileSync(path, "utf-8")) as T;
+}
+
+const obs = readPublicJSON<ObservatorioData>("data_inflacion");
+const emp = readPublicJSON<EmpleoData>("data_empleo");
+const com = readPublicJSON<ComercioData>("data_comercio");
+const pib = readPublicJSON<PIBData>("data_pib");
 
 export const getObservatorio = (): ObservatorioData => obs;
 export const getSerieAscending = (): SerieFila[] => [...obs.serie].reverse();

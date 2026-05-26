@@ -1,4 +1,9 @@
-import raw from "../../data/presidentes.json";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
+const raw = JSON.parse(
+  readFileSync(resolve(process.cwd(), "public", "data", "presidentes.json"), "utf-8"),
+);
 
 export interface Presidente {
   id: string;
