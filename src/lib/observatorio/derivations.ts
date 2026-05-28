@@ -3,6 +3,8 @@ import type {
   PIBSerieFila,
   EmpleoSerieFila,
   ComercioSerieFila,
+  ExternoData,
+  ObservatorioData,
 } from "./types";
 
 export const yearOf = (periodo: string): string => periodo.slice(0, 4);
@@ -144,5 +146,21 @@ export function comercioPorPibJoin(
     x: data.map((r) => `${r.periodo}-01`),
     pib: data.map((r) => r.pib_total as number),
     exp: data.map((r) => mapExp.get(r.periodo) ?? null),
+  };
+}
+
+export function trmInflacionJoin(
+  externo: ExternoData,
+  inflacion: ObservatorioData,
+): { x: string[]; trm: (number | null)[]; inflacion: (number | null)[] } {
+  const mapInfl = new Map<string, number | null>();
+  for (const r of inflacion.serie) {
+    mapInfl.set(r.periodo, typeof r.inflacion_anual === "number" ? r.inflacion_anual : null);
+  }
+  const data = externo.serie.filter((r) => r.trm !== null);
+  return {
+    x: data.map((r) => `${r.periodo}-01`),
+    trm: data.map((r) => r.trm),
+    inflacion: data.map((r) => mapInfl.get(r.periodo) ?? null),
   };
 }

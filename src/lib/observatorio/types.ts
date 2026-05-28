@@ -237,3 +237,61 @@ export interface PIBData {
   serie: PIBSerieFila[];
   historico: Record<string, number>;
 }
+
+// ───────────────────────────── EXTERNO ─────────────────────────────
+
+export interface ExternoSerieFila {
+  periodo: string;
+  trm: number | null;
+  trm_delta: number | null;
+  trm_variacion: Variacion;
+  reservas_netas: number | null;
+  reservas_netas_delta: number | null;
+  reservas_netas_variacion: Variacion;
+  cuenta_corriente: number | null;
+  cuenta_corriente_delta: number | null;
+  cuenta_corriente_variacion: Variacion;
+  ied: number | null;
+  ied_delta: number | null;
+  ied_variacion: Variacion;
+  deuda_externa: number | null;
+  deuda_externa_delta: number | null;
+  deuda_externa_variacion: Variacion;
+}
+
+export interface ExternoIndicadores {
+  trm: Indicador;
+  reservas_netas: Indicador;
+  cuenta_corriente: Indicador;
+  ied: Indicador;
+  deuda_externa: Indicador;
+}
+
+export interface ExternoMetadata {
+  ultima_actualizacion: string;
+  fuentes: {
+    banrep_trm: Fuente;
+    banco_mundial: Fuente;
+    calculo_propio?: Fuente;
+  };
+  definiciones: Record<string, string | number>;
+  cobertura: {
+    primer_periodo: string;
+    ultimo_periodo: string;
+    total_registros: number;
+    granularidad: "mensual";
+  };
+}
+
+export interface ExternoData {
+  metadata: ExternoMetadata;
+  indicadores: ExternoIndicadores;
+  serie: ExternoSerieFila[];
+  historico: {
+    trm: Record<string, number>;
+    reservas_netas: Record<string, number>;
+    cuenta_corriente: Record<string, number>;
+    ied: Record<string, number>;
+    deuda_externa: Record<string, number>;
+  };
+}

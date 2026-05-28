@@ -23,6 +23,10 @@ from ingestion.processing.export import (
     actualizar_historico_csv,
     generar_observatorio_json,
 )
+from ingestion.processing.export_externo import (
+    generar_externo_json,
+    JSON_FILENAME as EXTERNO_JSON,
+)
 from ingestion.sources import banrep, dane_ipc
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -98,6 +102,11 @@ def run(args: argparse.Namespace) -> int:
     json_path = args.web_data_dir / JSON_FILENAME
     generar_observatorio_json(df, json_path)
     logger.info("JSON: %s", json_path.relative_to(REPO_ROOT))
+
+    logger.info("Exportando data_externo.json...")
+    externo_path = args.web_data_dir / EXTERNO_JSON
+    generar_externo_json(externo_path)
+    logger.info("JSON externo: %s", externo_path.relative_to(REPO_ROOT))
 
     return 0
 

@@ -3,6 +3,7 @@ import type {
   EmpleoData,
   ComercioData,
   PIBData,
+  ExternoData,
 } from "./types";
 import type { Presidente } from "./presidentes";
 
@@ -34,6 +35,7 @@ export const loadInflacion = () => load<ObservatorioData>("data_inflacion");
 export const loadPIB = () => load<PIBData>("data_pib");
 export const loadComercio = () => load<ComercioData>("data_comercio");
 export const loadEmpleo = () => load<EmpleoData>("data_empleo");
+export const loadExterno = () => load<ExternoData>("data_externo");
 export const loadPresidentes = () =>
   load<{ fuente: string; nota: string; presidentes: Presidente[] }>("presidentes")
     .then((d) => d.presidentes);
@@ -46,14 +48,17 @@ export const loadComercioAsc = () =>
   loadComercio().then((d) => ({ ...d, serie: [...d.serie].reverse() }));
 export const loadEmpleoAsc = () =>
   loadEmpleo().then((d) => ({ ...d, serie: [...d.serie].reverse() }));
+export const loadExternoAsc = () =>
+  loadExterno().then((d) => ({ ...d, serie: [...d.serie].reverse() }));
 
-export type DatasetName = "inflacion" | "pib" | "comercio" | "empleo";
+export type DatasetName = "inflacion" | "pib" | "comercio" | "empleo" | "externo";
 
 export interface LoadedDatasets {
   inflacion?: ObservatorioData;
   pib?: PIBData;
   comercio?: ComercioData;
   empleo?: EmpleoData;
+  externo?: ExternoData;
 }
 
 const ASC_LOADERS = {
@@ -61,6 +66,7 @@ const ASC_LOADERS = {
   pib: loadPIBAsc,
   comercio: loadComercioAsc,
   empleo: loadEmpleoAsc,
+  externo: loadExternoAsc,
 } as const;
 
 export async function loadDatasets(

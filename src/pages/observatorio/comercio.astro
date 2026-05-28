@@ -9,10 +9,11 @@ import PageHeader from "../../components/observatorio/PageHeader.astro";
 import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
 import Chart from "../../components/observatorio/Chart.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
-import { getComercio } from "../../lib/observatorio/data";
+import { getComercio, getExterno } from "../../lib/observatorio/data";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
 
 const com = getComercio();
+const ext = getExterno();
 const { indicadores, metadata } = com;
 
 const exportActual = indicadores.exportaciones.actual.valor;
@@ -22,6 +23,12 @@ const ultimoPeriodo = formatPeriodo(metadata.cobertura.ultimo_periodo);
 
 const fuenteComercio = metadata.fuentes.comercio;
 const fuenteDane = metadata.fuentes.dane;
+
+const trmActual = ext.indicadores.trm.actual.valor ?? 0;
+const reservasActual = ext.indicadores.reservas_netas.actual.valor ?? 0;
+const deudaExternaActual = ext.indicadores.deuda_externa.actual.valor ?? 0;
+const fuenteBanrepTRM = ext.metadata.fuentes.banrep_trm;
+const fuenteBancoMundialExt = ext.metadata.fuentes.banco_mundial;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -43,9 +50,25 @@ const jsonLd = {
       spatialCoverage: { "@type": "Place", name: "Colombia" },
     },
     {
+      "@type": "Dataset",
+      name: "Observatorio de Datos de Colombia — Sector Externo y Monetario",
+      description: "Indicadores del sector externo y monetario de Colombia: TRM, reservas internacionales, cuenta corriente, IED y deuda externa. Datos del Banco de la Republica y Banco Mundial.",
+      url: "https://fredericksalazar.com/observatorio/comercio",
+      keywords: ["TRM Colombia", "reservas internacionales", "cuenta corriente Colombia", "deuda externa Colombia", "tipo de cambio"],
+      creator: { "@type": "Person", name: "Frederick Salazar", url: "https://fredericksalazar.com/" },
+      isBasedOn: [
+        { "@type": "CreativeWork", name: fuenteBanrepTRM.nombre, url: fuenteBanrepTRM.url },
+        { "@type": "CreativeWork", name: fuenteBancoMundialExt.nombre, url: fuenteBancoMundialExt.url },
+      ],
+      temporalCoverage: `${ext.metadata.cobertura.primer_periodo}/${ext.metadata.cobertura.ultimo_periodo}`,
+      dateModified: ext.metadata.ultima_actualizacion,
+      license: "https://creativecommons.org/licenses/by/4.0/",
+      spatialCoverage: { "@type": "Place", name: "Colombia" },
+    },
+    {
       "@type": "Article",
       headline: "Comercio Exterior de Colombia",
-      description: "Análisis de la evolución del comercio exterior colombiano: exportaciones, importaciones, balanza comercial y desglose por producto.",
+      description: "Analisis de la evolucion del comercio exterior colombiano: exportaciones, importaciones, balanza comercial y desglose por producto.",
       author: { "@type": "Person", name: "Frederick Salazar" },
       datePublished: "2026-05-11",
       dateModified: metadata.ultima_actualizacion,
@@ -84,14 +107,14 @@ const jsonLd = {
     >
       Las exportaciones colombianas representan el <strong>{exportActual}% del PIB</strong>.
       La balanza comercial se ubica en <strong>{balanzaActual}% del PIB</strong>,
-      {balanzaActual !== null && balanzaActual < 0 ? "reflejando un déficit comercial." : "reflejando un superávit comercial."}
+      {balanzaActual !== null && balanzaActual < 0 ? "reflejando un deficit comercial." : "reflejando un superavit comercial."}
     </PageHeader>
 
     <section class="kpi-row" aria-label="Indicadores actuales">
-      <IndicadorCard titulo="Exportaciones" indicador={indicadores.exportaciones} semantic="comercio" deltaLabel="vs año anterior" />
-      <IndicadorCard titulo="Importaciones" indicador={indicadores.importaciones} semantic="comercio" deltaLabel="vs año anterior" />
-      <IndicadorCard titulo="Balanza comercial" indicador={indicadores.balanza_comercial} semantic={balanzaActual !== null && balanzaActual < 0 ? "deficit" : "superavit"} deltaLabel="vs año anterior" unidadOverride="pp" />
-      <IndicadorCard titulo="Apertura comercial" indicador={indicadores.apertura} semantic="comercio" deltaLabel="vs año anterior" />
+      <IndicadorCard titulo="Exportaciones" indicador={indicadores.exportaciones} semantic="comercio" deltaLabel="vs ano anterior" />
+      <IndicadorCard titulo="Importaciones" indicador={indicadores.importaciones} semantic="comercio" deltaLabel="vs ano anterior" />
+      <IndicadorCard titulo="Balanza comercial" indicador={indicadores.balanza_comercial} semantic={balanzaActual !== null && balanzaActual < 0 ? "deficit" : "superavit"} deltaLabel="vs ano anterior" unidadOverride="pp" />
+      <IndicadorCard titulo="Apertura comercial" indicador={indicadores.apertura} semantic="comercio" deltaLabel="vs ano anterior" />
     </section>
 
     <IndicadorPanel numero="01" eyebrow="Contexto histórico" titulo="Comercio exterior de Colombia en las últimas seis décadas"
@@ -225,6 +248,82 @@ const jsonLd = {
       <Chart slot="visual" id="productos-tradicionales" embedded={true} />
     </IndicadorPanel>
 
+    <PageHeader
+      eyebrow="Sector externo y monetario"
+      hint={`TRM $${trmActual.toLocaleString('es-CO')} · Reservas ${reservasActual.toFixed(1)} mil M USD · Deuda externa ${deudaExternaActual}% PIB`}
+    >
+      El sector externo cuenta la otra mitad del comercio: cuanto vale el dolar,
+      cuantas divisas guarda Colombia y que tan dependiente del credito externo
+      es la economia.
+    </PageHeader>
+
+    <IndicadorPanel
+      numero="09"
+      eyebrow="Tasa de cambio"
+      titulo="La TRM peso/dolar"
+      lead="El precio del dolar mueve precios, deuda y poder adquisitivo. Cuando el peso se devalua, todo lo importado se encarece."
+      fuente={fuenteBanrepTRM}
+    >
+      <Fragment slot="text">
+        <p>La <strong>TRM</strong> es el promedio de las operaciones interbancarias del dia y es la referencia oficial para liquidar deuda y comercio.</p>
+        <p>Hoy esta en <strong>${trmActual.toLocaleString('es-CO')}</strong>. La tendencia importa mas que el nivel: una devaluacion sostenida adelanta presiones inflacionarias.</p>
+      </Fragment>
+      <Chart slot="visual" id="trm-historica" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="10"
+      eyebrow="Politica monetaria internacional"
+      titulo="Reservas internacionales"
+      lead="El colchon de divisas con que el pais enfrenta choques externos. Mas reservas = mayor capacidad de defender el peso y honrar deuda en dolares."
+      fuente={fuenteBancoMundialExt}
+    >
+      <Fragment slot="text">
+        <p>Las reservas son el seguro contra crisis cambiarias. El FMI sugiere mantenerlas por encima de ciertas metricas (deuda externa de corto plazo, importaciones).</p>
+        <p>Colombia mantiene <strong>{reservasActual.toFixed(1)} mil M USD</strong> en reservas netas.</p>
+      </Fragment>
+      <Chart slot="visual" id="reservas-internacionales" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="11"
+      eyebrow="Posicion externa"
+      titulo="Cuenta corriente (% PIB)"
+      lead="La cuenta corriente resume si el pais gasta mas afuera de lo que ingresa. Un deficit persistente exige financiamiento y aumenta la sensibilidad a salidas de capital."
+      fuente={fuenteBancoMundialExt}
+    >
+      <Fragment slot="text">
+        <p>Colombia ha registrado deficit de cuenta corriente la mayor parte de las ultimas dos decadas, financiado principalmente con IED y deuda externa.</p>
+      </Fragment>
+      <Chart slot="visual" id="cuenta-corriente-pib" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="12"
+      eyebrow="Endeudamiento externo"
+      titulo="Deuda externa total"
+      lead="Stock de obligaciones con acreedores externos como porcentaje del INB. Sirve para medir vulnerabilidad financiera de mediano plazo."
+      fuente={fuenteBancoMundialExt}
+    >
+      <Fragment slot="text">
+        <p>La deuda externa cerro en <strong>{deudaExternaActual}% del PIB</strong> en el ultimo dato disponible. Una porcion importante esta nominada en dolares: una devaluacion del peso encarece automaticamente su servicio.</p>
+      </Fragment>
+      <Chart slot="visual" id="deuda-externa-pib" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="13"
+      eyebrow="Pass-through"
+      titulo="TRM x inflacion: como el dolar moja los precios"
+      lead="Los repuntes de la TRM suelen anticipar repuntes de inflacion con 3-9 meses de rezago. Es el principal canal cambiario de transmision."
+      fuente={fuenteBanrepTRM}
+    >
+      <Fragment slot="text">
+        <p>Bienes importados y materias primas son la via directa. Una devaluacion del 10% se traduce historicamente entre 1 y 2 puntos porcentuales de inflacion al consumidor en los meses siguientes.</p>
+      </Fragment>
+      <Chart slot="visual" id="pass-through-trm-inflacion" embedded={true} />
+    </IndicadorPanel>
+
     <section class="glosario-block" aria-label="Glosario y fuentes">
       <header class="glosario-block__header">
         <span class="glosario-block__eyebrow">Referencia</span>
@@ -243,12 +342,16 @@ const jsonLd = {
     </section>
 
     <DashboardFooter
-      fuentes={[fuenteComercio, fuenteDane]}
+      fuentes={[fuenteComercio, fuenteDane, fuenteBanrepTRM, fuenteBancoMundialExt]}
       ultimaActualizacion={metadata.ultima_actualizacion}
       definiciones={[
         { titulo: "Exportaciones", texto: "Bienes y servicios vendidos al resto del mundo, expresados como porcentaje del PIB (Banco Mundial)." },
-        { titulo: "Balanza comercial", texto: "Diferencia entre exportaciones e importaciones. Déficit = más importaciones que exportaciones." },
-        { titulo: "Apertura", texto: "Suma de exportaciones e importaciones como % del PIB. Mide integración al comercio global." },
+        { titulo: "Balanza comercial", texto: "Diferencia entre exportaciones e importaciones. Deficit = mas importaciones que exportaciones." },
+        { titulo: "Apertura", texto: "Suma de exportaciones e importaciones como % del PIB. Mide integracion al comercio global." },
+        { titulo: "TRM", texto: "Tasa Representativa del Mercado USD/COP, promedio mensual del cierre diario (Banco de la Republica)." },
+        { titulo: "Reservas internacionales", texto: "Activos externos netos del Banco de la Republica, en miles de millones de USD." },
+        { titulo: "Cuenta corriente", texto: "Saldo de cuenta corriente como porcentaje del PIB (Banco Mundial WDI)." },
+        { titulo: "Deuda externa", texto: "Stock de deuda externa total como porcentaje del INB (Banco Mundial WDI)." },
       ]}
       cobertura={`${metadata.cobertura.primer_periodo} → ${metadata.cobertura.ultimo_periodo} · ${metadata.cobertura.total_registros} registros`}
     />

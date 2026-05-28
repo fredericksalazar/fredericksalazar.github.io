@@ -35,6 +35,13 @@ import {
   desempleoHistorico,
   comercioHistorico,
 } from "./historico";
+import {
+  trmHistorica,
+  reservasInternacionales,
+  cuentaCorrientePib,
+  deudaExternaPib,
+  passThroughTrmInflacion,
+} from "./externo";
 import type { ChartDef } from "./types";
 
 export const CHART_DEFS = {
@@ -65,6 +72,11 @@ export const CHART_DEFS = {
   [pibHistorico.id]: pibHistorico,
   [desempleoHistorico.id]: desempleoHistorico,
   [comercioHistorico.id]: comercioHistorico,
+  [trmHistorica.id]: trmHistorica,
+  [reservasInternacionales.id]: reservasInternacionales,
+  [cuentaCorrientePib.id]: cuentaCorrientePib,
+  [deudaExternaPib.id]: deudaExternaPib,
+  [passThroughTrmInflacion.id]: passThroughTrmInflacion,
 } as const satisfies Record<string, ChartDef>;
 
 export type ChartId = Extract<keyof typeof CHART_DEFS, string>;

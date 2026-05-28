@@ -15,6 +15,7 @@ import type {
   EmpleoData,
   ComercioData,
   PIBData,
+  ExternoData,
 } from "./types";
 
 function readPublicJSON<T>(name: string): T {
@@ -26,8 +27,10 @@ const obs = readPublicJSON<ObservatorioData>("data_inflacion");
 const emp = readPublicJSON<EmpleoData>("data_empleo");
 const com = readPublicJSON<ComercioData>("data_comercio");
 const pib = readPublicJSON<PIBData>("data_pib");
+const ext = readPublicJSON<ExternoData>("data_externo");
 
 export const getObservatorio = (): ObservatorioData => obs;
 export const getEmpleo = (): EmpleoData => emp;
 export const getComercio = (): ComercioData => com;
 export const getPIB = (): PIBData => pib;
+export const getExterno = (): ExternoData => ext;
