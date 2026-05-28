@@ -39,6 +39,7 @@ export interface ObservatorioMetadata {
   fuentes: {
     inflacion: Fuente;
     tasa_interes: Fuente;
+    calculo_propio?: Fuente;
   };
   definiciones: Record<string, string | number>;
   cobertura: {
@@ -108,6 +109,7 @@ export interface EmpleoMetadata {
   fuentes: {
     empleo: Fuente;
     historico: Fuente;
+    calculo_propio?: Fuente;
   };
   definiciones: Record<string, string | number>;
   cobertura: {
@@ -160,6 +162,7 @@ export interface ComercioMetadata {
   fuentes: {
     comercio: Fuente;
     dane: Fuente;
+    calculo_propio?: Fuente;
   };
   definiciones: Record<string, string | number>;
   cobertura: {
@@ -218,6 +221,7 @@ export interface PIBMetadata {
   fuentes: {
     pib: Fuente;
     dane: Fuente;
+    calculo_propio?: Fuente;
   };
   definiciones: Record<string, string | number>;
   cobertura: {

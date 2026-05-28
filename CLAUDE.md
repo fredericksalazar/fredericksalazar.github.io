@@ -25,3 +25,16 @@ All content lives in `src/content/{blog,proyectos}/`. Dynamic routes use `getSta
 **CSS approach:** Global design tokens as CSS custom properties on `:root` in `BaseLayout.astro`. Page-scoped styles use Astro's `<style>` blocks (auto-scoped). Tailwind v4 is available but most styles use the custom property system.
 
 **No tests, no linter config** — `astro check` is the type checker (runs via Astro CLI).
+
+## Observatorio (dashboards)
+
+Cualquier trabajo en `src/pages/observatorio/`, `src/components/observatorio/`,
+`src/lib/observatorio/` o `public/data/*.json` **debe leer y cumplir**
+[`src/lib/observatorio/ARCHITECTURE.md`](./src/lib/observatorio/ARCHITECTURE.md).
+
+Ese documento define el ciclo de vida de datos (pipeline → JSON → fetch
+runtime), el contrato del JSON, dónde vive cada cosa (`ChartDef` + registry +
+componente único `Chart.astro`), las reglas de SEO/runtime, los anti-patrones
+prohibidos y el procedimiento canónico para agregar un indicador o un dataset.
+Las reglas son vinculantes — si un cambio no encaja, parar y consultar antes
+de romper la arquitectura.

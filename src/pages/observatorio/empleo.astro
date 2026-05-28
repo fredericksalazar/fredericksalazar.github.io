@@ -3,21 +3,17 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
 import MapaColombia from "../../components/observatorio/MapaColombia.astro";
 import DashboardNav from "../../components/observatorio/DashboardNav.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
 import IndicadorCard from "../../components/observatorio/IndicadorCard.astro";
 import PageHeader from "../../components/observatorio/PageHeader.astro";
 import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
-import ChartDesempleo from "../../components/observatorio/ChartDesempleo.astro";
-import ChartDesempleoHistorico from "../../components/observatorio/ChartDesempleoHistorico.astro";
-import ChartTGPTODual from "../../components/observatorio/ChartTGPTODual.astro";
-import ChartBrechaLaboral from "../../components/observatorio/ChartBrechaLaboral.astro";
-import ChartSubempleo from "../../components/observatorio/ChartSubempleo.astro";
+import Chart from "../../components/observatorio/Chart.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
-import { getEmpleo, getEmpleoSerieAscending } from "../../lib/observatorio/data";
+import { getEmpleo } from "../../lib/observatorio/data";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
 
 const emp = getEmpleo();
-const serieAsc = getEmpleoSerieAscending();
-const { indicadores, metadata, historico } = emp;
+const { indicadores, metadata } = emp;
 
 const desempleoActual = indicadores.tasa_desempleo.actual.valor;
 const ultimoPeriodo = formatPeriodo(metadata.cobertura.ultimo_periodo);
@@ -151,7 +147,7 @@ const jsonLd = {
           <li><strong>2021 – 2024:</strong> recuperación gradual del mercado laboral.</li>
         </ul>
       </Fragment>
-      <ChartDesempleoHistorico slot="visual" historico={historico} embedded={true} />
+      <Chart slot="visual" id="desempleo-historico" embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel
@@ -174,7 +170,7 @@ const jsonLd = {
           social y menor demanda interna.
         </p>
       </Fragment>
-      <ChartDesempleo slot="visual" serie={serieAsc} embedded={true} />
+      <Chart slot="visual" id="desempleo" embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel
@@ -196,7 +192,7 @@ const jsonLd = {
           a los nuevos trabajadores.
         </p>
       </Fragment>
-      <ChartTGPTODual slot="visual" serie={serieAsc} embedded={true} />
+      <Chart slot="visual" id="tgp-to-dual" embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel
@@ -218,7 +214,7 @@ const jsonLd = {
           <li><strong>Brecha alta (&gt;10 pp):</strong> crisis de empleo, mucha gente busca pero no encuentra.</li>
         </ul>
       </Fragment>
-      <ChartBrechaLaboral slot="visual" serie={serieAsc} embedded={true} />
+      <Chart slot="visual" id="brecha-laboral" embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel
@@ -239,7 +235,7 @@ const jsonLd = {
           En {ultimoPeriodo}, la tasa de subempleo es del <strong>{indicadores.subempleo.actual.valor ?? "—"}%</strong>.
         </p>
       </Fragment>
-      <ChartSubempleo slot="visual" serie={serieAsc} embedded={true} />
+      <Chart slot="visual" id="subempleo" embedded={true} />
     </IndicadorPanel>
 
     <section class="glosario-block" aria-label="Glosario y fuentes">
@@ -299,7 +295,7 @@ const jsonLd = {
     />
   </div>
 
-  <script is:inline src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
+  <PlotlyLoader />
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </BaseLayout>
 

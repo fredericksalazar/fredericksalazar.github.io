@@ -3,23 +3,17 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
 import MapaColombia from "../../components/observatorio/MapaColombia.astro";
 import DashboardNav from "../../components/observatorio/DashboardNav.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
 import IndicadorCard from "../../components/observatorio/IndicadorCard.astro";
 import PageHeader from "../../components/observatorio/PageHeader.astro";
 import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
-import ChartExportaciones from "../../components/observatorio/ChartExportaciones.astro";
-import ChartImportaciones from "../../components/observatorio/ChartImportaciones.astro";
-import ChartBalanzaComercial from "../../components/observatorio/ChartBalanzaComercial.astro";
-import ChartApertura from "../../components/observatorio/ChartApertura.astro";
-import ChartComercioHistorico from "../../components/observatorio/ChartComercioHistorico.astro";
-import ChartMatrizComercio from "../../components/observatorio/ChartMatrizComercio.astro";
-import ChartProductosTradicionales from "../../components/observatorio/ChartProductosTradicionales.astro";
+import Chart from "../../components/observatorio/Chart.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
-import { getComercio, getComercioSerieAscending } from "../../lib/observatorio/data";
+import { getComercio } from "../../lib/observatorio/data";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
 
 const com = getComercio();
-const serieAsc = getComercioSerieAscending();
-const { indicadores, metadata, historico, matriz_exportaciones, matriz_importaciones, productos_tradicionales } = com;
+const { indicadores, metadata } = com;
 
 const exportActual = indicadores.exportaciones.actual.valor;
 const importActual = indicadores.importaciones.actual.valor;
@@ -112,7 +106,7 @@ const jsonLd = {
           <li><strong>2010 – 2024:</strong> TLCs, diversificación de destinos, déficit comercial persistente.</li>
         </ul>
       </Fragment>
-      <ChartComercioHistorico slot="visual" historico={historico} embedded={true} />
+      <Chart slot="visual" id="comercio-historico" embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel numero="02" eyebrow="Ventas al mundo" titulo="Exportaciones colombianas (% del PIB)"
@@ -123,7 +117,7 @@ const jsonLd = {
         <p>Las <strong>exportaciones</strong> colombianas como porcentaje del PIB reflejan la capacidad del país de competir en mercados internacionales. En {ultimoPeriodo}, representan el <strong>{exportActual}% del PIB</strong>.</p>
         <p>Colombia es una economía con un grado de apertura moderado comparado con sus pares latinoamericanos. La dependencia de commodities (petróleo, carbón, café) hace que las exportaciones sean vulnerables a los precios internacionales.</p>
       </Fragment>
-      <ChartExportaciones slot="visual" serie={serieAsc} embedded={true} />
+      <Chart slot="visual" id="comercio-expo" embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel numero="03" eyebrow="Compras al mundo" titulo="Importaciones colombianas (% del PIB)"
@@ -134,7 +128,7 @@ const jsonLd = {
         <p>Las <strong>importaciones</strong> colombianas representan el <strong>{importActual}% del PIB</strong> en {ultimoPeriodo}. Históricamente superan a las exportaciones, generando un déficit comercial crónico que se financia con inversión extranjera y remesas.</p>
         <p>El 75% de las importaciones son manufacturas (maquinaria, químicos, vehículos), reflejando la dependencia de la industria colombiana de insumos y bienes de capital extranjeros.</p>
       </Fragment>
-      <ChartImportaciones slot="visual" serie={serieAsc} embedded={true} />
+      <Chart slot="visual" id="comercio-impo" embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel numero="04" eyebrow="El saldo" titulo="Balanza comercial"
@@ -149,7 +143,7 @@ const jsonLd = {
           <li><strong>Equilibrio:</strong> la línea en 0 marca el punto donde export = import.</li>
         </ul>
       </Fragment>
-      <ChartBalanzaComercial slot="visual" serie={serieAsc} embedded={true} />
+      <Chart slot="visual" id="comercio-balanza" embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel numero="05" eyebrow="Integración global" titulo="Grado de apertura comercial"
@@ -160,7 +154,7 @@ const jsonLd = {
         <p>El <strong>grado de apertura</strong> suma exportaciones e importaciones y las expresa como porcentaje del PIB. Una economía completamente cerrada tendría 0%; una economía como Singapur supera el 300%.</p>
         <p>Colombia tiene un grado de apertura de <strong>{indicadores.apertura.actual.valor}%</strong>, típico de economías grandes de América Latina. La tendencia desde los 90 ha sido hacia una mayor integración, con fluctuaciones por crisis globales y precios del petróleo.</p>
       </Fragment>
-      <ChartApertura slot="visual" serie={serieAsc} embedded={true} />
+      <Chart slot="visual" id="comercio-apertura" embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel
@@ -184,8 +178,7 @@ const jsonLd = {
           <li><strong>Otros:</strong> oro no monetario, servicios, productos no clasificados.</li>
         </ul>
       </Fragment>
-      <ChartMatrizComercio slot="visual" matriz={matriz_exportaciones} chartId="matriz-expo"
-        titulo="Matriz exportadora" pregunta="Desglose anual de exportaciones colombianas por grupo OMC. Miles de USD FOB." embedded={true} />
+      <Chart slot="visual" id="matriz-expo" embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel
@@ -207,8 +200,7 @@ const jsonLd = {
           energética del país. Los agropecuarios importados complementan el consumo interno (trigo, maíz, soya).
         </p>
       </Fragment>
-      <ChartMatrizComercio slot="visual" matriz={matriz_importaciones} chartId="matriz-impo"
-        titulo="Matriz importadora" pregunta="Desglose anual de importaciones colombianas por grupo OMC. Miles de USD CIF." embedded={true} />
+      <Chart slot="visual" id="matriz-impo" embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel
@@ -230,7 +222,7 @@ const jsonLd = {
           internacionales. La diversificación exportadora sigue siendo un reto estructural.
         </p>
       </Fragment>
-      <ChartProductosTradicionales slot="visual" productos={productos_tradicionales} embedded={true} />
+      <Chart slot="visual" id="productos-tradicionales" embedded={true} />
     </IndicadorPanel>
 
     <section class="glosario-block" aria-label="Glosario y fuentes">
@@ -262,7 +254,7 @@ const jsonLd = {
     />
   </div>
 
-  <script is:inline src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
+  <PlotlyLoader />
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </BaseLayout>
 

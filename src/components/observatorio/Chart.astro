@@ -1,0 +1,185 @@
+---
+import ChartContainer from "./ChartContainer.astro";
+import { getChartDef, type ChartId } from "../../lib/observatorio/chart-defs";
+
+interface Props {
+  id: ChartId;
+  embedded?: boolean;
+}
+
+const { id, embedded = false } = Astro.props;
+const def = getChartDef(id);
+if (!def) throw new Error(`ChartDef no encontrado: ${id}`);
+const chartElementId = `chart-${def.id}`;
+---
+
+<ChartContainer
+  titulo={def.titulo}
+  pregunta={def.pregunta}
+  fuenteTexto={def.fuenteTexto}
+  embedded={embedded}
+>
+  <div slot="header-extra" data-chart-header-slot data-for={def.id}></div>
+  <div class="plotly-chart" data-chart-host={def.id}>
+    <div
+      id={chartElementId}
+      class="plotly-chart__canvas"
+      style={`height: ${def.height ?? 360}px;`}
+      aria-busy="true"
+      role="img"
+      aria-label={def.ariaLabel ?? def.titulo}
+    ></div>
+  </div>
+  <div slot="footer-extra" data-chart-footer-slot data-for={def.id}></div>
+</ChartContainer>
+
+<style>
+  .plotly-chart { width: 100%; }
+  .plotly-chart__canvas { width: 100%; }
+</style>
+
+<style is:global>
+  /* Estilos compartidos para extras inyectados por chart-defs */
+  .freno-callout {
+    display: flex; flex-wrap: wrap; gap: 1rem;
+    align-items: center; font-size: 0.78rem; color: var(--color-text-muted);
+  }
+  .freno-callout__legend { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .freno-callout__swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .freno-callout__swatch--freno { background: rgba(214, 39, 40, 0.35); border: 1px solid rgba(214, 39, 40, 0.5); }
+  .freno-callout__swatch--acelerador { background: rgba(0, 180, 80, 0.35); border: 1px solid rgba(0, 180, 80, 0.5); }
+  .freno-callout__label strong { color: var(--color-text-secondary); font-weight: 600; }
+
+  .okun-stat { display: flex; flex-wrap: wrap; gap: .4rem 1rem; font-size: .72rem; color: var(--color-text-muted); }
+  .okun-stat strong { color: var(--color-text-secondary); font-weight: 600; }
+
+  .banda-leyenda { display: flex; flex-wrap: wrap; gap: .5rem .85rem; font-size: .72rem; color: var(--color-text-muted); }
+  .banda-chip { display: inline-flex; align-items: center; gap: .35rem; }
+  .banda-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+  .banda-dot--low { background: rgba(34,197,94,0.35); border: 1px solid rgba(34,197,94,0.5); }
+  .banda-dot--mid { background: rgba(234,179,8,0.35); border: 1px solid rgba(234,179,8,0.55); }
+  .banda-dot--high { background: rgba(220,38,38,0.35); border: 1px solid rgba(220,38,38,0.5); }
+
+  /* Presidente toggle + leyenda */
+  .pres-toggle {
+    position: relative; display: inline-flex; align-items: center;
+    gap: 0.6rem; cursor: pointer; user-select: none; flex-shrink: 0;
+  }
+  .pres-toggle__label {
+    font-size: 0.78rem; font-weight: 600;
+    color: var(--color-text-secondary, #475569); letter-spacing: 0.01em;
+  }
+  .pres-toggle__input {
+    position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0;
+  }
+  .pres-toggle__switch {
+    position: relative; display: inline-block; width: 38px; height: 22px;
+    background: #cbd5e1; border-radius: 22px; transition: background 0.25s ease; flex-shrink: 0;
+  }
+  .pres-toggle__knob {
+    position: absolute; top: 2px; left: 2px; width: 18px; height: 18px;
+    background: white; border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.06);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .pres-toggle__input:checked + .pres-toggle__switch { background: #2563eb; }
+  .pres-toggle__input:checked + .pres-toggle__switch .pres-toggle__knob { transform: translateX(16px); }
+  .pres-toggle__input:focus-visible + .pres-toggle__switch { outline: 2px solid #2563eb; outline-offset: 2px; }
+
+  .pres-legend {
+    display: flex; flex-wrap: wrap; gap: 0.4rem 0.5rem;
+    margin-top: 0.85rem; padding-top: 0.85rem;
+    border-top: 1px dashed rgba(37, 99, 235, 0.18);
+    transition: opacity 0.2s ease, max-height 0.3s ease, padding 0.2s ease, margin 0.2s ease;
+    overflow: hidden;
+  }
+  .pres-legend[data-visible="false"] {
+    opacity: 0; max-height: 0; margin-top: 0; padding-top: 0;
+    border-top-color: transparent; pointer-events: none;
+  }
+  .pres-chip {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.3rem 0.65rem; background: white;
+    border: 1px solid rgba(37, 99, 235, 0.15); border-radius: 100px;
+    font-size: 0.72rem; line-height: 1;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .pres-chip:hover { border-color: rgba(37, 99, 235, 0.4); box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05); }
+  .pres-chip__dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .pres-chip__name { font-weight: 600; color: #1e293b; }
+  .pres-chip__period { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.65rem; color: #64748b; }
+  @media (max-width: 600px) { .pres-toggle__label { display: none; } }
+</style>
+
+<script>
+  import { getChartDef } from "../../lib/observatorio/chart-defs";
+  import { loadDatasets } from "../../lib/observatorio/data-client";
+  import { registerChart, mountPlotly } from "../../lib/observatorio/plotly-mount";
+
+  function bindPresidenteToggle(host: HTMLElement, target: HTMLElement) {
+    const toggle = host.querySelector<HTMLElement>("[data-pres-toggle]");
+    if (!toggle || toggle.dataset.bound === "true") return;
+    toggle.dataset.bound = "true";
+    const input = toggle.querySelector<HTMLInputElement>(".pres-toggle__input");
+    if (!input) return;
+    const legend = host.querySelector<HTMLElement>("[data-pres-legend]");
+    const colorsRaw = target.dataset.colorsByPresident;
+    const colorBase = target.dataset.colorBase ?? "#2563eb";
+    if (!colorsRaw) return;
+    const colorsByPresident = JSON.parse(colorsRaw) as string[];
+
+    const apply = () => {
+      if (legend) legend.setAttribute("data-visible", input.checked ? "true" : "false");
+      if (!window.Plotly) {
+        window.addEventListener("plotly:loaded", apply, { once: true });
+        return;
+      }
+      const next = input.checked ? colorsByPresident : colorsByPresident.map(() => colorBase);
+      window.Plotly.restyle(target, { "marker.color": [next] });
+    };
+    input.addEventListener("change", apply);
+  }
+
+  function initCharts() {
+    document.querySelectorAll<HTMLElement>("[data-chart-host]").forEach((host) => {
+      const id = host.dataset.chartHost!;
+      if (host.dataset.registered === "true") return;
+      const def = getChartDef(id);
+      if (!def) return;
+      host.dataset.registered = "true";
+
+      const elementId = `chart-${def.id}`;
+      const root = host.closest<HTMLElement>("[data-chart-root]");
+      const headerSlot = root?.querySelector<HTMLElement>(`[data-chart-header-slot][data-for="${def.id}"]`);
+      const footerSlot = root?.querySelector<HTMLElement>(`[data-chart-footer-slot][data-for="${def.id}"]`);
+
+      registerChart(elementId, async (signal) => {
+        const data = await loadDatasets(def.datasets);
+        if (signal.aborted) return;
+        const result = await def.build(data);
+        if (signal.aborted) return;
+        if (headerSlot && result.headerHtml) headerSlot.innerHTML = result.headerHtml;
+        if (footerSlot && result.footerHtml) footerSlot.innerHTML = result.footerHtml;
+        if (result.pregunta && root) {
+          const preg = root.querySelector<HTMLElement>(".chart-card__question");
+          if (preg) preg.textContent = result.pregunta;
+        }
+        await mountPlotly(elementId, { traces: result.traces, layout: result.layout, config: result.config });
+        const target = document.getElementById(elementId);
+        if (target) {
+          result.onMount?.(target);
+          if (headerSlot?.querySelector("[data-pres-toggle]")) {
+            bindPresidenteToggle(root!, target);
+          }
+        }
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initCharts);
+  } else {
+    initCharts();
+  }
+  document.addEventListener("astro:page-load", initCharts);
+</script>

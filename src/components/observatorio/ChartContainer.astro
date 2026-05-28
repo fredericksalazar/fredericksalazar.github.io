@@ -13,14 +13,18 @@ const { titulo, pregunta, fuente, fuenteTexto, embedded = false } = Astro.props;
 ---
 
 {embedded ? (
-  <div class="chart-embedded">
+  <div class="chart-embedded" data-chart-root>
     <div class="chart-embedded__extra">
       <slot name="header-extra" />
     </div>
     <slot />
+    <div class="chart-state chart-state--error" data-chart-error>
+      <p class="chart-state__message" data-chart-error-message>No se pudo cargar el gráfico.</p>
+      <button type="button" class="chart-state__retry" data-chart-retry>Reintentar</button>
+    </div>
   </div>
 ) : (
-<article class="chart-card">
+<article class="chart-card" data-chart-root>
   <header class="chart-card__header">
     <div class="chart-card__header-row">
       <div class="chart-card__header-text">
@@ -33,6 +37,10 @@ const { titulo, pregunta, fuente, fuenteTexto, embedded = false } = Astro.props;
 
   <div class="chart-card__body">
     <slot />
+    <div class="chart-state chart-state--error" data-chart-error>
+      <p class="chart-state__message" data-chart-error-message>No se pudo cargar el gráfico.</p>
+      <button type="button" class="chart-state__retry" data-chart-retry>Reintentar</button>
+    </div>
   </div>
 
   <footer class="chart-card__footer">
@@ -54,6 +62,7 @@ const { titulo, pregunta, fuente, fuenteTexto, embedded = false } = Astro.props;
 <style>
   .chart-embedded {
     width: 100%;
+    position: relative;
   }
 
   .chart-embedded__extra {
@@ -121,6 +130,7 @@ const { titulo, pregunta, fuente, fuenteTexto, embedded = false } = Astro.props;
   .chart-card__body {
     flex: 1;
     min-height: 0;
+    position: relative;
   }
 
   .chart-card__footer {
@@ -146,5 +156,64 @@ const { titulo, pregunta, fuente, fuenteTexto, embedded = false } = Astro.props;
 
   .chart-card__source a:hover {
     text-decoration: underline;
+  }
+
+  /* Estados ── loading skeleton (CSS-only sobre canvas con aria-busy) */
+  :global([data-chart-root][data-state="loading"] .plotly-chart__canvas) {
+    background-image: linear-gradient(
+      90deg,
+      rgba(208, 215, 220, 0.18) 0%,
+      rgba(208, 215, 220, 0.32) 50%,
+      rgba(208, 215, 220, 0.18) 100%
+    );
+    background-size: 200% 100%;
+    animation: chart-skeleton 1.4s ease-in-out infinite;
+    border-radius: 8px;
+  }
+
+  @keyframes chart-skeleton {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .chart-state {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  :global([data-chart-root][data-state="error"]) .chart-state--error {
+    display: flex;
+  }
+
+  :global([data-chart-root][data-state="error"]) .plotly-chart__canvas {
+    display: none;
+  }
+
+  .chart-state__message {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .chart-state__retry {
+    appearance: none;
+    border: 1px solid var(--color-border);
+    background: white;
+    color: var(--color-text-primary);
+    font-size: 0.78rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .chart-state__retry:hover {
+    border-color: rgba(37, 99, 235, 0.4);
+    background: rgba(37, 99, 235, 0.04);
   }
 </style>

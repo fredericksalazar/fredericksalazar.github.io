@@ -1,4 +1,4 @@
-import type { SerieFila } from "./types";
+interface PeriodoRow { periodo: string; }
 
 export const COLORS = {
   inflacion: "#dc2626",
@@ -49,9 +49,9 @@ export const baseLayout = (overrides: Record<string, unknown> = {}) => ({
 
 export const periodoToISODate = (periodo: string): string => `${periodo}-01`;
 
-export const extractSerie = (
-  serie: SerieFila[],
-  field: keyof SerieFila,
+export const extractSerie = <T extends PeriodoRow>(
+  serie: T[],
+  field: keyof T,
 ): { x: string[]; y: (number | null)[] } => ({
   x: serie.map((r) => periodoToISODate(r.periodo)),
   y: serie.map((r) => {

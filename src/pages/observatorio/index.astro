@@ -3,43 +3,31 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
 import MapaColombia from "../../components/observatorio/MapaColombia.astro";
 import DashboardNav from "../../components/observatorio/DashboardNav.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
 import KpiRow from "../../components/observatorio/KpiRow.astro";
 import PageHeader from "../../components/observatorio/PageHeader.astro";
 import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
 import GlosarioGrid from "../../components/observatorio/GlosarioGrid.astro";
-import ChartInflacion from "../../components/observatorio/ChartInflacion.astro";
-import ChartTasaInteres from "../../components/observatorio/ChartTasaInteres.astro";
-import ChartFrenoAcelerador from "../../components/observatorio/ChartFrenoAcelerador.astro";
-import ChartSpread from "../../components/observatorio/ChartSpread.astro";
-import ChartInflacionHistorica from "../../components/observatorio/ChartInflacionHistorica.astro";
+import Chart from "../../components/observatorio/Chart.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
-import { getObservatorio, getSerieAscending } from "../../lib/observatorio/data";
+import { getObservatorio } from "../../lib/observatorio/data";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
+import { FUENTE_CALCULO_PROPIO, FUENTE_HISTORICA_BM } from "../../lib/observatorio/fuentes";
 
 const obs = getObservatorio();
-const serieAsc = getSerieAscending();
 const ultimoPeriodo = formatPeriodo(obs.metadata.cobertura.ultimo_periodo);
 
-const inflacionActual = obs.indicadores.inflacion_anual.actual.valor;
-const tasaActual = obs.indicadores.tasa_interes.actual.valor;
-const spreadActual = obs.indicadores.spread.actual.valor;
+const inflacionActual = obs.indicadores.inflacion_anual.actual.valor ?? 0;
+const tasaActual = obs.indicadores.tasa_interes.actual.valor ?? 0;
+const spreadActual = obs.indicadores.spread.actual.valor ?? 0;
 const distanciaMeta = (inflacionActual - 3).toFixed(2);
 const fueraDeMeta = inflacionActual > 4 || inflacionActual < 2;
 
 const fuenteInflacion = obs.metadata.fuentes.inflacion;
 const fuenteTasa = obs.metadata.fuentes.tasa_interes;
 
-const fuenteCalculo = {
-  nombre: "Cálculo propio · DANE (IPC) y Banco de la República (TPM)",
-  url: "https://www.banrep.gov.co/es/estadisticas/tasas-de-interes-de-politica-monetaria",
-  indicador: "Tasa real ex-post",
-};
-
-const fuenteHistorica = {
-  nombre: "Banco Mundial — World Development Indicators",
-  url: "https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG?locations=CO",
-  indicador: "Inflación anual de Colombia desde 1960",
-};
+const fuenteCalculo = obs.metadata.fuentes.calculo_propio ?? FUENTE_CALCULO_PROPIO;
+const fuenteHistorica = FUENTE_HISTORICA_BM;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -142,7 +130,7 @@ const jsonLd = {
           <li><strong>2022 – 2023:</strong> choque pos-pandemia, dólar al alza y costos logísticos llevan la inflación a niveles no vistos en 20 años.</li>
         </ul>
       </Fragment>
-      <ChartInflacionHistorica slot="visual" historico={obs.historico} embedded={true} />
+      <Chart slot="visual" id="inflacion-historica" embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel
@@ -163,7 +151,7 @@ const jsonLd = {
           techo de 4 % de la banda objetivo.
         </p>
       </Fragment>
-      <ChartInflacion slot="visual" serie={serieAsc} fuente={fuenteInflacion} embedded={true} />
+      <Chart slot="visual" id="inflacion-anual" embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel
@@ -184,7 +172,7 @@ const jsonLd = {
           abarata y la economía se reactiva.
         </p>
       </Fragment>
-      <ChartTasaInteres slot="visual" serie={serieAsc} fuente={fuenteTasa} embedded={true} />
+      <Chart slot="visual" id="tasa-interes" embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel
@@ -206,7 +194,7 @@ const jsonLd = {
           <li><strong>Acelerando:</strong> tasa por debajo de la inflación.</li>
         </ul>
       </Fragment>
-      <ChartFrenoAcelerador slot="visual" serie={serieAsc} embedded={true} />
+      <Chart slot="visual" id="freno-acelerador" embedded={true} />
     </IndicadorPanel>
 
     <IndicadorPanel
@@ -227,7 +215,7 @@ const jsonLd = {
           <li>Barras bajas o negativas → política <strong>expansiva</strong> (Banco acelerando).</li>
         </ul>
       </Fragment>
-      <ChartSpread slot="visual" serie={serieAsc} embedded={true} />
+      <Chart slot="visual" id="spread" embedded={true} />
     </IndicadorPanel>
 
     <GlosarioGrid
@@ -254,7 +242,7 @@ const jsonLd = {
     />
   </div>
 
-  <script is:inline src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
+  <PlotlyLoader />
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </BaseLayout>
 

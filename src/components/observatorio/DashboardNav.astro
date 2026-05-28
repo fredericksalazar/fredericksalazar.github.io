@@ -5,12 +5,20 @@ interface Props {
 
 const { active } = Astro.props;
 
-const dashboards = [
-  { slug: "inflacion-tasa", label: "Inflación vs Tasa", href: "/observatorio" },
-  { slug: "empleo", label: "Empleo", href: "/observatorio/empleo" },
-  { slug: "comercio", label: "Comercio Exterior", href: "/observatorio/comercio" },
-  { slug: "fiscal", label: "PIB", href: "/observatorio/pib" },
-  { slug: "acerca", label: "Acerca", href: "/observatorio/acerca" },
+interface DashboardItem {
+  slug: string;
+  label: string;
+  href: string;
+  disabled?: boolean;
+  badge?: string;
+}
+
+const dashboards: DashboardItem[] = [
+  { slug: "inflacion-tasa", label: "Inflación vs Tasa", href: "/observatorio/" },
+  { slug: "empleo", label: "Empleo", href: "/observatorio/empleo/" },
+  { slug: "comercio", label: "Comercio Exterior", href: "/observatorio/comercio/" },
+  { slug: "pib", label: "PIB", href: "/observatorio/pib/" },
+  { slug: "acerca", label: "Acerca", href: "/observatorio/acerca/" },
 ];
 ---
 
