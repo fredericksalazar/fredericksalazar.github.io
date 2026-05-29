@@ -35,6 +35,45 @@ const FUENTE_BANREP_TRM = "Banco de la Republica — TRM (promedio mensual)";
 const FUENTE_BANCO_MUNDIAL = "Banco Mundial — WDI";
 const FUENTE_BANREP_BALANZA = "Banco de la Republica (TRM) — DANE (IPC)";
 
+const REF_LINE_COLOR = "#94a3b8";
+const REF_MEAN_COLOR = "#475569";
+
+/**
+ * Genera shapes + annotations para 3 lineas de referencia (min, max, media)
+ * que se superponen al chart como guias horizontales.
+ */
+function makeMinMaxMeanRefs(y: number[], formatValue: (v: number) => string): {
+  shapes: Record<string, unknown>[];
+  annotations: Record<string, unknown>[];
+} {
+  if (y.length === 0) return { shapes: [], annotations: [] };
+  const min = Math.min(...y);
+  const max = Math.max(...y);
+  const mean = y.reduce((s, v) => s + v, 0) / y.length;
+  const labelBg = "rgba(255,255,255,0.85)";
+  return {
+    shapes: [
+      { type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: min, y1: min,
+        line: { color: REF_LINE_COLOR, width: 1, dash: "dot" }, layer: "above" },
+      { type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: max, y1: max,
+        line: { color: REF_LINE_COLOR, width: 1, dash: "dot" }, layer: "above" },
+      { type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: mean, y1: mean,
+        line: { color: REF_MEAN_COLOR, width: 1.5, dash: "dash" }, layer: "above" },
+    ],
+    annotations: [
+      { xref: "paper", yref: "y", x: 0, xanchor: "left", y: max, yanchor: "bottom",
+        text: `Máx: ${formatValue(max)}`, showarrow: false,
+        font: { size: 10, color: REF_LINE_COLOR }, bgcolor: labelBg, borderpad: 2 },
+      { xref: "paper", yref: "y", x: 0, xanchor: "left", y: min, yanchor: "top",
+        text: `Mín: ${formatValue(min)}`, showarrow: false,
+        font: { size: 10, color: REF_LINE_COLOR }, bgcolor: labelBg, borderpad: 2 },
+      { xref: "paper", yref: "y", x: 1, xanchor: "right", y: mean, yanchor: "bottom",
+        text: `Media: ${formatValue(mean)}`, showarrow: false,
+        font: { size: 10, color: REF_MEAN_COLOR }, bgcolor: labelBg, borderpad: 2 },
+    ],
+  };
+}
+
 // ──────────────────────────────────────────────────────────────────────
 // Helpers compartidos para charts con doble toggle (linea ↔ barras ± presidente)
 // ──────────────────────────────────────────────────────────────────────
@@ -210,16 +249,21 @@ export const trmHistorica: ChartDef = {
   async build({ externo }) {
     const { x, y, colorsByPresident, customdata, leyenda } = await prepareTogglableData(externo!, "trm");
 
+    const refs = makeMinMaxMeanRefs(y, (v) => `$${Math.round(v).toLocaleString("es-CO")}`);
+
     const layout = baseLayout({
       yaxis: {
         showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
         tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true,
       },
+      shapes: refs.shapes,
+      annotations: refs.annotations,
     });
 
     const lineTrace = () => ({
-      name: "TRM", x, y, mode: "lines",
+      name: "TRM", x, y, mode: "lines+markers",
       line: { color: COLORS.brand, width: 2.2 },
+      marker: { size: 4, color: COLORS.brand, line: { color: "white", width: 1 } },
       fill: "tozeroy", fillcolor: "rgba(37, 99, 235, 0.06)",
       hovertemplate: "<b>%{x|%b %Y}</b><br>TRM: $%{y:,.0f} COP/USD<extra></extra>",
     });
@@ -333,17 +377,24 @@ export const deudaExternaPib: ChartDef = {
   height: 340,
   ariaLabel: "Evolucion de la deuda externa total de Colombia como porcentaje del PIB",
   build({ externo }) {
-    const { x, y } = extractNonNull(externo!.serie, "deuda_externa");
+    // Filtrar ceros (placeholders del CSV en anios sin dato real).
+    const data = externo!.serie.filter((r) => typeof r.deuda_externa === "number" && r.deuda_externa > 0);
+    const x = data.map((r) => periodoToISODate(r.periodo));
+    const y = data.map((r) => r.deuda_externa as number);
+    const refs = makeMinMaxMeanRefs(y, (v) => `${v.toFixed(1)}%`);
     return {
       traces: [{
-        name: "Deuda externa", x, y, mode: "lines",
-        line: { color: COLORS.textPrimary, width: 2.2 }, fill: "tozeroy",
-        fillcolor: "rgba(31, 35, 40, 0.06)",
+        name: "Deuda externa", x, y, mode: "lines+markers",
+        line: { color: COLORS.brand, width: 2.2 },
+        marker: { size: 6, color: COLORS.brand, line: { color: "white", width: 1 } },
+        fill: "tozeroy", fillcolor: "rgba(37, 99, 235, 0.06)",
         hovertemplate: "<b>%{x|%Y}</b><br>Deuda externa: <b>%{y:.1f}%</b> PIB<extra></extra>",
       }],
       layout: baseLayout({
         yaxis: { showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
           tickfont: { size: 11, color: "#636c76" }, ticksuffix: "%", automargin: true },
+        shapes: refs.shapes,
+        annotations: refs.annotations,
       }),
     };
   },
