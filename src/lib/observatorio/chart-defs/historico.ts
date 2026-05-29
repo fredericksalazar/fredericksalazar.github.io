@@ -1,4 +1,4 @@
-import { baseLayout } from "../charts";
+import { COLORS, baseLayout } from "../charts";
 import {
   getPresidentesClient,
   colorsForYears,
@@ -8,7 +8,7 @@ import {
 } from "../presidentes-client";
 import type { ChartDef, ChartBuildResult } from "./types";
 
-const COLOR_BASE = "#2563eb";
+const COLOR_BASE = COLORS.brand;
 
 interface HistoricoOptions {
   historico: Record<string, number>;

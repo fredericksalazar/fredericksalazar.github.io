@@ -1,4 +1,4 @@
-import { baseLayout, extractSerie, periodoToISODate } from "../charts";
+import { COLORS, baseLayout, extractSerie, periodoToISODate } from "../charts";
 import { comercioPorPibJoin, okunRegression, empleoAnualDiciembre } from "../derivations";
 import type { ChartDef } from "./types";
 
@@ -40,7 +40,7 @@ export const pibTotal: ChartDef = {
     const { x, y } = extractSerie(pib!.serie, "pib_total");
     return {
       traces: [{ name: "PIB", x, y, mode: "lines",
-        line: { color: "#2563eb", width: 2.2 }, fill: "tozeroy",
+        line: { color: COLORS.brand, width: 2.2 }, fill: "tozeroy",
         fillcolor: "rgba(37,99,235,0.06)",
         hovertemplate: "<b>%{x|%Y}</b><br>PIB: %{y:,.1f} mil M USD<extra></extra>" }],
       layout: baseLayout(),
@@ -60,7 +60,7 @@ export const pibPerCapita: ChartDef = {
     const { x, y } = extractSerie(pib!.serie, "pib_percapita");
     return {
       traces: [{ name: "PIB per cápita", x, y, mode: "lines",
-        line: { color: "#2563eb", width: 2.2 }, fill: "tozeroy",
+        line: { color: COLORS.brand, width: 2.2 }, fill: "tozeroy",
         fillcolor: "rgba(37,99,235,0.06)",
         hovertemplate: "<b>%{x|%Y}</b><br>PIB per cápita: %{y:,.0f} USD<extra></extra>" }],
       layout: baseLayout({
@@ -84,7 +84,7 @@ export const poblacionPib: ChartDef = {
     const { x: x2, y: y2 } = extractSerie(pib!.serie, "pib_percapita");
     return {
       traces: [
-        { name: "Población", x: x1, y: y1, mode: "lines", line: { color: "#2563eb", width: 2.2 },
+        { name: "Población", x: x1, y: y1, mode: "lines", line: { color: COLORS.brand, width: 2.2 },
           yaxis: "y", hovertemplate: "<b>%{x|%Y}</b><br>Población: %{y:,.0f}<extra></extra>" },
         { name: "PIB per cápita", x: x2, y: y2, mode: "lines",
           line: { color: "#16a34a", width: 2.2, dash: "dash" },
@@ -93,7 +93,7 @@ export const poblacionPib: ChartDef = {
       layout: baseLayout({
         showlegend: true, legend: { orientation: "h", yanchor: "bottom", y: 1.04, xanchor: "left", x: 0, font: { size: 11 }, bgcolor: "rgba(0,0,0,0)" },
         yaxis: { showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
-          tickfont: { size: 11, color: "#2563eb" }, ticksuffix: "", automargin: true },
+          tickfont: { size: 11, color: COLORS.brand }, ticksuffix: "", automargin: true },
         yaxis2: { overlaying: "y", side: "right", showgrid: false, tickfont: { size: 11, color: "#16a34a" }, automargin: true },
       }),
     };
@@ -166,7 +166,7 @@ export const pibComercio: ChartDef = {
     return {
       traces: [
         { name: "PIB total", x, y: pibArr, mode: "lines",
-          line: { color: "#2563eb", width: 2.2 }, fill: "tozeroy", fillcolor: "rgba(37,99,235,0.05)",
+          line: { color: COLORS.brand, width: 2.2 }, fill: "tozeroy", fillcolor: "rgba(37,99,235,0.05)",
           yaxis: "y", hovertemplate: "<b>%{x|%Y}</b><br>PIB: <b>%{y:,.1f} mil M USD</b><extra></extra>" },
         { name: "Exportaciones (% PIB)", x, y: exp, mode: "lines",
           line: { color: "#16a34a", width: 2.2 }, yaxis: "y2",
@@ -178,9 +178,9 @@ export const pibComercio: ChartDef = {
         legend: { orientation: "h", yanchor: "bottom", y: 1.04, xanchor: "left", x: 0, font: { size: 11 }, bgcolor: "rgba(0,0,0,0)" },
         hovermode: "x unified",
         yaxis: {
-          title: { text: "PIB (mil M USD)", font: { size: 11, color: "#2563eb" } },
+          title: { text: "PIB (mil M USD)", font: { size: 11, color: COLORS.brand } },
           showgrid: true, gridcolor: "rgba(208,215,220,0.4)", zeroline: false,
-          tickfont: { size: 11, color: "#2563eb" }, ticksuffix: "", automargin: true,
+          tickfont: { size: 11, color: COLORS.brand }, ticksuffix: "", automargin: true,
         },
         yaxis2: {
           title: { text: "Exportaciones (% PIB)", font: { size: 11, color: "#16a34a" } },
@@ -222,7 +222,7 @@ export const leyOkun: ChartDef = {
     return {
       traces: [
         { name: "Año", x: xs, y: ys, mode: "markers+text", type: "scatter",
-          marker: { size: 9, color: "#2563eb", line: { color: "white", width: 1 } },
+          marker: { size: 9, color: COLORS.brand, line: { color: "white", width: 1 } },
           text: puntos.map((p) => p.year.slice(2)),
           textposition: "top center",
           textfont: { size: 9, color: "#475569" },

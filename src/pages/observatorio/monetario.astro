@@ -1,0 +1,455 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import MapaColombia from "../../components/observatorio/MapaColombia.astro";
+import DashboardNav from "../../components/observatorio/DashboardNav.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+import IndicadorCard from "../../components/observatorio/IndicadorCard.astro";
+import PageHeader from "../../components/observatorio/PageHeader.astro";
+import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
+import Chart from "../../components/observatorio/Chart.astro";
+import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
+import { getExterno } from "../../lib/observatorio/data";
+import { formatPeriodo } from "../../lib/observatorio/formatters";
+
+const ext = getExterno();
+const { indicadores, metadata } = ext;
+
+const trmActual = indicadores.trm.actual.valor ?? 0;
+const reservasActual = indicadores.reservas_netas.actual.valor ?? 0;
+const cuentaCorrienteActual = indicadores.cuenta_corriente.actual.valor ?? 0;
+const deudaExternaActual = indicadores.deuda_externa.actual.valor ?? 0;
+const ultimoPeriodo = formatPeriodo(metadata.cobertura.ultimo_periodo);
+
+const fuenteBanrepTRM = metadata.fuentes.banrep_trm;
+const fuenteBancoMundial = metadata.fuentes.banco_mundial;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Dataset",
+      name: "Observatorio de Datos de Colombia — Sector Monetario y Externo",
+      description:
+        "Indicadores del sector monetario y externo de Colombia: TRM (USD/COP), reservas internacionales, cuenta corriente, IED y deuda externa. Datos del Banco de la República y Banco Mundial.",
+      url: "https://fredericksalazar.com/observatorio/monetario/",
+      keywords: [
+        "TRM Colombia",
+        "tasa de cambio Colombia",
+        "reservas internacionales",
+        "cuenta corriente Colombia",
+        "deuda externa Colombia",
+        "pass-through cambiario",
+      ],
+      creator: {
+        "@type": "Person",
+        name: "Frederick Salazar",
+        url: "https://fredericksalazar.com/",
+      },
+      isBasedOn: [
+        { "@type": "CreativeWork", name: fuenteBanrepTRM.nombre, url: fuenteBanrepTRM.url },
+        { "@type": "CreativeWork", name: fuenteBancoMundial.nombre, url: fuenteBancoMundial.url },
+      ],
+      temporalCoverage: `${metadata.cobertura.primer_periodo}/${metadata.cobertura.ultimo_periodo}`,
+      dateModified: metadata.ultima_actualizacion,
+      license: "https://creativecommons.org/licenses/by/4.0/",
+      spatialCoverage: { "@type": "Place", name: "Colombia" },
+    },
+    {
+      "@type": "Article",
+      headline: "Sector Monetario y Externo de Colombia",
+      description:
+        "Análisis de la TRM peso/dólar, las reservas internacionales, la cuenta corriente y la deuda externa de Colombia. Cómo el dólar mueve precios, deuda y poder adquisitivo.",
+      author: { "@type": "Person", name: "Frederick Salazar" },
+      datePublished: "2026-05-28",
+      dateModified: metadata.ultima_actualizacion,
+      about: [
+        { "@type": "Thing", name: "Tasa de cambio" },
+        { "@type": "Thing", name: "Reservas internacionales" },
+        { "@type": "Thing", name: "Cuenta corriente" },
+        { "@type": "Thing", name: "Deuda externa" },
+        { "@type": "Place", name: "Colombia" },
+      ],
+      mainEntityOfPage: "https://fredericksalazar.com/observatorio/monetario/",
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="Sector Monetario · Observatorio de Datos de Colombia"
+  description="TRM, reservas internacionales, cuenta corriente, IED y deuda externa de Colombia. Datos del Banco de la República y Banco Mundial."
+  image="/images/observatorio.png"
+  fullWidth={true}
+>
+  <Hero
+    badge={{ text: "Sector Monetario · Colombia" }}
+    title="Observatorio de Datos de Colombia"
+    subtitle="El Observatorio de Datos de Colombia consolida, procesa y publica los indicadores macroeconómicos que definen el pulso del país: para que cualquier persona lea la economía colombiana como un gerente lee el dashboard de su empresa."
+    tags={["Inflación", "Empleo", "Comercio Exterior", "Sector Fiscal", "Monetario"]}
+    showPartners={false}
+  >
+    <MapaColombia slot="visual" />
+  </Hero>
+  <DashboardNav active="monetario" />
+
+  <div class="observatorio-container">
+    <PageHeader
+      eyebrow={`Actualizado · ${ultimoPeriodo}`}
+      hint={`TRM $${trmActual.toLocaleString('es-CO')} · Reservas ${reservasActual.toFixed(1)} mil M USD · Deuda externa ${deudaExternaActual}% PIB`}
+    >
+      La TRM en Colombia se ubica en
+      <strong>${trmActual.toLocaleString('es-CO')}</strong>.
+      El sector monetario y externo refleja cuánto vale el dólar, cuántas divisas guarda
+      el país y qué tan dependiente del crédito externo es la economía colombiana.
+    </PageHeader>
+
+    <section class="kpi-row" aria-label="Indicadores actuales">
+      <IndicadorCard
+        titulo="TRM"
+        indicador={indicadores.trm}
+        semantic="comercio"
+        deltaLabel="vs mes anterior"
+      />
+      <IndicadorCard
+        titulo="Reservas internacionales"
+        indicador={indicadores.reservas_netas}
+        semantic="ocupacion"
+        deltaLabel="vs año anterior"
+      />
+      <IndicadorCard
+        titulo="Cuenta corriente"
+        indicador={indicadores.cuenta_corriente}
+        semantic={cuentaCorrienteActual < 0 ? "deficit" : "superavit"}
+        deltaLabel="vs año anterior"
+        unidadOverride="pp"
+      />
+      <IndicadorCard
+        titulo="Deuda externa"
+        indicador={indicadores.deuda_externa}
+        semantic="comercio"
+        deltaLabel="vs año anterior"
+      />
+    </section>
+
+    <IndicadorPanel
+      numero="01"
+      eyebrow="Tasa de cambio"
+      titulo="La TRM peso/dólar"
+      lead="El precio del dólar mueve precios, deuda y poder adquisitivo. Cuando el peso se devalúa, todo lo importado se encarece y la inflación recibe presión adicional."
+      fuente={fuenteBanrepTRM}
+    >
+      <Fragment slot="text">
+        <p>
+          La <strong>TRM</strong> (Tasa Representativa del Mercado) es el promedio de las
+          operaciones interbancarias de compra y venta de dólares del día. Es la referencia
+          oficial para liquidar contratos en moneda extranjera, deuda en dólares y operaciones
+          de comercio exterior.
+        </p>
+        <p>
+          Hoy se ubica en <strong>${trmActual.toLocaleString('es-CO')} COP/USD</strong>. La tendencia
+          importa más que el nivel: una devaluación sostenida adelanta presiones inflacionarias
+          en bienes importados y combustibles.
+        </p>
+      </Fragment>
+      <Chart slot="visual" id="trm-historica" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="02"
+      eyebrow="Política monetaria internacional"
+      titulo="Reservas internacionales netas"
+      lead="El colchón de divisas con que el país enfrenta choques externos. Más reservas implica mayor capacidad de defender el peso y honrar la deuda en dólares."
+      fuente={fuenteBancoMundial}
+    >
+      <Fragment slot="text">
+        <p>
+          Las <strong>reservas internacionales</strong> son los activos externos netos
+          administrados por el Banco de la República. Funcionan como seguro contra crisis
+          cambiarias y sostienen la credibilidad del peso frente a salidas masivas de capital.
+        </p>
+        <p>
+          El FMI sugiere mantenerlas por encima de ciertas métricas (deuda externa de corto
+          plazo, meses de importaciones). Colombia cierra el dato más reciente con
+          <strong> {reservasActual.toFixed(1)} mil M USD</strong> en reservas netas.
+        </p>
+      </Fragment>
+      <Chart slot="visual" id="reservas-internacionales" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="03"
+      eyebrow="Posición externa"
+      titulo="Cuenta corriente (% PIB)"
+      lead="La cuenta corriente resume si el país gasta más afuera de lo que ingresa. Un déficit persistente exige financiamiento externo y aumenta la sensibilidad a salidas de capital."
+      fuente={fuenteBancoMundial}
+    >
+      <Fragment slot="text">
+        <p>
+          La <strong>cuenta corriente</strong> mide el saldo neto entre lo que Colombia
+          recibe del exterior (exportaciones, remesas, rendimientos) y lo que paga afuera
+          (importaciones, intereses de deuda, dividendos a inversionistas).
+        </p>
+        <p>
+          Colombia ha registrado <strong>déficit de cuenta corriente</strong> la mayor parte
+          de las últimas dos décadas, financiado principalmente con IED y deuda externa.
+          El dato más reciente cierra en <strong>{cuentaCorrienteActual}% del PIB</strong>.
+        </p>
+      </Fragment>
+      <Chart slot="visual" id="cuenta-corriente-pib" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="04"
+      eyebrow="Endeudamiento externo"
+      titulo="Deuda externa total (% INB)"
+      lead="Stock de obligaciones con acreedores externos como porcentaje del INB. Indicador clave de vulnerabilidad financiera de mediano plazo."
+      fuente={fuenteBancoMundial}
+    >
+      <Fragment slot="text">
+        <p>
+          La <strong>deuda externa</strong> incluye obligaciones del sector público y privado
+          con acreedores no residentes. Una porción importante está nominada en dólares: cuando
+          el peso se devalúa, su servicio se encarece automáticamente en términos locales.
+        </p>
+        <p>
+          La deuda externa total cerró en <strong>{deudaExternaActual}% del PIB</strong>
+          en el último dato disponible. El crecimiento sostenido del indicador puede limitar
+          el espacio fiscal y la capacidad de respuesta ante choques externos.
+        </p>
+      </Fragment>
+      <Chart slot="visual" id="deuda-externa-pib" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="05"
+      eyebrow="Pass-through"
+      titulo="TRM × inflación: cómo el dólar moja los precios"
+      lead="Los repuntes de la TRM suelen anticipar repuntes de inflación con 3 a 9 meses de rezago. Es el principal canal cambiario de transmisión a precios."
+      fuente={fuenteBanrepTRM}
+    >
+      <Fragment slot="text">
+        <p>
+          Los <strong>bienes importados</strong> y las <strong>materias primas</strong> son
+          la vía directa de transmisión cambiaria. Una devaluación del 10% se traslada
+          históricamente entre 1 y 2 puntos porcentuales de inflación al consumidor en
+          los meses siguientes.
+        </p>
+        <p>
+          El gráfico superpone la TRM mensual (eje izquierdo) con la inflación anual
+          (eje derecho) desde 2003. Los picos de devaluación coinciden con repuntes
+          inflacionarios posteriores, especialmente visibles en 2015-2016 y 2022-2023.
+        </p>
+      </Fragment>
+      <Chart slot="visual" id="pass-through-trm-inflacion" embedded={true} />
+    </IndicadorPanel>
+
+    <section class="glosario-block" aria-label="Glosario y fuentes">
+      <header class="glosario-block__header">
+        <span class="glosario-block__eyebrow">Referencia</span>
+        <h2 class="glosario-block__titulo">Glosario y fuentes</h2>
+      </header>
+      <div class="glosario-grid">
+        <article class="glosario-card">
+          <h3 class="glosario-card__titulo">TRM</h3>
+          <p class="glosario-card__desc">Tasa Representativa del Mercado USD/COP, promedio mensual del cierre diario publicado por BanRep.</p>
+        </article>
+        <article class="glosario-card">
+          <h3 class="glosario-card__titulo">Reservas netas</h3>
+          <p class="glosario-card__desc">Activos externos netos del Banco de la República, en miles de millones de USD. Colchón frente a crisis cambiarias.</p>
+        </article>
+        <article class="glosario-card">
+          <h3 class="glosario-card__titulo">Cuenta corriente</h3>
+          <p class="glosario-card__desc">Saldo neto en bienes, servicios, rentas y transferencias con el exterior, como % del PIB.</p>
+        </article>
+        <article class="glosario-card">
+          <h3 class="glosario-card__titulo">Deuda externa</h3>
+          <p class="glosario-card__desc">Stock de obligaciones con acreedores externos como % del INB. Mide vulnerabilidad de mediano plazo.</p>
+        </article>
+      </div>
+      <footer class="glosario-block__footer">
+        <span>
+          <strong>Fuentes:</strong>
+          <a href={fuenteBanrepTRM.url} target="_blank" rel="noopener noreferrer">Banco de la República — TRM</a>
+          ·
+          <a href={fuenteBancoMundial.url} target="_blank" rel="noopener noreferrer">Banco Mundial — WDI</a>
+        </span>
+        <span class="glosario-block__cobertura">
+          Cobertura: {metadata.cobertura.primer_periodo} → {metadata.cobertura.ultimo_periodo}
+        </span>
+      </footer>
+    </section>
+
+    <DashboardFooter
+      fuentes={[fuenteBanrepTRM, fuenteBancoMundial]}
+      ultimaActualizacion={metadata.ultima_actualizacion}
+      definiciones={[
+        {
+          titulo: "TRM",
+          texto: "Tasa Representativa del Mercado USD/COP, promedio mensual del cierre diario (BanRep)."
+        },
+        {
+          titulo: "Reservas netas",
+          texto: "Activos externos netos del Banco de la República, en miles de millones de USD."
+        },
+        {
+          titulo: "Cuenta corriente",
+          texto: "Saldo en bienes, servicios, rentas y transferencias con el exterior, como porcentaje del PIB (WDI BN.CAB.XOKA.GD.ZS)."
+        },
+        {
+          titulo: "Deuda externa",
+          texto: "Stock total de obligaciones externas como porcentaje del INB (WDI DT.DOD.DECT.GN.ZS)."
+        },
+        {
+          titulo: "Pass-through cambiario",
+          texto: "Transmisión de una variación en la TRM hacia la inflación al consumidor, generalmente con rezago de 3 a 9 meses."
+        },
+      ]}
+      cobertura={`${metadata.cobertura.primer_periodo} → ${metadata.cobertura.ultimo_periodo} · ${metadata.cobertura.total_registros} registros`}
+    />
+  </div>
+
+  <PlotlyLoader />
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>
+
+<style>
+  .observatorio-container {
+    width: 97%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 1.75rem 0 3rem;
+  }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin: 0 auto 1.5rem;
+  }
+
+  @media (max-width: 1024px) {
+    .kpi-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .kpi-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ── Glosario ── */
+  .glosario-block {
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .glosario-block__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .glosario-block__eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .glosario-block__titulo {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--color-text-primary);
+    letter-spacing: -0.015em;
+  }
+
+  .glosario-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .glosario-card {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    background: var(--color-bg, #fff);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .glosario-card:hover {
+    border-color: rgba(37, 99, 235, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .glosario-card__titulo {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 0.4rem;
+  }
+
+  .glosario-card__desc {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .glosario-block__footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .glosario-block__footer a {
+    color: var(--color-accent);
+    text-decoration: none;
+    margin: 0 0.15rem;
+  }
+
+  .glosario-block__footer a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 1024px) {
+    .glosario-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .glosario-block {
+      padding: 1.25rem;
+      border-radius: 14px;
+    }
+    .glosario-grid {
+      grid-template-columns: 1fr;
+    }
+    .glosario-block__titulo {
+      font-size: 1.3rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .observatorio-container {
+      width: 100%;
+      padding: 1.25rem 1rem 2rem;
+    }
+  }
+</style>

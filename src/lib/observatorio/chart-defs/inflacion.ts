@@ -119,7 +119,7 @@ export const frenoAcelerador: ChartDef = {
         { name: "Inflación > Tasa (acelerador, tasa real negativa)", x, y: tasaExpansiva, mode: "lines",
           fill: "tonexty", fillcolor: "rgba(0, 180, 80, 0.25)", line: { width: 0 }, hoverinfo: "skip" },
         { name: "Tasa BanRep", x, y: tasa, mode: "lines",
-          line: { color: "#2563eb", width: 2.2, shape: "hv" },
+          line: { color: COLORS.brand, width: 2.2, shape: "hv" },
           hovertemplate: "<b>%{x|%b %Y}</b><br>Tasa BanRep: %{y:.2f}%<extra></extra>" },
         { name: "Inflación anual", x, y: infl, mode: "lines",
           line: { color: "#dc2626", width: 2.2 },
@@ -172,7 +172,7 @@ export const pibInflacion: ChartDef = {
     return {
       traces: [
         { name: "Crecimiento PIB", x, y: crec, mode: "lines+markers",
-          line: { color: "#2563eb", width: 2.2 }, marker: { size: 6, color: "#2563eb" },
+          line: { color: COLORS.brand, width: 2.2 }, marker: { size: 6, color: COLORS.brand },
           hovertemplate: "<b>%{x|%Y}</b><br>Crecimiento PIB: <b>%{y:.2f}%</b><extra></extra>" },
         { name: "Inflación promedio", x, y: infl, mode: "lines+markers",
           line: { color: "#dc2626", width: 2.2 }, marker: { size: 6, color: "#dc2626" },

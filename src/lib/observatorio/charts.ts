@@ -1,6 +1,7 @@
 interface PeriodoRow { periodo: string; }
 
 export const COLORS = {
+  brand: "#2563eb",
   inflacion: "#dc2626",
   tasa: "#2563eb",
   externo: "#ea580c",

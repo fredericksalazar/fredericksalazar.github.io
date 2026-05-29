@@ -1,7 +1,13 @@
 import { COLORS, baseLayout, periodoToISODate } from "../charts";
 import { trmInflacionJoin } from "../derivations";
+import {
+  getPresidentesClient,
+  presidenteForYear,
+  presidentesEnLeyenda,
+  type Presidente,
+} from "../presidentes-client";
 import type { ChartDef } from "./types";
-import type { ExternoSerieFila } from "../types";
+import type { ExternoData, ExternoSerieFila } from "../types";
 
 /**
  * Extrae (x, y) filtrando filas donde el campo es null.
@@ -26,9 +32,172 @@ function extractNonNull(
 }
 
 const FUENTE_BANREP_TRM = "Banco de la Republica — TRM (promedio mensual)";
-const FUENTE_BANREP_RESERVAS = "Banco de la Republica — Reservas";
-const FUENTE_BANREP_BALANZA = "Banco de la Republica (TRM) — DANE (IPC)";
 const FUENTE_BANCO_MUNDIAL = "Banco Mundial — WDI";
+const FUENTE_BANREP_BALANZA = "Banco de la Republica (TRM) — DANE (IPC)";
+
+// ──────────────────────────────────────────────────────────────────────
+// Helpers compartidos para charts con doble toggle (linea ↔ barras ± presidente)
+// ──────────────────────────────────────────────────────────────────────
+
+/** HTML de los dos toggles (linea↔barras + presidente). `prefix` evita colisiones. */
+function makeTogglesHtml(prefix: string): string {
+  return `
+    <div class="trm-toggles">
+      <label class="pres-toggle" data-${prefix}-bars-toggle>
+        <span class="pres-toggle__label">Mostrar como barras</span>
+        <input type="checkbox" class="pres-toggle__input" />
+        <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
+      </label>
+      <label class="pres-toggle" data-${prefix}-presidente-toggle style="display: none;">
+        <span class="pres-toggle__label">Color por presidente</span>
+        <input type="checkbox" class="pres-toggle__input" />
+        <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
+      </label>
+    </div>
+  `;
+}
+
+/** HTML para chart que es SOLO barras (azul por defecto, con toggle de presidente). */
+function makePresOnlyToggleHtml(prefix: string): string {
+  return `
+    <div class="trm-toggles">
+      <label class="pres-toggle" data-${prefix}-presidente-toggle>
+        <span class="pres-toggle__label">Color por presidente</span>
+        <input type="checkbox" class="pres-toggle__input" />
+        <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
+      </label>
+    </div>
+  `;
+}
+
+function makeLegendHtml(prefix: string, presidentes: Presidente[]): string {
+  return `
+    <div class="pres-legend" data-${prefix}-presidente-legend data-visible="false" aria-label="Presidentes representados en el grafico">
+      ${presidentes.map((p) => `
+        <span class="pres-chip">
+          <span class="pres-chip__dot" style="background:${p.color}"></span>
+          <span class="pres-chip__name">${p.nombre}</span>
+          <span class="pres-chip__period">${new Date(p.inicio).getFullYear()}–${new Date(p.fin).getFullYear()}</span>
+        </span>
+      `).join("")}
+    </div>
+  `;
+}
+
+interface TogglableData {
+  x: string[];
+  y: number[];
+  colorsByPresident: string[];
+  customdata: [string, string][];
+  leyenda: Presidente[];
+}
+
+/** Prepara x, y, colores y customdata por presidente para los toggles. */
+async function prepareTogglableData(
+  externo: ExternoData,
+  field: "trm" | "reservas_netas",
+): Promise<TogglableData> {
+  const presidentes = await getPresidentesClient();
+  const data = externo.serie.filter((r): r is ExternoSerieFila & Record<typeof field, number> => r[field] !== null);
+  const x = data.map((r) => periodoToISODate(r.periodo));
+  const y = data.map((r) => r[field] as number);
+  const colorsByPresident = data.map((r) => {
+    const p = presidenteForYear(parseInt(r.periodo.slice(0, 4), 10), presidentes);
+    return p?.color ?? COLORS.brand;
+  });
+  const customdata: [string, string][] = data.map((r) => {
+    const p = presidenteForYear(parseInt(r.periodo.slice(0, 4), 10), presidentes);
+    return [p?.nombre ?? "Sin datos", p?.partido ?? "—"];
+  });
+  const yearsInSerie = Array.from(new Set(data.map((r) => r.periodo.slice(0, 4))));
+  const leyenda = presidentesEnLeyenda(yearsInSerie, presidentes);
+  return { x, y, colorsByPresident, customdata, leyenda };
+}
+
+/** Vincula los dos toggles al state machine usando Plotly.react. */
+function bindTogglableChart(opts: {
+  target: HTMLElement;
+  prefix: string;
+  lineTrace: () => Record<string, unknown>;
+  barTrace: (withPresident: boolean) => Record<string, unknown>;
+  layout: Record<string, unknown>;
+}): void {
+  const { target, prefix, lineTrace, barTrace, layout } = opts;
+  const root = target.closest<HTMLElement>("[data-chart-root]");
+  if (!root) return;
+
+  const barsToggle = root.querySelector<HTMLElement>(`[data-${prefix}-bars-toggle]`);
+  const presToggle = root.querySelector<HTMLElement>(`[data-${prefix}-presidente-toggle]`);
+  const legend = root.querySelector<HTMLElement>(`[data-${prefix}-presidente-legend]`);
+  if (!barsToggle || !presToggle) return;
+
+  const barsInput = barsToggle.querySelector<HTMLInputElement>(".pres-toggle__input");
+  const presInput = presToggle.querySelector<HTMLInputElement>(".pres-toggle__input");
+  if (!barsInput || !presInput) return;
+
+  // Evitar binding duplicado si el chart re-monta sobre el mismo nodo
+  const boundKey = `${prefix}ToggleBound`;
+  if (root.dataset[boundKey] === "true") return;
+  root.dataset[boundKey] = "true";
+
+  let isBars = false;
+  let isPresidentes = false;
+
+  const apply = () => {
+    presToggle.style.display = isBars ? "" : "none";
+    if (legend) legend.setAttribute("data-visible", (isBars && isPresidentes) ? "true" : "false");
+    const nextTrace = isBars ? barTrace(isPresidentes) : lineTrace();
+    if (window.Plotly) {
+      window.Plotly.react(target, [nextTrace], layout);
+    }
+  };
+
+  barsInput.addEventListener("change", () => {
+    isBars = barsInput.checked;
+    if (!isBars) {
+      isPresidentes = false;
+      presInput.checked = false;
+    }
+    apply();
+  });
+  presInput.addEventListener("change", () => {
+    isPresidentes = presInput.checked;
+    apply();
+  });
+}
+
+/** Vincula un toggle UNICO de presidente sobre un chart de barras. */
+function bindPresOnlyChart(opts: {
+  target: HTMLElement;
+  prefix: string;
+  barTrace: (withPresident: boolean) => Record<string, unknown>;
+  layout: Record<string, unknown>;
+}): void {
+  const { target, prefix, barTrace, layout } = opts;
+  const root = target.closest<HTMLElement>("[data-chart-root]");
+  if (!root) return;
+
+  const presToggle = root.querySelector<HTMLElement>(`[data-${prefix}-presidente-toggle]`);
+  const legend = root.querySelector<HTMLElement>(`[data-${prefix}-presidente-legend]`);
+  const presInput = presToggle?.querySelector<HTMLInputElement>(".pres-toggle__input");
+  if (!presInput) return;
+
+  const boundKey = `${prefix}ToggleBound`;
+  if (root.dataset[boundKey] === "true") return;
+  root.dataset[boundKey] = "true";
+
+  presInput.addEventListener("change", () => {
+    const checked = presInput.checked;
+    if (legend) legend.setAttribute("data-visible", checked ? "true" : "false");
+    if (window.Plotly) {
+      window.Plotly.react(target, [barTrace(checked)], layout);
+    }
+  });
+}
+
+// ──────────────────────────────────────────────────────────────────────
+// TRM (mensual)
+// ──────────────────────────────────────────────────────────────────────
 
 export const trmHistorica: ChartDef = {
   id: "trm-historica",
@@ -38,47 +207,92 @@ export const trmHistorica: ChartDef = {
   datasets: ["externo"],
   height: 340,
   ariaLabel: "Evolucion mensual de la TRM USD/COP",
-  build({ externo }) {
-    const { x, y } = extractNonNull(externo!.serie, "trm");
+  async build({ externo }) {
+    const { x, y, colorsByPresident, customdata, leyenda } = await prepareTogglableData(externo!, "trm");
+
+    const layout = baseLayout({
+      yaxis: {
+        showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
+        tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true,
+      },
+    });
+
+    const lineTrace = () => ({
+      name: "TRM", x, y, mode: "lines",
+      line: { color: COLORS.brand, width: 2.2 },
+      fill: "tozeroy", fillcolor: "rgba(37, 99, 235, 0.06)",
+      hovertemplate: "<b>%{x|%b %Y}</b><br>TRM: $%{y:,.0f} COP/USD<extra></extra>",
+    });
+
+    const barTrace = (withPresident: boolean) => ({
+      type: "bar", x, y,
+      marker: {
+        color: withPresident ? colorsByPresident : COLORS.brand,
+        line: { color: "rgba(0,0,0,0.08)", width: 0.5 },
+      },
+      customdata: withPresident ? customdata : undefined,
+      hovertemplate: withPresident
+        ? "<b>%{x|%b %Y}</b><br>TRM: <b>$%{y:,.0f}</b><br>Presidente: %{customdata[0]}<br><span style='color:#94a3b8'>%{customdata[1]}</span><extra></extra>"
+        : "<b>%{x|%b %Y}</b><br>TRM: <b>$%{y:,.0f} COP/USD</b><extra></extra>",
+    });
+
     return {
-      traces: [{
-        name: "TRM", x, y, mode: "lines",
-        line: { color: COLORS.externo, width: 2.2 },
-        fill: "tozeroy", fillcolor: "rgba(234, 88, 12, 0.06)",
-        hovertemplate: "<b>%{x|%b %Y}</b><br>TRM: $%{y:,.0f} COP/USD<extra></extra>",
-      }],
-      layout: baseLayout({
-        yaxis: { showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
-          tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true },
-      }),
+      traces: [lineTrace()],
+      layout,
+      headerHtml: makeTogglesHtml("trm"),
+      footerHtml: makeLegendHtml("trm", leyenda),
+      onMount: (target) => bindTogglableChart({ target, prefix: "trm", lineTrace, barTrace, layout }),
     };
   },
 };
+
+// ──────────────────────────────────────────────────────────────────────
+// Reservas internacionales (anual)
+// ──────────────────────────────────────────────────────────────────────
 
 export const reservasInternacionales: ChartDef = {
   id: "reservas-internacionales",
   titulo: "Reservas internacionales netas",
   pregunta: "¿Cuanto colchon de divisas tiene Colombia para enfrentar choques externos?",
-  fuenteTexto: FUENTE_BANREP_RESERVAS,
+  fuenteTexto: FUENTE_BANCO_MUNDIAL,
   datasets: ["externo"],
   height: 340,
-  ariaLabel: "Evolucion mensual de las reservas internacionales netas de Colombia",
-  build({ externo }) {
-    const { x, y } = extractNonNull(externo!.serie, "reservas_netas");
+  ariaLabel: "Evolucion anual de las reservas internacionales netas de Colombia",
+  async build({ externo }) {
+    const { x, y, colorsByPresident, customdata, leyenda } = await prepareTogglableData(externo!, "reservas_netas");
+
+    const layout = baseLayout({
+      yaxis: {
+        showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
+        tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true,
+      },
+    });
+
+    const barTrace = (withPresident: boolean) => ({
+      type: "bar", x, y,
+      marker: {
+        color: withPresident ? colorsByPresident : COLORS.brand,
+        line: { color: "rgba(0,0,0,0.08)", width: 0.5 },
+      },
+      customdata: withPresident ? customdata : undefined,
+      hovertemplate: withPresident
+        ? "<b>%{x|%Y}</b><br>Reservas: <b>%{y:,.1f} mil M USD</b><br>Presidente: %{customdata[0]}<br><span style='color:#94a3b8'>%{customdata[1]}</span><extra></extra>"
+        : "<b>%{x|%Y}</b><br>Reservas: <b>%{y:,.1f} mil M USD</b><extra></extra>",
+    });
+
     return {
-      traces: [{
-        name: "Reservas", x, y, mode: "lines",
-        line: { color: COLORS.tasa, width: 2.2 },
-        fill: "tozeroy", fillcolor: "rgba(37, 99, 235, 0.06)",
-        hovertemplate: "<b>%{x|%b %Y}</b><br>Reservas: %{y:,.1f} mil M USD<extra></extra>",
-      }],
-      layout: baseLayout({
-        yaxis: { showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
-          tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true },
-      }),
+      traces: [barTrace(false)],
+      layout,
+      headerHtml: makePresOnlyToggleHtml("res"),
+      footerHtml: makeLegendHtml("res", leyenda),
+      onMount: (target) => bindPresOnlyChart({ target, prefix: "res", barTrace, layout }),
     };
   },
 };
+
+// ──────────────────────────────────────────────────────────────────────
+// Resto de charts del sector externo (sin toggles)
+// ──────────────────────────────────────────────────────────────────────
 
 export const cuentaCorrientePib: ChartDef = {
   id: "cuenta-corriente-pib",

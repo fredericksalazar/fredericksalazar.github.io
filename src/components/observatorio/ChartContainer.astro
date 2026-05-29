@@ -22,6 +22,9 @@ const { titulo, pregunta, fuente, fuenteTexto, embedded = false } = Astro.props;
       <p class="chart-state__message" data-chart-error-message>No se pudo cargar el gráfico.</p>
       <button type="button" class="chart-state__retry" data-chart-retry>Reintentar</button>
     </div>
+    <div class="chart-embedded__footer">
+      <slot name="footer-extra" />
+    </div>
   </div>
 ) : (
 <article class="chart-card" data-chart-root>
@@ -72,6 +75,14 @@ const { titulo, pregunta, fuente, fuenteTexto, embedded = false } = Astro.props;
   }
 
   .chart-embedded__extra:empty {
+    display: none;
+  }
+
+  .chart-embedded__footer {
+    margin-top: 0.5rem;
+  }
+
+  .chart-embedded__footer:empty {
     display: none;
   }
 

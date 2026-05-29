@@ -60,6 +60,15 @@ const chartElementId = `chart-${def.id}`;
   .banda-dot--mid { background: rgba(234,179,8,0.35); border: 1px solid rgba(234,179,8,0.55); }
   .banda-dot--high { background: rgba(220,38,38,0.35); border: 1px solid rgba(220,38,38,0.5); }
 
+  /* Wrapper para multiples toggles en el header de un chart (ej. TRM) */
+  .trm-toggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem 1rem;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
   /* Presidente toggle + leyenda */
   .pres-toggle {
     position: relative; display: inline-flex; align-items: center;

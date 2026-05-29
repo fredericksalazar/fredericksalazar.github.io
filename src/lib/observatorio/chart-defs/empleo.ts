@@ -1,4 +1,4 @@
-import { baseLayout, extractSerie } from "../charts";
+import { COLORS, baseLayout, extractSerie } from "../charts";
 import type { ChartDef } from "./types";
 
 const FUENTE_GEIH = "DANE — Gran Encuesta Integrada de Hogares (GEIH)";
@@ -17,7 +17,7 @@ export const desempleo: ChartDef = {
     return {
       traces: [{
         name: "Tasa de desempleo", x, y, mode: "lines",
-        line: { color: "#2563eb", width: 2.2 }, fill: "tozeroy",
+        line: { color: COLORS.brand, width: 2.2 }, fill: "tozeroy",
         fillcolor: "rgba(37, 99, 235, 0.06)",
         hovertemplate: "<b>%{x|%b %Y}</b><br>Desempleo: %{y:.2f}%<extra></extra>",
       }],
@@ -40,7 +40,7 @@ export const subempleo: ChartDef = {
     return {
       traces: [{
         name: "Tasa de subempleo", x, y, mode: "lines",
-        line: { color: "#2563eb", width: 2.2 }, fill: "tozeroy",
+        line: { color: COLORS.brand, width: 2.2 }, fill: "tozeroy",
         fillcolor: "rgba(37, 99, 235, 0.06)",
         hovertemplate: "<b>%{x|%b %Y}</b><br>Subempleo: %{y:.2f}%<extra></extra>",
       }],
@@ -64,7 +64,7 @@ export const tgpToDual: ChartDef = {
     return {
       traces: [
         { name: "TGP", x: tgp.x, y: tgp.y, mode: "lines",
-          line: { color: "#2563eb", width: 2.2 },
+          line: { color: COLORS.brand, width: 2.2 },
           hovertemplate: "<b>%{x|%b %Y}</b><br>TGP: %{y:.2f}%<extra></extra>" },
         { name: "Tasa de Ocupación", x: to.x, y: to.y, mode: "lines",
           line: { color: "#64748b", width: 2.2, dash: "dash" },
@@ -102,7 +102,7 @@ export const brechaLaboral: ChartDef = {
         y: pares.map((p) => p.y),
         type: "bar",
         marker: {
-          color: pares.map((p) => (p.y! > 10 ? "#dc2626" : p.y! > 8 ? "#f59e0b" : "#2563eb")),
+          color: pares.map((p) => (p.y! > 10 ? "#dc2626" : p.y! > 8 ? "#f59e0b" : COLORS.brand)),
           line: { color: "rgba(0,0,0,0.05)", width: 0.5 },
         },
         hovertemplate: "<b>%{x|%b %Y}</b><br>Brecha TGP − TO: %{y:.2f} pp<extra></extra>",

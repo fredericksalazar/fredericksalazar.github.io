@@ -1,4 +1,4 @@
-import { baseLayout, extractSerie } from "../charts";
+import { COLORS, baseLayout, extractSerie } from "../charts";
 import type { ChartDef } from "./types";
 
 const FUENTE_BM = "Banco Mundial — World Development Indicators";
@@ -15,7 +15,7 @@ export const exportaciones: ChartDef = {
     const { x, y } = extractSerie(comercio!.serie, "exportaciones");
     return {
       traces: [{ name: "Exportaciones", x, y, mode: "lines",
-        line: { color: "#2563eb", width: 2.2 }, fill: "tozeroy",
+        line: { color: COLORS.brand, width: 2.2 }, fill: "tozeroy",
         fillcolor: "rgba(37, 99, 235, 0.06)",
         hovertemplate: "<b>%{x|%Y}</b><br>Exportaciones: %{y:.2f}% PIB<extra></extra>" }],
       layout: baseLayout(),
@@ -83,7 +83,7 @@ export const apertura: ChartDef = {
     const { x, y } = extractSerie(comercio!.serie, "apertura");
     return {
       traces: [{ name: "Apertura comercial", x, y, mode: "lines",
-        line: { color: "#2563eb", width: 2.2 }, fill: "tozeroy",
+        line: { color: COLORS.brand, width: 2.2 }, fill: "tozeroy",
         fillcolor: "rgba(37, 99, 235, 0.06)",
         hovertemplate: "<b>%{x|%Y}</b><br>Apertura: %{y:.2f}% PIB<extra></extra>" }],
       layout: baseLayout(),
@@ -101,7 +101,7 @@ const MATRIZ_LABELS: Record<string, string> = {
 const MATRIZ_COLORS: Record<string, string> = {
   agropecuarios: "#16a34a",
   combustibles: "#f59e0b",
-  manufacturas: "#2563eb",
+  manufacturas: COLORS.brand,
   otros: "#64748b",
 };
 
@@ -162,7 +162,7 @@ export const productosTradicionales: ChartDef = {
       { key: "cafe", label: "Café", color: "#16a34a" },
       { key: "carbon", label: "Carbón", color: "#1f2328" },
       { key: "petroleo", label: "Petróleo y derivados", color: "#f59e0b" },
-      { key: "ferroniquel", label: "Ferroníquel", color: "#2563eb" },
+      { key: "ferroniquel", label: "Ferroníquel", color: COLORS.brand },
     ];
     const traces = items.map((item) => ({
       name: item.label, x: years,
