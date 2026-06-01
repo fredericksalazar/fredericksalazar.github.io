@@ -1,0 +1,119 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import EleccionesNav from "../../components/observatorio/EleccionesNav.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
+import Chart from "../../components/observatorio/Chart.astro";
+import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
+
+import { getPres2022_1v } from "../../lib/observatorio/data";
+
+const eleccion = getPres2022_1v();
+const fecha = eleccion.eleccion?.fecha || "2022-05-29";
+
+const nacional = eleccion.agregados.nacional;
+const fmtCompact = (n: number) => new Intl.NumberFormat("es-CO", { notation: "compact", maximumFractionDigits: 1 }).format(n);
+const fmtPct = (n: number) => `${(n * 100).toFixed(1)}%`;
+const fmtDec = (n: number) => n.toFixed(2);
+
+const kpis = [
+  { titulo: "Censo electoral", valor: fmtCompact(nacional.censo), sub: "Potencial sufragantes" },
+  { titulo: "Participación", valor: fmtPct(nacional.participacion), sub: `Abstención ${fmtPct(nacional.abstencion)}` },
+  { titulo: "Votos válidos", valor: fmtCompact(nacional.validos), sub: `${fmtCompact(nacional.nulos)} nulos · ${fmtCompact(nacional.no_marcados)} no marcados` },
+  { titulo: "Polarización", valor: fmtDec(eleccion.indicadores.polarizacion ?? 0), sub: "Índice (0 = consenso · 1 = máx.)" },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Dataset",
+      "name": "Resultados Elecciones Presidenciales Colombia 2022 — 1ª Vuelta",
+      "description": "Dataset consolidado de los resultados oficiales de la primera vuelta presidencial de Colombia 2022 a nivel nacional y departamental.",
+      "creator": { "@type": "Person", "name": "Frederick Salazar", "url": "https://fredericksalazar.github.io/" },
+      "isBasedOn": [
+        { "@type": "CreativeWork", "name": "Registraduría Nacional del Estado Civil", "url": "https://www.registraduria.gov.co/" },
+        { "@type": "CreativeWork", "name": "Wikipedia", "url": "https://en.wikipedia.org/wiki/2022_Colombian_presidential_election" }
+      ],
+      "spatialCoverage": { "@type": "Place", "name": "Colombia" },
+      "temporalCoverage": "2022-05-29/2022-05-29",
+      "license": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "@type": "Article",
+      "headline": "Análisis Elecciones Presidenciales Colombia 2022 — 1ª Vuelta",
+      "datePublished": "2026-06-01",
+      "author": { "@type": "Person", "name": "Frederick Salazar" },
+      "about": [
+        { "@type": "Event", "name": "Elecciones Presidenciales Colombia 2022" },
+        { "@type": "Place", "name": "Colombia" }
+      ]
+    }
+  ]
+};
+---
+<BaseLayout
+  title="Elecciones Presidenciales Colombia 2022 — Análisis 1ª Vuelta"
+  description="Análisis descriptivo de los resultados oficiales de la primera vuelta presidencial de Colombia 2022 a nivel nacional y departamental."
+  fullWidth={true}
+>
+  <Hero
+    badge={{ text: `Escrutinio definitivo · ${fecha}` }}
+    title="Elecciones Presidenciales 2022"
+    subtitle="Primera vuelta · 29 de mayo de 2022"
+  />
+  <EleccionesNav active="2022-1v" />
+  <PlotlyLoader />
+
+  <main class="observatorio-container">
+    <section class="kpi-row" aria-label="Indicadores generales 2022 1ª vuelta">
+      {kpis.map((k) => (
+        <article class="kpi-card">
+          <p class="kpi-card__label">{k.titulo}</p>
+          <p class="kpi-card__value">{k.valor}</p>
+          <p class="kpi-card__sub">{k.sub}</p>
+        </article>
+      ))}
+    </section>
+
+    <IndicadorPanel numero="1" eyebrow="Votación" titulo="Panorama general" lead="Composición de votos: válidos, nulos y no marcados.">
+      <Chart slot="visual" id="pres-2022-1v-composicion-votos" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="2" eyebrow="Candidatos" titulo="Votos por candidato" lead="Distribución total de votos válidos. Color por bloque ideológico.">
+      <Chart slot="visual" id="pres-2022-1v-votos-candidato" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="3" eyebrow="Geografía" titulo="Ganador por departamento" lead="Color del bloque ideológico del candidato ganador en cada departamento.">
+      <Chart slot="visual" id="pres-2022-1v-mapa-depto-ganador" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="4" eyebrow="Ideología" titulo="Bloques ideológicos — 2022 1ª vuelta" lead="Agrupando candidatos por ideología.">
+      <Chart slot="visual" id="pres-ideologia-2022" embedded={true} />
+    </IndicadorPanel>
+
+    <DashboardFooter
+      fuentes={[
+        { nombre: "Registraduría Nacional del Estado Civil", url: "https://www.registraduria.gov.co/", indicador: "Resultados oficiales" },
+        { nombre: "Wikipedia (en)", url: "https://en.wikipedia.org/wiki/2022_Colombian_presidential_election", indicador: "Tablas departamentales" },
+        { nombre: "Cálculo propio", url: "https://github.com/fredericksalazar/fredericksalazar.github.io", indicador: "Clasificación ideológica" },
+      ]}
+      cobertura="Elección 2022 1ª vuelta"
+      ultimaActualizacion={eleccion.metadata.ultima_actualizacion}
+    />
+  </main>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>
+
+<style>
+  .observatorio-container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 2rem; }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 0 0 2rem; }
+  .kpi-card { background: var(--card-bg, #fff); border: 1px solid var(--border, #e5e7eb); border-radius: 12px; padding: 1.25rem; }
+  .kpi-card__label { font-size: 0.75rem; color: var(--text-muted, #6b7280); text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 0.5rem; }
+  .kpi-card__value { font-size: 1.75rem; font-weight: 700; margin: 0; color: var(--text, #111827); }
+  .kpi-card__sub { font-size: 0.8rem; color: var(--text-muted, #6b7280); margin: 0.35rem 0 0; }
+  @media (max-width: 1024px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 768px) { .kpi-row { grid-template-columns: 1fr; } }
+</style>

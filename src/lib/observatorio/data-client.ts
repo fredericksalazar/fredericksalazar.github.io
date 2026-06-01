@@ -4,6 +4,8 @@ import type {
   ComercioData,
   PIBData,
   ExternoData,
+  PresEleccionData,
+  PresCandidatosData,
 } from "./types";
 import type { Presidente } from "./presidentes";
 
@@ -51,7 +53,13 @@ export const loadEmpleoAsc = () =>
 export const loadExternoAsc = () =>
   loadExterno().then((d) => ({ ...d, serie: [...d.serie].reverse() }));
 
-export type DatasetName = "inflacion" | "pib" | "comercio" | "empleo" | "externo";
+export const loadPres2026_1v = () => load<PresEleccionData>("data_pres_2026_1v");
+export const loadPres2022_1v = () => load<PresEleccionData>("data_pres_2022_1v");
+export const loadPres2022_2v = () => load<PresEleccionData>("data_pres_2022_2v");
+export const loadPresCandidatos = () => load<PresCandidatosData>("data_pres_candidatos");
+
+export type DatasetName = "inflacion" | "pib" | "comercio" | "empleo" | "externo"
+  | "pres-2026-1v" | "pres-2022-1v" | "pres-2022-2v" | "pres-candidatos";
 
 export interface LoadedDatasets {
   inflacion?: ObservatorioData;
@@ -59,6 +67,10 @@ export interface LoadedDatasets {
   comercio?: ComercioData;
   empleo?: EmpleoData;
   externo?: ExternoData;
+  "pres-2026-1v"?: PresEleccionData;
+  "pres-2022-1v"?: PresEleccionData;
+  "pres-2022-2v"?: PresEleccionData;
+  "pres-candidatos"?: PresCandidatosData;
 }
 
 const ASC_LOADERS = {
@@ -67,6 +79,10 @@ const ASC_LOADERS = {
   comercio: loadComercioAsc,
   empleo: loadEmpleoAsc,
   externo: loadExternoAsc,
+  "pres-2026-1v": loadPres2026_1v,
+  "pres-2022-1v": loadPres2022_1v,
+  "pres-2022-2v": loadPres2022_2v,
+  "pres-candidatos": loadPresCandidatos,
 } as const;
 
 export async function loadDatasets(

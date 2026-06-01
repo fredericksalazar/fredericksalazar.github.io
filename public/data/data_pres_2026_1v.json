@@ -1,0 +1,1120 @@
+{
+  "metadata": {
+    "ultima_actualizacion": "2026-06-01T22:41:38+00:00",
+    "fuentes": {
+      "wikipedia": {
+        "nombre": "Wikipedia (es) — tabla de Registraduría (preconteo)",
+        "url": "https://es.wikipedia.org/wiki/Elecciones_presidenciales_de_Colombia_de_2026"
+      },
+      "registraduria": {
+        "nombre": "Registraduría Nacional del Estado Civil",
+        "url": "https://www.registraduria.gov.co/"
+      }
+    },
+    "definiciones": {
+      "estado": "preconteo"
+    },
+    "cobertura": {
+      "eleccion": "2026-1v",
+      "fecha": "2026-05-31",
+      "total_registros": 33
+    }
+  },
+  "eleccion": {
+    "anio": 2026,
+    "vuelta": 1,
+    "fecha": "2026-05-31"
+  },
+  "resultados": [
+    {
+      "id": "abelardo_de_la_espriella",
+      "votos": 10361499,
+      "porcentaje": 0.4374
+    },
+    {
+      "id": "ivan_cepeda",
+      "votos": 9688361,
+      "porcentaje": 0.409
+    },
+    {
+      "id": "paloma_valencia",
+      "votos": 1639685,
+      "porcentaje": 0.0692
+    },
+    {
+      "id": "sergio_fajardo",
+      "votos": 1009073,
+      "porcentaje": 0.0426
+    },
+    {
+      "id": "claudia_lopez",
+      "votos": 225517,
+      "porcentaje": 0.0095
+    },
+    {
+      "id": "daniel_palacios_botero",
+      "votos": 206150,
+      "porcentaje": 0.0087
+    },
+    {
+      "id": "daniel_quintero_lizcano",
+      "votos": 53839,
+      "porcentaje": 0.0023
+    },
+    {
+      "id": "miguel_uribe_londono",
+      "votos": 28657,
+      "porcentaje": 0.0012
+    },
+    {
+      "id": "david_luna_garvin",
+      "votos": 19889,
+      "porcentaje": 0.0008
+    },
+    {
+      "id": "roy_barreras",
+      "votos": 14108,
+      "porcentaje": 0.0006
+    },
+    {
+      "id": "juan_fernando_cristo_murillo",
+      "votos": 13270,
+      "porcentaje": 0.0006
+    },
+    {
+      "id": "luis_gilberto_murillo_caicedo",
+      "votos": 12694,
+      "porcentaje": 0.0005
+    },
+    {
+      "id": "camilo_romero_matamoros",
+      "votos": 5627,
+      "porcentaje": 0.0002
+    }
+  ],
+  "agregados": {
+    "nacional": {
+      "censo": 41421973,
+      "total_votos": 23978304,
+      "validos": 23732915,
+      "nulos": 245389,
+      "no_marcados": 0,
+      "participacion": 0.5788,
+      "abstencion": 0.4212
+    },
+    "departamentos": [
+      {
+        "cod_depto": "05",
+        "nombre_depto": "Antioquia",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 1723406,
+          "ivan_cepeda": 805652,
+          "paloma_valencia": 294322,
+          "sergio_fajardo": 225072,
+          "claudia_lopez": 13482,
+          "daniel_palacios_botero": 30271,
+          "daniel_quintero_lizcano": 4542,
+          "miguel_uribe_londono": 4414,
+          "david_luna_garvin": 2783,
+          "roy_barreras": 1948,
+          "juan_fernando_cristo_murillo": 1768,
+          "luis_gilberto_murillo_caicedo": 1282,
+          "camilo_romero_matamoros": 755
+        },
+        "votos_por_ideologia": {
+          "izquierda": 808882,
+          "centro": 247647,
+          "derecha": 2053168
+        },
+        "total_validos": 3109697,
+        "total_votos": 3109697,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "08",
+        "nombre_depto": "Atlántico",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 432784,
+          "ivan_cepeda": 549193,
+          "paloma_valencia": 20940,
+          "sergio_fajardo": 27808,
+          "claudia_lopez": 2684,
+          "daniel_palacios_botero": 3296,
+          "daniel_quintero_lizcano": 2064,
+          "miguel_uribe_londono": 606,
+          "david_luna_garvin": 508,
+          "roy_barreras": 305,
+          "juan_fernando_cristo_murillo": 308,
+          "luis_gilberto_murillo_caicedo": 625,
+          "camilo_romero_matamoros": 230
+        },
+        "votos_por_ideologia": {
+          "izquierda": 550123,
+          "centro": 33372,
+          "derecha": 457856
+        },
+        "total_validos": 1041351,
+        "total_votos": 1041351,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "11",
+        "nombre_depto": "Bogotá D.C.",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 1543517,
+          "ivan_cepeda": 1706249,
+          "paloma_valencia": 372142,
+          "sergio_fajardo": 258410,
+          "claudia_lopez": 102440,
+          "daniel_palacios_botero": 22090,
+          "daniel_quintero_lizcano": 6449,
+          "miguel_uribe_londono": 4007,
+          "david_luna_garvin": 2679,
+          "roy_barreras": 1815,
+          "juan_fernando_cristo_murillo": 2488,
+          "luis_gilberto_murillo_caicedo": 1251,
+          "camilo_romero_matamoros": 827
+        },
+        "votos_por_ideologia": {
+          "izquierda": 1709315,
+          "centro": 372466,
+          "derecha": 1942583
+        },
+        "total_validos": 4024364,
+        "total_votos": 4024364,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "13",
+        "nombre_depto": "Bolívar",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 312574,
+          "ivan_cepeda": 443226,
+          "paloma_valencia": 23822,
+          "sergio_fajardo": 15690,
+          "claudia_lopez": 2343,
+          "daniel_palacios_botero": 4167,
+          "daniel_quintero_lizcano": 2631,
+          "miguel_uribe_londono": 912,
+          "david_luna_garvin": 569,
+          "roy_barreras": 431,
+          "juan_fernando_cristo_murillo": 332,
+          "luis_gilberto_murillo_caicedo": 532,
+          "camilo_romero_matamoros": 189
+        },
+        "votos_por_ideologia": {
+          "izquierda": 444189,
+          "centro": 21565,
+          "derecha": 341664
+        },
+        "total_validos": 807418,
+        "total_votos": 807418,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "15",
+        "nombre_depto": "Boyacá",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 337768,
+          "ivan_cepeda": 216425,
+          "paloma_valencia": 57602,
+          "sergio_fajardo": 28853,
+          "claudia_lopez": 8175,
+          "daniel_palacios_botero": 6083,
+          "daniel_quintero_lizcano": 1161,
+          "miguel_uribe_londono": 937,
+          "david_luna_garvin": 670,
+          "roy_barreras": 436,
+          "juan_fernando_cristo_murillo": 311,
+          "luis_gilberto_murillo_caicedo": 250,
+          "camilo_romero_matamoros": 151
+        },
+        "votos_por_ideologia": {
+          "izquierda": 217111,
+          "centro": 39170,
+          "derecha": 402541
+        },
+        "total_validos": 658822,
+        "total_votos": 658822,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "17",
+        "nombre_depto": "Caldas",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 218852,
+          "ivan_cepeda": 146202,
+          "paloma_valencia": 61889,
+          "sergio_fajardo": 26703,
+          "claudia_lopez": 4908,
+          "daniel_palacios_botero": 6093,
+          "daniel_quintero_lizcano": 13812,
+          "miguel_uribe_londono": 1098,
+          "david_luna_garvin": 611,
+          "roy_barreras": 468,
+          "juan_fernando_cristo_murillo": 359,
+          "luis_gilberto_murillo_caicedo": 285,
+          "camilo_romero_matamoros": 147
+        },
+        "votos_por_ideologia": {
+          "izquierda": 146955,
+          "centro": 46393,
+          "derecha": 288079
+        },
+        "total_validos": 481427,
+        "total_votos": 481427,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "18",
+        "nombre_depto": "Caquetá",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 81783,
+          "ivan_cepeda": 66468,
+          "paloma_valencia": 8226,
+          "sergio_fajardo": 4048,
+          "claudia_lopez": 879,
+          "daniel_palacios_botero": 3346,
+          "daniel_quintero_lizcano": 440,
+          "miguel_uribe_londono": 375,
+          "david_luna_garvin": 252,
+          "roy_barreras": 182,
+          "juan_fernando_cristo_murillo": 135,
+          "luis_gilberto_murillo_caicedo": 148,
+          "camilo_romero_matamoros": 69
+        },
+        "votos_por_ideologia": {
+          "izquierda": 66798,
+          "centro": 5754,
+          "derecha": 93799
+        },
+        "total_validos": 166351,
+        "total_votos": 166351,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "19",
+        "nombre_depto": "Cauca",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 131175,
+          "ivan_cepeda": 462794,
+          "paloma_valencia": 40343,
+          "sergio_fajardo": 12037,
+          "claudia_lopez": 3988,
+          "daniel_palacios_botero": 5177,
+          "daniel_quintero_lizcano": 1256,
+          "miguel_uribe_londono": 1220,
+          "david_luna_garvin": 822,
+          "roy_barreras": 741,
+          "juan_fernando_cristo_murillo": 559,
+          "luis_gilberto_murillo_caicedo": 402,
+          "camilo_romero_matamoros": 256
+        },
+        "votos_por_ideologia": {
+          "izquierda": 463937,
+          "centro": 18662,
+          "derecha": 178171
+        },
+        "total_validos": 660770,
+        "total_votos": 660770,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "20",
+        "nombre_depto": "Cesar",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 223840,
+          "ivan_cepeda": 224457,
+          "paloma_valencia": 11898,
+          "sergio_fajardo": 8174,
+          "claudia_lopez": 1132,
+          "daniel_palacios_botero": 4033,
+          "daniel_quintero_lizcano": 908,
+          "miguel_uribe_londono": 370,
+          "david_luna_garvin": 241,
+          "roy_barreras": 173,
+          "juan_fernando_cristo_murillo": 121,
+          "luis_gilberto_murillo_caicedo": 319,
+          "camilo_romero_matamoros": 85
+        },
+        "votos_por_ideologia": {
+          "izquierda": 224949,
+          "centro": 10576,
+          "derecha": 240226
+        },
+        "total_validos": 475751,
+        "total_votos": 475751,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "23",
+        "nombre_depto": "Córdoba",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 268604,
+          "ivan_cepeda": 391880,
+          "paloma_valencia": 19401,
+          "sergio_fajardo": 8325,
+          "claudia_lopez": 1596,
+          "daniel_palacios_botero": 2925,
+          "daniel_quintero_lizcano": 1206,
+          "miguel_uribe_londono": 527,
+          "david_luna_garvin": 463,
+          "roy_barreras": 333,
+          "juan_fernando_cristo_murillo": 222,
+          "luis_gilberto_murillo_caicedo": 240,
+          "camilo_romero_matamoros": 105
+        },
+        "votos_por_ideologia": {
+          "izquierda": 392453,
+          "centro": 11812,
+          "derecha": 291562
+        },
+        "total_validos": 695827,
+        "total_votos": 695827,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "25",
+        "nombre_depto": "Cundinamarca",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 724083,
+          "ivan_cepeda": 600032,
+          "paloma_valencia": 123140,
+          "sergio_fajardo": 71750,
+          "claudia_lopez": 26925,
+          "daniel_palacios_botero": 15499,
+          "daniel_quintero_lizcano": 2950,
+          "miguel_uribe_londono": 2392,
+          "david_luna_garvin": 1439,
+          "roy_barreras": 910,
+          "juan_fernando_cristo_murillo": 969,
+          "luis_gilberto_murillo_caicedo": 686,
+          "camilo_romero_matamoros": 359
+        },
+        "votos_por_ideologia": {
+          "izquierda": 601628,
+          "centro": 104033,
+          "derecha": 865473
+        },
+        "total_validos": 1571134,
+        "total_votos": 1571134,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "27",
+        "nombre_depto": "Chocó",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 22782,
+          "ivan_cepeda": 109148,
+          "paloma_valencia": 5640,
+          "sergio_fajardo": 1203,
+          "claudia_lopez": 612,
+          "daniel_palacios_botero": 983,
+          "daniel_quintero_lizcano": 343,
+          "miguel_uribe_londono": 331,
+          "david_luna_garvin": 238,
+          "roy_barreras": 203,
+          "juan_fernando_cristo_murillo": 268,
+          "luis_gilberto_murillo_caicedo": 106,
+          "camilo_romero_matamoros": 107
+        },
+        "votos_por_ideologia": {
+          "izquierda": 109457,
+          "centro": 2664,
+          "derecha": 29843
+        },
+        "total_validos": 141964,
+        "total_votos": 141964,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "41",
+        "nombre_depto": "Huila",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 297613,
+          "ivan_cepeda": 176721,
+          "paloma_valencia": 35802,
+          "sergio_fajardo": 14601,
+          "claudia_lopez": 3357,
+          "daniel_palacios_botero": 6779,
+          "daniel_quintero_lizcano": 1158,
+          "miguel_uribe_londono": 837,
+          "david_luna_garvin": 636,
+          "roy_barreras": 460,
+          "juan_fernando_cristo_murillo": 289,
+          "luis_gilberto_murillo_caicedo": 277,
+          "camilo_romero_matamoros": 142
+        },
+        "votos_por_ideologia": {
+          "izquierda": 177458,
+          "centro": 20041,
+          "derecha": 341173
+        },
+        "total_validos": 538672,
+        "total_votos": 538672,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "44",
+        "nombre_depto": "La Guajira",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 96625,
+          "ivan_cepeda": 140544,
+          "paloma_valencia": 6212,
+          "sergio_fajardo": 2946,
+          "claudia_lopez": 674,
+          "daniel_palacios_botero": 1547,
+          "daniel_quintero_lizcano": 661,
+          "miguel_uribe_londono": 300,
+          "david_luna_garvin": 228,
+          "roy_barreras": 190,
+          "juan_fernando_cristo_murillo": 117,
+          "luis_gilberto_murillo_caicedo": 223,
+          "camilo_romero_matamoros": 109
+        },
+        "votos_por_ideologia": {
+          "izquierda": 140957,
+          "centro": 4626,
+          "derecha": 104793
+        },
+        "total_validos": 250376,
+        "total_votos": 250376,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "47",
+        "nombre_depto": "Magdalena",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 197533,
+          "ivan_cepeda": 263014,
+          "paloma_valencia": 18398,
+          "sergio_fajardo": 7934,
+          "claudia_lopez": 1229,
+          "daniel_palacios_botero": 2679,
+          "daniel_quintero_lizcano": 917,
+          "miguel_uribe_londono": 420,
+          "david_luna_garvin": 428,
+          "roy_barreras": 238,
+          "juan_fernando_cristo_murillo": 213,
+          "luis_gilberto_murillo_caicedo": 2510,
+          "camilo_romero_matamoros": 121
+        },
+        "votos_por_ideologia": {
+          "izquierda": 265762,
+          "centro": 10721,
+          "derecha": 219151
+        },
+        "total_validos": 495634,
+        "total_votos": 495634,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "50",
+        "nombre_depto": "Meta",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 280090,
+          "ivan_cepeda": 174242,
+          "paloma_valencia": 36706,
+          "sergio_fajardo": 17768,
+          "claudia_lopez": 3236,
+          "daniel_palacios_botero": 12364,
+          "daniel_quintero_lizcano": 841,
+          "miguel_uribe_londono": 661,
+          "david_luna_garvin": 484,
+          "roy_barreras": 312,
+          "juan_fernando_cristo_murillo": 356,
+          "luis_gilberto_murillo_caicedo": 249,
+          "camilo_romero_matamoros": 135
+        },
+        "votos_por_ideologia": {
+          "izquierda": 174803,
+          "centro": 22685,
+          "derecha": 329956
+        },
+        "total_validos": 527444,
+        "total_votos": 527444,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "52",
+        "nombre_depto": "Nariño",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 148120,
+          "ivan_cepeda": 472845,
+          "paloma_valencia": 31353,
+          "sergio_fajardo": 13039,
+          "claudia_lopez": 3918,
+          "daniel_palacios_botero": 3536,
+          "daniel_quintero_lizcano": 1403,
+          "miguel_uribe_londono": 863,
+          "david_luna_garvin": 626,
+          "roy_barreras": 375,
+          "juan_fernando_cristo_murillo": 327,
+          "luis_gilberto_murillo_caicedo": 303,
+          "camilo_romero_matamoros": 209
+        },
+        "votos_por_ideologia": {
+          "izquierda": 473523,
+          "centro": 19313,
+          "derecha": 184081
+        },
+        "total_validos": 676917,
+        "total_votos": 676917,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "54",
+        "nombre_depto": "Norte de Santander",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 519161,
+          "ivan_cepeda": 128091,
+          "paloma_valencia": 33319,
+          "sergio_fajardo": 28757,
+          "claudia_lopez": 2398,
+          "daniel_palacios_botero": 11417,
+          "daniel_quintero_lizcano": 953,
+          "miguel_uribe_londono": 758,
+          "david_luna_garvin": 520,
+          "roy_barreras": 401,
+          "juan_fernando_cristo_murillo": 247,
+          "luis_gilberto_murillo_caicedo": 335,
+          "camilo_romero_matamoros": 146
+        },
+        "votos_por_ideologia": {
+          "izquierda": 128827,
+          "centro": 32875,
+          "derecha": 564801
+        },
+        "total_validos": 726503,
+        "total_votos": 726503,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "63",
+        "nombre_depto": "Quindío",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 142586,
+          "ivan_cepeda": 94337,
+          "paloma_valencia": 27539,
+          "sergio_fajardo": 15663,
+          "claudia_lopez": 2369,
+          "daniel_palacios_botero": 3642,
+          "daniel_quintero_lizcano": 535,
+          "miguel_uribe_londono": 440,
+          "david_luna_garvin": 261,
+          "roy_barreras": 219,
+          "juan_fernando_cristo_murillo": 188,
+          "luis_gilberto_murillo_caicedo": 107,
+          "camilo_romero_matamoros": 67
+        },
+        "votos_por_ideologia": {
+          "izquierda": 94663,
+          "centro": 19016,
+          "derecha": 174274
+        },
+        "total_validos": 287953,
+        "total_votos": 287953,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "66",
+        "nombre_depto": "Risaralda",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 226277,
+          "ivan_cepeda": 182268,
+          "paloma_valencia": 44561,
+          "sergio_fajardo": 26474,
+          "claudia_lopez": 5041,
+          "daniel_palacios_botero": 6944,
+          "daniel_quintero_lizcano": 1389,
+          "miguel_uribe_londono": 832,
+          "david_luna_garvin": 540,
+          "roy_barreras": 355,
+          "juan_fernando_cristo_murillo": 405,
+          "luis_gilberto_murillo_caicedo": 268,
+          "camilo_romero_matamoros": 130
+        },
+        "votos_por_ideologia": {
+          "izquierda": 182891,
+          "centro": 33849,
+          "derecha": 278744
+        },
+        "total_validos": 495484,
+        "total_votos": 495484,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "68",
+        "nombre_depto": "Santander",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 684563,
+          "ivan_cepeda": 343998,
+          "paloma_valencia": 76706,
+          "sergio_fajardo": 47252,
+          "claudia_lopez": 6462,
+          "daniel_palacios_botero": 16760,
+          "daniel_quintero_lizcano": 1510,
+          "miguel_uribe_londono": 1305,
+          "david_luna_garvin": 808,
+          "roy_barreras": 503,
+          "juan_fernando_cristo_murillo": 510,
+          "luis_gilberto_murillo_caicedo": 453,
+          "camilo_romero_matamoros": 213
+        },
+        "votos_por_ideologia": {
+          "izquierda": 344954,
+          "centro": 56542,
+          "derecha": 779547
+        },
+        "total_validos": 1181043,
+        "total_votos": 1181043,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "70",
+        "nombre_depto": "Sucre",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 145696,
+          "ivan_cepeda": 226644,
+          "paloma_valencia": 14294,
+          "sergio_fajardo": 4355,
+          "claudia_lopez": 856,
+          "daniel_palacios_botero": 1642,
+          "daniel_quintero_lizcano": 569,
+          "miguel_uribe_londono": 366,
+          "david_luna_garvin": 388,
+          "roy_barreras": 261,
+          "juan_fernando_cristo_murillo": 150,
+          "luis_gilberto_murillo_caicedo": 152,
+          "camilo_romero_matamoros": 72
+        },
+        "votos_por_ideologia": {
+          "izquierda": 227057,
+          "centro": 6318,
+          "derecha": 162070
+        },
+        "total_validos": 395445,
+        "total_votos": 395445,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "73",
+        "nombre_depto": "Tolima",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 315181,
+          "ivan_cepeda": 235730,
+          "paloma_valencia": 70911,
+          "sergio_fajardo": 20298,
+          "claudia_lopez": 4880,
+          "daniel_palacios_botero": 8269,
+          "daniel_quintero_lizcano": 1475,
+          "miguel_uribe_londono": 1310,
+          "david_luna_garvin": 760,
+          "roy_barreras": 621,
+          "juan_fernando_cristo_murillo": 458,
+          "luis_gilberto_murillo_caicedo": 370,
+          "camilo_romero_matamoros": 190
+        },
+        "votos_por_ideologia": {
+          "izquierda": 236721,
+          "centro": 27871,
+          "derecha": 395861
+        },
+        "total_validos": 660453,
+        "total_votos": 660453,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "76",
+        "nombre_depto": "Valle del Cauca",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 710909,
+          "ivan_cepeda": 1119914,
+          "paloma_valencia": 118541,
+          "sergio_fajardo": 77283,
+          "claudia_lopez": 12664,
+          "daniel_palacios_botero": 15406,
+          "daniel_quintero_lizcano": 3227,
+          "miguel_uribe_londono": 2085,
+          "david_luna_garvin": 1734,
+          "roy_barreras": 1522,
+          "juan_fernando_cristo_murillo": 1560,
+          "luis_gilberto_murillo_caicedo": 825,
+          "camilo_romero_matamoros": 534
+        },
+        "votos_por_ideologia": {
+          "izquierda": 1122261,
+          "centro": 96468,
+          "derecha": 847475
+        },
+        "total_validos": 2066204,
+        "total_votos": 2066204,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "81",
+        "nombre_depto": "Arauca",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 50613,
+          "ivan_cepeda": 34097,
+          "paloma_valencia": 5889,
+          "sergio_fajardo": 2313,
+          "claudia_lopez": 466,
+          "daniel_palacios_botero": 1890,
+          "daniel_quintero_lizcano": 222,
+          "miguel_uribe_londono": 238,
+          "david_luna_garvin": 116,
+          "roy_barreras": 100,
+          "juan_fernando_cristo_murillo": 69,
+          "luis_gilberto_murillo_caicedo": 70,
+          "camilo_romero_matamoros": 25
+        },
+        "votos_por_ideologia": {
+          "izquierda": 34267,
+          "centro": 3186,
+          "derecha": 58655
+        },
+        "total_validos": 96108,
+        "total_votos": 96108,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "85",
+        "nombre_depto": "Casanare",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 134114,
+          "ivan_cepeda": 24202,
+          "paloma_valencia": 14702,
+          "sergio_fajardo": 6028,
+          "claudia_lopez": 1076,
+          "daniel_palacios_botero": 3642,
+          "daniel_quintero_lizcano": 333,
+          "miguel_uribe_londono": 288,
+          "david_luna_garvin": 205,
+          "roy_barreras": 196,
+          "juan_fernando_cristo_murillo": 97,
+          "luis_gilberto_murillo_caicedo": 87,
+          "camilo_romero_matamoros": 67
+        },
+        "votos_por_ideologia": {
+          "izquierda": 24485,
+          "centro": 7739,
+          "derecha": 152813
+        },
+        "total_validos": 185037,
+        "total_votos": 185037,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "86",
+        "nombre_depto": "Putumayo",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 25087,
+          "ivan_cepeda": 94416,
+          "paloma_valencia": 4414,
+          "sergio_fajardo": 2131,
+          "claudia_lopez": 582,
+          "daniel_palacios_botero": 1697,
+          "daniel_quintero_lizcano": 222,
+          "miguel_uribe_londono": 170,
+          "david_luna_garvin": 386,
+          "roy_barreras": 86,
+          "juan_fernando_cristo_murillo": 66,
+          "luis_gilberto_murillo_caicedo": 57,
+          "camilo_romero_matamoros": 50
+        },
+        "votos_por_ideologia": {
+          "izquierda": 94559,
+          "centro": 3387,
+          "derecha": 31418
+        },
+        "total_validos": 129364,
+        "total_votos": 129364,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "88",
+        "nombre_depto": "San Andrés y Providencia",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 7793,
+          "ivan_cepeda": 7936,
+          "paloma_valencia": 826,
+          "sergio_fajardo": 535,
+          "claudia_lopez": 70,
+          "daniel_palacios_botero": 52,
+          "daniel_quintero_lizcano": 31,
+          "miguel_uribe_londono": 22,
+          "david_luna_garvin": 12,
+          "roy_barreras": 23,
+          "juan_fernando_cristo_murillo": 18,
+          "luis_gilberto_murillo_caicedo": 11,
+          "camilo_romero_matamoros": 2
+        },
+        "votos_por_ideologia": {
+          "izquierda": 7970,
+          "centro": 666,
+          "derecha": 8695
+        },
+        "total_validos": 17331,
+        "total_votos": 17331,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "91",
+        "nombre_depto": "Amazonas",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 7887,
+          "ivan_cepeda": 13954,
+          "paloma_valencia": 1596,
+          "sergio_fajardo": 494,
+          "claudia_lopez": 218,
+          "daniel_palacios_botero": 341,
+          "daniel_quintero_lizcano": 66,
+          "miguel_uribe_londono": 53,
+          "david_luna_garvin": 27,
+          "roy_barreras": 35,
+          "juan_fernando_cristo_murillo": 27,
+          "luis_gilberto_murillo_caicedo": 38,
+          "camilo_romero_matamoros": 12
+        },
+        "votos_por_ideologia": {
+          "izquierda": 14027,
+          "centro": 832,
+          "derecha": 9889
+        },
+        "total_validos": 24748,
+        "total_votos": 24748,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "94",
+        "nombre_depto": "Guainía",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 3722,
+          "ivan_cepeda": 6778,
+          "paloma_valencia": 688,
+          "sergio_fajardo": 188,
+          "claudia_lopez": 112,
+          "daniel_palacios_botero": 134,
+          "daniel_quintero_lizcano": 31,
+          "miguel_uribe_londono": 44,
+          "david_luna_garvin": 21,
+          "roy_barreras": 10,
+          "juan_fernando_cristo_murillo": 16,
+          "luis_gilberto_murillo_caicedo": 14,
+          "camilo_romero_matamoros": 4
+        },
+        "votos_por_ideologia": {
+          "izquierda": 6802,
+          "centro": 368,
+          "derecha": 4592
+        },
+        "total_validos": 11762,
+        "total_votos": 11762,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "95",
+        "nombre_depto": "Guaviare",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 16060,
+          "ivan_cepeda": 12677,
+          "paloma_valencia": 2016,
+          "sergio_fajardo": 835,
+          "claudia_lopez": 298,
+          "daniel_palacios_botero": 754,
+          "daniel_quintero_lizcano": 90,
+          "miguel_uribe_londono": 76,
+          "david_luna_garvin": 45,
+          "roy_barreras": 33,
+          "juan_fernando_cristo_murillo": 41,
+          "luis_gilberto_murillo_caicedo": 16,
+          "camilo_romero_matamoros": 20
+        },
+        "votos_por_ideologia": {
+          "izquierda": 12726,
+          "centro": 1309,
+          "derecha": 18926
+        },
+        "total_validos": 32961,
+        "total_votos": 32961,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "97",
+        "nombre_depto": "Vaupés",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 1379,
+          "ivan_cepeda": 6932,
+          "paloma_valencia": 344,
+          "sergio_fajardo": 147,
+          "claudia_lopez": 69,
+          "daniel_palacios_botero": 52,
+          "daniel_quintero_lizcano": 53,
+          "miguel_uribe_londono": 16,
+          "david_luna_garvin": 12,
+          "roy_barreras": 17,
+          "juan_fernando_cristo_murillo": 5,
+          "luis_gilberto_murillo_caicedo": 3,
+          "camilo_romero_matamoros": 8
+        },
+        "votos_por_ideologia": {
+          "izquierda": 6952,
+          "centro": 286,
+          "derecha": 1799
+        },
+        "total_validos": 9037,
+        "total_votos": 9037,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "99",
+        "nombre_depto": "Vichada",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 9334,
+          "ivan_cepeda": 9769,
+          "paloma_valencia": 954,
+          "sergio_fajardo": 293,
+          "claudia_lopez": 92,
+          "daniel_palacios_botero": 312,
+          "daniel_quintero_lizcano": 70,
+          "miguel_uribe_londono": 35,
+          "david_luna_garvin": 25,
+          "roy_barreras": 35,
+          "juan_fernando_cristo_murillo": 19,
+          "luis_gilberto_murillo_caicedo": 29,
+          "camilo_romero_matamoros": 6
+        },
+        "votos_por_ideologia": {
+          "izquierda": 9833,
+          "centro": 499,
+          "derecha": 10641
+        },
+        "total_validos": 20973,
+        "total_votos": 20973,
+        "censo": 0,
+        "participacion": 0.0
+      }
+    ],
+    "municipios": []
+  },
+  "indicadores": {
+    "polarizacion": 0.9314,
+    "costo_votos": {
+      "mayoria_simple": 11866459,
+      "distancias": {
+        "abelardo_de_la_espriella": 1504960,
+        "ivan_cepeda": 2178098,
+        "paloma_valencia": 10226774,
+        "sergio_fajardo": 10857386,
+        "claudia_lopez": 11640942,
+        "daniel_palacios_botero": 11660309,
+        "daniel_quintero_lizcano": 11812620,
+        "miguel_uribe_londono": 11837802,
+        "david_luna_garvin": 11846570,
+        "roy_barreras": 11852351,
+        "juan_fernando_cristo_murillo": 11853189,
+        "luis_gilberto_murillo_caicedo": 11853765,
+        "camilo_romero_matamoros": 11860832
+      }
+    }
+  }
+}

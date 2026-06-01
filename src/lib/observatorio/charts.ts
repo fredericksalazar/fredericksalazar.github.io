@@ -12,6 +12,11 @@ export const COLORS = {
   textPrimary: "#1f2328",
   textMuted: "#636c76",
   border: "#d0d7de",
+  ideologia: {
+    "izquierda": "#dc2626",
+    "centro": "#16a34a",
+    "derecha": "#2563eb",
+  }
 } as const;
 
 export const FONT = {

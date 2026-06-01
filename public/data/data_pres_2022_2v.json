@@ -1,0 +1,684 @@
+{
+  "metadata": {
+    "ultima_actualizacion": "2026-06-01T22:41:38+00:00",
+    "fuentes": {
+      "wikipedia": {
+        "nombre": "Wikipedia (en) — tabla de Registraduría",
+        "url": "https://en.wikipedia.org/wiki/2022_Colombian_presidential_election"
+      },
+      "registraduria": {
+        "nombre": "Registraduría Nacional del Estado Civil",
+        "url": "https://www.registraduria.gov.co/"
+      }
+    },
+    "definiciones": {
+      "estado": "escrutinio_definitivo"
+    },
+    "cobertura": {
+      "eleccion": "2022-2v",
+      "fecha": "2022-06-19",
+      "total_registros": 33
+    }
+  },
+  "eleccion": {
+    "anio": 2022,
+    "vuelta": 2,
+    "fecha": "2022-06-19"
+  },
+  "resultados": [
+    {
+      "id": "gustavo_petro",
+      "votos": 11281013,
+      "porcentaje": 0.5044
+    },
+    {
+      "id": "rodolfo_hernandez",
+      "votos": 10580412,
+      "porcentaje": 0.4731
+    }
+  ],
+  "agregados": {
+    "nacional": {
+      "censo": 39002239,
+      "total_votos": 22687910,
+      "validos": 22417825,
+      "nulos": 270085,
+      "no_marcados": 21459,
+      "participacion": 0.5817,
+      "abstencion": 0.4183
+    },
+    "departamentos": [
+      {
+        "cod_depto": "05",
+        "nombre_depto": "Antioquia",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 942005,
+          "rodolfo_hernandez": 1822700
+        },
+        "votos_por_ideologia": {
+          "izquierda": 942005,
+          "centro": 0,
+          "derecha": 1822700
+        },
+        "total_validos": 2764705,
+        "total_votos": 2764705,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "08",
+        "nombre_depto": "Atlántico",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 672832,
+          "rodolfo_hernandez": 314551
+        },
+        "votos_por_ideologia": {
+          "izquierda": 672832,
+          "centro": 0,
+          "derecha": 314551
+        },
+        "total_validos": 987383,
+        "total_votos": 987383,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "11",
+        "nombre_depto": "Bogotá D.C.",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 2253997,
+          "rodolfo_hernandez": 1480198
+        },
+        "votos_por_ideologia": {
+          "izquierda": 2253997,
+          "centro": 0,
+          "derecha": 1480198
+        },
+        "total_validos": 3734195,
+        "total_votos": 3734195,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "13",
+        "nombre_depto": "Bolívar",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 493041,
+          "rodolfo_hernandez": 301952
+        },
+        "votos_por_ideologia": {
+          "izquierda": 493041,
+          "centro": 0,
+          "derecha": 301952
+        },
+        "total_validos": 794993,
+        "total_votos": 794993,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "15",
+        "nombre_depto": "Boyacá",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 264270,
+          "rodolfo_hernandez": 378899
+        },
+        "votos_por_ideologia": {
+          "izquierda": 264270,
+          "centro": 0,
+          "derecha": 378899
+        },
+        "total_validos": 643169,
+        "total_votos": 643169,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "17",
+        "nombre_depto": "Caldas",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 187346,
+          "rodolfo_hernandez": 267988
+        },
+        "votos_por_ideologia": {
+          "izquierda": 187346,
+          "centro": 0,
+          "derecha": 267988
+        },
+        "total_validos": 455334,
+        "total_votos": 455334,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "18",
+        "nombre_depto": "Caquetá",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 72816,
+          "rodolfo_hernandez": 88922
+        },
+        "votos_por_ideologia": {
+          "izquierda": 72816,
+          "centro": 0,
+          "derecha": 88922
+        },
+        "total_validos": 161738,
+        "total_votos": 161738,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "19",
+        "nombre_depto": "Cauca",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 515074,
+          "rodolfo_hernandez": 122693
+        },
+        "votos_por_ideologia": {
+          "izquierda": 515074,
+          "centro": 0,
+          "derecha": 122693
+        },
+        "total_validos": 637767,
+        "total_votos": 637767,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "20",
+        "nombre_depto": "Cesar",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 250499,
+          "rodolfo_hernandez": 215080
+        },
+        "votos_por_ideologia": {
+          "izquierda": 250499,
+          "centro": 0,
+          "derecha": 215080
+        },
+        "total_validos": 465579,
+        "total_votos": 465579,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "23",
+        "nombre_depto": "Córdoba",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 437016,
+          "rodolfo_hernandez": 266999
+        },
+        "votos_por_ideologia": {
+          "izquierda": 437016,
+          "centro": 0,
+          "derecha": 266999
+        },
+        "total_validos": 704015,
+        "total_votos": 704015,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "25",
+        "nombre_depto": "Cundinamarca",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 624965,
+          "rodolfo_hernandez": 756454
+        },
+        "votos_por_ideologia": {
+          "izquierda": 624965,
+          "centro": 0,
+          "derecha": 756454
+        },
+        "total_validos": 1381419,
+        "total_votos": 1381419,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "27",
+        "nombre_depto": "Chocó",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 127846,
+          "rodolfo_hernandez": 25736
+        },
+        "votos_por_ideologia": {
+          "izquierda": 127846,
+          "centro": 0,
+          "derecha": 25736
+        },
+        "total_validos": 153582,
+        "total_votos": 153582,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "41",
+        "nombre_depto": "Huila",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 216533,
+          "rodolfo_hernandez": 305799
+        },
+        "votos_por_ideologia": {
+          "izquierda": 216533,
+          "centro": 0,
+          "derecha": 305799
+        },
+        "total_validos": 522332,
+        "total_votos": 522332,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "44",
+        "nombre_depto": "La Guajira",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 162849,
+          "rodolfo_hernandez": 85101
+        },
+        "votos_por_ideologia": {
+          "izquierda": 162849,
+          "centro": 0,
+          "derecha": 85101
+        },
+        "total_validos": 247950,
+        "total_votos": 247950,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "47",
+        "nombre_depto": "Magdalena",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 302432,
+          "rodolfo_hernandez": 191500
+        },
+        "votos_por_ideologia": {
+          "izquierda": 302432,
+          "centro": 0,
+          "derecha": 191500
+        },
+        "total_validos": 493932,
+        "total_votos": 493932,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "50",
+        "nombre_depto": "Meta",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 180293,
+          "rodolfo_hernandez": 307137
+        },
+        "votos_por_ideologia": {
+          "izquierda": 180293,
+          "centro": 0,
+          "derecha": 307137
+        },
+        "total_validos": 487430,
+        "total_votos": 487430,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "52",
+        "nombre_depto": "Nariño",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 592170,
+          "rodolfo_hernandez": 126198
+        },
+        "votos_por_ideologia": {
+          "izquierda": 592170,
+          "centro": 0,
+          "derecha": 126198
+        },
+        "total_validos": 718368,
+        "total_votos": 718368,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "54",
+        "nombre_depto": "Norte de Santander",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 149413,
+          "rodolfo_hernandez": 557406
+        },
+        "votos_por_ideologia": {
+          "izquierda": 149413,
+          "centro": 0,
+          "derecha": 557406
+        },
+        "total_validos": 706819,
+        "total_votos": 706819,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "63",
+        "nombre_depto": "Quindío",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 113537,
+          "rodolfo_hernandez": 151653
+        },
+        "votos_por_ideologia": {
+          "izquierda": 113537,
+          "centro": 0,
+          "derecha": 151653
+        },
+        "total_validos": 265190,
+        "total_votos": 265190,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "66",
+        "nombre_depto": "Risaralda",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 216227,
+          "rodolfo_hernandez": 238963
+        },
+        "votos_por_ideologia": {
+          "izquierda": 216227,
+          "centro": 0,
+          "derecha": 238963
+        },
+        "total_validos": 455190,
+        "total_votos": 455190,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "68",
+        "nombre_depto": "Santander",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 310240,
+          "rodolfo_hernandez": 871291
+        },
+        "votos_por_ideologia": {
+          "izquierda": 310240,
+          "centro": 0,
+          "derecha": 871291
+        },
+        "total_validos": 1181531,
+        "total_votos": 1181531,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "70",
+        "nombre_depto": "Sucre",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 262135,
+          "rodolfo_hernandez": 140507
+        },
+        "votos_por_ideologia": {
+          "izquierda": 262135,
+          "centro": 0,
+          "derecha": 140507
+        },
+        "total_validos": 402642,
+        "total_votos": 402642,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "73",
+        "nombre_depto": "Tolima",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 251710,
+          "rodolfo_hernandez": 388640
+        },
+        "votos_por_ideologia": {
+          "izquierda": 251710,
+          "centro": 0,
+          "derecha": 388640
+        },
+        "total_validos": 640350,
+        "total_votos": 640350,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "76",
+        "nombre_depto": "Valle del Cauca",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 1310236,
+          "rodolfo_hernandez": 695059
+        },
+        "votos_por_ideologia": {
+          "izquierda": 1310236,
+          "centro": 0,
+          "derecha": 695059
+        },
+        "total_validos": 2005295,
+        "total_votos": 2005295,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "81",
+        "nombre_depto": "Arauca",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 32082,
+          "rodolfo_hernandez": 69473
+        },
+        "votos_por_ideologia": {
+          "izquierda": 32082,
+          "centro": 0,
+          "derecha": 69473
+        },
+        "total_validos": 101555,
+        "total_votos": 101555,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "85",
+        "nombre_depto": "Casanare",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 57331,
+          "rodolfo_hernandez": 143796
+        },
+        "votos_por_ideologia": {
+          "izquierda": 57331,
+          "centro": 0,
+          "derecha": 143796
+        },
+        "total_validos": 201127,
+        "total_votos": 201127,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "86",
+        "nombre_depto": "Putumayo",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 110118,
+          "rodolfo_hernandez": 25549
+        },
+        "votos_por_ideologia": {
+          "izquierda": 110118,
+          "centro": 0,
+          "derecha": 25549
+        },
+        "total_validos": 135667,
+        "total_votos": 135667,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "88",
+        "nombre_depto": "San Andrés y Providencia",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 8545,
+          "rodolfo_hernandez": 7449
+        },
+        "votos_por_ideologia": {
+          "izquierda": 8545,
+          "centro": 0,
+          "derecha": 7449
+        },
+        "total_validos": 15994,
+        "total_votos": 15994,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "91",
+        "nombre_depto": "Amazonas",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 12883,
+          "rodolfo_hernandez": 10250
+        },
+        "votos_por_ideologia": {
+          "izquierda": 12883,
+          "centro": 0,
+          "derecha": 10250
+        },
+        "total_validos": 23133,
+        "total_votos": 23133,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "94",
+        "nombre_depto": "Guainía",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 6536,
+          "rodolfo_hernandez": 5716
+        },
+        "votos_por_ideologia": {
+          "izquierda": 6536,
+          "centro": 0,
+          "derecha": 5716
+        },
+        "total_validos": 12252,
+        "total_votos": 12252,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "95",
+        "nombre_depto": "Guaviare",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 14708,
+          "rodolfo_hernandez": 17601
+        },
+        "votos_por_ideologia": {
+          "izquierda": 14708,
+          "centro": 0,
+          "derecha": 17601
+        },
+        "total_validos": 32309,
+        "total_votos": 32309,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "97",
+        "nombre_depto": "Vaupés",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 6447,
+          "rodolfo_hernandez": 2148
+        },
+        "votos_por_ideologia": {
+          "izquierda": 6447,
+          "centro": 0,
+          "derecha": 2148
+        },
+        "total_validos": 8595,
+        "total_votos": 8595,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "99",
+        "nombre_depto": "Vichada",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 7634,
+          "rodolfo_hernandez": 11447
+        },
+        "votos_por_ideologia": {
+          "izquierda": 7634,
+          "centro": 0,
+          "derecha": 11447
+        },
+        "total_validos": 19081,
+        "total_votos": 19081,
+        "censo": 0,
+        "participacion": 0.0
+      }
+    ],
+    "municipios": []
+  },
+  "indicadores": {
+    "polarizacion": 0.999
+  }
+}

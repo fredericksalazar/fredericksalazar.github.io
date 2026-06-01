@@ -1,0 +1,325 @@
+{
+  "metadata": {
+    "ultima_actualizacion": "2026-06-01T22:41:38+00:00",
+    "fuentes": {
+      "wikipedia": {
+        "nombre": "Wikipedia — tablas Registraduría",
+        "url": "https://en.wikipedia.org/wiki/2022_Colombian_presidential_election / https://es.wikipedia.org/wiki/Elecciones_presidenciales_de_Colombia_de_2026"
+      }
+    },
+    "definiciones": {
+      "polarizacion": "Índice de dispersión por bloque ideológico (0..1)."
+    },
+    "cobertura": {
+      "elecciones": [
+        "2022-1v",
+        "2026-1v"
+      ]
+    }
+  },
+  "nacional": {
+    "polarizacion_2022": 0.9381,
+    "polarizacion_2026": 0.9314,
+    "delta": -0.0067
+  },
+  "serie_departamentos": [
+    {
+      "cod_depto": "05",
+      "nombre_depto": "Antioquia",
+      "delta_por_ideologia": {
+        "izquierda": 0.0147,
+        "centro": 0.0234,
+        "derecha": -0.0381
+      }
+    },
+    {
+      "cod_depto": "08",
+      "nombre_depto": "Atlántico",
+      "delta_por_ideologia": {
+        "izquierda": -0.0275,
+        "centro": 0.0043,
+        "derecha": 0.0232
+      }
+    },
+    {
+      "cod_depto": "11",
+      "nombre_depto": "Bogotá D.C.",
+      "delta_por_ideologia": {
+        "izquierda": -0.0552,
+        "centro": 0.0107,
+        "derecha": 0.0445
+      }
+    },
+    {
+      "cod_depto": "13",
+      "nombre_depto": "Bolívar",
+      "delta_por_ideologia": {
+        "izquierda": 0.0418,
+        "centro": 0.0,
+        "derecha": -0.0418
+      }
+    },
+    {
+      "cod_depto": "15",
+      "nombre_depto": "Boyacá",
+      "delta_por_ideologia": {
+        "izquierda": 0.0119,
+        "centro": 0.021,
+        "derecha": -0.0329
+      }
+    },
+    {
+      "cod_depto": "17",
+      "nombre_depto": "Caldas",
+      "delta_por_ideologia": {
+        "izquierda": 0.0136,
+        "centro": 0.0294,
+        "derecha": -0.0429
+      }
+    },
+    {
+      "cod_depto": "18",
+      "nombre_depto": "Caquetá",
+      "delta_por_ideologia": {
+        "izquierda": 0.0558,
+        "centro": 0.0135,
+        "derecha": -0.0693
+      }
+    },
+    {
+      "cod_depto": "19",
+      "nombre_depto": "Cauca",
+      "delta_por_ideologia": {
+        "izquierda": -0.0102,
+        "centro": 0.0019,
+        "derecha": 0.0083
+      }
+    },
+    {
+      "cod_depto": "20",
+      "nombre_depto": "Cesar",
+      "delta_por_ideologia": {
+        "izquierda": 0.0271,
+        "centro": 0.0063,
+        "derecha": -0.0334
+      }
+    },
+    {
+      "cod_depto": "23",
+      "nombre_depto": "Córdoba",
+      "delta_por_ideologia": {
+        "izquierda": 0.0377,
+        "centro": 0.0002,
+        "derecha": -0.0379
+      }
+    },
+    {
+      "cod_depto": "25",
+      "nombre_depto": "Cundinamarca",
+      "delta_por_ideologia": {
+        "izquierda": 0.0348,
+        "centro": 0.026,
+        "derecha": -0.0608
+      }
+    },
+    {
+      "cod_depto": "27",
+      "nombre_depto": "Chocó",
+      "delta_por_ideologia": {
+        "izquierda": 0.034,
+        "centro": -0.011,
+        "derecha": -0.0229
+      }
+    },
+    {
+      "cod_depto": "41",
+      "nombre_depto": "Huila",
+      "delta_por_ideologia": {
+        "izquierda": -0.0006,
+        "centro": 0.0166,
+        "derecha": -0.016
+      }
+    },
+    {
+      "cod_depto": "44",
+      "nombre_depto": "La Guajira",
+      "delta_por_ideologia": {
+        "izquierda": 0.0069,
+        "centro": 0.0006,
+        "derecha": -0.0075
+      }
+    },
+    {
+      "cod_depto": "47",
+      "nombre_depto": "Magdalena",
+      "delta_por_ideologia": {
+        "izquierda": 0.034,
+        "centro": 0.001,
+        "derecha": -0.035
+      }
+    },
+    {
+      "cod_depto": "50",
+      "nombre_depto": "Meta",
+      "delta_por_ideologia": {
+        "izquierda": 0.0479,
+        "centro": 0.0209,
+        "derecha": -0.0688
+      }
+    },
+    {
+      "cod_depto": "52",
+      "nombre_depto": "Nariño",
+      "delta_por_ideologia": {
+        "izquierda": -0.0161,
+        "centro": 0.0028,
+        "derecha": 0.0133
+      }
+    },
+    {
+      "cod_depto": "54",
+      "nombre_depto": "Norte de Santander",
+      "delta_por_ideologia": {
+        "izquierda": 0.0173,
+        "centro": 0.0208,
+        "derecha": -0.0381
+      }
+    },
+    {
+      "cod_depto": "63",
+      "nombre_depto": "Quindío",
+      "delta_por_ideologia": {
+        "izquierda": 0.0104,
+        "centro": 0.013,
+        "derecha": -0.0234
+      }
+    },
+    {
+      "cod_depto": "66",
+      "nombre_depto": "Risaralda",
+      "delta_por_ideologia": {
+        "izquierda": 0.0071,
+        "centro": 0.0173,
+        "derecha": -0.0244
+      }
+    },
+    {
+      "cod_depto": "68",
+      "nombre_depto": "Santander",
+      "delta_por_ideologia": {
+        "izquierda": 0.0815,
+        "centro": 0.0355,
+        "derecha": -0.117
+      }
+    },
+    {
+      "cod_depto": "70",
+      "nombre_depto": "Sucre",
+      "delta_por_ideologia": {
+        "izquierda": 0.0219,
+        "centro": -0.0013,
+        "derecha": -0.0206
+      }
+    },
+    {
+      "cod_depto": "73",
+      "nombre_depto": "Tolima",
+      "delta_por_ideologia": {
+        "izquierda": 0.0441,
+        "centro": 0.0111,
+        "derecha": -0.0551
+      }
+    },
+    {
+      "cod_depto": "76",
+      "nombre_depto": "Valle del Cauca",
+      "delta_por_ideologia": {
+        "izquierda": -0.0021,
+        "centro": 0.0051,
+        "derecha": -0.003
+      }
+    },
+    {
+      "cod_depto": "81",
+      "nombre_depto": "Arauca",
+      "delta_por_ideologia": {
+        "izquierda": 0.1139,
+        "centro": 0.0148,
+        "derecha": -0.1286
+      }
+    },
+    {
+      "cod_depto": "85",
+      "nombre_depto": "Casanare",
+      "delta_por_ideologia": {
+        "izquierda": -0.0879,
+        "centro": 0.0257,
+        "derecha": 0.0622
+      }
+    },
+    {
+      "cod_depto": "86",
+      "nombre_depto": "Putumayo",
+      "delta_por_ideologia": {
+        "izquierda": 0.0081,
+        "centro": 0.0084,
+        "derecha": -0.0165
+      }
+    },
+    {
+      "cod_depto": "88",
+      "nombre_depto": "San Andrés y Providencia",
+      "delta_por_ideologia": {
+        "izquierda": 0.042,
+        "centro": -0.0026,
+        "derecha": -0.0393
+      }
+    },
+    {
+      "cod_depto": "91",
+      "nombre_depto": "Amazonas",
+      "delta_por_ideologia": {
+        "izquierda": 0.0984,
+        "centro": -0.003,
+        "derecha": -0.0954
+      }
+    },
+    {
+      "cod_depto": "94",
+      "nombre_depto": "Guainía",
+      "delta_por_ideologia": {
+        "izquierda": 0.0978,
+        "centro": -0.0221,
+        "derecha": -0.0757
+      }
+    },
+    {
+      "cod_depto": "95",
+      "nombre_depto": "Guaviare",
+      "delta_por_ideologia": {
+        "izquierda": 0.0113,
+        "centro": 0.0198,
+        "derecha": -0.0311
+      }
+    },
+    {
+      "cod_depto": "97",
+      "nombre_depto": "Vaupés",
+      "delta_por_ideologia": {
+        "izquierda": 0.0833,
+        "centro": -0.0087,
+        "derecha": -0.0746
+      }
+    },
+    {
+      "cod_depto": "99",
+      "nombre_depto": "Vichada",
+      "delta_por_ideologia": {
+        "izquierda": 0.1278,
+        "centro": -0.0119,
+        "derecha": -0.1158
+      }
+    }
+  ],
+  "serie_municipios": []
+}

@@ -1,0 +1,819 @@
+{
+  "metadata": {
+    "ultima_actualizacion": "2026-06-01T22:41:38+00:00",
+    "fuentes": {
+      "wikipedia": {
+        "nombre": "Wikipedia — tablas Registraduría",
+        "url": "https://en.wikipedia.org/wiki/2022_Colombian_presidential_election / https://es.wikipedia.org/wiki/Elecciones_presidenciales_de_Colombia_de_2026"
+      }
+    },
+    "definiciones": {
+      "nivel": "departamento"
+    },
+    "cobertura": {
+      "elecciones": [
+        "2022-1v",
+        "2022-2v",
+        "2026-1v"
+      ]
+    }
+  },
+  "departamentos_2022_1v": [
+    {
+      "cod_depto": "05",
+      "nombre_depto": "Antioquia",
+      "ganador_id": "federico_gutierrez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 2780021,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "08",
+      "nombre_depto": "Atlántico",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 861942,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "11",
+      "nombre_depto": "Bogotá D.C.",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 3687362,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "13",
+      "nombre_depto": "Bolívar",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 707357,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "15",
+      "nombre_depto": "Boyacá",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 613847,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "17",
+      "nombre_depto": "Caldas",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 452223,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "18",
+      "nombre_depto": "Caquetá",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 138707,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "19",
+      "nombre_depto": "Cauca",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 544983,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "20",
+      "nombre_depto": "Cesar",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 427174,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "23",
+      "nombre_depto": "Córdoba",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 605413,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "25",
+      "nombre_depto": "Cundinamarca",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 1357388,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "27",
+      "nombre_depto": "Chocó",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 131114,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "41",
+      "nombre_depto": "Huila",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 492756,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "44",
+      "nombre_depto": "La Guajira",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 204095,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "47",
+      "nombre_depto": "Magdalena",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 451024,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "50",
+      "nombre_depto": "Meta",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 477907,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "52",
+      "nombre_depto": "Nariño",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 605944,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "54",
+      "nombre_depto": "Norte de Santander",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 672332,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "63",
+      "nombre_depto": "Quindío",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 265025,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "66",
+      "nombre_depto": "Risaralda",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 453548,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "68",
+      "nombre_depto": "Santander",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 1159805,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "70",
+      "nombre_depto": "Sucre",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 358707,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "73",
+      "nombre_depto": "Tolima",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 607614,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "76",
+      "nombre_depto": "Valle del Cauca",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 1914700,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "81",
+      "nombre_depto": "Arauca",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 94948,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "85",
+      "nombre_depto": "Casanare",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 193773,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "86",
+      "nombre_depto": "Putumayo",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 119731,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "88",
+      "nombre_depto": "San Andrés y Providencia",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 14348,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "91",
+      "nombre_depto": "Amazonas",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 21600,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "94",
+      "nombre_depto": "Guainía",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 10336,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "95",
+      "nombre_depto": "Guaviare",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 29875,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "97",
+      "nombre_depto": "Vaupés",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 6911,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "99",
+      "nombre_depto": "Vichada",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 16577,
+      "participacion": 0.0
+    }
+  ],
+  "departamentos_2022_2v": [
+    {
+      "cod_depto": "05",
+      "nombre_depto": "Antioquia",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 2764705,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "08",
+      "nombre_depto": "Atlántico",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 987383,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "11",
+      "nombre_depto": "Bogotá D.C.",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 3734195,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "13",
+      "nombre_depto": "Bolívar",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 794993,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "15",
+      "nombre_depto": "Boyacá",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 643169,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "17",
+      "nombre_depto": "Caldas",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 455334,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "18",
+      "nombre_depto": "Caquetá",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 161738,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "19",
+      "nombre_depto": "Cauca",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 637767,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "20",
+      "nombre_depto": "Cesar",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 465579,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "23",
+      "nombre_depto": "Córdoba",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 704015,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "25",
+      "nombre_depto": "Cundinamarca",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 1381419,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "27",
+      "nombre_depto": "Chocó",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 153582,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "41",
+      "nombre_depto": "Huila",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 522332,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "44",
+      "nombre_depto": "La Guajira",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 247950,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "47",
+      "nombre_depto": "Magdalena",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 493932,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "50",
+      "nombre_depto": "Meta",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 487430,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "52",
+      "nombre_depto": "Nariño",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 718368,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "54",
+      "nombre_depto": "Norte de Santander",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 706819,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "63",
+      "nombre_depto": "Quindío",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 265190,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "66",
+      "nombre_depto": "Risaralda",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 455190,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "68",
+      "nombre_depto": "Santander",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 1181531,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "70",
+      "nombre_depto": "Sucre",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 402642,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "73",
+      "nombre_depto": "Tolima",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 640350,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "76",
+      "nombre_depto": "Valle del Cauca",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 2005295,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "81",
+      "nombre_depto": "Arauca",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 101555,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "85",
+      "nombre_depto": "Casanare",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 201127,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "86",
+      "nombre_depto": "Putumayo",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 135667,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "88",
+      "nombre_depto": "San Andrés y Providencia",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 15994,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "91",
+      "nombre_depto": "Amazonas",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 23133,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "94",
+      "nombre_depto": "Guainía",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 12252,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "95",
+      "nombre_depto": "Guaviare",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 32309,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "97",
+      "nombre_depto": "Vaupés",
+      "ganador_id": "gustavo_petro",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 8595,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "99",
+      "nombre_depto": "Vichada",
+      "ganador_id": "rodolfo_hernandez",
+      "ganador_ideologia": "derecha",
+      "total_validos": 19081,
+      "participacion": 0.0
+    }
+  ],
+  "departamentos_2026_1v": [
+    {
+      "cod_depto": "05",
+      "nombre_depto": "Antioquia",
+      "ganador_id": "abelardo_de_la_espriella",
+      "ganador_ideologia": "derecha",
+      "total_validos": 3109697,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "08",
+      "nombre_depto": "Atlántico",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 1041351,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "11",
+      "nombre_depto": "Bogotá D.C.",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 4024364,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "13",
+      "nombre_depto": "Bolívar",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 807418,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "15",
+      "nombre_depto": "Boyacá",
+      "ganador_id": "abelardo_de_la_espriella",
+      "ganador_ideologia": "derecha",
+      "total_validos": 658822,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "17",
+      "nombre_depto": "Caldas",
+      "ganador_id": "abelardo_de_la_espriella",
+      "ganador_ideologia": "derecha",
+      "total_validos": 481427,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "18",
+      "nombre_depto": "Caquetá",
+      "ganador_id": "abelardo_de_la_espriella",
+      "ganador_ideologia": "derecha",
+      "total_validos": 166351,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "19",
+      "nombre_depto": "Cauca",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 660770,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "20",
+      "nombre_depto": "Cesar",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 475751,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "23",
+      "nombre_depto": "Córdoba",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 695827,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "25",
+      "nombre_depto": "Cundinamarca",
+      "ganador_id": "abelardo_de_la_espriella",
+      "ganador_ideologia": "derecha",
+      "total_validos": 1571134,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "27",
+      "nombre_depto": "Chocó",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 141964,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "41",
+      "nombre_depto": "Huila",
+      "ganador_id": "abelardo_de_la_espriella",
+      "ganador_ideologia": "derecha",
+      "total_validos": 538672,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "44",
+      "nombre_depto": "La Guajira",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 250376,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "47",
+      "nombre_depto": "Magdalena",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 495634,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "50",
+      "nombre_depto": "Meta",
+      "ganador_id": "abelardo_de_la_espriella",
+      "ganador_ideologia": "derecha",
+      "total_validos": 527444,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "52",
+      "nombre_depto": "Nariño",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 676917,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "54",
+      "nombre_depto": "Norte de Santander",
+      "ganador_id": "abelardo_de_la_espriella",
+      "ganador_ideologia": "derecha",
+      "total_validos": 726503,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "63",
+      "nombre_depto": "Quindío",
+      "ganador_id": "abelardo_de_la_espriella",
+      "ganador_ideologia": "derecha",
+      "total_validos": 287953,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "66",
+      "nombre_depto": "Risaralda",
+      "ganador_id": "abelardo_de_la_espriella",
+      "ganador_ideologia": "derecha",
+      "total_validos": 495484,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "68",
+      "nombre_depto": "Santander",
+      "ganador_id": "abelardo_de_la_espriella",
+      "ganador_ideologia": "derecha",
+      "total_validos": 1181043,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "70",
+      "nombre_depto": "Sucre",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 395445,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "73",
+      "nombre_depto": "Tolima",
+      "ganador_id": "abelardo_de_la_espriella",
+      "ganador_ideologia": "derecha",
+      "total_validos": 660453,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "76",
+      "nombre_depto": "Valle del Cauca",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 2066204,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "81",
+      "nombre_depto": "Arauca",
+      "ganador_id": "abelardo_de_la_espriella",
+      "ganador_ideologia": "derecha",
+      "total_validos": 96108,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "85",
+      "nombre_depto": "Casanare",
+      "ganador_id": "abelardo_de_la_espriella",
+      "ganador_ideologia": "derecha",
+      "total_validos": 185037,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "86",
+      "nombre_depto": "Putumayo",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 129364,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "88",
+      "nombre_depto": "San Andrés y Providencia",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 17331,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "91",
+      "nombre_depto": "Amazonas",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 24748,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "94",
+      "nombre_depto": "Guainía",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 11762,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "95",
+      "nombre_depto": "Guaviare",
+      "ganador_id": "abelardo_de_la_espriella",
+      "ganador_ideologia": "derecha",
+      "total_validos": 32961,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "97",
+      "nombre_depto": "Vaupés",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 9037,
+      "participacion": 0.0
+    },
+    {
+      "cod_depto": "99",
+      "nombre_depto": "Vichada",
+      "ganador_id": "ivan_cepeda",
+      "ganador_ideologia": "izquierda",
+      "total_validos": 20973,
+      "participacion": 0.0
+    }
+  ]
+}

@@ -295,3 +295,55 @@ export interface ExternoData {
     deuda_externa: Record<string, number>;
   };
 }
+export interface CandidatoPres {
+  id: string;
+  nombre: string;
+  partido: string;
+  coalicion?: string;
+  ideologia: IdeologiaBloque;
+  foto?: string;
+}
+
+export type IdeologiaBloque = "izquierda" | "centro" | "derecha";
+
+export interface ResultadoCandidato {
+  id: string;
+  votos: number;
+  share: number;
+}
+
+export interface ElectoralAggDepto {
+  cod_depto: string;
+  nombre_depto: string;
+  ganador_id: string;
+  ganador_ideologia: IdeologiaBloque;
+  votos_por_candidato: Record<string, number>;
+  votos_por_ideologia: Record<IdeologiaBloque, number>;
+  total_validos: number;
+  total_votos: number;
+  censo: number;
+  participacion: number;
+}
+
+export interface PresEleccionData {
+  metadata: ObservatorioMetadata;
+  eleccion: { anio: number; vuelta: 1 | 2; fecha: string };
+  resultados: ResultadoCandidato[];
+  agregados: {
+    nacional: { censo: number; total_votos: number; validos: number; nulos: number; no_marcados: number; participacion: number; abstencion: number };
+    departamentos: ElectoralAggDepto[];
+  };
+  indicadores: {
+    polarizacion: number;
+    costo_votos?: { mayoria_simple: number; distancias: Record<string, number> };
+  };
+}
+
+export interface PresCandidatosData {
+  metadata: ObservatorioMetadata;
+  candidatos: {
+    "2022-1v": CandidatoPres[];
+    "2022-2v": CandidatoPres[];
+    "2026-1v": CandidatoPres[];
+  };
+}

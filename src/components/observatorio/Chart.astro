@@ -118,6 +118,94 @@ const chartElementId = `chart-${def.id}`;
   .pres-chip__name { font-weight: 600; color: #1e293b; }
   .pres-chip__period { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.65rem; color: #64748b; }
   @media (max-width: 600px) { .pres-toggle__label { display: none; } }
+
+  /* ── Leyenda de candidatos en mapas ── */
+  .cand-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.85rem;
+    padding-top: 0.65rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--color-border, #e5e7eb);
+  }
+  .cand-leg-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.38rem;
+    font-size: 0.73rem;
+    color: var(--color-text-secondary, #475569);
+  }
+  .cand-leg-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 1.5px solid rgba(0,0,0,0.08);
+  }
+  .cand-leg-name { font-weight: 600; }
+
+  /* ── Selector de Tendencia Política (Bloque 4) ── */
+  .tendencia-selector-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-bottom: 0.25rem;
+  }
+  .tendencia-tabs {
+    display: flex;
+    background: #f1f5f9;
+    padding: 0.2rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+  }
+  .tendencia-tab {
+    appearance: none;
+    border: none;
+    background: transparent;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .tendencia-tab:hover {
+    color: #0f172a;
+  }
+  .tendencia-tab.active {
+    background: white;
+    color: #0f172a;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  }
+  
+  /* Active indicator variations according to tendency */
+  .tendencia-tab.active[data-tendencia="izquierda"] {
+    border-left: 3px solid #dc2626;
+    color: #dc2626;
+  }
+  .tendencia-tab.active[data-tendencia="centro"] {
+    border-left: 3px solid #16a34a;
+    color: #16a34a;
+  }
+  .tendencia-tab.active[data-tendencia="derecha"] {
+    border-left: 3px solid #2563eb;
+    color: #2563eb;
+  }
+
+  .tendencia-map-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--color-border, #e5e7eb);
+    margin-top: 0.5rem;
+  }
+  .tendencia-map-info {
+    font-size: 0.72rem;
+    color: var(--color-text-muted, #64748b);
+  }
 </style>
 
 <script>

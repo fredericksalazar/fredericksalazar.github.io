@@ -42,6 +42,21 @@ import {
   deudaExternaPib,
   passThroughTrmInflacion,
 } from "./externo";
+import {
+  pres2026ComposicionVotos,
+  pres2026ParticipacionHistorico,
+  pres2026VotosCandidato,
+  pres2026MapaDeptoGanador,
+  presIdeologia2026,
+  presIdeologia2022,
+  pres2022_1vComposicionVotos,
+  pres2022_1vVotosCandidato,
+  pres2022_1vMapaDeptoGanador,
+  pres2022_2vComposicionVotos,
+  pres2022_2vVotosCandidato,
+  pres2022_2vMapaDeptoGanador,
+  pres2026MapaVariacionTendencia,
+} from "./elecciones-presidenciales";
 import type { ChartDef } from "./types";
 
 export const CHART_DEFS = {
@@ -77,6 +92,19 @@ export const CHART_DEFS = {
   [cuentaCorrientePib.id]: cuentaCorrientePib,
   [deudaExternaPib.id]: deudaExternaPib,
   [passThroughTrmInflacion.id]: passThroughTrmInflacion,
+  [pres2026ComposicionVotos.id]: pres2026ComposicionVotos,
+  [pres2026ParticipacionHistorico.id]: pres2026ParticipacionHistorico,
+  [pres2026VotosCandidato.id]: pres2026VotosCandidato,
+  [pres2026MapaDeptoGanador.id]: pres2026MapaDeptoGanador,
+  [presIdeologia2026.id]: presIdeologia2026,
+  [presIdeologia2022.id]: presIdeologia2022,
+  [pres2022_1vComposicionVotos.id]: pres2022_1vComposicionVotos,
+  [pres2022_1vVotosCandidato.id]: pres2022_1vVotosCandidato,
+  [pres2022_1vMapaDeptoGanador.id]: pres2022_1vMapaDeptoGanador,
+  [pres2022_2vComposicionVotos.id]: pres2022_2vComposicionVotos,
+  [pres2022_2vVotosCandidato.id]: pres2022_2vVotosCandidato,
+  [pres2022_2vMapaDeptoGanador.id]: pres2022_2vMapaDeptoGanador,
+  [pres2026MapaVariacionTendencia.id]: pres2026MapaVariacionTendencia,
 } as const satisfies Record<string, ChartDef>;
 
 export type ChartId = Extract<keyof typeof CHART_DEFS, string>;

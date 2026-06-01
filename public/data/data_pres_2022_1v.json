@@ -1,0 +1,912 @@
+{
+  "metadata": {
+    "ultima_actualizacion": "2026-06-01T22:41:38+00:00",
+    "fuentes": {
+      "wikipedia": {
+        "nombre": "Wikipedia (en) — tabla de Registraduría",
+        "url": "https://en.wikipedia.org/wiki/2022_Colombian_presidential_election"
+      },
+      "registraduria": {
+        "nombre": "Registraduría Nacional del Estado Civil",
+        "url": "https://www.registraduria.gov.co/"
+      }
+    },
+    "definiciones": {
+      "estado": "escrutinio_definitivo"
+    },
+    "cobertura": {
+      "eleccion": "2022-1v",
+      "fecha": "2022-05-29",
+      "total_registros": 33
+    }
+  },
+  "eleccion": {
+    "anio": 2022,
+    "vuelta": 1,
+    "fecha": "2022-05-29"
+  },
+  "resultados": [
+    {
+      "id": "gustavo_petro",
+      "votos": 8527768,
+      "porcentaje": 0.4034
+    },
+    {
+      "id": "rodolfo_hernandez",
+      "votos": 5953209,
+      "porcentaje": 0.2817
+    },
+    {
+      "id": "federico_gutierrez",
+      "votos": 5058010,
+      "porcentaje": 0.2394
+    },
+    {
+      "id": "sergio_fajardo",
+      "votos": 888585,
+      "porcentaje": 0.0418
+    },
+    {
+      "id": "john_milton_rodriguez",
+      "votos": 274251,
+      "porcentaje": 0.013
+    },
+    {
+      "id": "enrique_gomez",
+      "votos": 50538,
+      "porcentaje": 0.0024
+    },
+    {
+      "id": "ingrid_betancourt",
+      "votos": 14938,
+      "porcentaje": 0.0007
+    },
+    {
+      "id": "luis_perez",
+      "votos": 12424,
+      "porcentaje": 0.0006
+    }
+  ],
+  "agregados": {
+    "nacional": {
+      "censo": 39002239,
+      "total_votos": 21442300,
+      "validos": 21174806,
+      "nulos": 241826,
+      "no_marcados": 26632,
+      "participacion": 0.5498,
+      "abstencion": 0.4502
+    },
+    "departamentos": [
+      {
+        "cod_depto": "05",
+        "nombre_depto": "Antioquia",
+        "ganador_id": "federico_gutierrez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 682282,
+          "rodolfo_hernandez": 521390,
+          "federico_gutierrez": 1385565,
+          "sergio_fajardo": 154470,
+          "john_milton_rodriguez": 23970,
+          "enrique_gomez": 7553,
+          "ingrid_betancourt": 1825,
+          "luis_perez": 2966
+        },
+        "votos_por_ideologia": {
+          "izquierda": 682282,
+          "centro": 156295,
+          "derecha": 1941444
+        },
+        "total_validos": 2780021,
+        "total_votos": 2780021,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "08",
+        "nombre_depto": "Atlántico",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 479049,
+          "rodolfo_hernandez": 113489,
+          "federico_gutierrez": 233614,
+          "sergio_fajardo": 23382,
+          "john_milton_rodriguez": 9469,
+          "enrique_gomez": 2092,
+          "ingrid_betancourt": 513,
+          "luis_perez": 334
+        },
+        "votos_por_ideologia": {
+          "izquierda": 479049,
+          "centro": 23895,
+          "derecha": 358998
+        },
+        "total_validos": 861942,
+        "total_votos": 861942,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "11",
+        "nombre_depto": "Bogotá D.C.",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 1769671,
+          "rodolfo_hernandez": 833016,
+          "federico_gutierrez": 723538,
+          "sergio_fajardo": 299266,
+          "john_milton_rodriguez": 47055,
+          "enrique_gomez": 9925,
+          "ingrid_betancourt": 2487,
+          "luis_perez": 2404
+        },
+        "votos_por_ideologia": {
+          "izquierda": 1769671,
+          "centro": 301753,
+          "derecha": 1615938
+        },
+        "total_validos": 3687362,
+        "total_votos": 3687362,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "13",
+        "nombre_depto": "Bolívar",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 359593,
+          "rodolfo_hernandez": 109395,
+          "federico_gutierrez": 204057,
+          "sergio_fajardo": 18437,
+          "john_milton_rodriguez": 13576,
+          "enrique_gomez": 1520,
+          "ingrid_betancourt": 449,
+          "luis_perez": 330
+        },
+        "votos_por_ideologia": {
+          "izquierda": 359593,
+          "centro": 18886,
+          "derecha": 328878
+        },
+        "total_validos": 707357,
+        "total_votos": 707357,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "15",
+        "nombre_depto": "Boyacá",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 194972,
+          "rodolfo_hernandez": 321045,
+          "federico_gutierrez": 66926,
+          "sergio_fajardo": 23207,
+          "john_milton_rodriguez": 5118,
+          "enrique_gomez": 1892,
+          "ingrid_betancourt": 427,
+          "luis_perez": 260
+        },
+        "votos_por_ideologia": {
+          "izquierda": 194972,
+          "centro": 23634,
+          "derecha": 395241
+        },
+        "total_validos": 613847,
+        "total_votos": 613847,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "17",
+        "nombre_depto": "Caldas",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 131908,
+          "rodolfo_hernandez": 147287,
+          "federico_gutierrez": 136910,
+          "sergio_fajardo": 29682,
+          "john_milton_rodriguez": 4070,
+          "enrique_gomez": 1341,
+          "ingrid_betancourt": 613,
+          "luis_perez": 412
+        },
+        "votos_por_ideologia": {
+          "izquierda": 131908,
+          "centro": 30295,
+          "derecha": 290020
+        },
+        "total_validos": 452223,
+        "total_votos": 452223,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "18",
+        "nombre_depto": "Caquetá",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 47959,
+          "rodolfo_hernandez": 65399,
+          "federico_gutierrez": 19807,
+          "sergio_fajardo": 2757,
+          "john_milton_rodriguez": 2202,
+          "enrique_gomez": 357,
+          "ingrid_betancourt": 170,
+          "luis_perez": 56
+        },
+        "votos_por_ideologia": {
+          "izquierda": 47959,
+          "centro": 2927,
+          "derecha": 87821
+        },
+        "total_validos": 138707,
+        "total_votos": 138707,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "19",
+        "nombre_depto": "Cauca",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 388206,
+          "rodolfo_hernandez": 56703,
+          "federico_gutierrez": 73860,
+          "sergio_fajardo": 13759,
+          "john_milton_rodriguez": 10109,
+          "enrique_gomez": 1440,
+          "ingrid_betancourt": 579,
+          "luis_perez": 327
+        },
+        "votos_por_ideologia": {
+          "izquierda": 388206,
+          "centro": 14338,
+          "derecha": 142439
+        },
+        "total_validos": 544983,
+        "total_votos": 544983,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "20",
+        "nombre_depto": "Cesar",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 190420,
+          "rodolfo_hernandez": 140124,
+          "federico_gutierrez": 80791,
+          "sergio_fajardo": 6540,
+          "john_milton_rodriguez": 7928,
+          "enrique_gomez": 876,
+          "ingrid_betancourt": 264,
+          "luis_perez": 231
+        },
+        "votos_por_ideologia": {
+          "izquierda": 190420,
+          "centro": 6804,
+          "derecha": 229950
+        },
+        "total_validos": 427174,
+        "total_votos": 427174,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "23",
+        "nombre_depto": "Córdoba",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 318645,
+          "rodolfo_hernandez": 95201,
+          "federico_gutierrez": 172686,
+          "sergio_fajardo": 9896,
+          "john_milton_rodriguez": 7429,
+          "enrique_gomez": 1109,
+          "ingrid_betancourt": 245,
+          "luis_perez": 202
+        },
+        "votos_por_ideologia": {
+          "izquierda": 318645,
+          "centro": 10141,
+          "derecha": 276627
+        },
+        "total_validos": 605413,
+        "total_votos": 605413,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "25",
+        "nombre_depto": "Cundinamarca",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 472538,
+          "rodolfo_hernandez": 615953,
+          "federico_gutierrez": 194820,
+          "sergio_fajardo": 53517,
+          "john_milton_rodriguez": 15588,
+          "enrique_gomez": 3163,
+          "ingrid_betancourt": 1041,
+          "luis_perez": 768
+        },
+        "votos_por_ideologia": {
+          "izquierda": 472538,
+          "centro": 54558,
+          "derecha": 830292
+        },
+        "total_validos": 1357388,
+        "total_votos": 1357388,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "27",
+        "nombre_depto": "Chocó",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 96638,
+          "rodolfo_hernandez": 9805,
+          "federico_gutierrez": 18871,
+          "sergio_fajardo": 3733,
+          "john_milton_rodriguez": 1185,
+          "enrique_gomez": 579,
+          "ingrid_betancourt": 176,
+          "luis_perez": 127
+        },
+        "votos_por_ideologia": {
+          "izquierda": 96638,
+          "centro": 3909,
+          "derecha": 30567
+        },
+        "total_validos": 131114,
+        "total_votos": 131114,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "41",
+        "nombre_depto": "Huila",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 162609,
+          "rodolfo_hernandez": 223473,
+          "federico_gutierrez": 88155,
+          "sergio_fajardo": 9898,
+          "john_milton_rodriguez": 7246,
+          "enrique_gomez": 945,
+          "ingrid_betancourt": 266,
+          "luis_perez": 164
+        },
+        "votos_por_ideologia": {
+          "izquierda": 162609,
+          "centro": 10164,
+          "derecha": 319983
+        },
+        "total_validos": 492756,
+        "total_votos": 492756,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "44",
+        "nombre_depto": "La Guajira",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 113489,
+          "rodolfo_hernandez": 37587,
+          "federico_gutierrez": 45779,
+          "sergio_fajardo": 3379,
+          "john_milton_rodriguez": 2812,
+          "enrique_gomez": 675,
+          "ingrid_betancourt": 279,
+          "luis_perez": 95
+        },
+        "votos_por_ideologia": {
+          "izquierda": 113489,
+          "centro": 3658,
+          "derecha": 86948
+        },
+        "total_validos": 204095,
+        "total_votos": 204095,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "47",
+        "nombre_depto": "Magdalena",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 226501,
+          "rodolfo_hernandez": 78368,
+          "federico_gutierrez": 128355,
+          "sergio_fajardo": 9007,
+          "john_milton_rodriguez": 7324,
+          "enrique_gomez": 972,
+          "ingrid_betancourt": 300,
+          "luis_perez": 197
+        },
+        "votos_por_ideologia": {
+          "izquierda": 226501,
+          "centro": 9307,
+          "derecha": 215216
+        },
+        "total_validos": 451024,
+        "total_votos": 451024,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "50",
+        "nombre_depto": "Meta",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 135500,
+          "rodolfo_hernandez": 253918,
+          "federico_gutierrez": 69511,
+          "sergio_fajardo": 10295,
+          "john_milton_rodriguez": 7277,
+          "enrique_gomez": 961,
+          "ingrid_betancourt": 262,
+          "luis_perez": 183
+        },
+        "votos_por_ideologia": {
+          "izquierda": 135500,
+          "centro": 10557,
+          "derecha": 331850
+        },
+        "total_validos": 477907,
+        "total_votos": 477907,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "52",
+        "nombre_depto": "Nariño",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 433636,
+          "rodolfo_hernandez": 66437,
+          "federico_gutierrez": 83141,
+          "sergio_fajardo": 14925,
+          "john_milton_rodriguez": 5042,
+          "enrique_gomez": 1776,
+          "ingrid_betancourt": 688,
+          "luis_perez": 299
+        },
+        "votos_por_ideologia": {
+          "izquierda": 433636,
+          "centro": 15613,
+          "derecha": 156695
+        },
+        "total_validos": 605944,
+        "total_votos": 605944,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "54",
+        "nombre_depto": "Norte de Santander",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 107617,
+          "rodolfo_hernandez": 367724,
+          "federico_gutierrez": 169066,
+          "sergio_fajardo": 16088,
+          "john_milton_rodriguez": 10144,
+          "enrique_gomez": 1160,
+          "ingrid_betancourt": 339,
+          "luis_perez": 194
+        },
+        "votos_por_ideologia": {
+          "izquierda": 107617,
+          "centro": 16427,
+          "derecha": 548288
+        },
+        "total_validos": 672332,
+        "total_votos": 672332,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "63",
+        "nombre_depto": "Quindío",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 84365,
+          "rodolfo_hernandez": 80780,
+          "federico_gutierrez": 82165,
+          "sergio_fajardo": 13819,
+          "john_milton_rodriguez": 2899,
+          "enrique_gomez": 599,
+          "ingrid_betancourt": 247,
+          "luis_perez": 151
+        },
+        "votos_por_ideologia": {
+          "izquierda": 84365,
+          "centro": 14066,
+          "derecha": 166594
+        },
+        "total_validos": 265025,
+        "total_votos": 265025,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "66",
+        "nombre_depto": "Risaralda",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 164204,
+          "rodolfo_hernandez": 147122,
+          "federico_gutierrez": 112665,
+          "sergio_fajardo": 22624,
+          "john_milton_rodriguez": 5036,
+          "enrique_gomez": 1017,
+          "ingrid_betancourt": 506,
+          "luis_perez": 374
+        },
+        "votos_por_ideologia": {
+          "izquierda": 164204,
+          "centro": 23130,
+          "derecha": 266214
+        },
+        "total_validos": 453548,
+        "total_votos": 453548,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "68",
+        "nombre_depto": "Santander",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 244179,
+          "rodolfo_hernandez": 782378,
+          "federico_gutierrez": 104955,
+          "sergio_fajardo": 14063,
+          "john_milton_rodriguez": 11935,
+          "enrique_gomez": 1696,
+          "ingrid_betancourt": 328,
+          "luis_perez": 271
+        },
+        "votos_por_ideologia": {
+          "izquierda": 244179,
+          "centro": 14391,
+          "derecha": 901235
+        },
+        "total_validos": 1159805,
+        "total_votos": 1159805,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "70",
+        "nombre_depto": "Sucre",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 198095,
+          "rodolfo_hernandez": 40093,
+          "federico_gutierrez": 103850,
+          "sergio_fajardo": 5985,
+          "john_milton_rodriguez": 9546,
+          "enrique_gomez": 807,
+          "ingrid_betancourt": 221,
+          "luis_perez": 110
+        },
+        "votos_por_ideologia": {
+          "izquierda": 198095,
+          "centro": 6206,
+          "derecha": 154406
+        },
+        "total_validos": 358707,
+        "total_votos": 358707,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "73",
+        "nombre_depto": "Tolima",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 191000,
+          "rodolfo_hernandez": 242949,
+          "federico_gutierrez": 144982,
+          "sergio_fajardo": 18466,
+          "john_milton_rodriguez": 7989,
+          "enrique_gomez": 1502,
+          "ingrid_betancourt": 452,
+          "luis_perez": 274
+        },
+        "votos_por_ideologia": {
+          "izquierda": 191000,
+          "centro": 18918,
+          "derecha": 397696
+        },
+        "total_validos": 607614,
+        "total_votos": 607614,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "76",
+        "nombre_depto": "Valle del Cauca",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 1043911,
+          "rodolfo_hernandez": 329898,
+          "federico_gutierrez": 414439,
+          "sergio_fajardo": 78108,
+          "john_milton_rodriguez": 40934,
+          "enrique_gomez": 4631,
+          "ingrid_betancourt": 1542,
+          "luis_perez": 1237
+        },
+        "votos_por_ideologia": {
+          "izquierda": 1043911,
+          "centro": 79650,
+          "derecha": 791139
+        },
+        "total_validos": 1914700,
+        "total_votos": 1914700,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "81",
+        "nombre_depto": "Arauca",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 23043,
+          "rodolfo_hernandez": 56079,
+          "federico_gutierrez": 12651,
+          "sergio_fajardo": 1677,
+          "john_milton_rodriguez": 1159,
+          "enrique_gomez": 221,
+          "ingrid_betancourt": 69,
+          "luis_perez": 49
+        },
+        "votos_por_ideologia": {
+          "izquierda": 23043,
+          "centro": 1746,
+          "derecha": 70159
+        },
+        "total_validos": 94948,
+        "total_votos": 94948,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "85",
+        "nombre_depto": "Casanare",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 42674,
+          "rodolfo_hernandez": 125689,
+          "federico_gutierrez": 19498,
+          "sergio_fajardo": 3035,
+          "john_milton_rodriguez": 2415,
+          "enrique_gomez": 301,
+          "ingrid_betancourt": 93,
+          "luis_perez": 68
+        },
+        "votos_por_ideologia": {
+          "izquierda": 42674,
+          "centro": 3128,
+          "derecha": 147971
+        },
+        "total_validos": 193773,
+        "total_votos": 193773,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "86",
+        "nombre_depto": "Putumayo",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 86542,
+          "rodolfo_hernandez": 17483,
+          "federico_gutierrez": 11855,
+          "sergio_fajardo": 2016,
+          "john_milton_rodriguez": 1440,
+          "enrique_gomez": 216,
+          "ingrid_betancourt": 116,
+          "luis_perez": 63
+        },
+        "votos_por_ideologia": {
+          "izquierda": 86542,
+          "centro": 2132,
+          "derecha": 31057
+        },
+        "total_validos": 119731,
+        "total_votos": 119731,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "88",
+        "nombre_depto": "San Andrés y Providencia",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 5996,
+          "rodolfo_hernandez": 2660,
+          "federico_gutierrez": 4544,
+          "sergio_fajardo": 576,
+          "john_milton_rodriguez": 521,
+          "enrique_gomez": 20,
+          "ingrid_betancourt": 13,
+          "luis_perez": 18
+        },
+        "votos_por_ideologia": {
+          "izquierda": 5996,
+          "centro": 589,
+          "derecha": 7763
+        },
+        "total_validos": 14348,
+        "total_votos": 14348,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "91",
+        "nombre_depto": "Amazonas",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 10117,
+          "rodolfo_hernandez": 5734,
+          "federico_gutierrez": 4487,
+          "sergio_fajardo": 749,
+          "john_milton_rodriguez": 216,
+          "enrique_gomez": 232,
+          "ingrid_betancourt": 43,
+          "luis_perez": 22
+        },
+        "votos_por_ideologia": {
+          "izquierda": 10117,
+          "centro": 792,
+          "derecha": 10691
+        },
+        "total_validos": 21600,
+        "total_votos": 21600,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "94",
+        "nombre_depto": "Guainía",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 4966,
+          "rodolfo_hernandez": 2892,
+          "federico_gutierrez": 1773,
+          "sergio_fajardo": 527,
+          "john_milton_rodriguez": 107,
+          "enrique_gomez": 39,
+          "ingrid_betancourt": 25,
+          "luis_perez": 7
+        },
+        "votos_por_ideologia": {
+          "izquierda": 4966,
+          "centro": 552,
+          "derecha": 4818
+        },
+        "total_validos": 10336,
+        "total_votos": 10336,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "95",
+        "nombre_depto": "Guaviare",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 11198,
+          "rodolfo_hernandez": 14534,
+          "federico_gutierrez": 2953,
+          "sergio_fajardo": 575,
+          "john_milton_rodriguez": 519,
+          "enrique_gomez": 57,
+          "ingrid_betancourt": 20,
+          "luis_perez": 19
+        },
+        "votos_por_ideologia": {
+          "izquierda": 11198,
+          "centro": 595,
+          "derecha": 18082
+        },
+        "total_validos": 29875,
+        "total_votos": 29875,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "97",
+        "nombre_depto": "Vaupés",
+        "ganador_id": "gustavo_petro",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "gustavo_petro": 4741,
+          "rodolfo_hernandez": 1063,
+          "federico_gutierrez": 763,
+          "sergio_fajardo": 253,
+          "john_milton_rodriguez": 30,
+          "enrique_gomez": 29,
+          "ingrid_betancourt": 26,
+          "luis_perez": 6
+        },
+        "votos_por_ideologia": {
+          "izquierda": 4741,
+          "centro": 279,
+          "derecha": 1891
+        },
+        "total_validos": 6911,
+        "total_votos": 6911,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "99",
+        "nombre_depto": "Vichada",
+        "ganador_id": "rodolfo_hernandez",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "gustavo_petro": 5654,
+          "rodolfo_hernandez": 6670,
+          "federico_gutierrez": 3220,
+          "sergio_fajardo": 551,
+          "john_milton_rodriguez": 272,
+          "enrique_gomez": 81,
+          "ingrid_betancourt": 41,
+          "luis_perez": 88
+        },
+        "votos_por_ideologia": {
+          "izquierda": 5654,
+          "centro": 592,
+          "derecha": 10331
+        },
+        "total_validos": 16577,
+        "total_votos": 16577,
+        "censo": 0,
+        "participacion": 0.0
+      }
+    ],
+    "municipios": []
+  },
+  "indicadores": {
+    "polarizacion": 0.9381
+  }
+}

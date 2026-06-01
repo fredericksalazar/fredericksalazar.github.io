@@ -1,0 +1,178 @@
+{
+  "metadata": {
+    "ultima_actualizacion": "2026-06-01T22:41:38+00:00",
+    "fuentes": {
+      "curacion_autor": {
+        "nombre": "Curación del autor",
+        "url": "https://github.com/fredericksalazar/fredericksalazar.github.io"
+      }
+    },
+    "definiciones": {
+      "ideologia": "Clasificación analítica del autor basada en trayectoria pública.",
+      "bloques": [
+        "izquierda",
+        "centro",
+        "derecha"
+      ]
+    },
+    "cobertura": {
+      "elecciones": [
+        "2022-1v",
+        "2022-2v",
+        "2026-1v"
+      ]
+    }
+  },
+  "candidatos": {
+    "2022-1v": [
+      {
+        "id": "gustavo_petro",
+        "nombre": "Gustavo Petro",
+        "partido": "Colombia Humana",
+        "ideologia": "izquierda",
+        "coalicion": "Pacto Histórico"
+      },
+      {
+        "id": "rodolfo_hernandez",
+        "nombre": "Rodolfo Hernández",
+        "partido": "Liga de Gobernantes Anticorrupción",
+        "ideologia": "derecha"
+      },
+      {
+        "id": "federico_gutierrez",
+        "nombre": "Federico Gutiérrez",
+        "partido": "Creemos",
+        "ideologia": "derecha",
+        "coalicion": "Equipo por Colombia"
+      },
+      {
+        "id": "sergio_fajardo",
+        "nombre": "Sergio Fajardo",
+        "partido": "Dignidad y Compromiso",
+        "ideologia": "centro",
+        "coalicion": "Centro Esperanza"
+      },
+      {
+        "id": "john_milton_rodriguez",
+        "nombre": "John Milton Rodríguez",
+        "partido": "Colombia Justa Libres",
+        "ideologia": "derecha"
+      },
+      {
+        "id": "enrique_gomez",
+        "nombre": "Enrique Gómez",
+        "partido": "Movimiento de Salvación Nacional",
+        "ideologia": "derecha"
+      },
+      {
+        "id": "ingrid_betancourt",
+        "nombre": "Íngrid Betancourt",
+        "partido": "Verde Oxígeno",
+        "ideologia": "centro"
+      },
+      {
+        "id": "luis_perez",
+        "nombre": "Luis Pérez",
+        "partido": "Colombia Piensa en Grande",
+        "ideologia": "derecha"
+      }
+    ],
+    "2022-2v": [
+      {
+        "id": "gustavo_petro",
+        "nombre": "Gustavo Petro",
+        "partido": "Colombia Humana",
+        "ideologia": "izquierda",
+        "coalicion": "Pacto Histórico"
+      },
+      {
+        "id": "rodolfo_hernandez",
+        "nombre": "Rodolfo Hernández",
+        "partido": "Liga de Gobernantes Anticorrupción",
+        "ideologia": "derecha"
+      }
+    ],
+    "2026-1v": [
+      {
+        "id": "abelardo_de_la_espriella",
+        "nombre": "Abelardo de la Espriella",
+        "partido": "Defensores de la Patria",
+        "ideologia": "derecha"
+      },
+      {
+        "id": "ivan_cepeda",
+        "nombre": "Iván Cepeda Castro",
+        "partido": "Polo Democrático Alternativo",
+        "ideologia": "izquierda",
+        "coalicion": "Pacto Histórico"
+      },
+      {
+        "id": "paloma_valencia",
+        "nombre": "Paloma Valencia Laserna",
+        "partido": "Centro Democrático",
+        "ideologia": "derecha"
+      },
+      {
+        "id": "sergio_fajardo",
+        "nombre": "Sergio Fajardo Valderrama",
+        "partido": "Dignidad y Compromiso",
+        "ideologia": "centro",
+        "coalicion": "Centro Esperanza"
+      },
+      {
+        "id": "claudia_lopez",
+        "nombre": "Claudia López",
+        "partido": "Una Nueva Historia",
+        "ideologia": "centro"
+      },
+      {
+        "id": "daniel_palacios_botero",
+        "nombre": "Raúl Santiago Botero Jaramillo",
+        "partido": "Rumbo al Futuro",
+        "ideologia": "derecha"
+      },
+      {
+        "id": "daniel_quintero_lizcano",
+        "nombre": "Óscar Mauricio Lizcano Arango",
+        "partido": "Independencia",
+        "ideologia": "centro"
+      },
+      {
+        "id": "miguel_uribe_londono",
+        "nombre": "Miguel Uribe Londoño",
+        "partido": "Independiente",
+        "ideologia": "derecha"
+      },
+      {
+        "id": "david_luna_garvin",
+        "nombre": "Sondra Macollins Garvin Pinto",
+        "partido": "Sondra 2026",
+        "ideologia": "centro"
+      },
+      {
+        "id": "roy_barreras",
+        "nombre": "Roy Leonardo Barreras Montealegre",
+        "partido": "Independiente",
+        "ideologia": "izquierda"
+      },
+      {
+        "id": "juan_fernando_cristo_murillo",
+        "nombre": "Luis Gilberto Murillo Urrutia",
+        "partido": "Oportunidad Colombia",
+        "ideologia": "centro"
+      },
+      {
+        "id": "luis_gilberto_murillo_caicedo",
+        "nombre": "Carlos Eduardo Caicedo Omar",
+        "partido": "Caicedo",
+        "ideologia": "izquierda"
+      },
+      {
+        "id": "camilo_romero_matamoros",
+        "nombre": "Gustavo Matamoros Camacho",
+        "partido": "Salvación y Desarrollo",
+        "ideologia": "derecha"
+      }
+    ]
+  }
+}

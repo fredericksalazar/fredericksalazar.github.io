@@ -1,0 +1,467 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import EleccionesNav from "../../components/observatorio/EleccionesNav.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
+import Chart from "../../components/observatorio/Chart.astro";
+import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
+
+import { getPres2026_1v, getPres2022_1v, getPresCandidatos } from "../../lib/observatorio/data";
+import type { IdeologiaBloque } from "../../lib/observatorio/types";
+
+const eleccion = getPres2026_1v();
+const eleccion2022 = getPres2022_1v();
+const catalogo = getPresCandidatos();
+const fecha = eleccion.eleccion?.fecha || "2026-05-31";
+
+type FilaCandidato = { id: string; nombre: string; partido: string; ideologia: IdeologiaBloque; votos: number; share: number };
+
+function filasCandidatos(e: typeof eleccion, lista: typeof catalogo.candidatos["2022-1v"]): FilaCandidato[] {
+  const totalValidos = e.agregados.nacional.validos;
+  return [...e.resultados]
+    .sort((a, b) => b.votos - a.votos)
+    .map(r => {
+      const meta = lista.find(c => c.id === r.id);
+      return {
+        id: r.id,
+        nombre: meta?.nombre ?? r.id,
+        partido: meta?.partido ?? "—",
+        ideologia: meta?.ideologia ?? "centro",
+        votos: r.votos,
+        share: r.votos / totalValidos,
+      };
+    });
+}
+
+const filas2022 = filasCandidatos(eleccion2022, catalogo.candidatos["2022-1v"]);
+const filas2026 = filasCandidatos(eleccion, catalogo.candidatos["2026-1v"]);
+
+const bloques: IdeologiaBloque[] = ["izquierda", "centro", "derecha"];
+function agregarPorBloque(filas: FilaCandidato[]): Record<IdeologiaBloque, { votos: number; share: number }> {
+  const acc = { izquierda: { votos: 0, share: 0 }, centro: { votos: 0, share: 0 }, derecha: { votos: 0, share: 0 } };
+  for (const f of filas) {
+    acc[f.ideologia].votos += f.votos;
+    acc[f.ideologia].share += f.share;
+  }
+  return acc;
+}
+const bloques2022 = agregarPorBloque(filas2022);
+const bloques2026 = agregarPorBloque(filas2026);
+const variacionBloques = bloques.map(b => ({
+  bloque: b,
+  votos2022: bloques2022[b].votos,
+  share2022: bloques2022[b].share,
+  votos2026: bloques2026[b].votos,
+  share2026: bloques2026[b].share,
+  deltaShare: bloques2026[b].share - bloques2022[b].share,
+}));
+
+const fmtMiles = (n: number) => new Intl.NumberFormat("es-CO").format(n);
+
+const nacional = eleccion.agregados.nacional;
+const nacional2022 = eleccion2022.agregados.nacional;
+const fmtCompact = (n: number) => new Intl.NumberFormat("es-CO", { notation: "compact", maximumFractionDigits: 1 }).format(n);
+const fmtPct = (n: number) => `${(n * 100).toFixed(1)}%`;
+const fmtDec = (n: number) => n.toFixed(2);
+
+const pol2026 = eleccion.indicadores.polarizacion ?? 0;
+const pol2022 = eleccion2022.indicadores.polarizacion ?? 0;
+
+const deltaCenso = nacional.censo - nacional2022.censo;
+const deltaCensoPct = deltaCenso / nacional2022.censo;
+const deltaParticipacion = nacional.participacion - nacional2022.participacion;
+const deltaValidos = nacional.validos - nacional2022.validos;
+const deltaValidosPct = deltaValidos / nacional2022.validos;
+const deltaPolarizacion = pol2026 - pol2022;
+const deltaPolarizacionPct = pol2022 !== 0 ? deltaPolarizacion / pol2022 : 0;
+
+const fmtSignedCompact = (n: number) => `${n >= 0 ? "+" : "−"}${fmtCompact(Math.abs(n))}`;
+const fmtSignedPctPp = (n: number) => `${n >= 0 ? "+" : "−"}${(Math.abs(n) * 100).toFixed(2)} pp`;
+const fmtSignedPctRel = (n: number) => `${n >= 0 ? "+" : "−"}${(Math.abs(n) * 100).toFixed(1)}%`;
+const fmtSignedDec = (n: number) => `${n >= 0 ? "+" : "−"}${Math.abs(n).toFixed(2)}`;
+
+const kpis = [
+  {
+    titulo: "Censo electoral",
+    valor: fmtCompact(nacional.censo),
+    sub: `2022: ${fmtCompact(nacional2022.censo)} · Potencial sufragantes`,
+    delta: deltaCenso,
+    deltaTxt: `${fmtSignedCompact(deltaCenso)} (${fmtSignedPctRel(deltaCensoPct)}) vs 2022`,
+  },
+  {
+    titulo: "Participación",
+    valor: fmtPct(nacional.participacion),
+    sub: `2022: ${fmtPct(nacional2022.participacion)} · Abstención ${fmtPct(nacional.abstencion)}`,
+    delta: deltaParticipacion,
+    deltaTxt: `${fmtSignedPctPp(deltaParticipacion)} vs 2022`,
+  },
+  {
+    titulo: "Votos válidos",
+    valor: fmtCompact(nacional.validos),
+    sub: `2022: ${fmtCompact(nacional2022.validos)} · ${fmtCompact(nacional.nulos)} nulos`,
+    delta: deltaValidos,
+    deltaTxt: `${fmtSignedCompact(deltaValidos)} (${fmtSignedPctRel(deltaValidosPct)}) vs 2022`,
+  },
+  {
+    titulo: "Polarización",
+    valor: fmtDec(pol2026),
+    sub: `Índice (0 = consenso · 1 = máx.)`,
+    delta: deltaPolarizacion,
+    deltaTxt: `${fmtSignedDec(deltaPolarizacion)} (${fmtSignedPctRel(deltaPolarizacionPct)}) vs 2022`,
+    hideDelta: true,
+    statusText: pol2026 > 0.7 ? "Crítica (Alta)" : pol2026 > 0.4 ? "Media" : "Baja",
+    statusColor: pol2026 > 0.7 ? "danger" : pol2026 > 0.4 ? "warning" : "success",
+  },
+];
+
+const kpisComparativo = [
+  { titulo: "Δ Censo electoral",   valor: fmtSignedCompact(deltaCenso),        delta: deltaCenso,        deltaTipo: "abs" as const },
+  { titulo: "Δ Participación",     valor: fmtSignedPctPp(deltaParticipacion),   delta: deltaParticipacion, deltaTipo: "pp"  as const },
+  { titulo: "Δ Votos válidos",     valor: fmtSignedCompact(deltaValidos),       delta: deltaValidos,       deltaTipo: "abs" as const },
+  { titulo: "Δ Polarización",      valor: fmtSignedDec(deltaPolarizacion),      delta: deltaPolarizacion,  deltaTipo: "dec" as const },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Dataset",
+      "name": "Resultados Elecciones Presidenciales Colombia 2026 — 1ª Vuelta",
+      "description": "Dataset consolidado de los resultados oficiales de la primera vuelta presidencial de Colombia 2026 a nivel nacional y departamental, con comparativo contra 2022.",
+      "creator": { "@type": "Person", "name": "Frederick Salazar", "url": "https://fredericksalazar.github.io/" },
+      "isBasedOn": [
+        { "@type": "CreativeWork", "name": "Registraduría Nacional del Estado Civil", "url": "https://www.registraduria.gov.co/" },
+        { "@type": "CreativeWork", "name": "Wikipedia", "url": "https://es.wikipedia.org/wiki/Elecciones_presidenciales_de_Colombia_de_2026" }
+      ],
+      "spatialCoverage": { "@type": "Place", "name": "Colombia" },
+      "temporalCoverage": "2026-05-31/2026-05-31",
+      "license": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "@type": "Article",
+      "headline": "Análisis Elecciones Presidenciales Colombia 2026 — 1ª Vuelta",
+      "datePublished": "2026-06-01",
+      "author": { "@type": "Person", "name": "Frederick Salazar" },
+      "about": [
+        { "@type": "Event", "name": "Elecciones Presidenciales Colombia 2026" },
+        { "@type": "Place", "name": "Colombia" }
+      ]
+    }
+  ]
+};
+---
+<BaseLayout
+  title="Elecciones Presidenciales Colombia 2026 — Análisis 1ª Vuelta"
+  description="Análisis descriptivo de los resultados oficiales de la primera vuelta presidencial de Colombia 2026 a nivel nacional y departamental, con comparativo contra 2022."
+  fullWidth={true}
+>
+  <Hero
+    badge={{ text: `Actualizado · ${fecha}` }}
+    title="Elecciones Presidenciales 2026"
+    subtitle="Primera vuelta · Análisis descriptivo y comparativo con 2022"
+  />
+  <EleccionesNav active="2026-1v" />
+  <PlotlyLoader />
+
+  <main class="observatorio-container">
+    <section class="kpi-row" aria-label="Indicadores generales 2026">
+      {kpis.map((k) => (
+        <article class="kpi-card">
+          <p class="kpi-card__label">{k.titulo}</p>
+          <p class={`kpi-card__value ${(k as any).statusColor ? `color-${(k as any).statusColor}` : ""}`}>{k.valor}</p>
+          <p class="kpi-card__sub">{k.sub}</p>
+          {(k as any).hideDelta ? (
+            <>
+              <div class="kpi-card__divider" />
+              <p class={`kpi-card__status-pill status-${(k as any).statusColor}`}>
+                <span class="kpi-card__status-dot">●</span>
+                <span class="kpi-card__status-txt">{(k as any).statusText}</span>
+              </p>
+            </>
+          ) : (
+            <>
+              <div class="kpi-card__divider" />
+              <p class={`kpi-card__delta-pill ${
+                ((k as any).invertColor ? k.delta <= 0 : k.delta >= 0) ? "is-up" : "is-down"
+              }`}>
+                <span class="kpi-card__delta-arrow">{k.delta >= 0 ? "▲" : "▼"}</span>
+                <span class="kpi-card__delta-txt">{k.deltaTxt}</span>
+              </p>
+            </>
+          )}
+        </article>
+      ))}
+    </section>
+
+    <IndicadorPanel numero="1" eyebrow="Votación" titulo="Panorama general 2026" lead="Cómo votó Colombia: censo, participación, votos válidos, nulos y no marcados.">
+      <div slot="visual" class="charts-row-2">
+        <Chart id="pres-2026-composicion-votos" embedded={true} />
+        <Chart id="pres-2026-participacion-historico" embedded={true} />
+      </div>
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="2" eyebrow="Candidatos" titulo="Votos por candidato" lead="Distribución total de votos válidos. Color por bloque ideológico.">
+      <Chart slot="visual" id="pres-2026-votos-candidato" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="3" eyebrow="Geografía" titulo="Ganador por departamento — 2022 vs 2026" lead="Color del bloque ideológico del candidato ganador en cada departamento. Izquierda: 2022 · Derecha: 2026.">
+      <div slot="visual" class="mapas-comparativo">
+        <div class="mapa-col">
+          <p class="mapa-col__label">2022 · 1ª Vuelta</p>
+          <Chart id="pres-2022-1v-mapa-depto-ganador" embedded={true} />
+        </div>
+        <div class="mapa-col">
+          <p class="mapa-col__label">2026 · 1ª Vuelta</p>
+          <Chart id="pres-2026-mapa-depto-ganador" embedded={true} />
+        </div>
+      </div>
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="4" eyebrow="Tendencia" titulo="Variación del voto por tendencia" lead="Porcentaje de variación de votos por tendencia política (izquierda, centro, derecha) en 2026 comparado con 2022. Selecciona la tendencia para ver el detalle por departamento.">
+      <Chart slot="visual" id="pres-2026-mapa-variacion-tendencia" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="5" eyebrow="Ideología" titulo="Bloques ideológicos — 2022 vs 2026" lead="Agrupando candidatos por ideología, ¿hacia dónde se movió el país?">
+      <div slot="visual">
+        <div class="charts-row-2">
+          <Chart id="pres-ideologia-2022" embedded={true} />
+          <Chart id="pres-ideologia-2026" embedded={true} />
+        </div>
+
+        <div class="tablas-grid">
+          {[
+            { anio: "2022 — 1ª vuelta", filas: filas2022, total: eleccion2022.agregados.nacional.validos },
+            { anio: "2026 — 1ª vuelta", filas: filas2026, total: eleccion.agregados.nacional.validos },
+          ].map((t) => (
+            <div class="tabla-wrap">
+              <h4 class="tabla-titulo">{t.anio}</h4>
+              <table class="tabla-detalle">
+                <thead>
+                  <tr><th>Candidato</th><th>Partido</th><th>Bloque</th><th class="num">Votos</th><th class="num">% válidos</th></tr>
+                </thead>
+                <tbody>
+                  {t.filas.map((f) => (
+                    <tr>
+                      <td>{f.nombre}</td>
+                      <td class="muted">{f.partido}</td>
+                      <td><span class={`chip chip--${f.ideologia}`}>{f.ideologia}</span></td>
+                      <td class="num">{fmtMiles(f.votos)}</td>
+                      <td class="num">{(f.share * 100).toFixed(2)}%</td>
+                    </tr>
+                  ))}
+                  <tr class="tot">
+                    <td colspan="3">Total válidos</td>
+                    <td class="num">{fmtMiles(t.total)}</td>
+                    <td class="num">100.00%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          ))}
+        </div>
+
+        <div class="tabla-wrap variacion">
+          <h4 class="tabla-titulo">Variación por bloque ideológico (2022 → 2026)</h4>
+          <table class="tabla-detalle">
+            <thead>
+              <tr>
+                <th>Bloque</th>
+                <th class="num">Votos 2022</th>
+                <th class="num">% 2022</th>
+                <th class="num">Votos 2026</th>
+                <th class="num">% 2026</th>
+                <th class="num">Δ pp</th>
+              </tr>
+            </thead>
+            <tbody>
+              {variacionBloques.map((v) => (
+                <tr>
+                  <td><span class={`chip chip--${v.bloque}`}>{v.bloque}</span></td>
+                  <td class="num">{fmtMiles(v.votos2022)}</td>
+                  <td class="num">{(v.share2022 * 100).toFixed(2)}%</td>
+                  <td class="num">{fmtMiles(v.votos2026)}</td>
+                  <td class="num">{(v.share2026 * 100).toFixed(2)}%</td>
+                  <td class={`num ${v.deltaShare >= 0 ? "is-up" : "is-down"}`}>
+                    {v.deltaShare >= 0 ? "▲" : "▼"} {Math.abs(v.deltaShare * 100).toFixed(2)} pp
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </IndicadorPanel>
+
+    <DashboardFooter
+      fuentes={[
+        { nombre: "Registraduría Nacional del Estado Civil", url: "https://www.registraduria.gov.co/", indicador: "Resultados oficiales" },
+        { nombre: "Wikipedia (es/en)", url: "https://es.wikipedia.org/wiki/Elecciones_presidenciales_de_Colombia_de_2026", indicador: "Tablas departamentales" },
+        { nombre: "Cálculo propio", url: "https://github.com/fredericksalazar/fredericksalazar.github.io", indicador: "Clasificación ideológica" },
+      ]}
+      cobertura="Elecciones 2022 y 2026"
+      ultimaActualizacion={eleccion.metadata.ultima_actualizacion}
+    />
+  </main>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>
+
+<style>
+  .observatorio-container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 2rem; }
+  .charts-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .mapas-comparativo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .mapa-col { display: flex; flex-direction: column; gap: 0.5rem; }
+  .mapa-col__label {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted, #6b7280);
+    text-align: center;
+  }
+  @media (max-width: 860px) { .mapas-comparativo { grid-template-columns: 1fr; } }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 0 0 2rem; }
+  .kpi-row--compact { margin-bottom: 0; }
+
+  /* ── KPI card base ── */
+  .kpi-card {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 14px;
+    padding: 1.25rem 1.35rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    transition: box-shadow 0.18s ease;
+  }
+  .kpi-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+  .kpi-card--mini { padding: 0.875rem 1rem; }
+
+  .kpi-card__label {
+    font-size: 0.72rem;
+    color: var(--text-muted, #6b7280);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 0.45rem;
+    font-weight: 600;
+  }
+  .kpi-card__value {
+    font-size: 1.9rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--color-accent, #2563eb);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .kpi-card--mini .kpi-card__value { font-size: 1.35rem; }
+  .kpi-card__sub {
+    font-size: 0.78rem;
+    color: var(--text-muted, #6b7280);
+    margin: 0.3rem 0 0;
+    line-height: 1.4;
+  }
+
+  /* ── Divider between current value and comparative delta ── */
+  .kpi-card__divider {
+    height: 1px;
+    background: var(--border, #e5e7eb);
+    margin: 0.85rem 0 0.75rem;
+    border: none;
+  }
+
+  /* ── Delta pill (vs 2022) ── */
+  .kpi-card__delta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.32rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    width: fit-content;
+    line-height: 1.3;
+    border: 1.5px solid transparent;
+  }
+  .kpi-card__delta-pill.is-up {
+    background: rgba(22, 163, 74, 0.12);
+    color: #15803d;
+    border-color: rgba(22, 163, 74, 0.35);
+  }
+  .kpi-card__delta-pill.is-down {
+    background: rgba(220, 38, 38, 0.10);
+    color: #b91c1c;
+    border-color: rgba(220, 38, 38, 0.30);
+  }
+  .kpi-card__delta-arrow { font-size: 0.7rem; line-height: 1; }
+  .kpi-card__delta-txt { white-space: nowrap; }
+
+  /* ── Legacy delta (mini cards panel 4) ── */
+  .kpi-card__delta { font-size: 0.8rem; margin: 0.35rem 0 0; font-weight: 600; }
+  .kpi-card__delta.is-up { color: #16a34a; }
+  .kpi-card__delta.is-down { color: #dc2626; }
+
+  .kpi-card__value.color-danger { color: #b91c1c; }
+  .kpi-card__value.color-warning { color: #ea580c; }
+  .kpi-card__value.color-success { color: #15803d; }
+
+  /* ── Status pill ── */
+  .kpi-card__status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.32rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    width: fit-content;
+    line-height: 1.3;
+    border: 1.5px solid transparent;
+  }
+  .kpi-card__status-pill.status-danger {
+    background: rgba(220, 38, 38, 0.10);
+    color: #b91c1c;
+    border-color: rgba(220, 38, 38, 0.30);
+  }
+  .kpi-card__status-pill.status-warning {
+    background: rgba(234, 88, 12, 0.10);
+    color: #c2410c;
+    border-color: rgba(234, 88, 12, 0.30);
+  }
+  .kpi-card__status-pill.status-success {
+    background: rgba(22, 163, 74, 0.12);
+    color: #15803d;
+    border-color: rgba(22, 163, 74, 0.35);
+  }
+  .kpi-card__status-dot { font-size: 0.8rem; line-height: 1; }
+  .kpi-card__status-txt { white-space: nowrap; }
+
+  @media (max-width: 1024px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 768px) { .charts-row-2 { grid-template-columns: 1fr; } .kpi-row { grid-template-columns: 1fr; } }
+
+  .tablas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1.5rem; }
+  .tabla-wrap { background: var(--card-bg, #fff); border: 1px solid var(--border, #e5e7eb); border-radius: 12px; padding: 1rem 1.25rem; overflow-x: auto; }
+  .tabla-wrap.variacion { margin-top: 1.25rem; }
+  .tabla-titulo { margin: 0 0 0.75rem; font-size: 0.9rem; font-weight: 600; color: var(--text, #111827); }
+  .tabla-detalle { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .tabla-detalle th, .tabla-detalle td { padding: 0.5rem 0.6rem; text-align: left; border-bottom: 1px solid var(--border, #e5e7eb); }
+  .tabla-detalle th { font-weight: 600; color: var(--text-muted, #6b7280); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .tabla-detalle td.num, .tabla-detalle th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tabla-detalle td.muted { color: var(--text-muted, #6b7280); font-size: 0.78rem; }
+  .tabla-detalle tr.tot td { font-weight: 600; border-bottom: none; border-top: 2px solid var(--border, #e5e7eb); }
+  .tabla-detalle td.is-up { color: #16a34a; font-weight: 600; }
+  .tabla-detalle td.is-down { color: #dc2626; font-weight: 600; }
+  .chip { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; text-transform: capitalize; }
+  .chip--izquierda { background: rgba(220, 38, 38, 0.12); color: #b91c1c; }
+  .chip--centro { background: rgba(22, 163, 74, 0.12); color: #15803d; }
+  .chip--derecha { background: rgba(37, 99, 235, 0.12); color: #1d4ed8; }
+  @media (max-width: 900px) { .tablas-grid { grid-template-columns: 1fr; } }
+</style>

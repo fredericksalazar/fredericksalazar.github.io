@@ -16,6 +16,8 @@ import type {
   ComercioData,
   PIBData,
   ExternoData,
+  PresEleccionData,
+  PresCandidatosData,
 } from "./types";
 
 function readPublicJSON<T>(name: string): T {
@@ -34,3 +36,13 @@ export const getEmpleo = (): EmpleoData => emp;
 export const getComercio = (): ComercioData => com;
 export const getPIB = (): PIBData => pib;
 export const getExterno = (): ExternoData => ext;
+
+const pres2026_1v = readPublicJSON<PresEleccionData>("data_pres_2026_1v");
+const pres2022_1v = readPublicJSON<PresEleccionData>("data_pres_2022_1v");
+const pres2022_2v = readPublicJSON<PresEleccionData>("data_pres_2022_2v");
+const presCandidatos = readPublicJSON<PresCandidatosData>("data_pres_candidatos");
+
+export const getPres2026_1v = (): PresEleccionData => pres2026_1v;
+export const getPres2022_1v = (): PresEleccionData => pres2022_1v;
+export const getPres2022_2v = (): PresEleccionData => pres2022_2v;
+export const getPresCandidatos = (): PresCandidatosData => presCandidatos;
