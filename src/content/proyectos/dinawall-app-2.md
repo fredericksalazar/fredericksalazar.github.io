@@ -24,3 +24,32 @@ El proyecto es desarrollado en JavaFX 19, su licenciamiento es GPL V3 y esta abi
 [DinaWall Core GitHub](https://github.com/fredericksalazar/dinawall_core)
 
 [Dinamic Wallpapers repo](https://github.com/fredericksalazar/dinamic_wallpapers_repo)
+
+## Motivación detrás del proyecto
+
+DinaWall nace de una limitación práctica: macOS tiene soporte nativo para wallpapers dinámicos (el formato `.heic` de Apple), pero esa tecnología no existe en Linux y la solución equivalente en Windows depende de software propietario o utilidades de terceros. Como usuario que alterna entre KDE, Gnome, Windows y macOS, la idea era construir un mismo wallpaper dinámico ejecutándose de forma idéntica en todos los sistemas operativos, sin licencias ni herramientas dispares. El reto técnico era doble: un motor cross-platform en Java y un formato de configuración abierto que cualquier persona pudiera crear y compartir.
+
+## Arquitectura: motor + aplicación
+
+DinaWall se separa de forma deliberada en dos proyectos independientes para que cada componente pueda evolucionar por su cuenta:
+
+- **`dinawall_core`** — Es el motor de ejecución sin interfaz gráfica. Se encarga de leer el archivo de configuración JSON, programar los cambios horarios mediante un scheduler interno y delegar el cambio efectivo del fondo de pantalla a la capa específica de cada sistema operativo. Esta separación permite que el core funcione también desde línea de comandos o integrado en otras herramientas que no necesiten UI.
+- **`dinawall_app`** — Es la interfaz gráfica construida con JavaFX 19. Permite crear nuevos wallpapers dinámicos definiendo bloques horarios desde una UI visual, importar paquetes existentes, previsualizarlos y aplicarlos al sistema operativo. Toda la lógica de ejecución se delega al core.
+
+## Formato abierto del wallpaper dinámico
+
+Cada wallpaper dinámico es un paquete que agrupa las imágenes y un archivo de configuración JSON con el calendario horario (hora y minuto de aplicación de cada imagen). El formato es deliberadamente abierto: cualquier creador puede diseñar y compartir sus propios paquetes sin necesidad de tocar el código de la aplicación, basta con respetar el contrato del JSON. El repositorio comunitario `dinamic_wallpapers_repo` aloja paquetes contribuidos por la comunidad.
+
+## Plataformas soportadas
+
+La capa de integración con el sistema operativo cubre tres entornos:
+
+- **Linux** — Distribuciones con Gnome y KDE Plasma, las dos suites de escritorio más extendidas en el ecosistema.
+- **Windows** — Windows 10 y 11.
+- **macOS** — Versiones recientes con soporte para wallpapers programáticos.
+
+Cada integración aplica el wallpaper mediante el mecanismo nativo de cada sistema, evitando depender de servicios externos o demonios siempre activos en segundo plano.
+
+## Estado del proyecto y cómo contribuir
+
+DinaWall está bajo licencia **GPL v3** y abre la puerta a contribuciones en múltiples frentes: desarrollo (mejorar soporte de distribuciones Linux adicionales, soporte multi-monitor, modo oscuro automático), testing en sistemas no probados, traducciones de la interfaz, documentación y — especialmente — creación de wallpapers dinámicos para alimentar el repositorio comunitario. Si te interesa contribuir, puedes abrir un issue en cualquiera de los repositorios o escribirme directamente a [fsalazars@uoc.edu](mailto:fsalazars@uoc.edu) y coordinamos.

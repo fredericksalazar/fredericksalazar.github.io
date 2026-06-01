@@ -154,6 +154,64 @@ const totalCertificaciones = empresas.reduce(
     </Fragment>
   </Hero>
 
+  <!-- Intro -->
+  <section class="cert-intro" aria-label="Sobre estas certificaciones">
+    <p>
+      Las certificaciones que listo a continuación son el reflejo de un aprendizaje
+      técnico continuo a lo largo de mi carrera como Data Engineer. Cubren las tres
+      plataformas cloud principales — <strong>Microsoft Azure</strong>,
+      <strong>Google Cloud</strong> y <strong>Databricks Lakehouse</strong> — además de
+      fundamentos de inteligencia artificial, estadística aplicada, gestión de proyectos
+      y prompt engineering. Cada credencial está enlazada a su verificación pública
+      oficial (Credly, Coursera, MongoDB Learning) para que cualquier persona pueda
+      confirmar su autenticidad.
+    </p>
+    <p>
+      Mi enfoque no es coleccionar badges, sino consolidar conocimiento concreto antes
+      de usarlo en producción: las certificaciones de <strong>Azure Data Engineer
+      Associate</strong> y <strong>Databricks Lakehouse Fundamentals</strong> precedieron
+      los proyectos de pipelines reales que construí en DERCO y Globant;
+      <strong>Google Cloud Big Data &amp; ML</strong> reforzó la migración a BigQuery
+      durante mi paso por Mercado Libre. Las más recientes — Google AI Professional,
+      Prompt Engineering y MongoDB SI Associate — responden a una transición hacia
+      proyectos de IA generativa y bases de datos NoSQL en los últimos años.
+    </p>
+    <p>
+      Para alguien que se dedica al dato, certificarse cumple tres funciones que vale la
+      pena separar. Primero, <strong>fuerza un repaso ordenado</strong> de un dominio
+      que en el trabajo diario solo se aborda de forma parcial. Segundo, <strong>genera
+      una credencial verificable</strong> que es útil en procesos de contratación,
+      propuestas comerciales y postulaciones internas. Tercero — y para mí el más
+      importante — <strong>obliga a aterrizar conceptos abstractos</strong> a los
+      servicios concretos del proveedor, lo que evita la trampa de saber teoría sin
+      saber implementación.
+    </p>
+    <p>
+      Mantengo el listado actualizado en este sitio y en
+      <a href="https://www.linkedin.com/in/fredericksalazar" target="_blank" rel="noopener noreferrer">LinkedIn</a>.
+      Si necesitas validar una credencial específica para un proceso de contratación o
+      una propuesta técnica, todos los enlaces a continuación apuntan al verificador
+      oficial del emisor correspondiente.
+    </p>
+    <p>
+      Las certificaciones están agrupadas por proveedor para facilitar la lectura. El bloque
+      de <strong>Microsoft</strong> reúne las credenciales del ecosistema Azure (Data
+      Engineer Associate, AI Fundamentals y Data Fundamentals), que cubren desde
+      arquitecturas de ingesta y almacenamiento hasta los servicios de IA cognitiva. El
+      bloque de <strong>Google</strong> agrupa las certificaciones del ecosistema Cloud
+      y de inteligencia artificial generativa, incluyendo Project Management. El bloque de
+      <strong>Databricks</strong> valida los fundamentos del Data Lakehouse, una de las
+      arquitecturas en las que más he trabajado en los últimos años.
+    </p>
+    <p>
+      El bloque <strong>Otros</strong> recoge credenciales de programas académicos abiertos
+      (Meta, Vanderbilt University vía Coursera) que complementan el perfil con bases sólidas
+      en estadística, probabilidad y prompt engineering aplicado a LLMs. La mayoría de estas
+      certificaciones tienen vigencia indefinida; las que requieren renovación periódica se
+      mantienen al día como parte de mi rutina anual de formación técnica continua.
+    </p>
+  </section>
+
   <!-- Certificaciones por Empresa -->
   <section class="cert-section">
     {
@@ -230,6 +288,32 @@ const totalCertificaciones = empresas.reduce(
       opacity: 1;
       transform: translateY(-50%) translateX(0);
     }
+  }
+
+  /* ── Intro ── */
+  .cert-intro {
+    max-width: 900px;
+    margin: 3rem auto 0;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .cert-intro p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .cert-intro a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .cert-intro a:hover {
+    text-decoration: underline;
+  }
+  @media (max-width: 768px) {
+    .cert-intro { padding: 0 1.5rem; margin-top: 2rem; }
   }
 
   /* ── Section ── */

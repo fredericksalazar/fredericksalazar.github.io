@@ -195,6 +195,36 @@ const experienciaData = [
     </Fragment>
   </Hero>
 
+  <!-- ── Resumen ejecutivo ── -->
+  <section class="exp-summary" aria-label="Resumen de trayectoria">
+    <p class="exp-summary__lead">
+      Mi trayectoria profesional combina más de <strong>11 años de experiencia</strong> en
+      ingeniería de software, administración de bases de datos, ingeniería de datos y
+      arquitectura de datos. Empecé como desarrollador Java EE construyendo aplicaciones
+      empresariales y administrando bases de datos Oracle PL/SQL, pasé por la administración
+      de sistemas sectoriales en salud (EPS SOS) y, desde 2017, mi carrera giró completamente
+      hacia el mundo del dato.
+    </p>
+    <p>
+      En los últimos años he liderado equipos de datos, definido estrategias de información a
+      nivel organizacional y diseñado arquitecturas para Fintech (SuperGIROS, la red de giros
+      más grande de Colombia), retail automotriz (DERCO), EdTech (UBITS), e-commerce a escala
+      (Mercado Libre) y consultoría bancaria para clientes corporativos (BanReservas, desde
+      Globant). Cada uno de estos contextos exigió decisiones de arquitectura distintas — desde
+      modelar un Data Warehouse para QlikView, hasta diseñar pipelines de FinOps en BigQuery,
+      pasando por Delta Lake sobre Databricks y procesos PySpark en AWS.
+    </p>
+    <p>
+      Mi stack actual cubre los tres principales clouds (<strong>Azure</strong>,
+      <strong>Google Cloud</strong> y <strong>AWS</strong>), procesamiento distribuido con
+      Apache Spark y Databricks, orquestación con Airflow y Composer, modelado con dbt, y un
+      fuerte componente de Machine Learning aplicado a problemas concretos de negocio. En
+      paralelo, mantengo un perfil técnico cercano al código — Python y SQL son herramientas
+      diarias — y un interés constante por gobernanza de datos, calidad del dato y diseño de
+      plataformas Data Lakehouse.
+    </p>
+  </section>
+
   <!-- ── Data Experience Era ── -->
   <section class="timeline-section" aria-labelledby="data-heading">
     <h2 id="data-heading" class="section-title">
@@ -425,6 +455,29 @@ const experienciaData = [
     font-size: 0.95rem;
     font-weight: 500;
     color: #60a5fa;
+  }
+
+  /* ── Resumen ejecutivo ── */
+  .exp-summary {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 2rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .exp-summary p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .exp-summary__lead {
+    font-size: 1.15rem;
+    color: var(--color-text-primary);
+  }
+  @media (max-width: 768px) {
+    .exp-summary { padding: 2rem 1.5rem 0; }
   }
 
   /* ── Section Title ── */

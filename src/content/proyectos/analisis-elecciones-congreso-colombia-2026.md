@@ -95,3 +95,27 @@ Pipeline de datos transparente y auditable:
 
 - **GitHub**: [Repositorio del análisis de elecciones Colombia](https://github.com/fredericksalazar/analisis-elecciones-colombia)
 - **Demo**: [Dashboard interactivo del análisis de elecciones Colombia](https://fredericksalazar.github.io/analisis-elecciones-colombia/)
+
+## Contexto del análisis
+
+Las elecciones legislativas de Colombia generan cada cuatro años un volumen masivo de datos públicos: votos por partido, por departamento, por candidato, abstención, votos nulos y curules asignadas tras el escrutinio. Sin embargo, esos datos suelen quedar atrapados en PDFs oficiales o tableros estáticos de la Registraduría, sin permitir análisis comparativo entre ciclos electorales ni una lectura geográfica clara. Este proyecto nace para llenar ese vacío: tomar los resultados oficiales de **2022** y **2026**, normalizarlos en un mismo modelo de datos, y construir un dashboard interactivo que permita comparar partidos, departamentos y bloques ideológicos con un solo clic.
+
+## Limitaciones del análisis
+
+Es importante señalar de forma explícita las limitaciones del trabajo para que cualquier persona lo interprete correctamente:
+
+- Los datos de 2026 corresponden al **pre-conteo oficial** publicado por la Registraduría inmediatamente después de la jornada electoral. Pueden tener variaciones menores tras el escrutinio definitivo.
+- La asignación ideológica de partidos (izquierda / centro / derecha) es una **clasificación analítica** basada en la trayectoria pública de cada organización política, no una declaración oficial de las propias agrupaciones.
+- Los indicadores derivados como el **costo por curul** son cálculos del autor y dependen de la calidad y completitud del input público.
+
+## Lecturas clave del dashboard
+
+Tres lecturas se desprenden del análisis comparativo 2022 vs 2026:
+
+1. **Polarización en aumento.** Pacto Histórico y Centro Democrático absorben la mayor parte de las curules nuevas, mientras los partidos tradicionales de centro pierden representación de forma marcada.
+2. **Mayoría sin dominancia.** Aunque la derecha logra una mayoría simple, ningún bloque alcanza la mayoría absoluta — la gobernabilidad dependerá de negociaciones puntuales por proyecto de ley.
+3. **Reconfiguración regional.** El mapa de departamentos cambia notablemente entre ciclos: regiones que tradicionalmente votaban a partidos de maquinaria muestran migración hacia los extremos ideológicos.
+
+## Cómo usar el dashboard
+
+El dashboard interactivo está alojado en un repositorio independiente y se sirve estáticamente desde GitHub Pages. Cada gráfico tiene tooltips, filtros por departamento y comparativas inline entre 2022 y 2026. El código fuente, los datasets en CSV/JSON y el pipeline completo de procesamiento están disponibles públicamente para auditar resultados, reproducir el análisis con datos actualizados o reutilizar componentes en otros proyectos de visualización electoral.

@@ -76,6 +76,43 @@ const countByCategoria = {
     </Fragment>
   </Hero>
 
+  <!-- Intro del portafolio -->
+  <section class="proj-intro" aria-label="Sobre este portafolio">
+    <p>
+      Este portafolio reúne los proyectos personales y open source que mantengo fuera del
+      trabajo corporativo. Cubren cuatro grandes líneas de trabajo:
+      <strong>Software</strong> (aplicaciones JavaFX y herramientas multiplataforma como
+      DinaWall y OllamaFX), <strong>Data Analysis</strong> (análisis exploratorios y
+      dashboards interactivos sobre datos públicos colombianos),
+      <strong>Machine Learning / NLP</strong> (modelos de sentimientos, clustering y
+      proyectos de IA aplicada) y <strong>Data Engineering</strong> (pipelines, modelado
+      y arquitecturas de plataformas de datos).
+    </p>
+    <p>
+      Cada proyecto incluye repositorio público en GitHub, documentación técnica y, cuando
+      aplica, demo en vivo o dashboard interactivo. La idea es que cualquier persona pueda
+      auditar el código, reproducir los resultados o reutilizar partes en sus propios
+      proyectos. Todos están bajo licencias open source — principalmente GPL v3 o MIT.
+      Usa los filtros para navegar por categoría, o explora el listado completo más abajo.
+    </p>
+    <p>
+      Los proyectos están listados por orden de prioridad personal: arriba aparecen los que
+      mantengo activamente o los que considero más representativos del tipo de problemas en
+      los que trabajo (datos públicos, herramientas de productividad para desarrolladores y
+      experimentos con modelos de IA). Más abajo encontrarás trabajos exploratorios, análisis
+      de datasets específicos y prototipos que en su momento sirvieron como banco de pruebas
+      para una tecnología o un enfoque metodológico.
+    </p>
+    <p>
+      Si quieres colaborar en alguno de ellos — reportar un bug, proponer una mejora,
+      contribuir con código, traducciones o documentación — la vía más directa es abrir un
+      issue o pull request en el repositorio correspondiente. También puedes escribirme a
+      <a href="mailto:fsalazars@uoc.edu">fsalazars@uoc.edu</a> para coordinar colaboraciones
+      más amplias, mentoría técnica sobre algún proyecto específico o consultas sobre
+      arquitecturas similares aplicadas a tu propio caso de uso.
+    </p>
+  </section>
+
   <!-- Todos los proyectos con filtros -->
   <section class="all-projects-section">
     <div class="filter-bar">
@@ -368,6 +405,25 @@ const countByCategoria = {
   .proj-date {
     font-size: 0.75rem;
     color: #64748b;
+  }
+
+  /* ── Intro ────────────────────────────────────────────────────────── */
+  .proj-intro {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 2rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .proj-intro p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  @media (max-width: 768px) {
+    .proj-intro { padding: 1.5rem 1rem 0; }
   }
 
   /* ── All Projects Section ─────────────────────────────────────────── */
