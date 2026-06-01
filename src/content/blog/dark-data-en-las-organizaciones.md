@@ -12,7 +12,7 @@ destacado: false
 
 La llegada de la nube y la reducción del costo del almacenamiento, han causado un revuelo nunca antes visto, pasamos del Data WareHouse al DataLake y luego al DataLake House y quien sabe que mas llegará. Pero un punto importante mas allá de las innovaciones tecnológicas o los costos de las mismas, es que hacemos con los datos. Muchas organizaciones en su carrera por ser **Data Driven** han considerado que lo mas importante es almacenar datos, esa es su estrategia y en ese camino se ha creado creado un nuevo concepto el **Dark Data.**
 
-> Segun Gartner Dark Data es:  
+> Según Gartner Dark Data es:  
 >   
 > Activos de información que las organizaciones recopilan, procesan y almacenan durante las actividades comerciales regulares, pero generalmente no se utilizan para otros fines (por ejemplo, análisis, relaciones comerciales y monetización directa) [1]
 >
@@ -44,7 +44,7 @@ Si el Dark Data son datos que no conocemos o que no usan las organizaciones, ent
 
 - Catálogo de datos: Crear un mapa y un catalogo de datos de toda la organización nos puede ayudar a encontrar activos que no sabíamos que existían, aquí debemos tener en cuenta todo lo que crea datos en la organización como personas, procesos y tecnología. Claramente este punto depende de una estrategia de gobierno de datos corporativa y un proyecto independiente de catalogo de datos.
 - Perfilamiento de Datos: Una vez identificadas las fuentes de datos y los datos generados, podemos realizar de manera rápida un análisis exploratorio de perfilamiento de datos que nos permita entender un poco el contexto de los datos, nivel de calidad, antigüedad, validez de negocio, entre otros aspectos.
-- Clasificación y etiquetado: Luego de entender ese universo de datos vamos a clasificarlos y etiquetarlos en nuestro catalogo, identificamos que datos pueden tener un valor de negocio, que datos podrían servir, que datos necesitan mas exploración, que datos no tienen ningún valor. Esto nos servirá para posteriormente tomar decisiones y decidir que se usará, que se eliminará, que se archivará etc. Este ultimo punto esta muy relacionado con el ciclo de vida de los datos que explicaré mas adelante.
+- Clasificación y etiquetado: Luego de entender ese universo de datos vamos a clasificarlos y etiquetarlos en nuestro catalogo, identificamos que datos pueden tener un valor de negocio, que datos podrían servir, que datos necesitan mas exploración, que datos no tienen ningún valor. Esto nos servirá para posteriormente tomar decisiones y decidir que se usará, que se eliminará, que se archivará etc. Este último punto esta muy relacionado con el ciclo de vida de los datos que explicaré mas adelante.
 
 ¿Que opinas tu del Dark Data? ¿Lo conocías?
 

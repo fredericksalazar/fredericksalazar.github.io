@@ -27,7 +27,7 @@ Apache Kafka es una plataforma de streaming de datos que se utiliza para procesa
 
 **SQL**
 
-SQL es un lenguaje de programación utilizado para gestionar y manipular bases de datos relacionales. Es esencial para cualquier data engineer ya que muchas herramientas y tecnologías de big data utilizan SQL para la extracción y manipulación de datos, te recomiendo ademas conocer al menos 3 motores de bases de datos: PostgreSQL, SQL Server, Oracle, Mysql, son lo SGBD mas conocidos y usados empresarialmente.
+SQL es un lenguaje de programación utilizado para gestionar y manipular bases de datos relacionales. Es esencial para cualquier data engineer ya que muchas herramientas y tecnologías de big data utilizan SQL para la extracción y manipulación de datos, te recomiendo además conocer al menos 3 motores de bases de datos: PostgreSQL, SQL Server, Oracle, Mysql, son lo SGBD mas conocidos y usados empresarialmente.
 
 ![python — Herramientas del Ingeniero de Datos](/images/blog/python.png)
 

@@ -82,7 +82,7 @@ const breadcrumbSchema = {
 };
 ---
 
-<BaseLayout {title} {description}>
+<BaseLayout {title} {description} noindex={true}>
 
   <script type="application/ld+json" set:html={JSON.stringify(collectionSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />

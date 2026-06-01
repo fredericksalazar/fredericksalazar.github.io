@@ -35,7 +35,7 @@ Las consecuencias para una empresa por no tener una buena calidad de datos se ve
 5. Daño reputacional
 6. Problemas legales y de cumplimiento de protección de datos
 
-La mala calidad de datos representa una perdida de ventaja competitiva en el mercado, así como perdida de dinero y altos costos operativos, por ejemplo: tener datos erróneos de correos electrónicos de sus clientes, ocasiona una perdida de oportunidades comerciales a través de campañas de email marketing, ademas de gastos en el reproceso de información, esto solo por poner un ejemplo.
+La mala calidad de datos representa una perdida de ventaja competitiva en el mercado, así como perdida de dinero y altos costos operativos, por ejemplo: tener datos erróneos de correos electrónicos de sus clientes, ocasiona una perdida de oportunidades comerciales a través de campañas de email marketing, además de gastos en el reproceso de información, esto solo por poner un ejemplo.
 
 No quiero ahondar mucho en los problemas causados, sino también mencionar de manera rápida de que trata la calidad de datos, ayudar a superar esa barrera de creer que se trata solo de un problema técnico y ampliar la perspectiva del lector hacia un punto de vista mas estratégico, comencemos por entender las dimensiones del DQ (Data Quality)
 

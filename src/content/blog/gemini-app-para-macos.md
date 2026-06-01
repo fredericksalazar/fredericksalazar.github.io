@@ -10,7 +10,7 @@ tipo: "opinion"
 destacado: false
 ---
 
-Si son como yo, seguramente pasan gran parte de su día saltando entre ventanas, aplicaciones y decenas de pestañas en el navegador solo para hacerle una consulta rápida a su asistente de IA favorito, puede ser Gemini, ChatGPT, Perplexity etc. y aunque durante los ultimos años nos llenamos de aplicaciones web y poca atención se le presta a las Apps de escritorio, ayer salió para mi lo que considero una buena noiticia, Google acaba de lanzar oficialmente la **aplicación nativa de Gemini para macOS**.
+Si son como yo, seguramente pasan gran parte de su día saltando entre ventanas, aplicaciones y decenas de pestañas en el navegador solo para hacerle una consulta rápida a su asistente de IA favorito, puede ser Gemini, ChatGPT, Perplexity etc. y aunque durante los últimos años nos llenamos de aplicaciones web y poca atención se le presta a las Apps de escritorio, ayer salió para mi lo que considero una buena noiticia, Google acaba de lanzar oficialmente la **aplicación nativa de Gemini para macOS**.
 
 Con este movimiento, Google finalmente se pone a la par de rivales como ChatGPT y Claude, quienes ya tenían sus propias aplicaciones para Mac. Pero, ¿qué hace tan especial a esta nueva app y por qué deberías instalarla hoy mismo?
 
@@ -18,7 +18,7 @@ Con este movimiento, Google finalmente se pone a la par de rivales como ChatGPT 
 
 ## Velocidad y fluidez: A un atajo de teclado de distancia
 
-Lo primero que notarás es que esta no es una simple página web envuelta en una aplicación. La app de Gemini fue construida de manera **100% nativa en Swift** utilizando una plataforma de desarrollo llamada **“Antigravity”**. Esto significa que es rápida y se siente como una parte natural del ecosistema de Apple, ademas de integrarse muy bien en el ecosistema de macOS.
+Lo primero que notarás es que esta no es una simple página web envuelta en una aplicación. La app de Gemini fue construida de manera **100% nativa en Swift** utilizando una plataforma de desarrollo llamada **“Antigravity”**. Esto significa que es rápida y se siente como una parte natural del ecosistema de Apple, además de integrarse muy bien en el ecosistema de macOS.
 
 La verdadera magia está en la accesibilidad. Ya no necesitas interrumpir tu flujo de trabajo. Simplemente presiona **Option + Espacio** y aparecerá una pequeña barra de búsqueda flotante, muy al estilo de Spotlight. ¿Necesitas algo más profundo? Usa **Option + Shift + Espacio** para abrir la ventana de chat completa.
 

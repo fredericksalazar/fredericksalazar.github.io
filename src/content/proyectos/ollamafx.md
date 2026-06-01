@@ -41,7 +41,7 @@ Lo primero que notarás es el diseño. No es solo “una ventana más”; está 
 
 Olvídate de recordar comandos para listar o borrar modelos. Desde OllamaFX puedes:
 
-- **Modelos recomendados:** OllamaFX clasificará y te recomendará los modelos segun tus capacidades de hardware.
+- **Modelos recomendados:** OllamaFX clasificará y te recomendará los modelos según tus capacidades de hardware.
 - **Explorar e Instalar:** Busca modelos en la librería de Ollama y descárgalos con una barra de progreso en tiempo real.
 - **Administrar:** Visualiza el tamaño, formato y detalles de tus modelos instalados, o elimínalos instantáneamente para liberar espacio.
 - **Feedback inmediato:** La interfaz se actualiza al segundo cuando un modelo es añadido o removido.
@@ -52,7 +52,7 @@ Olvídate de recordar comandos para listar o borrar modelos. Desde OllamaFX pued
 
 El corazón del proyecto es la interacción. He diseñado el chat para que sea funcional y persistente:
 
-- **Gestión de sesiones:** Puedes crear múltiples chats, renombrarlos para organizarte mejor o **anclar (pin)** los más importantes, ademas de organizarlos en carpetas para mejor control.
+- **Gestión de sesiones:** Puedes crear múltiples chats, renombrarlos para organizarte mejor o **anclar (pin)** los más importantes, además de organizarlos en carpetas para mejor control.
 - **Markdown nativo:** Las respuestas de la IA se renderizan correctamente, facilitando la lectura de código y textos estructurados.
 - **Estilo visual:** Burbujas de chat diferenciadas y limpias para que la conversación fluya sin distracciones.
 

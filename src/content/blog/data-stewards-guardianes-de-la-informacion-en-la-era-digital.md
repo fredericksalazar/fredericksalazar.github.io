@@ -24,7 +24,7 @@ En ese sentido una iniciativa fundamental es la implementación de **Data Stewar
 
 ## Entonces ¿Qué es un Data Steward?
 
-Un Data Steward es un profesional experto en la gestión de datos, que ademas de tener conocimientos técnicos debe tener un componente de habilidades blandas y de negocio para asumir la responsabilidad de custodiar un conjunto específico de datos dentro de una organización. Su rol va más allá de la simple administración, ya que se convierte en un agente de cambio, impulsando la cultura del dato y promoviendo su uso responsable y efectivo.
+Un Data Steward es un profesional experto en la gestión de datos, que además de tener conocimientos técnicos debe tener un componente de habilidades blandas y de negocio para asumir la responsabilidad de custodiar un conjunto específico de datos dentro de una organización. Su rol va más allá de la simple administración, ya que se convierte en un agente de cambio, impulsando la cultura del dato y promoviendo su uso responsable y efectivo.
 
 ## Funciones principales:
 

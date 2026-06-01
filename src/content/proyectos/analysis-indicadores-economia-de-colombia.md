@@ -24,7 +24,7 @@ Si quieres revisar, corregir o mejorar el análisis te dejo el enlace a los repo
 
 **PIB de Colombia desde 1960 a 2023**
 
-La economía de Colombia medida en su PIB, ha tenido desde el año 2000 un claro y rápido crecimiento, pasando de un techo desde 1960 de 100 Mil Millones de Dollares a llegar hasta los 382 Mil Millones de Dollares en el año 2013. Aunque desde el el 2015 a 2020 ha tenido una caída, desde el año 2021 experimenta de nuevo un crecimiento llegando en 2023 a un PIB de 363 Mil Millones de Dollares. Si revisamos la linea de tendencia vemos claramente una tendencia creciente que a falta de datos de 2024 y pronósticos de 2025 esperar recuperarse y crecer.
+La economía de Colombia medida en su PIB, ha tenido desde el año 2000 un claro y rápido crecimiento, pasando de un techo desde 1960 de 100 Mil Millones de Dollares a llegar hasta los 382 Mil Millones de Dollares en el año 2013. Aunque desde el el 2015 a 2020 ha tenido una caída, desde el año 2021 experimenta de nuevo un crecimiento llegando en 2023 a un PIB de 363 Mil Millones de Dollares. Si revisamos la línea de tendencia vemos claramente una tendencia creciente que a falta de datos de 2024 y pronósticos de 2025 esperar recuperarse y crecer.
 
 ![Resultados análisis desarrollo economía de Colombia desde 1960 a 2023 — Análisis Económico de Colombia 1960–2023](/images/proyectos/pib-colombia-por-periodos-presidenciales.png)
 
@@ -51,7 +51,7 @@ Al realiza la comparación de la balanza comercial de Colombia entre importacion
 
 **Inflación de Colombia de 1960 a 2023**
 
-Si revisamos detenidamente el gráfico, podemos ver que Colombia vivió una inflación alta en las décadas de 1970 a 1999, es en el cambio de siglo y de milenio que nuevamente este indicador retoma su tendencia a la baja, llegando a niveles de entre 2% y el 8%. En los años 2022 y 2023 especiales por ser post pandemia, la inflación se disparo de nuevo llegando a 10% y 11.7% respectivamente. En general la inflación de Colombia tiene una tendencia a la baja marcada por la linea roja.
+Si revisamos detenidamente el gráfico, podemos ver que Colombia vivió una inflación alta en las décadas de 1970 a 1999, es en el cambio de siglo y de milenio que nuevamente este indicador retoma su tendencia a la baja, llegando a niveles de entre 2% y el 8%. En los años 2022 y 2023 especiales por ser post pandemia, la inflación se disparo de nuevo llegando a 10% y 11.7% respectivamente. En general la inflación de Colombia tiene una tendencia a la baja marcada por la línea roja.
 
 ![Resultados análisis desarrollo economía de Colombia desde 1960 a 2023 — Análisis Económico de Colombia 1960–2023](/images/proyectos/inflation_colombia_presidents.png)
 

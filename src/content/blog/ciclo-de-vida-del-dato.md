@@ -1,7 +1,7 @@
 ---
-titulo: "Ciclo de vida del dato"
+titulo: "Ciclo de Vida del Dato (Data Lifecycle): Gestión de Punta a Punta"
 fecha: 2024-05-02
-descripcion: "¿Qué es el ciclo de vida del dato? Aprende a gestionar tus datos desde su captura hasta la eliminación y mejora tu estrategia de negocio al maximizar su..."
+descripcion: "Gestión del Data Lifecycle: captura, almacenamiento, uso, archivado y eliminación del dato. Gobierno de datos y políticas de retención."
 etiquetas: ["Gestión de Datos", "Ciclo de Vida", "Data Governance"]
 autor: "Frederick Salazar"
 imagen: "/images/blog/ciclo_vida_del_dato.png"

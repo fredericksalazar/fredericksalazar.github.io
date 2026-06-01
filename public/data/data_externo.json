@@ -3,7 +3,7 @@
     "ultima_actualizacion": "2026-05-28T19:37:22+00:00",
     "fuentes": {
       "banrep_trm": {
-        "nombre": "Banco de la Republica — TRM",
+        "nombre": "Banco de la República — TRM",
         "url": "https://www.banrep.gov.co/es/estadisticas/trm",
         "indicador": "Tasa Representativa del Mercado (promedio mensual)"
       },
@@ -20,7 +20,7 @@
     },
     "definiciones": {
       "trm": "Tasa Representativa del Mercado USD/COP, promedio mensual del cierre diario.",
-      "reservas_netas": "Activos externos netos del Banco de la Republica, en miles de millones de USD.",
+      "reservas_netas": "Activos externos netos del Banco de la República, en miles de millones de USD.",
       "cuenta_corriente": "Saldo de cuenta corriente como porcentaje del PIB (WDI BN.CAB.XOKA.GD.ZS).",
       "ied": "Inversion extranjera directa, ingresos netos, como porcentaje del PIB (WDI BX.KLT.DINV.WD.GD.ZS).",
       "deuda_externa": "Stock de deuda externa total como porcentaje del INB (WDI DT.DOD.DECT.GN.ZS).",

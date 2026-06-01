@@ -17,9 +17,10 @@ interface Props {
   image?: string;
   type?: 'website' | 'article';
   fullWidth?: boolean;
+  noindex?: boolean;
 }
 
-const { title, description, image, type, fullWidth = false } = Astro.props;
+const { title, description, image, type, fullWidth = false, noindex = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -30,6 +31,7 @@ const { title, description, image, type, fullWidth = false } = Astro.props;
       description={description}
       image={image}
       type={type}
+      noindex={noindex}
     />
     <!-- Google Sans Flex -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

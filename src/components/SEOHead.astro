@@ -10,6 +10,7 @@ interface Props {
   description: string;
   image?: string;
   type?: 'website' | 'article';
+  noindex?: boolean;
 }
 
 const {
@@ -17,7 +18,12 @@ const {
   description,
   image = '/og-default.png',
   type = 'website',
+  noindex = false,
 } = Astro.props;
+
+const robotsContent = noindex
+  ? 'noindex, follow'
+  : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
 const SITE_URL    = 'https://fredericksalazar.github.io';
 const SITE_NAME   = 'Frederick Salazar — Data Engineer & Arquitecto de Datos';
@@ -96,7 +102,7 @@ const personSchema = {
 <meta name="title" content={FULL_TITLE} />
 <meta name="description" content={description} />
 <meta name="author" content="Frederick Adolfo Salazar Sánchez" />
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="robots" content={robotsContent} />
 <meta name="keywords" content="data engineer colombia, arquitecto de datos, big data latam, apache spark, databricks, azure data, python data engineering, frederick salazar, machine learning colombia, ETL pipelines, data warehouse" />
 <link rel="canonical" href={CANONICAL} />
 
