@@ -1,3 +1,22 @@
 ---
-return Astro.redirect("/elecciones-presidenciales/2026/", 302);
+// Redirección instantánea a la pestaña por defecto del observatorio electoral.
+// Astro estático no soporta redirects server-side en GitHub Pages, así que
+// usamos meta refresh + script de reemplazo + canonical hacia el destino real.
+const DEST = "/elecciones-presidenciales/2026/";
+const SITE = "https://fredericksalazar.github.io";
+const CANONICAL = SITE + DEST;
 ---
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Observatorio Electoral Colombia · Frederick Salazar</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={CANONICAL} />
+    <meta http-equiv="refresh" content={`0; url=${DEST}`} />
+    <script is:inline>window.location.replace("/elecciones-presidenciales/2026/");</script>
+  </head>
+  <body>
+    <p>Redirigiendo a <a href={DEST}>el observatorio electoral</a>…</p>
+  </body>
+</html>
