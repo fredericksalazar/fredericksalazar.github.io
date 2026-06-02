@@ -406,6 +406,36 @@ const jsonLd = {
           <Chart id="pres-ideologia-2026" embedded={true} />
         </div>
 
+        <div class="tabla-wrap variacion">
+          <h4 class="tabla-titulo">Variación por bloque ideológico (2022 → 2026)</h4>
+          <table class="tabla-detalle">
+            <thead>
+              <tr>
+                <th>Bloque</th>
+                <th class="num">Votos 2022</th>
+                <th class="num">% 2022</th>
+                <th class="num">Votos 2026</th>
+                <th class="num">% 2026</th>
+                <th class="num">Δ pp</th>
+              </tr>
+            </thead>
+            <tbody>
+              {variacionBloques.map((v) => (
+                <tr>
+                  <td><span class={`chip chip--${v.bloque}`}>{v.bloque}</span></td>
+                  <td class="num">{fmtMiles(v.votos2022)}</td>
+                  <td class="num">{(v.share2022 * 100).toFixed(2)}%</td>
+                  <td class="num">{fmtMiles(v.votos2026)}</td>
+                  <td class="num">{(v.share2026 * 100).toFixed(2)}%</td>
+                  <td class={`num ${v.deltaShare >= 0 ? "is-up" : "is-down"}`}>
+                    {v.deltaShare >= 0 ? "▲" : "▼"} {Math.abs(v.deltaShare * 100).toFixed(2)} pp
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
         <div class="tablas-grid">
           {[
             { anio: "2022 — 1ª vuelta", filas: filas2022, total: eleccion2022.agregados.nacional.validos },
@@ -436,36 +466,6 @@ const jsonLd = {
               </table>
             </div>
           ))}
-        </div>
-
-        <div class="tabla-wrap variacion">
-          <h4 class="tabla-titulo">Variación por bloque ideológico (2022 → 2026)</h4>
-          <table class="tabla-detalle">
-            <thead>
-              <tr>
-                <th>Bloque</th>
-                <th class="num">Votos 2022</th>
-                <th class="num">% 2022</th>
-                <th class="num">Votos 2026</th>
-                <th class="num">% 2026</th>
-                <th class="num">Δ pp</th>
-              </tr>
-            </thead>
-            <tbody>
-              {variacionBloques.map((v) => (
-                <tr>
-                  <td><span class={`chip chip--${v.bloque}`}>{v.bloque}</span></td>
-                  <td class="num">{fmtMiles(v.votos2022)}</td>
-                  <td class="num">{(v.share2022 * 100).toFixed(2)}%</td>
-                  <td class="num">{fmtMiles(v.votos2026)}</td>
-                  <td class="num">{(v.share2026 * 100).toFixed(2)}%</td>
-                  <td class={`num ${v.deltaShare >= 0 ? "is-up" : "is-down"}`}>
-                    {v.deltaShare >= 0 ? "▲" : "▼"} {Math.abs(v.deltaShare * 100).toFixed(2)} pp
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
       </div>
     </IndicadorPanel>
