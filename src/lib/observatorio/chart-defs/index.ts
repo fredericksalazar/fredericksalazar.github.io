@@ -61,6 +61,9 @@ import {
   pres2022_2vConsolidacionAntiPetro,
   pres2022_2vMapaVariacionCandidato,
   pres2026MapaVariacionTendencia,
+  pres2026_2vPronosticoComposicion,
+  pres2026_2vPronosticoMargenDepto,
+  pres2026_2vPronosticoMapaGanador,
 } from "./elecciones-presidenciales";
 import type { ChartDef } from "./types";
 
@@ -115,6 +118,9 @@ export const CHART_DEFS = {
   [pres2022_2vConsolidacionAntiPetro.id]: pres2022_2vConsolidacionAntiPetro,
   [pres2022_2vMapaVariacionCandidato.id]: pres2022_2vMapaVariacionCandidato,
   [pres2026MapaVariacionTendencia.id]: pres2026MapaVariacionTendencia,
+  [pres2026_2vPronosticoComposicion.id]: pres2026_2vPronosticoComposicion,
+  [pres2026_2vPronosticoMargenDepto.id]: pres2026_2vPronosticoMargenDepto,
+  [pres2026_2vPronosticoMapaGanador.id]: pres2026_2vPronosticoMapaGanador,
 } as const satisfies Record<string, ChartDef>;
 
 export type ChartId = Extract<keyof typeof CHART_DEFS, string>;

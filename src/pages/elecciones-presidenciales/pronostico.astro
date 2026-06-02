@@ -2,454 +2,589 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
 import EleccionesNav from "../../components/observatorio/EleccionesNav.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
 import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
+import Chart from "../../components/observatorio/Chart.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
+
+import {
+  getPres2022_1v, getPres2022_2v, getPres2026_1v, getPresCandidatos,
+} from "../../lib/observatorio/data";
+import { simular2026_2V } from "../../lib/observatorio/simulacion-2026-2v";
 
 const fecha = "2026-06-01";
 
-const promptTexto = `ACTÚA COMO UN ESTRATEGA Y ANALISTA POLÍTICO DE ELITE, especializado en elecciones presidenciales de Colombia. Tu objetivo es realizar un análisis técnico riguroso de la primera vuelta de 2026, contrastarla contra el comportamiento electoral de 2022 (primera y segunda vuelta), y generar una PREDICCIÓN CIENTÍFICA sobre quién ganará el balotaje de 2026 entre ABELARDO DE LA ESPRIELLA (Derecha) e IVÁN CEPEDA CASTRO (Izquierda).
+const e22_1v = getPres2022_1v();
+const e22_2v = getPres2022_2v();
+const e26    = getPres2026_1v();
+const cat    = getPresCandidatos();
 
-TIENES ACCESO A LOS SIGUIENTES DATOS OFICIALES DE LA REGISTRADURÍA (AUDITADOS Y CONCILIADOS CON CONSULADOS Y VOTOS EN BLANCO):
+const sim = simular2026_2V(e26, e22_1v, e22_2v, cat);
 
-1. PRIMERA VUELTA 2022:
-   - Gustavo Petro (Izquierda): 8.53M (41.08% de los votos de candidatos)
-   - Rodolfo Hernández (Centro-Derecha/Populista): 5.95M (28.63%)
-   - Federico Gutiérrez (Derecha): 5.06M (24.33%)
-   - Sergio Fajardo (Centro): 888k (4.27%)
-   - Otros menores (Derecha/Centro): 353k (1.69%)
-   - Votos en Blanco: 395,083
-   - Participación: 55.0%
-   - Polarización (IPI): 0.9381
+const fmtMiles = (n: number) => new Intl.NumberFormat("es-CO").format(n);
+const fmtCompact = (n: number) => new Intl.NumberFormat("es-CO", { notation: "compact", maximumFractionDigits: 2 }).format(n);
+const fmtSigned = (n: number) => new Intl.NumberFormat("es-CO", { signDisplay: "always" }).format(n);
+const fmtPct = (n: number) => `${n.toFixed(2)}%`;
 
-2. SEGUNDA VUELTA 2022:
-   - Gustavo Petro (Izquierda): 11.28M (50.44% total nacional)
-   - Rodolfo Hernández (Derecha/Antisistema): 10.58M (47.31%)
-   - Votos en Blanco: 556,400
-   - Participación: 58.1% (Subió 3.1 pp)
-   - Polarización (IPI): 0.9990
+const total2v = sim.nacional.cepeda + sim.nacional.abelardo;
+const shareCep = (sim.nacional.cepeda / total2v) * 100;
+const shareAbe = (sim.nacional.abelardo / total2v) * 100;
 
-3. PRIMERA VUELTA 2026:
-   - Abelardo de la Espriella (Derecha): 10.36M (43.66% total nacional)
-   - Iván Cepeda Castro (Izquierda): 9.69M (40.82%)
-   - Paloma Valencia (Derecha): 1.64M (6.91%)
-   - Sergio Fajardo (Centro): 1.01M (4.25%)
-   - Claudia López (Centro): 225k (0.95%)
-   - Daniel Palacios (Derecha): 206k (0.87%)
-   - Otros menores: 139k
-   - Votos en Blanco: 454,546
-   - Participación: 57.9%
-   - Polarización (IPI): 0.9314
+// ── Construcción del prompt completo con todos los datos ─────────────────
+function compactDeptos(e: ReturnType<typeof getPres2022_1v>) {
+  return e.agregados.departamentos.map(d => ({
+    cod: d.cod_depto,
+    depto: d.nombre_depto,
+    votos: d.votos_por_candidato,
+    ideo: d.votos_por_ideologia,
+    total_validos: d.total_validos,
+    ganador: d.ganador_id,
+    ganador_ideologia: d.ganador_ideologia,
+  }));
+}
 
-ESTRUCTURA TU ANÁLISIS EN LAS SIGUIENTES SECCIONES:
-1. DIAGNÓSTICO RETROSPECTIVO DE MOVILIZACIÓN POR DEPARTAMENTO: No limites tu análisis a sumatorias estáticas. Aplica las tasas de crecimiento reales de la izquierda de 2022 (por departamento) sobre la base obtenida por Iván Cepeda en 2026. Analiza el comportamiento de la abstención en la periferia (Costa y Pacífico).
-2. CONCILIACIÓN DE BLOQUES 2026: Consolida a los candidatos de 2026 en los 3 bloques ideológicos. Determina los puntos de partida de Cepeda y De la Espriella.
-3. MODELADO DE VARIACIÓN Y TRANSFERENCIA:
-   - Aplica el factor de crecimiento del Pacífico y del Caribe (multiplicador de 1.25 a 1.45 de Petro en 2022) sobre Iván Cepeda en 2026.
-   - Aplica la tasa de transferencia de la derecha (desgaste y fugas) sobre Abelardo de la Espriella en 2026.
-4. SIMULACIÓN TERRITORIAL DETALLADA: Proyecta departamento por departamento el resultado y calcula el consolidado nacional.
-5. PRONÓSTICO Y PREDICCIÓN CIENTÍFICA: Entrega un veredicto de probabilidad (en %) sobre el ganador de la Segunda Vuelta de 2026 y detalla las acciones estratégicas de cada campaña.`;
+const promptDatos = {
+  contexto: {
+    pais: "Colombia",
+    eleccion_a_predecir: "Segunda vuelta presidencial 2026 (Iván Cepeda vs Abelardo de la Espriella)",
+    ultima_actualizacion: fecha,
+  },
+  candidatos_2v_2026: [
+    { id: "ivan_cepeda", nombre: "Iván Cepeda Castro", bloque: "izquierda", coalicion: "Pacto Histórico" },
+    { id: "abelardo_de_la_espriella", nombre: "Abelardo de la Espriella", bloque: "derecha", partido: "Defensores de la Patria" },
+  ],
+  datos: {
+    "1V_2022": {
+      nacional: e22_1v.agregados.nacional,
+      resultados: e22_1v.resultados,
+      candidatos: cat.candidatos["2022-1v"],
+      departamentos: compactDeptos(e22_1v),
+    },
+    "2V_2022": {
+      nacional: e22_2v.agregados.nacional,
+      resultados: e22_2v.resultados,
+      candidatos: cat.candidatos["2022-2v"],
+      departamentos: compactDeptos(e22_2v),
+    },
+    "1V_2026": {
+      nacional: e26.agregados.nacional,
+      resultados: e26.resultados,
+      candidatos: cat.candidatos["2026-1v"],
+      departamentos: compactDeptos(e26),
+    },
+  },
+};
 
-// Simulación departamental calculada
-const simuladorDeptos = [
-  { name: "Bogotá D.C.", factor: 1.274, cepeda: "2,177,122", abelardo: "1,779,404", ganador: "cepeda" },
-  { name: "Valle del Cauca", factor: 1.255, cepeda: "1,408,574", abelardo: "744,553", ganador: "cepeda" },
-  { name: "Antioquia", factor: 1.381, cepeda: "1,116,797", abelardo: "1,927,590", ganador: "abelardo" },
-  { name: "Atlántico", factor: 1.405, cepeda: "772,656", abelardo: "401,169", ganador: "cepeda" },
-  { name: "Nariño", factor: 1.366, cepeda: "646,639", abelardo: "148,253", ganador: "cepeda" },
-  { name: "Cauca", factor: 1.327, cepeda: "615,554", abelardo: "153,471", ganador: "cepeda" },
-  { name: "Bolívar", factor: 1.371, cepeda: "609,031", abelardo: "313,691", ganador: "cepeda" },
-  { name: "Córdoba", factor: 1.371, cepeda: "538,242", abelardo: "281,414", ganador: "cepeda" },
-  { name: "Cundinamarca", factor: 1.323, cepeda: "795,695", abelardo: "788,506", ganador: "cepeda" },
-  { name: "Santander", factor: 1.271, cepeda: "438,279", abelardo: "753,646", ganador: "abelardo" },
-  { name: "Magdalena", factor: 1.335, cepeda: "354,854", abelardo: "195,001", ganador: "cepeda" },
-  { name: "Tolima", factor: 1.318, cepeda: "311,963", abelardo: "386,846", ganador: "abelardo" },
-  { name: "Sucre", factor: 1.323, cepeda: "300,459", abelardo: "147,481", ganador: "cepeda" },
-  { name: "Cesar", factor: 1.316, cepeda: "295,922", abelardo: "224,691", ganador: "cepeda" },
-];
+const promptTexto = `# ROL
+
+Actúa como un **analista político senior y estratega electoral** especializado en elecciones presidenciales de Colombia. Tu trabajo es producir una **predicción cuantitativa y razonada** sobre el ganador de la segunda vuelta presidencial de 2026 entre **Iván Cepeda (Pacto Histórico, izquierda)** y **Abelardo de la Espriella (Defensores de la Patria, derecha)**, usando exclusivamente los datos oficiales que se entregan a continuación.
+
+# OBJETIVO
+
+1. Estimar el resultado nacional proyectado (votos + share %).
+2. Estimar el margen de victoria en puntos porcentuales y en votos absolutos.
+3. Identificar los 5–8 departamentos bisagra que deciden el resultado.
+4. Justificar la predicción con un razonamiento causal y replicable (no opinión).
+5. Proponer la ruta crítica de campaña para el perdedor.
+
+# DATOS DISPONIBLES (autoritativos)
+
+Los datos vienen de la Registraduría Nacional del Estado Civil de Colombia (escrutinio definitivo) e incluyen tres elecciones consecutivas:
+
+- **1ª vuelta 2022** (29 mayo): 8 candidatos, ganó Petro con 40.34%.
+- **2ª vuelta 2022** (19 junio): Petro (izquierda) vs Hernández (derecha). Ganó Petro 50.44% vs 47.31%, margen ~700k votos.
+- **1ª vuelta 2026** (31 mayo 2026): 13 candidatos. De la Espriella primero, Cepeda segundo.
+
+A nivel **departamental**, cada elección tiene los votos por candidato y por bloque ideológico (izquierda / centro / derecha) para los 33 departamentos del país.
+
+\`\`\`json
+${JSON.stringify(promptDatos, null, 2)}
+\`\`\`
+
+# MARCO ANALÍTICO QUE DEBES APLICAR
+
+## 1. Multiplicador de movilización de izquierda (calibrado con 2022)
+
+Para cada departamento d:
+
+\`\`\`
+mult_izq_d  =  Petro_2V_2022_d  /  Petro_1V_2022_d
+\`\`\`
+
+Este multiplicador captura la capacidad histórica de la izquierda de movilizar abstencionistas y captar votos centristas entre la 1ª y la 2ª vuelta. Aplícalo sobre el voto de Cepeda en 2026 1V para proyectar su techo en 2V.
+
+## 2. Tasa de transferencia de la derecha (calibrada con 2022)
+
+Para cada departamento d:
+
+\`\`\`
+base_der_22_d  =  votos_derecha_1V_2022_d  (Hernández + Fico + otros derecha)
+transf_der_d   =  Hernández_2V_2022_d  /  base_der_22_d
+\`\`\`
+
+Captura el porcentaje del bloque de derecha de 1V que efectivamente se consolidó detrás del candidato único de derecha en 2V (con fugas hacia voto en blanco y abstención). Aplícalo sobre la **base de derecha consolidada de 2026 1V** (De la Espriella + Paloma Valencia + Daniel Palacios + Miguel Uribe + Camilo Romero) para proyectar el techo de De la Espriella en 2V.
+
+## 3. Distribución del centro
+
+El centro 2026 (Fajardo + Claudia López + Lizcano + Garvin + Murillo) no tiene candidato propio en 2V. En 2022, el centro (Fajardo) endosó mayoritariamente a Petro. Usa **60% a Cepeda / 40% a De la Espriella** como supuesto base, y reporta sensibilidad si cambia a 50/50 o 70/30.
+
+## 4. Cierre nacional
+
+Suma por departamento:
+
+\`\`\`
+Cepeda_2V_proj_d     =  Cepeda_1V_26_d * mult_izq_d  +  Centro_26_d * 0.60
+Abelardo_2V_proj_d   =  base_derecha_26_d * transf_der_d  +  Centro_26_d * 0.40
+\`\`\`
+
+Nacional = suma de los 33 departamentos.
+
+# ENTREGABLES (formato obligatorio)
+
+## A. Tabla de proyección departamental
+
+| Departamento | Cepeda 1V 2026 | Multiplicador izq | Cepeda 2V proj | Base derecha 2026 | Transf derecha | Abelardo 2V proj | Margen | Ganador |
+
+## B. Resultado nacional
+
+- Cepeda: X votos (Y%)
+- De la Espriella: X votos (Y%)
+- Margen: ±Z pp (±W votos)
+- **Probabilidad de victoria** de cada candidato (con intervalo de confianza basado en sensibilidad de supuestos).
+
+## C. Departamentos bisagra
+
+Los 5–8 departamentos donde el margen proyectado |Cepeda − Abelardo| es menor a 5 pp del total departamental: ahí se gana o se pierde la elección.
+
+## D. Narrativa estratégica (máximo 400 palabras)
+
+- ¿Por qué gana el ganador? (factor estructural + factor coyuntural).
+- ¿Qué le falló al perdedor? (transferencia, geografía, perfil).
+- Las **3 jugadas concretas** que debe hacer el perdedor en las próximas 4 semanas para revertir el resultado.
+
+## E. Análisis de sensibilidad
+
+Re-corre el modelo con:
+- Centro split 50/50 (en lugar de 60/40 a Cepeda).
+- Transferencia derecha tope = 0.95 (más fuga).
+- Movilización izquierda capeada en 1.30x (techo).
+
+Reporta cómo cambia el ganador en cada escenario.
+
+# REGLAS
+
+- Cero opinión, cero juicios de valor. Sólo lo que los datos respaldan.
+- Si un dato no está en el JSON, dilo explícitamente y no inventes.
+- Todos los números deben ser auditables: muestra la fórmula.
+- Responde en español, con tablas Markdown.`;
+
+// ── Tablas y KPIs derivados de la simulación ────────────────────────────
+const top5Cepeda = [...sim.departamentos]
+  .filter(d => d.ganador === "cepeda")
+  .sort((a, b) => b.margen - a.margen)
+  .slice(0, 5);
+const top5Abelardo = [...sim.departamentos]
+  .filter(d => d.ganador === "abelardo")
+  .sort((a, b) => a.margen - b.margen)
+  .slice(0, 5);
+const bisagra = [...sim.departamentos]
+  .map(d => ({
+    ...d,
+    margenPp: ((d.margen) / Math.max(d.cepedaProj + d.abelardoProj, 1)) * 100,
+  }))
+  .sort((a, b) => Math.abs(a.margenPp) - Math.abs(b.margenPp))
+  .slice(0, 8);
+
+const ganadorNac = sim.nacional.ganador === "cepeda" ? "Iván Cepeda" : "Abelardo de la Espriella";
+const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
 ---
 <BaseLayout
   title="Pronóstico Electoral 2026 — Segunda Vuelta Colombia"
-  description="Análisis técnico, estratégico y prospectivo para la segunda vuelta presidencial de Colombia 2026 entre Abelardo de la Espriella e Iván Cepeda."
+  description="Análisis técnico, estratégico y prospectivo para la segunda vuelta presidencial de Colombia 2026 entre Abelardo de la Espriella e Iván Cepeda, basado en modelado cuantitativo del comportamiento territorial 2022."
   image="/images/observatorio.png"
   imageAlt="Observatorio · Pronóstico segunda vuelta presidencial Colombia 2026"
   type="article"
   fullWidth={true}
-  keywords="pronostico electoral colombia 2026, segunda vuelta 2026, abelardo de la espriella, ivan cepeda, simulador departamental, movilizacion abstencionistas, analisis electoral colombia, estrategia electoral"
+  keywords="pronostico electoral colombia 2026, segunda vuelta 2026, abelardo de la espriella, ivan cepeda, simulador departamental, modelo cuantitativo electoral, analisis electoral colombia, estrategia electoral, prompt agente analista politico"
   publishedTime="2026-06-01T00:00:00+00:00"
   articleSection="Pronóstico político"
-  articleTags={["Pronóstico electoral", "Segunda vuelta 2026", "Abelardo de la Espriella", "Iván Cepeda", "Simulador electoral", "Estrategia política"]}
+  articleTags={["Pronóstico electoral", "Segunda vuelta 2026", "Abelardo de la Espriella", "Iván Cepeda", "Simulador electoral", "Estrategia política", "IA política"]}
 >
   <Hero
-    badge={{ text: "Exclusivo · Simulación de Estrategia" }}
+    badge={{ text: "Experimento · Agente IA + Datos oficiales" }}
     title="🔮 Pronóstico Segunda Vuelta 2026"
-    subtitle="Simulador departamental de movilización electoral de abstencionistas"
+    subtitle="Modelo cuantitativo + prompt para agente analista político"
   />
   <EleccionesNav active="pronostico" />
+  <PlotlyLoader />
 
   <main class="observatorio-container">
-    <!-- PANEL 1: RETROSPECTIVA CLAVE DE 2022 -->
+    <!-- ── KPIs nacionales del pronóstico ── -->
+    <section class="forecast-kpis" aria-label="Resultado nacional proyectado">
+      <article class="kpi-card kpi-card--cepeda">
+        <p class="kpi-card__label">Iván Cepeda (Izquierda)</p>
+        <p class="kpi-card__value">{fmtCompact(sim.nacional.cepeda)}</p>
+        <p class="kpi-card__sub">{fmtPct(shareCep)} de los votos válidos proyectados</p>
+      </article>
+      <article class="kpi-card kpi-card--abelardo">
+        <p class="kpi-card__label">Abelardo de la Espriella (Derecha)</p>
+        <p class="kpi-card__value">{fmtCompact(sim.nacional.abelardo)}</p>
+        <p class="kpi-card__sub">{fmtPct(shareAbe)} de los votos válidos proyectados</p>
+      </article>
+      <article class="kpi-card kpi-card--margen" style={`border-left-color: ${ganadorColor}`}>
+        <p class="kpi-card__label">Ganador proyectado</p>
+        <p class="kpi-card__value" style={`color: ${ganadorColor}`}>{ganadorNac}</p>
+        <p class="kpi-card__sub">Margen {Math.abs(sim.nacional.margenPp).toFixed(2)} pp ({fmtSigned(sim.nacional.margenAbs)} votos)</p>
+      </article>
+    </section>
+
+    <!-- PANEL 1: METODOLOGÍA + VISUALIZACIONES -->
     <IndicadorPanel
       numero="1"
-      eyebrow="Retrospectiva"
-      titulo="El Fenómeno de Movilización Territorial (2022 vs 2026)"
-      lead="Análisis territorial de crecimiento. Petro en 2022 no ganó por la suma matemática de la primera vuelta, sino por expandir el universo de votantes en sus fortines regionales."
+      eyebrow="Modelo cuantitativo"
+      titulo="¿Cómo se llegó a este pronóstico?"
+      lead="El modelo aplica los multiplicadores reales de movilización (izquierda) y las tasas de transferencia (derecha) observadas entre la 1ª y la 2ª vuelta de 2022, a la base electoral de 2026 1V por departamento."
     >
-      <div slot="visual" class="retro-grid">
-        <div class="card-analisis">
-          <h4 class="card-analisis__title">El Multiplicador de la Abstención Periférica</h4>
-          <p class="card-analisis__text">
-            En la primera vuelta de 2022, Petro obtuvo 8.53M de votos frente a 11.01M sumados de la derecha. En la segunda vuelta, <strong>Petro creció un asombroso +32.2% nacional (llegando a 11.28M)</strong>. Este crecimiento no fue uniforme: fue un fenómeno concentrado en regiones de alta abstención que se politizaron intensamente.
-          </p>
-          <p class="card-analisis__text">
-            Al aplicar este <strong>modelo de variación departamental</strong> a los datos de 2026, descubrimos un escenario disruptivo: si <strong>Iván Cepeda Castro</strong> logra replicar exactamente las tasas de movilización de Petro en sus fortines periféricos, **el mapa da un vuelco radical**.
-          </p>
-          <ul class="card-analisis__list">
-            <li>
-              <strong>Pacífico y Caribe Imparables:</strong> En departamentos clave, el multiplicador de la izquierda supera el 1.35x. Al aplicar este factor a la base de Cepeda en 2026 (por ejemplo, en Atlántico, Bolívar, Córdoba y Cauca), la izquierda genera una ventaja acumulada masiva que asfixia el punto de partida de la derecha.
-            </li>
-            <li>
-              <strong>Fugas de la Derecha:</strong> En 2022, no todos los votos de Fico Gutiérrez se transfirieron a Rodolfo Hernández (tasa de transferencia neta del 93.1% debido a fugas hacia el voto en blanco y abstención). Al modelar este desgaste en Abelardo de la Espriella, la derecha sufre una contracción frente a su base teórica máxima de primera vuelta.
-            </li>
-          </ul>
-        </div>
-        
-        <div class="card-analisis metric-card">
-          <h4 class="card-analisis__title">Simulación del Electorado 2026 (Efecto Variación)</h4>
-          <p class="card-analisis__text">
-            Si asumimos una transferencia estática de primera vuelta, De la Espriella gana cómodamente con el 51.6% de los votos de bloque.
-          </p>
-          <p class="card-analisis__text" style="border-top: 1px dashed #cbd5e1; padding-top: 0.75rem;">
-            Sin embargo, **al aplicar el Modelo de Variación Territorial Histórica**:
-          </p>
-          <div class="sim-final-box">
-            <div class="sim-row">
-              <span class="sim-name">🔴 Iván Cepeda (Simulado 2V)</span>
-              <span class="sim-val font-bold text-red-600">12,866,183 (53.00%)</span>
-            </div>
-            <div class="sim-row">
-              <span class="sim-name">🔵 Abelardo de la Espriella (Simulado 2V)</span>
-              <span class="sim-val font-bold text-blue-600">11,410,033 (47.00%)</span>
-            </div>
-            <p class="sim-verdict font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200">
-              🏆 GANADOR BAJO SIMULACIÓN: IVÁN CEPEDA CASTRO (+6.0 pp de ventaja)
-            </p>
-          </div>
+      <div slot="visual" class="charts-row-2">
+        <Chart id="pres-2026-2v-pronostico-composicion" embedded={true} />
+        <Chart id="pres-2026-2v-pronostico-mapa-ganador" embedded={true} />
+      </div>
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="2"
+      eyebrow="Geografía del balotaje"
+      titulo="Dónde se decide la elección — margen por departamento"
+      lead="Los departamentos en rojo se proyectan para Cepeda; los azules para De la Espriella. Mientras más larga la barra, más claro el resultado en ese territorio."
+    >
+      <Chart slot="visual" id="pres-2026-2v-pronostico-margen-depto" embedded={true} />
+    </IndicadorPanel>
+
+    <!-- PANEL 3: BISAGRA -->
+    <IndicadorPanel
+      numero="3"
+      eyebrow="Departamentos bisagra"
+      titulo="Los 8 departamentos que pueden cambiar el resultado"
+      lead="Aquí el margen proyectado es menor al 5% del voto local — pequeños movimientos de movilización los voltean. La campaña que gane se decide por la operación electoral en estas plazas."
+    >
+      <div slot="visual" class="tabla-wrap">
+        <table class="tabla-detalle">
+          <thead>
+            <tr>
+              <th>Departamento</th>
+              <th class="num">Cepeda proj</th>
+              <th class="num">Abelardo proj</th>
+              <th class="num">Margen</th>
+              <th class="num">Margen %</th>
+              <th>Favorito</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bisagra.map(d => (
+              <tr>
+                <td><strong>{d.nombre}</strong></td>
+                <td class="num">{fmtMiles(d.cepedaProj)}</td>
+                <td class="num">{fmtMiles(d.abelardoProj)}</td>
+                <td class={`num ${d.ganador === "cepeda" ? "is-up" : "is-down"}`}>{fmtSigned(d.margen)}</td>
+                <td class={`num ${d.ganador === "cepeda" ? "is-up" : "is-down"}`}>{d.margenPp >= 0 ? "+" : ""}{d.margenPp.toFixed(2)}%</td>
+                <td><span class={`chip chip--${d.ganador === "cepeda" ? "cepeda" : "abelardo"}`}>{d.ganador === "cepeda" ? "Cepeda 🔴" : "Abelardo 🔵"}</span></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </IndicadorPanel>
+
+    <!-- PANEL 4: PROYECCIÓN DETALLADA -->
+    <IndicadorPanel
+      numero="4"
+      eyebrow="Proyección departamental completa"
+      titulo="Tabla maestra — los 33 departamentos"
+      lead="Multiplicador izquierda y tasa de transferencia derecha calculados con 2022. Proyección de votos en 2V para cada candidato y margen resultante."
+    >
+      <div slot="visual" class="tabla-wrap">
+        <div class="tabla-scroll" style="max-height: 480px;">
+          <table class="tabla-detalle tabla-sortable" data-sort-table>
+            <thead>
+              <tr>
+                <th data-sort-key="nombre" data-sort-type="text">Departamento <span class="sort-arrow"></span></th>
+                <th class="num" data-sort-key="multIzq" data-sort-type="num">Mult. izq <span class="sort-arrow"></span></th>
+                <th class="num" data-sort-key="transfDer" data-sort-type="num">Transf. der <span class="sort-arrow"></span></th>
+                <th class="num" data-sort-key="cepedaProj" data-sort-type="num">Cepeda 2V <span class="sort-arrow"></span></th>
+                <th class="num" data-sort-key="abelardoProj" data-sort-type="num">Abelardo 2V <span class="sort-arrow"></span></th>
+                <th class="num" data-sort-key="margen" data-sort-type="num">Margen <span class="sort-arrow"></span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {sim.departamentos.map(d => (
+                <tr
+                  data-nombre={d.nombre}
+                  data-mult-izq={d.multIzq}
+                  data-transf-der={d.transfDer}
+                  data-cepeda-proj={d.cepedaProj}
+                  data-abelardo-proj={d.abelardoProj}
+                  data-margen={d.margen}
+                >
+                  <td>{d.nombre}</td>
+                  <td class="num" style="font-family: monospace;">{d.multIzq.toFixed(3)}</td>
+                  <td class="num" style="font-family: monospace;">{d.transfDer.toFixed(3)}</td>
+                  <td class="num" style="color: #b91c1c; font-weight: 600;">{fmtMiles(d.cepedaProj)}</td>
+                  <td class="num" style="color: #1d4ed8;">{fmtMiles(d.abelardoProj)}</td>
+                  <td class={`num ${d.ganador === "cepeda" ? "is-up" : "is-down"}`}>{fmtSigned(d.margen)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </IndicadorPanel>
 
-    <!-- PANEL 2: EL PROMPT DEL AGENTE -->
+    <!-- PANEL 5: PROMPT COMPLETO -->
     <IndicadorPanel
-      numero="2"
-      eyebrow="Diseño de Prompt"
-      titulo="Ficha de Entrada del Agente: Prompt de Ingeniería de Elite"
-      lead="Esta es la especificación técnica estructurada inyectada al Agente Inteligente. Contiene los datos conciliados, el marco analítico histórico de Colombia y los criterios de predicción."
+      numero="5"
+      eyebrow="Prompt para agente IA"
+      titulo="Ficha completa del agente analista político"
+      lead="El prompt completo, con todos los datos oficiales embebidos. Copiar y pegar en cualquier modelo (Claude, GPT-4, Gemini) reproduce esta predicción de forma independiente."
     >
       <div slot="visual" class="prompt-container">
         <div class="prompt-header">
           <span class="prompt-header__dot red"></span>
           <span class="prompt-header__dot yellow"></span>
           <span class="prompt-header__dot green"></span>
-          <span class="prompt-header__title">Prompt para Analista Político IA - Segunda Vuelta 2026</span>
+          <span class="prompt-header__title">Prompt agente · Pronóstico 2V 2026</span>
+          <button class="prompt-copy" data-copy-prompt>Copiar prompt</button>
         </div>
-        <pre class="prompt-code"><code>{promptTexto}</code></pre>
+        <pre class="prompt-code" id="prompt-fullsource"><code>{promptTexto}</code></pre>
       </div>
     </IndicadorPanel>
 
-    <!-- PANEL 3: REPORTE DE PREDICCIÓN Y ESTRATEGIA -->
+    <!-- PANEL 6: VEREDICTO + ESTRATEGIA -->
     <IndicadorPanel
-      numero="3"
-      eyebrow="Resultados"
-      titulo="Informe Técnico del Analista: Predicción Segunda Vuelta 2026"
-      lead="El veredicto estratégico basado en el análisis de transferencias y la simulación matemática de la participación electoral."
+      numero="6"
+      eyebrow="Veredicto y ruta crítica"
+      titulo="Predicción final y jugadas estratégicas"
+      lead="La lectura política del modelo: por qué gana quien gana, dónde se decide y qué tendría que hacer el perdedor para revertirlo."
     >
-      <div slot="visual" class="analisis-visual">
-        <!-- KPI Row del Pronóstico -->
-        <div class="forecast-kpis">
-          <div class="kpi-card">
-            <span class="kpi-card__label">Probabilidad Cepeda</span>
-            <span class="kpi-card__value color-success">53.0%</span>
-            <span class="kpi-card__sub">Bajo simulación de movilización histórica</span>
+      <div slot="visual" class="veredicto">
+        <div class="veredicto-card" style={`border-left-color: ${ganadorColor}`}>
+          <h4 class="veredicto-card__title">Veredicto del modelo</h4>
+          <p class="veredicto-card__big" style={`color: ${ganadorColor}`}>{ganadorNac}</p>
+          <p>Bajo los supuestos centrales (centro 60/40 a Cepeda, transferencia derecha capeada en 1.05, multiplicador izquierda real por depto), el modelo proyecta una victoria de <strong>{ganadorNac}</strong> con un margen de <strong>{Math.abs(sim.nacional.margenPp).toFixed(2)} pp</strong> ({fmtSigned(sim.nacional.margenAbs)} votos).</p>
+        </div>
+
+        <div class="grid-2col">
+          <div class="est-card izq">
+            <h5>¿Por qué gana Cepeda según el modelo?</h5>
+            <ol>
+              <li><strong>Multiplicador histórico:</strong> el promedio del multiplicador de izquierda 2022 (Petro 2V / Petro 1V) por departamento es {(sim.departamentos.reduce((a, d) => a + d.multIzq, 0) / sim.departamentos.length).toFixed(2)}x. Aplicado a Cepeda 1V 2026 amplifica masivamente la base.</li>
+              <li><strong>Costa Caribe y Pacífico:</strong> los departamentos donde Cepeda gana con más holgura son {top5Cepeda.map(d => d.nombre).join(", ")} — ahí concentra el grueso del margen.</li>
+              <li><strong>Centro a su favor:</strong> el supuesto 60/40 sobre los ~{fmtCompact(sim.departamentos.reduce((a, d) => a + d.baseCentro26, 0))} votos del centro 2026 le aporta una ventaja adicional.</li>
+            </ol>
           </div>
-          <div class="kpi-card">
-            <span class="kpi-card__label">Probabilidad Abelardo</span>
-            <span class="kpi-card__value color-danger">47.0%</span>
-            <span class="kpi-card__sub">Afectado por desgaste de transferencia</span>
-          </div>
-          <div class="kpi-card">
-            <span class="kpi-card__label">Votos Simulados Cepeda</span>
-            <span class="kpi-card__value" style="color: #dc2626;">12.8 M</span>
-            <span class="kpi-card__sub">Replicando el factor de crecimiento 2022</span>
-          </div>
-          <div class="kpi-card">
-            <span class="kpi-card__label">Votos Simulados Abelardo</span>
-            <span class="kpi-card__value" style="color: #2563eb;">11.4 M</span>
-            <span class="kpi-card__sub">Proyección de bloque derecha neta</span>
+          <div class="est-card der">
+            <h5>¿Por qué falla De la Espriella?</h5>
+            <ol>
+              <li><strong>Desgaste de transferencia:</strong> en 2022 la derecha consolidó sólo ~93% de su voto 1V en 2V. Aplicado a su base 2026 (~{fmtCompact(sim.departamentos.reduce((a, d) => a + d.baseDer26, 0))}), la fuga supera los {fmtCompact(Math.round(sim.departamentos.reduce((a, d) => a + d.baseDer26 * (1 - d.transfDer), 0)))} votos.</li>
+              <li><strong>Plazas fuertes pero acotadas:</strong> gana con holgura en {top5Abelardo.map(d => d.nombre).join(", ")}, pero su techo en la periferia es estructuralmente bajo.</li>
+              <li><strong>Centro no neutraliza:</strong> incluso con 40% del centro, no compensa el multiplicador de izquierda en los departamentos populosos.</li>
+            </ol>
           </div>
         </div>
 
-        <div class="reporte-analista">
-          <h3 class="reporte-analista__section-title">🔮 Simulación Territorial Detallada: Departamento por Departamento (2026)</h3>
-          
-          <div class="grid-2col">
-            <div class="reporte-col">
-              <h4>1. La Dinámica de la Simulación</h4>
-              <p>
-                Al aplicar las **tasas de variación departamental reales de 2022** a la primera vuelta de 2026, emergen hallazgos de gran calibre:
-              </p>
-              <ul>
-                <li><strong>El Gigante de Bogotá:</strong> Cepeda proyecta alcanzar <strong>2.17M de votos</strong> en la capital (aplicando el crecimiento de 1.274x), mientras Abelardo se contiene en 1.77M. Esto le da a la izquierda una ventaja limpia de casi 400k votos solo en Bogotá.</li>
-                <li><strong>El Fortín del Pacífico:</strong> En el Valle del Cauca, Cepeda se dispara a <strong>1.40M de votos</strong> (factor 1.255x) frente a los 744k de Abelardo, consolidando el dominio absoluto de la izquierda en el Pacífico colombiano.</li>
-                <li><strong>Antioquia como Contención:</strong> En Antioquia, Abelardo domina de forma aplastante con 1.92M, pero Cepeda logra una defensa exitosa sumando 1.11M (factor 1.381x), lo que evita que la derecha recupere la ventaja nacional.</li>
-              </ul>
-              
-              <h4 style="margin-top: 1.5rem;">2. El Desgaste del Bloque de Derecha</h4>
-              <p>
-                En 2026 1V, la derecha sumó un enorme 51.58% de bloque. Sin embargo, al modelar la transferencia territorial histórica, se observa un desgaste natural del **6.8%** del electorado de derecha (fugas hacia el voto en blanco, abstención de centroderecha y descontento). 
-                Esto hace que Abelardo de la Espriella caiga a un total simulado de **11,410,033 votos**, abriendo la ventana para la victoria de Cepeda si se maximiza la participación periférica.
-              </p>
-            </div>
-
-            <div class="tabla-wrap">
-              <h4 class="tabla-titulo">Simulación Territorial Detallada (Top 14 Departamentos)</h4>
-              <table class="tabla-detalle">
-                <thead>
-                  <tr>
-                    <th>Departamento</th>
-                    <th class="num">Factor Izq</th>
-                    <th class="num">Sim Cepeda 2V</th>
-                    <th class="num">Sim Abelardo 2V</th>
-                    <th>Ganador Sim</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {simuladorDeptos.map((d) => (
-                    <tr>
-                      <td><strong>{d.name}</strong></td>
-                      <td class="num" style="font-family: monospace;">{d.factor.toFixed(3)}</td>
-                      <td class="num" style="color: #b91c1c; font-weight: 600;">{d.cepeda}</td>
-                      <td class="num" style="color: #1d4ed8;">{d.abelardo}</td>
-                      <td>
-                        <span class={`chip chip--${d.ganador}`}>
-                          {d.ganador === "cepeda" ? "Cepeda 🔴" : "Abelardo 🔵"}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                  <tr style="border-top: 2.5px solid #cbd5e1; font-weight: 700;">
-                    <td>Consulados (Ext)</td>
-                    <td class="num">1.202</td>
-                    <td class="num" style="color: #b91c1c;">238,399</td>
-                    <td class="num" style="color: #1d4ed8;">387,127</td>
-                    <td><span class="chip chip--derecha">Abelardo 🔵</span></td>
-                  </tr>
-                </tbody>
-              </table>
-              <p class="tabla-footnote">* Simulación matemática basada en las tasas reales de variación de 2022.</p>
-            </div>
+        <div class="grid-2col">
+          <div class="est-card izq">
+            <h5>🔴 Ruta al triunfo · Cepeda</h5>
+            <ol>
+              <li>Operación electoral extrema en bisagras: {bisagra.slice(0, 4).map(d => d.nombre).join(", ")}.</li>
+              <li>Endoso explícito y activo del centro (Fajardo, Claudia López) — proteger el supuesto 60/40.</li>
+              <li>Movilización porta-a-puerta en Costa Caribe para superar la abstención histórica.</li>
+            </ol>
           </div>
-
-          <div class="estrategia-camps">
-            <h4 class="estrategia-title">💡 Recomendaciones Estratégicas de Campaña</h4>
-            <div class="grid-2col">
-              <div class="est-card izq">
-                <h5>Ruta al Triunfo de IVÁN CEPEDA</h5>
-                <ol>
-                  <li><strong>Maximizar Turnout en Costa y Pacífico:</strong> Implementar estructuras de movilización extrema el día de las elecciones en Atlántico, Bolívar, Valle y Nariño. Si la participación en estas áreas iguala la tasa nacional, la victoria está asegurada.</li>
-                  <li><strong>Consolidar el Voto de Alianza de Centro:</strong> Asegurar el endoso público y activo de Claudia López y Fajardo para garantizar la transferencia del voto urbano bogotano.</li>
-                  <li><strong>Campaña de Contención en Antioquia y Santander:</strong> Dedicar recursos mínimos pero eficientes de contención para mantener la base de izquierda en Antioquia por encima de 1M de votos.</li>
-                </ol>
-              </div>
-              <div class="est-card der">
-                <h5>Ruta al Triunfo de ABELARDO DE LA ESPRIELLA</h5>
-                <ol>
-                  <li><strong>Mitigar la Fuga de Bloque:</strong> Tender puentes urgentes con el electorado de centro-derecha de Paloma Valencia y Daniel Palacios para evitar que se queden en casa o voten en blanco.</li>
-                  <li><strong>Ataque a la Participación de la Periferia:</strong> Concentrar esfuerzos mediáticos y de control electoral en el Caribe y Pacífico para enfriar el clima de participación y evitar un pico de abstencionistas votantes de Cepeda.</li>
-                  <li><strong>Fortalecer la Muralla de Antioquia y Santander:</strong> Garantizar una participación histórica y unificada de la derecha en estas dos regiones para compensar el déficit estructural en el Pacífico.</li>
-                </ol>
-              </div>
-            </div>
+          <div class="est-card der">
+            <h5>🔵 Ruta al triunfo · De la Espriella</h5>
+            <ol>
+              <li>Cerrar la fuga de transferencia: alianza pública con Paloma Valencia, Daniel Palacios, Miguel Uribe.</li>
+              <li>Disputarle el centro: bajar el supuesto a 50/50 ya cambia significativamente el margen.</li>
+              <li>Capear el multiplicador de izquierda en plazas grandes (Bogotá, Valle, Atlántico) con campaña de control del clima emocional.</li>
+            </ol>
           </div>
+        </div>
+
+        <div class="lectura-estrategica">
+          <h4>Sensibilidad — ¿qué cambia si los supuestos se mueven?</h4>
+          <ul>
+            <li>Si el <strong>centro se reparte 50/50</strong> en lugar de 60/40, el margen de Cepeda se reduce en aproximadamente {Math.round(sim.departamentos.reduce((a, d) => a + d.baseCentro26 * 0.10, 0) / 1000)}k votos. Con un margen actual de {fmtSigned(sim.nacional.margenAbs)} votos, el resultado {Math.abs(sim.nacional.margenAbs) < sim.departamentos.reduce((a, d) => a + d.baseCentro26 * 0.10, 0) ? "se voltea" : "se mantiene"}.</li>
+            <li>Si la <strong>transferencia de derecha</strong> alcanza el 100% (sin fuga), De la Espriella suma ~{fmtCompact(Math.round(sim.departamentos.reduce((a, d) => a + d.baseDer26 * (1 - d.transfDer), 0)))} votos adicionales.</li>
+            <li>Si el <strong>multiplicador de izquierda se capa</strong> en 1.30x (en lugar del real por depto), Cepeda pierde alrededor de {fmtCompact(Math.round(sim.departamentos.reduce((a, d) => a + Math.max(0, (d.multIzq - 1.30)) * d.cepeda1v26, 0)))} votos.</li>
+          </ul>
         </div>
       </div>
     </IndicadorPanel>
 
     <DashboardFooter
       fuentes={[
-        { nombre: "Registraduría Nacional del Estado Civil", url: "https://www.registraduria.gov.co/", indicador: "Datos de escrutinio" },
-        { nombre: "Ingeniería de Prompts y Simulación IA", url: "https://github.com/fredericksalazar/fredericksalazar.github.io", indicador: "Simulador político" },
+        { nombre: "Registraduría Nacional del Estado Civil", url: "https://www.registraduria.gov.co/", indicador: "Resultados oficiales 2022 1V/2V y 2026 1V" },
+        { nombre: "Modelo de simulación", url: "https://github.com/fredericksalazar/fredericksalazar.github.io", indicador: "Multiplicador de movilización + transferencia derecha + reparto del centro" },
       ]}
       cobertura="Pronóstico Prospectivo Segunda Vuelta 2026"
       ultimaActualizacion={fecha}
     />
   </main>
+
+  <script is:inline>
+    (function () {
+      function bind() {
+        document.querySelectorAll("[data-copy-prompt]").forEach(function (btn) {
+          if (btn.__bound) return;
+          btn.__bound = true;
+          btn.addEventListener("click", function () {
+            const pre = document.getElementById("prompt-fullsource");
+            if (!pre) return;
+            const txt = pre.innerText;
+            navigator.clipboard.writeText(txt).then(function () {
+              const orig = btn.textContent;
+              btn.textContent = "✓ Copiado";
+              setTimeout(function () { btn.textContent = orig; }, 1800);
+            }).catch(function () { btn.textContent = "Error"; });
+          });
+        });
+        document.querySelectorAll("table[data-sort-table]").forEach(function (table) {
+          if (table.__sortBound) return;
+          table.__sortBound = true;
+          const ths = table.querySelectorAll("thead th[data-sort-key]");
+          ths.forEach(function (th) {
+            th.addEventListener("click", function () {
+              const key = th.dataset.sortKey;
+              const type = th.dataset.sortType || "text";
+              const cur = th.dataset.sortDir || "";
+              const next = cur === "asc" ? "desc" : "asc";
+              ths.forEach(function (o) {
+                if (o !== th) { o.dataset.sortDir = ""; const a = o.querySelector(".sort-arrow"); if (a) a.textContent = ""; }
+              });
+              th.dataset.sortDir = next;
+              const arr = th.querySelector(".sort-arrow");
+              if (arr) arr.textContent = next === "asc" ? "▲" : "▼";
+              const tbody = table.querySelector("tbody");
+              const rows = Array.from(tbody.querySelectorAll("tr"));
+              rows.sort(function (a, b) {
+                const av = a.dataset[key]; const bv = b.dataset[key];
+                if (type === "num") return next === "asc" ? parseFloat(av) - parseFloat(bv) : parseFloat(bv) - parseFloat(av);
+                const c = String(av).localeCompare(String(bv), "es");
+                return next === "asc" ? c : -c;
+              });
+              rows.forEach(function (r) { tbody.appendChild(r); });
+            });
+          });
+        });
+      }
+      if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bind);
+      else bind();
+      document.addEventListener("astro:page-load", bind);
+    })();
+  </script>
 </BaseLayout>
 
 <style>
   .observatorio-container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 2rem; }
-  .retro-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem; align-items: start; }
-  
-  .card-analisis {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 1.5rem;
-    height: 100%;
-  }
-  .card-analisis.metric-card {
-    background: #fff;
-    border: 1px solid #cbd5e1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .card-analisis__title { margin: 0 0 1rem; font-size: 1.1rem; font-weight: 700; color: #1e293b; }
-  .card-analisis__text { font-size: 0.88rem; color: #475569; line-height: 1.6; margin-bottom: 1rem; }
-  .card-analisis__list { font-size: 0.88rem; color: #475569; line-height: 1.6; padding-left: 1.25rem; }
-  .card-analisis__list li { margin-bottom: 0.85rem; }
-  .card-analisis__list strong { color: #1e293b; }
+  .charts-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 900px) { .charts-row-2 { grid-template-columns: 1fr; } }
 
-  .sim-final-box {
-    background: #f1f5f9;
-    border-radius: 8px;
-    padding: 1.25rem;
-    border: 1px solid #e2e8f0;
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
+  .forecast-kpis {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 0 0 2rem;
   }
-  .sim-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
-    align-items: center;
-  }
-  .sim-name { color: #475569; font-weight: 500; }
-  .sim-val { font-size: 0.95rem; font-weight: 700; }
-  .sim-val.text-red-600 { color: #dc2626; }
-  .sim-val.text-blue-600 { color: #2563eb; }
-  .sim-verdict {
-    font-size: 0.82rem;
-    font-weight: 700;
-    text-align: center;
-    padding: 0.65rem;
-    border-radius: 6px;
-    margin-top: 0.35rem;
-  }
-
-  .tabla-wrap { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem 1.25rem; }
-  .tabla-titulo { margin: 0 0 0.75rem; font-size: 0.9rem; font-weight: 600; color: #111827; }
-  .tabla-detalle { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-  .tabla-detalle th, .tabla-detalle td { padding: 0.5rem 0.6rem; text-align: left; border-bottom: 1px solid #e5e7eb; }
-  .tabla-detalle th { font-weight: 600; color: #6b7280; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
-  .tabla-detalle td.num, .tabla-detalle th.num { text-align: right; font-variant-numeric: tabular-nums; }
-  .tabla-detalle td.is-up { color: #16a34a; font-weight: 600; }
-  .tabla-detalle td.is-down { color: #dc2626; font-weight: 600; }
-  .tabla-footnote { font-size: 0.7rem; color: #94a3b8; margin-top: 0.75rem; text-align: right; }
-
-  .chip { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; }
-  .chip--cepeda { background: rgba(220, 38, 38, 0.12); color: #b91c1c; }
-  .chip--izquierda { background: rgba(220, 38, 38, 0.12); color: #b91c1c; }
-  .chip--centro { background: rgba(234, 88, 12, 0.10); color: #c2410c; }
-  .chip--abelardo { background: rgba(37, 99, 235, 0.12); color: #1d4ed8; }
-  .chip--derecha { background: rgba(37, 99, 235, 0.12); color: #1d4ed8; }
-
-  /* Prompt Panel */
-  .prompt-container {
-    background: #0f172a;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid #1e293b;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  }
-  .prompt-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    background: #1e293b;
-    border-bottom: 1px solid #0f172a;
-  }
-  .prompt-header__dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-  }
-  .prompt-header__dot.red { background: #ef4444; }
-  .prompt-header__dot.yellow { background: #f59e0b; }
-  .prompt-header__dot.green { background: #10b981; }
-  .prompt-header__title {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #94a3b8;
-    margin-left: 0.5rem;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  }
-  .prompt-code {
-    padding: 1.5rem;
-    margin: 0;
-    overflow-x: auto;
-    color: #cbd5e1;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.78rem;
-    line-height: 1.6;
-    white-space: pre-wrap;
-  }
-
-  /* Forecast analysis style */
-  .analisis-visual { width: 100%; display: flex; flex-direction: column; gap: 1.5rem; }
-  .forecast-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-  
   .kpi-card {
     background: #fff;
     border: 1px solid #e5e7eb;
     border-radius: 14px;
     padding: 1.25rem 1.35rem 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    transition: box-shadow 0.18s ease;
+    border-left: 4px solid #cbd5e1;
   }
-  .kpi-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
-  .kpi-card__label { font-size: 0.72rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.45rem; font-weight: 600; }
-  .kpi-card__value { font-size: 1.9rem; font-weight: 800; margin: 0; line-height: 1.1; letter-spacing: -0.02em; }
-  .kpi-card__value.color-danger { color: #b91c1c; }
-  .kpi-card__value.color-success { color: #15803d; }
-  .kpi-card__sub { font-size: 0.78rem; color: #6b7280; margin: 0.3rem 0 0; line-height: 1.4; }
+  .kpi-card--cepeda { border-left-color: #dc2626; }
+  .kpi-card--abelardo { border-left-color: #2563eb; }
+  .kpi-card--margen { border-left-color: #10b981; }
+  .kpi-card__label { font-size: 0.72rem; color: #636c76; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 0.45rem; font-weight: 600; }
+  .kpi-card__value { font-size: 1.6rem; font-weight: 800; margin: 0; color: #1f2328; line-height: 1.1; letter-spacing: -0.02em; }
+  .kpi-card__sub { font-size: 0.78rem; color: #636c76; margin: 0.35rem 0 0; line-height: 1.4; }
+  @media (max-width: 900px) { .forecast-kpis { grid-template-columns: 1fr; } }
 
-  .reporte-analista {
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 14px;
-    padding: 2rem;
+  .prompt-container {
+    background: #0f172a;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
   }
-  .reporte-analista__section-title { margin: 0 0 1.5rem; font-size: 1.25rem; font-weight: 700; color: #0f172a; border-bottom: 2px solid #3b82f6; padding-bottom: 0.5rem; width: fit-content; }
-  
-  .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.5rem; }
-  .reporte-col h4 { margin: 0 0 0.85rem; font-size: 0.95rem; font-weight: 700; color: #1e293b; border-left: 3px solid #2563eb; padding-left: 0.5rem; }
-  .reporte-col p { font-size: 0.88rem; color: #475569; line-height: 1.6; margin-bottom: 1rem; }
-  .reporte-col ul { font-size: 0.88rem; color: #475569; line-height: 1.6; padding-left: 1.25rem; }
-  .reporte-col li { margin-bottom: 0.65rem; }
+  .prompt-header {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: #1e293b;
+    border-bottom: 1px solid #334155;
+  }
+  .prompt-header__dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+  .prompt-header__dot.red { background: #ef4444; }
+  .prompt-header__dot.yellow { background: #eab308; }
+  .prompt-header__dot.green { background: #22c55e; }
+  .prompt-header__title { color: #cbd5e1; font-size: 0.85rem; font-weight: 600; margin-left: 0.5rem; flex: 1; }
+  .prompt-copy {
+    background: #2563eb; color: white; border: 0; padding: 0.4rem 0.9rem;
+    border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .prompt-copy:hover { background: #1d4ed8; }
+  .prompt-code {
+    margin: 0; padding: 1.25rem 1.5rem;
+    color: #e2e8f0; font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.78rem; line-height: 1.55;
+    max-height: 580px; overflow: auto;
+    white-space: pre-wrap; word-break: break-word;
+  }
 
-  .estrategia-camps { margin-top: 2rem; border-top: 1px dashed #cbd5e1; padding-top: 1.5rem; }
-  .estrategia-title { margin: 0 0 1.25rem; font-size: 1.05rem; font-weight: 700; color: #0f172a; text-align: center; }
-  
-  .est-card { padding: 1.5rem; border-radius: 12px; border: 1px solid; }
-  .est-card.izq { background: #fef2f2; border-color: #fecaca; }
-  .est-card.der { background: #eff6ff; border-color: #bfdbfe; }
-  .est-card h5 { margin: 0 0 0.85rem; font-size: 0.9rem; font-weight: 700; }
-  .est-card.izq h5 { color: #b91c1c; border-bottom: 1px solid #fca5a5; padding-bottom: 0.35rem; }
-  .est-card.der h5 { color: #1e3a8a; border-bottom: 1px solid #93c5fd; padding-bottom: 0.35rem; }
-  .est-card ol { font-size: 0.82rem; color: #334155; line-height: 1.6; padding-left: 1.1rem; }
-  .est-card li { margin-bottom: 0.65rem; }
+  .veredicto { display: grid; gap: 1.25rem; }
+  .veredicto-card {
+    background: #fff; border: 1px solid #e5e7eb; border-left: 4px solid #10b981;
+    border-radius: 12px; padding: 1.25rem 1.5rem;
+  }
+  .veredicto-card__title { margin: 0 0 0.4rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: #636c76; font-weight: 700; }
+  .veredicto-card__big { margin: 0 0 0.65rem; font-size: 1.85rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
 
-  @media (max-width: 1024px) {
-    .retro-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-    .forecast-kpis { grid-template-columns: repeat(2, 1fr); }
-    .grid-2col { grid-template-columns: 1fr; gap: 1.5rem; }
+  .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 900px) { .grid-2col { grid-template-columns: 1fr; } }
+  .est-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem 1.25rem; border-left: 4px solid #94a3b8; }
+  .est-card.izq { border-left-color: #dc2626; }
+  .est-card.der { border-left-color: #2563eb; }
+  .est-card h5 { margin: 0 0 0.6rem; font-size: 0.95rem; }
+  .est-card ol { padding-left: 1.1rem; margin: 0; font-size: 0.86rem; line-height: 1.55; }
+  .est-card ol li { margin-bottom: 0.4rem; }
+
+  .lectura-estrategica {
+    background: rgba(37, 99, 235, 0.04);
+    border: 1px solid rgba(37, 99, 235, 0.18);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
   }
-  @media (max-width: 600px) {
-    .forecast-kpis { grid-template-columns: 1fr; }
-  }
+  .lectura-estrategica h4 { margin: 0 0 0.6rem; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #1d4ed8; }
+  .lectura-estrategica ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.4rem; font-size: 0.86rem; line-height: 1.5; }
+
+  .tabla-wrap { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem 1.25rem; overflow-x: auto; }
+  .tabla-detalle { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .tabla-detalle th, .tabla-detalle td { padding: 0.5rem 0.6rem; text-align: left; border-bottom: 1px solid #e5e7eb; }
+  .tabla-detalle th { font-weight: 600; color: #636c76; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .tabla-detalle td.num, .tabla-detalle th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tabla-detalle td.is-up { color: #16a34a; font-weight: 600; }
+  .tabla-detalle td.is-down { color: #dc2626; font-weight: 600; }
+  .tabla-sortable thead th[data-sort-key] { cursor: pointer; user-select: none; }
+  .tabla-sortable thead th[data-sort-key]:hover { color: #1f2328; }
+  .tabla-sortable thead th[data-sort-dir="asc"], .tabla-sortable thead th[data-sort-dir="desc"] { color: #1d4ed8; }
+  .sort-arrow { display: inline-block; margin-left: 0.25rem; font-size: 0.65rem; opacity: 0.85; }
+  .tabla-scroll table thead th { position: sticky; top: 0; background: #fff; z-index: 1; }
+
+  .chip { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; }
+  .chip--cepeda { background: rgba(220, 38, 38, 0.12); color: #b91c1c; }
+  .chip--abelardo { background: rgba(37, 99, 235, 0.12); color: #1d4ed8; }
+
+  .cand-legend { display: flex; gap: 1rem; align-items: center; padding: 0.5rem 0; }
+  .cand-leg-item { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; }
+  .cand-leg-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
 </style>

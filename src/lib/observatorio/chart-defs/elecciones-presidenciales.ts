@@ -2,6 +2,7 @@ import type { ChartDef } from "./types";
 import { COLORS, baseLayout } from "../charts";
 import type { IdeologiaBloque, PresEleccionData, PresCandidatosData } from "../types";
 import { joinCandidatosIdeologia } from "../derivations-elecciones";
+import { simular2026_2V } from "../simulacion-2026-2v";
 
 const ideoOrder: IdeologiaBloque[] = ["izquierda", "centro", "derecha"];
 const ideoToColor = (id: IdeologiaBloque) => COLORS.ideologia[id] ?? COLORS.ideologia.centro;
@@ -904,4 +905,132 @@ export const pres2026MapaVariacionTendencia: ChartDef = {
       onMount,
     };
   }
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Pronóstico 2026 2ª vuelta — basado en simulación modelada con datos 2022
+// ─────────────────────────────────────────────────────────────────────────────
+
+const CEPEDA_COLOR = "#dc2626";
+const ABELARDO_COLOR = "#2563eb";
+
+export const pres2026_2vPronosticoComposicion: ChartDef = {
+  id: "pres-2026-2v-pronostico-composicion",
+  titulo: "Pronóstico 2V 2026 — composición nacional proyectada",
+  pregunta: "¿Cómo se reparten los votos proyectados a nivel nacional?",
+  fuenteTexto: "Simulación propia · datos Registraduría 2022 + 2026 1V",
+  datasets: ["pres-2026-1v", "pres-2022-1v", "pres-2022-2v", "pres-candidatos"],
+  height: 380,
+  ariaLabel: "Gráfico de dona con el pronóstico de votación nacional para la segunda vuelta presidencial 2026",
+  build({ "pres-2026-1v": e26, "pres-2022-1v": e22_1v, "pres-2022-2v": e22_2v, "pres-candidatos": cat }) {
+    if (!e26 || !e22_1v || !e22_2v || !cat) return { traces: [], layout: baseLayout() };
+    const sim = simular2026_2V(e26, e22_1v, e22_2v, cat);
+    const total = sim.nacional.cepeda + sim.nacional.abelardo;
+    const sharCep = (sim.nacional.cepeda / total) * 100;
+    const sharAbe = (sim.nacional.abelardo / total) * 100;
+    return {
+      traces: [{
+        type: "pie",
+        hole: 0.55,
+        labels: ["Iván Cepeda", "Abelardo de la Espriella"],
+        values: [sim.nacional.cepeda, sim.nacional.abelardo],
+        marker: { colors: [CEPEDA_COLOR, ABELARDO_COLOR] },
+        textinfo: "label+percent",
+        hovertemplate: "<b>%{label}</b><br>%{value:,.0f} votos (%{percent})<extra></extra>",
+      }],
+      layout: baseLayout({
+        showlegend: false,
+        margin: { l: 20, r: 20, t: 20, b: 20 },
+      }),
+      pregunta: `Ganador proyectado: ${sim.nacional.ganador === "cepeda" ? "Iván Cepeda" : "Abelardo de la Espriella"} · margen ${Math.abs(sim.nacional.margenPp).toFixed(2)} pp (${new Intl.NumberFormat("es-CO", { signDisplay: "always" }).format(sim.nacional.margenAbs)} votos)`,
+    };
+  },
+};
+
+export const pres2026_2vPronosticoMargenDepto: ChartDef = {
+  id: "pres-2026-2v-pronostico-margen-depto",
+  titulo: "Pronóstico 2V 2026 — margen por departamento (Cepeda − Abelardo)",
+  pregunta: "¿En qué departamentos se decide la elección?",
+  fuenteTexto: "Simulación propia",
+  datasets: ["pres-2026-1v", "pres-2022-1v", "pres-2022-2v", "pres-candidatos"],
+  height: 720,
+  ariaLabel: "Barras horizontales con el margen proyectado por departamento en la segunda vuelta 2026",
+  build({ "pres-2026-1v": e26, "pres-2022-1v": e22_1v, "pres-2022-2v": e22_2v, "pres-candidatos": cat }) {
+    if (!e26 || !e22_1v || !e22_2v || !cat) return { traces: [], layout: baseLayout() };
+    const sim = simular2026_2V(e26, e22_1v, e22_2v, cat);
+    const rows = [...sim.departamentos].sort((a, b) => a.margen - b.margen);
+    return {
+      traces: [{
+        type: "bar",
+        orientation: "h",
+        x: rows.map(r => r.margen),
+        y: rows.map(r => r.nombre),
+        marker: { color: rows.map(r => r.ganador === "cepeda" ? CEPEDA_COLOR : ABELARDO_COLOR) },
+        text: rows.map(r => new Intl.NumberFormat("es-CO", { signDisplay: "always" }).format(r.margen)),
+        textposition: "auto",
+        customdata: rows.map(r => [r.cepedaProj, r.abelardoProj]),
+        hovertemplate: "<b>%{y}</b><br>Cepeda: %{customdata[0]:,.0f}<br>Abelardo: %{customdata[1]:,.0f}<br>Margen: %{x:,.0f}<extra></extra>",
+      }],
+      layout: baseLayout({
+        xaxis: { title: "Margen proyectado (Cepeda − Abelardo)", tickformat: ",.0f", zeroline: true, zerolinecolor: COLORS.textMuted },
+        yaxis: { automargin: true, tickfont: { size: 10 } },
+        margin: { l: 140, r: 60, t: 16, b: 50 },
+      }),
+    };
+  },
+};
+
+export const pres2026_2vPronosticoMapaGanador: ChartDef = {
+  id: "pres-2026-2v-pronostico-mapa-ganador",
+  titulo: "Pronóstico 2V 2026 — ganador proyectado por departamento",
+  pregunta: "¿Cómo se ve el mapa en el balotaje proyectado?",
+  fuenteTexto: "Simulación propia · GeoJSON departamentos",
+  datasets: ["pres-2026-1v", "pres-2022-1v", "pres-2022-2v", "pres-candidatos"],
+  height: 600,
+  ariaLabel: "Mapa de Colombia con el ganador proyectado por departamento en la segunda vuelta 2026",
+  async build({ "pres-2026-1v": e26, "pres-2022-1v": e22_1v, "pres-2022-2v": e22_2v, "pres-candidatos": cat }) {
+    if (!e26 || !e22_1v || !e22_2v || !cat) return { traces: [], layout: baseLayout() };
+    const sim = simular2026_2V(e26, e22_1v, e22_2v, cat);
+    const geojson = await fetch("/geo/colombia-departamentos.geo.json").then(r => r.json()).catch(() => null);
+    if (!geojson || !geojson.features) return { traces: [], layout: baseLayout() };
+
+    const byCod = new Map(sim.departamentos.map(d => [d.cod, d]));
+    const locations: string[] = [];
+    const z: number[] = [];
+    const text: string[] = [];
+    const fmt = (n: number) => new Intl.NumberFormat("es-CO").format(n);
+    for (const feat of geojson.features) {
+      const cod = String(feat.properties.DPTO || feat.id);
+      const d = byCod.get(cod);
+      if (!d) continue;
+      locations.push(cod);
+      z.push(d.ganador === "cepeda" ? 0 : 1);
+      const winner = d.ganador === "cepeda" ? "Iván Cepeda" : "Abelardo de la Espriella";
+      text.push(
+        `<b>${d.nombre}</b><br>` +
+        `Ganador proyectado: <b>${winner}</b><br>` +
+        `Cepeda: ${fmt(d.cepedaProj)} · Abelardo: ${fmt(d.abelardoProj)}<br>` +
+        `Margen: ${new Intl.NumberFormat("es-CO", { signDisplay: "always" }).format(d.margen)}`
+      );
+    }
+    return {
+      traces: [{
+        type: "choroplethmapbox",
+        geojson,
+        locations, z, text,
+        featureidkey: "properties.DPTO",
+        colorscale: [[0, CEPEDA_COLOR], [0.4999, CEPEDA_COLOR], [0.5, ABELARDO_COLOR], [1, ABELARDO_COLOR]],
+        zmin: 0, zmax: 1, showscale: false,
+        hoverinfo: "text",
+        marker: { line: { width: 0.5, color: "white" } },
+      }],
+      layout: baseLayout({
+        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.0 }, zoom: 4.2 },
+        margin: { l: 0, r: 0, t: 0, b: 0 },
+        xaxis: { visible: false },
+        yaxis: { visible: false },
+      }),
+      footerHtml: `<div class="cand-legend"><span class="cand-leg-item"><span class="cand-leg-dot" style="background:${CEPEDA_COLOR}"></span><span class="cand-leg-name">Iván Cepeda</span></span><span class="cand-leg-item"><span class="cand-leg-dot" style="background:${ABELARDO_COLOR}"></span><span class="cand-leg-name">Abelardo de la Espriella</span></span></div>`,
+    };
+  },
 };

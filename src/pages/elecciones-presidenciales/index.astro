@@ -2,7 +2,7 @@
 // Redirección instantánea a la pestaña por defecto del observatorio electoral.
 // Astro estático no soporta redirects server-side en GitHub Pages, así que
 // usamos meta refresh + script de reemplazo + canonical hacia el destino real.
-const DEST = "/elecciones-presidenciales/2026/";
+const DEST = "/elecciones-presidenciales/pronostico/";
 const SITE = "https://fredericksalazar.github.io";
 const CANONICAL = SITE + DEST;
 ---
@@ -14,7 +14,7 @@ const CANONICAL = SITE + DEST;
     <meta name="robots" content="noindex, follow" />
     <link rel="canonical" href={CANONICAL} />
     <meta http-equiv="refresh" content={`0; url=${DEST}`} />
-    <script is:inline>window.location.replace("/elecciones-presidenciales/2026/");</script>
+    <script is:inline>window.location.replace("/elecciones-presidenciales/pronostico/");</script>
   </head>
   <body>
     <p>Redirigiendo a <a href={DEST}>el observatorio electoral</a>…</p>
