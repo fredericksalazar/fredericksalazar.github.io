@@ -958,7 +958,23 @@ export const pres2026_2vPronosticoMargenDepto: ChartDef = {
   build({ "pres-2026-1v": e26, "pres-2022-1v": e22_1v, "pres-2022-2v": e22_2v, "pres-candidatos": cat }) {
     if (!e26 || !e22_1v || !e22_2v || !cat) return { traces: [], layout: baseLayout() };
     const sim = simular2026_2V(e26, e22_1v, e22_2v, cat);
+    // Bar diverging: barras a la derecha (positivo) para Cepeda, a la izquierda
+    // (negativo) para Abelardo. Las etiquetas y los ticks del eje siempre se
+    // muestran en valor absoluto.
     const rows = [...sim.departamentos].sort((a, b) => a.margen - b.margen);
+    const maxAbs = Math.max(...rows.map(r => Math.abs(r.margen)));
+    const fmtCompactNum = (n: number) => {
+      const abs = Math.abs(n);
+      if (abs >= 1_000_000) return `${(abs / 1_000_000).toFixed(1)}M`;
+      if (abs >= 1_000) return `${(abs / 1_000).toFixed(0)}k`;
+      return String(abs);
+    };
+    // Generamos 5 ticks simétricos (negativos a la izquierda, positivos a la derecha)
+    // pero con labels en positivo.
+    const tickStep = Math.ceil(maxAbs / 4 / 50000) * 50000;
+    const tickvals: number[] = [];
+    for (let v = -tickStep * 4; v <= tickStep * 4; v += tickStep) tickvals.push(v);
+    const ticktext = tickvals.map(v => fmtCompactNum(v));
     return {
       traces: [{
         type: "bar",
@@ -966,13 +982,27 @@ export const pres2026_2vPronosticoMargenDepto: ChartDef = {
         x: rows.map(r => r.margen),
         y: rows.map(r => r.nombre),
         marker: { color: rows.map(r => r.ganador === "cepeda" ? CEPEDA_COLOR : ABELARDO_COLOR) },
-        text: rows.map(r => new Intl.NumberFormat("es-CO", { signDisplay: "always" }).format(r.margen)),
+        text: rows.map(r => new Intl.NumberFormat("es-CO").format(Math.abs(r.margen))),
         textposition: "auto",
-        customdata: rows.map(r => [r.cepedaProj, r.abelardoProj]),
-        hovertemplate: "<b>%{y}</b><br>Cepeda: %{customdata[0]:,.0f}<br>Abelardo: %{customdata[1]:,.0f}<br>Margen: %{x:,.0f}<extra></extra>",
+        customdata: rows.map(r => [
+          r.cepedaProj,
+          r.abelardoProj,
+          r.ganador === "cepeda" ? "Iván Cepeda" : "Abelardo de la Espriella",
+          Math.abs(r.margen),
+        ]),
+        hovertemplate: "<b>%{y}</b><br>Cepeda: %{customdata[0]:,.0f}<br>Abelardo: %{customdata[1]:,.0f}<br>Margen a favor de %{customdata[2]}: %{customdata[3]:,.0f}<extra></extra>",
       }],
       layout: baseLayout({
-        xaxis: { title: "Margen proyectado (Cepeda − Abelardo)", tickformat: ",.0f", zeroline: true, zerolinecolor: COLORS.textMuted },
+        xaxis: {
+          title: "← Abelardo · margen proyectado (votos) · Cepeda →",
+          tickmode: "array",
+          tickvals,
+          ticktext,
+          zeroline: true,
+          zerolinecolor: COLORS.textMuted,
+          zerolinewidth: 1.5,
+          range: [-maxAbs * 1.08, maxAbs * 1.08],
+        },
         yaxis: { automargin: true, tickfont: { size: 10 } },
         margin: { l: 140, r: 60, t: 16, b: 50 },
       }),
