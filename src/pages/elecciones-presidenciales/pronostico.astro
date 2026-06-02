@@ -10,7 +10,7 @@ import DashboardFooter from "../../components/observatorio/DashboardFooter.astro
 import {
   getPres2022_1v, getPres2022_2v, getPres2026_1v, getPresCandidatos,
 } from "../../lib/observatorio/data";
-import { simular2026_2V } from "../../lib/observatorio/simulacion-2026-2v";
+import { simular2026_2V, construirInputs, montecarlo2026_2V } from "../../lib/observatorio/simulacion-2026-2v";
 
 const fecha = "2026-06-01";
 
@@ -20,6 +20,7 @@ const e26    = getPres2026_1v();
 const cat    = getPresCandidatos();
 
 const sim = simular2026_2V(e26, e22_1v, e22_2v, cat);
+const mc = montecarlo2026_2V(construirInputs(e26, e22_1v, e22_2v, cat));
 
 const fmtMiles = (n: number) => new Intl.NumberFormat("es-CO").format(n);
 const fmtCompact = (n: number) => new Intl.NumberFormat("es-CO", { notation: "compact", maximumFractionDigits: 2 }).format(n);
@@ -29,6 +30,27 @@ const fmtPct = (n: number) => `${n.toFixed(2)}%`;
 const total2v = sim.nacional.cepeda + sim.nacional.abelardo;
 const shareCep = (sim.nacional.cepeda / total2v) * 100;
 const shareAbe = (sim.nacional.abelardo / total2v) * 100;
+
+const probGanador = sim.nacional.ganador === "cepeda" ? mc.probCepeda : mc.probAbelardo;
+
+// ── Datos comparativos 1V 2022 vs 1V 2026 (mismo espectro de bloques) ────────
+const blo = (e: ReturnType<typeof getPres2022_1v>, lista: { id: string; ideologia: string }[]) => {
+  const map = new Map(lista.map(c => [c.id, c.ideologia]));
+  const acc: { izquierda: number; centro: number; derecha: number } = { izquierda: 0, centro: 0, derecha: 0 };
+  for (const r of e.resultados) {
+    const ideo = (map.get(r.id) ?? "centro") as "izquierda" | "centro" | "derecha";
+    acc[ideo] += r.votos;
+  }
+  const tot = acc.izquierda + acc.centro + acc.derecha;
+  return { ...acc, tot };
+};
+const blo22 = blo(e22_1v, cat.candidatos["2022-1v"]);
+const blo26 = blo(e26, cat.candidatos["2026-1v"]);
+const comparativo1v = [
+  { bloque: "izquierda", v22: blo22.izquierda, s22: blo22.izquierda / blo22.tot, v26: blo26.izquierda, s26: blo26.izquierda / blo26.tot },
+  { bloque: "centro",    v22: blo22.centro,    s22: blo22.centro / blo22.tot,    v26: blo26.centro,    s26: blo26.centro / blo26.tot },
+  { bloque: "derecha",   v22: blo22.derecha,   s22: blo22.derecha / blo22.tot,   v26: blo26.derecha,   s26: blo26.derecha / blo26.tot },
+];
 
 // ── Construcción del prompt completo con todos los datos ─────────────────
 function compactDeptos(e: ReturnType<typeof getPres2022_1v>) {
@@ -101,79 +123,92 @@ A nivel **departamental**, cada elección tiene los votos por candidato y por bl
 ${JSON.stringify(promptDatos, null, 2)}
 \`\`\`
 
+# ADVERTENCIA METODOLÓGICA (CRÍTICA — SÉ MODERADO)
+
+La 2ª vuelta de 2022 fue un EVENTO ATÍPICO: Petro enfrentó a un outsider antisistema (Rodolfo Hernández) en un balotaje de polarización récord (IPI 0.999) que disparó la participación periférica. NO asumas que ese fenómeno se replica íntegramente en 2026, pero TAMPOCO lo aplastes: la izquierda colombiana sí tiene capacidad real de movilización en 2ª vuelta. Calibra con criterio político, no con prudencia ciega. Dos hechos clave de 2026:
+- Abelardo de la Espriella es una figura de EXTREMA DERECHA, polarizante y de alto rechazo; NO es un candidato tradicional. Por eso transfiere PEOR que el promedio: parte del voto de Paloma Valencia / Miguel Uribe y casi todo el centro lo rechazan. No le asignes una consolidación alta de la derecha.
+- El centro (Fajardo y afines) se inclina hacia la izquierda frente a un candidato de extrema derecha, como Fajardo→Petro en 2022.
+Un margen razonable en un balotaje colombiano se ubica típicamente entre 3 y 6 pp; márgenes >7 pp o <1 pp deben justificarse con cuidado.
+
 # MARCO ANALÍTICO QUE DEBES APLICAR
 
-## 1. Multiplicador de movilización de izquierda (calibrado con 2022)
+## 1. Multiplicador de movilización de izquierda CON REGRESIÓN A LA MEDIA
+
+Para cada departamento d, calcula la señal cruda y luego AMORTÍGUALA:
+
+\`\`\`
+mult_raw_d  =  Petro_2V_2022_d / Petro_1V_2022_d
+mult_apl_d  =  1 + (mult_raw_d − 1) · λ          con λ = 0.72  (amortiguación moderada)
+mult_apl_d  =  min(mult_apl_d, 1.32)             (techo realista)
+\`\`\`
+
+El factor λ=0.72 reconoce que parte del impulso de 2022 fue coyuntural (efecto Hernández), pero conserva la mayor parte de la capacidad estructural de movilización de la izquierda. El techo de 1.32 evita proyecciones explosivas en departamentos pequeños. Aplica mult_apl_d sobre el voto de Cepeda en 2026 1V.
+
+## 2. Transferencia de la derecha CON CONSOLIDACIÓN ANTI-IZQUIERDA
 
 Para cada departamento d:
 
 \`\`\`
-mult_izq_d  =  Petro_2V_2022_d  /  Petro_1V_2022_d
+base_der_22_d = votos_derecha_1V_2022_d  (Hernández + Fico + otros derecha)
+transf_raw_d  = Hernández_2V_2022_d / base_der_22_d
+transf_apl_d  = clamp(transf_raw_d, [0.82, 1.00])   (piso 0.82)
 \`\`\`
 
-Este multiplicador captura la capacidad histórica de la izquierda de movilizar abstencionistas y captar votos centristas entre la 1ª y la 2ª vuelta. Aplícalo sobre el voto de Cepeda en 2026 1V para proyectar su techo en 2V.
+El PISO de 0.82 (más bajo que en un balotaje normal) refleja que De la Espriella es una figura de extrema derecha de alto rechazo: parte del voto de Paloma Valencia, Miguel Uribe y el centro-derecha NO lo sigue (fuga a voto en blanco, abstención o cruce a Cepeda). Aplícala sobre la base de derecha 2026 (De la Espriella + Paloma Valencia + Daniel Palacios + Miguel Uribe + Camilo Romero).
 
-## 2. Tasa de transferencia de la derecha (calibrada con 2022)
+## 3. Distribución del centro — EQUILIBRADA
 
-Para cada departamento d:
-
-\`\`\`
-base_der_22_d  =  votos_derecha_1V_2022_d  (Hernández + Fico + otros derecha)
-transf_der_d   =  Hernández_2V_2022_d  /  base_der_22_d
-\`\`\`
-
-Captura el porcentaje del bloque de derecha de 1V que efectivamente se consolidó detrás del candidato único de derecha en 2V (con fugas hacia voto en blanco y abstención). Aplícalo sobre la **base de derecha consolidada de 2026 1V** (De la Espriella + Paloma Valencia + Daniel Palacios + Miguel Uribe + Camilo Romero) para proyectar el techo de De la Espriella en 2V.
-
-## 3. Distribución del centro
-
-El centro 2026 (Fajardo + Claudia López + Lizcano + Garvin + Murillo) no tiene candidato propio en 2V. En 2022, el centro (Fajardo) endosó mayoritariamente a Petro. Usa **60% a Cepeda / 40% a De la Espriella** como supuesto base, y reporta sensibilidad si cambia a 50/50 o 70/30.
+El centro 2026 (Fajardo + Claudia López + Lizcano + Garvin + Murillo) se reparte **57% Cepeda / 43% De la Espriella**. El centro colombiano (Fajardo) es anti-uribista/anti-extrema y frente a un candidato de extrema derecha se inclina hacia la izquierda, como Fajardo→Petro en 2022. No es un 50/50 mecánico.
 
 ## 4. Cierre nacional
 
 Suma por departamento:
 
 \`\`\`
-Cepeda_2V_proj_d     =  Cepeda_1V_26_d * mult_izq_d  +  Centro_26_d * 0.60
-Abelardo_2V_proj_d   =  base_derecha_26_d * transf_der_d  +  Centro_26_d * 0.40
+Cepeda_2V_d    =  Cepeda_1V_26_d · mult_apl_d   +  Centro_26_d · 0.57
+Abelardo_2V_d  =  base_der_26_d · transf_apl_d  +  Centro_26_d · 0.43
 \`\`\`
 
 Nacional = suma de los 33 departamentos.
+
+## 5. Probabilidad vía Monte Carlo (OBLIGATORIO)
+
+No entregues una predicción puntual sin cuantificar incertidumbre. Corre ≥2.000 simulaciones muestreando los 4 supuestos clave con distribuciones normales acotadas: λ ~ Normal(0.72, 0.12) en [0.45, 0.95]; techo del multiplicador ~ Normal(1.32, 0.06) en [1.18, 1.45]; centro→Cepeda ~ Normal(0.57, 0.06) en [0.42, 0.72]; escala de transferencia ~ Normal(1.00, 0.04) en [0.88, 1.10] con piso 0.82. La probabilidad de victoria de cada candidato = fracción de corridas que gana. Reporta el margen mediano y el rango P10–P90.
 
 # ENTREGABLES (formato obligatorio)
 
 ## A. Tabla de proyección departamental
 
-| Departamento | Cepeda 1V 2026 | Multiplicador izq | Cepeda 2V proj | Base derecha 2026 | Transf derecha | Abelardo 2V proj | Margen | Ganador |
+| Departamento | Cepeda 1V 2026 | Mult. aplicado | Cepeda 2V proj | Base derecha 2026 | Transf. aplicada | Abelardo 2V proj | Margen | Ganador |
 
-## B. Resultado nacional
+## B. Resultado nacional + probabilidad
 
 - Cepeda: X votos (Y%)
 - De la Espriella: X votos (Y%)
-- Margen: ±Z pp (±W votos)
-- **Probabilidad de victoria** de cada candidato (con intervalo de confianza basado en sensibilidad de supuestos).
+- Margen central: ±Z pp (±W votos)
+- Probabilidad de victoria de cada candidato (Monte Carlo) + rango P10–P90 del margen.
 
 ## C. Departamentos bisagra
 
-Los 5–8 departamentos donde el margen proyectado |Cepeda − Abelardo| es menor a 5 pp del total departamental: ahí se gana o se pierde la elección.
+Los 5–8 departamentos donde el margen proyectado es menor al 5% del voto local.
 
 ## D. Narrativa estratégica (máximo 400 palabras)
 
 - ¿Por qué gana el ganador? (factor estructural + factor coyuntural).
 - ¿Qué le falló al perdedor? (transferencia, geografía, perfil).
-- Las **3 jugadas concretas** que debe hacer el perdedor en las próximas 4 semanas para revertir el resultado.
+- Las **3 jugadas concretas** que debe hacer el perdedor para revertir el resultado.
 
 ## E. Análisis de sensibilidad
 
-Re-corre el modelo con:
-- Centro split 50/50 (en lugar de 60/40 a Cepeda).
-- Transferencia derecha tope = 0.95 (más fuga).
-- Movilización izquierda capeada en 1.30x (techo).
-
-Reporta cómo cambia el ganador en cada escenario.
+Re-corre el escenario central y muestra cómo cambia el ganador si:
+- El centro se reparte 50/50.
+- La transferencia de derecha sube a 1.00 en todos los departamentos.
+- El multiplicador de izquierda se capa en 1.15x (escenario conservador).
 
 # REGLAS
 
 - Cero opinión, cero juicios de valor. Sólo lo que los datos respaldan.
+- Sé MODERADO y prudente: un favorito no es un ganador seguro.
 - Si un dato no está en el JSON, dilo explícitamente y no inventes.
 - Todos los números deben ser auditables: muestra la fórmula.
 - Responde en español, con tablas Markdown.`;
@@ -232,22 +267,80 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
         <p class="kpi-card__sub">{fmtPct(shareAbe)} de los votos válidos proyectados</p>
       </article>
       <article class="kpi-card kpi-card--margen" style={`border-left-color: ${ganadorColor}`}>
-        <p class="kpi-card__label">Ganador proyectado</p>
+        <p class="kpi-card__label">Ganador proyectado (escenario central)</p>
         <p class="kpi-card__value" style={`color: ${ganadorColor}`}>{ganadorNac}</p>
         <p class="kpi-card__sub">Margen {Math.abs(sim.nacional.margenPp).toFixed(2)} pp ({fmtSigned(sim.nacional.margenAbs)} votos)</p>
       </article>
+      <article class="kpi-card kpi-card--prob" style={`border-left-color: ${ganadorColor}`}>
+        <p class="kpi-card__label">Probabilidad de victoria (Monte Carlo)</p>
+        <p class="kpi-card__value" style={`color: ${ganadorColor}`}>{(probGanador * 100).toFixed(1)}%</p>
+        <p class="kpi-card__sub">{ganadorNac} en {Math.round(probGanador * mc.runs).toLocaleString("es-CO")} de {mc.runs.toLocaleString("es-CO")} corridas</p>
+      </article>
     </section>
 
-    <!-- PANEL 1: METODOLOGÍA + VISUALIZACIONES -->
+    <!-- PANEL 1: METODOLOGÍA COMPLETA -->
     <IndicadorPanel
       numero="1"
-      eyebrow="Modelo cuantitativo"
+      eyebrow="Metodología"
       titulo="¿Cómo se llegó a este pronóstico?"
-      lead="El modelo aplica los multiplicadores reales de movilización (izquierda) y las tasas de transferencia (derecha) observadas entre la 1ª y la 2ª vuelta de 2022, a la base electoral de 2026 1V por departamento."
+      lead="El modelo no extrapola sumas estáticas: calibra el comportamiento real entre la 1ª y la 2ª vuelta de 2022 y lo aplica —de forma moderada— a la base electoral de 2026 por departamento. Aquí está cada paso del razonamiento."
     >
-      <div slot="visual" class="charts-row-2">
-        <Chart id="pres-2026-2v-pronostico-composicion" embedded={true} />
-        <Chart id="pres-2026-2v-pronostico-mapa-ganador" embedded={true} />
+      <div slot="visual" class="metodologia">
+        <div class="metodo-pasos">
+          <article class="metodo-card">
+            <span class="metodo-num">A</span>
+            <h4>Análisis de 2022 (1ª y 2ª vuelta)</h4>
+            <p>En la 1V 2022 la izquierda (Petro) partió de 8.53M. En la 2V llegó a 11.28M: un crecimiento del <strong>+32%</strong> que <strong>no</strong> fue uniforme, sino concentrado en la periferia (Caribe y Pacífico) donde la abstención se politizó. Por su parte, la derecha sumó ~11M en 1V pero sólo consolidó 10.58M detrás de Hernández en 2V: hubo <strong>fuga</strong> hacia el voto en blanco y la abstención. Esos dos comportamientos —multiplicador de movilización de izquierda y tasa de transferencia de derecha— se miden departamento por departamento.</p>
+          </article>
+          <article class="metodo-card">
+            <span class="metodo-num">B</span>
+            <h4>Comparativo 1V 2022 vs 1V 2026 (mismo espectro)</h4>
+            <p>El punto de partida de 2026 es estructuralmente parecido al de 2022: un país tripartito con una izquierda fuerte, una derecha mayoritaria pero fragmentada y un centro pequeño. La diferencia clave: en 2026 la izquierda <strong>arranca más arriba</strong> (Cepeda 2º con una base mucho mayor que la de Petro en 2022 relativo al líder), lo que cambia el punto de aplicación de los multiplicadores.</p>
+            <div class="comparativo-mini">
+              <table class="tabla-detalle">
+                <thead>
+                  <tr><th>Bloque</th><th class="num">1V 2022</th><th class="num">1V 2026</th><th class="num">Δ pp</th></tr>
+                </thead>
+                <tbody>
+                  {comparativo1v.map(c => (
+                    <tr>
+                      <td><span class={`chip chip--${c.bloque}`}>{c.bloque}</span></td>
+                      <td class="num">{fmtPct(c.s22 * 100)}</td>
+                      <td class="num">{fmtPct(c.s26 * 100)}</td>
+                      <td class={`num ${c.s26 - c.s22 >= 0 ? "is-up" : "is-down"}`}>{(c.s26 - c.s22 >= 0 ? "+" : "")}{((c.s26 - c.s22) * 100).toFixed(2)} pp</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </article>
+          <article class="metodo-card">
+            <span class="metodo-num">C</span>
+            <h4>Moderación (lo que evita el sobre-optimismo)</h4>
+            <p>El balotaje de 2022 fue atípico (Petro vs un outsider antisistema, polarización récord). El modelo modera ese efecto pero calibra cada supuesto con criterio político, no con prudencia ciega:</p>
+            <ul>
+              <li><strong>Amortigua</strong> el multiplicador de izquierda con regresión a la media (λ=0.72) y techo <strong>1.32x</strong> — promedio aplicado: <strong>{sim.totales.multIzqPromedio.toFixed(3)}x</strong>. No lo aplasta: la izquierda sí moviliza en 2ª vuelta.</li>
+              <li>Modela la transferencia de la derecha con <strong>piso 0.82</strong>: De la Espriella es una figura polarizante de alto rechazo y transfiere <em>peor</em> que un candidato tradicional — promedio aplicado: <strong>{sim.totales.transfDerPromedio.toFixed(3)}</strong>.</li>
+              <li>Reparte el centro <strong>57/43</strong> hacia Cepeda: el centro (Fajardo) rechaza a un candidato de extrema derecha, como Fajardo→Petro en 2022.</li>
+            </ul>
+          </article>
+          <article class="metodo-card">
+            <span class="metodo-num">D</span>
+            <h4>Factores técnicos considerados</h4>
+            <ul>
+              <li>Voto por candidato y por bloque ideológico en los 33 departamentos × 3 elecciones.</li>
+              <li>Multiplicador de movilización periférica (Caribe/Pacífico vs interior).</li>
+              <li>Tasa de transferencia y fuga del bloque de derecha.</li>
+              <li>Reparto del centro y candidatos sin continuidad en 2V.</li>
+              <li>Incertidumbre de los 4 supuestos vía Monte Carlo (4.000 corridas).</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="charts-row-2">
+          <Chart id="pres-2026-2v-pronostico-composicion" embedded={true} />
+          <Chart id="pres-2026-2v-pronostico-mapa-ganador" embedded={true} />
+        </div>
       </div>
     </IndicadorPanel>
 
@@ -260,9 +353,32 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
       <Chart slot="visual" id="pres-2026-2v-pronostico-margen-depto" embedded={true} />
     </IndicadorPanel>
 
-    <!-- PANEL 3: BISAGRA -->
+    <!-- PANEL: PROBABILIDAD MONTE CARLO -->
     <IndicadorPanel
       numero="3"
+      eyebrow="Probabilidad"
+      titulo="¿Qué tan probable es que se cumpla la predicción?"
+      lead="Una predicción puntual no basta. Se muestrean los 4 supuestos clave (amortiguación, techo, reparto del centro y consolidación de la derecha) con distribuciones acotadas y se corre el modelo 4.000 veces. La probabilidad de victoria es la fracción de corridas que gana cada candidato."
+    >
+      <div slot="visual" class="prob-grid">
+        <div class="prob-side">
+          <div class="prob-big" style={`color: ${ganadorColor}`}>{(probGanador * 100).toFixed(1)}%</div>
+          <p class="prob-cap">probabilidad de victoria de <strong>{ganadorNac}</strong></p>
+          <ul class="prob-list">
+            <li>Margen mediano: <strong>{mc.margenPpP50.toFixed(2)} pp</strong></li>
+            <li>Rango P10–P90: <strong>{mc.margenPpP10.toFixed(1)} a {mc.margenPpP90.toFixed(1)} pp</strong></li>
+            <li>Prob. Cepeda: <strong>{(mc.probCepeda * 100).toFixed(1)}%</strong> · Prob. Abelardo: <strong>{(mc.probAbelardo * 100).toFixed(1)}%</strong></li>
+            <li>Corridas: <strong>{mc.runs.toLocaleString("es-CO")}</strong></li>
+          </ul>
+          <p class="prob-note">Interpretación: el favorito {Math.abs(mc.margenPpP10) < 1 || (mc.margenPpP10 < 0 && mc.margenPpP90 > 0) ? "no tiene la elección asegurada — el rango de incertidumbre cruza el empate" : "mantiene la ventaja en la gran mayoría de escenarios, aunque no es una certeza"}.</p>
+        </div>
+        <Chart id="pres-2026-2v-pronostico-montecarlo" embedded={true} />
+      </div>
+    </IndicadorPanel>
+
+    <!-- PANEL 4: BISAGRA -->
+    <IndicadorPanel
+      numero="4"
       eyebrow="Departamentos bisagra"
       titulo="Los 8 departamentos que pueden cambiar el resultado"
       lead="Aquí el margen proyectado es menor al 5% del voto local — pequeños movimientos de movilización los voltean. La campaña que gane se decide por la operación electoral en estas plazas."
@@ -295,9 +411,9 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
       </div>
     </IndicadorPanel>
 
-    <!-- PANEL 4: PROYECCIÓN DETALLADA -->
+    <!-- PANEL 5: PROYECCIÓN DETALLADA -->
     <IndicadorPanel
-      numero="4"
+      numero="5"
       eyebrow="Proyección departamental completa"
       titulo="Tabla maestra — los 33 departamentos"
       lead="Multiplicador izquierda y tasa de transferencia derecha calculados con 2022. Proyección de votos en 2V para cada candidato y margen resultante."
@@ -339,9 +455,9 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
       </div>
     </IndicadorPanel>
 
-    <!-- PANEL 5: PROMPT COMPLETO -->
+    <!-- PANEL 6: PROMPT COMPLETO -->
     <IndicadorPanel
-      numero="5"
+      numero="6"
       eyebrow="Prompt para agente IA"
       titulo="Ficha completa del agente analista político"
       lead="El prompt completo, con todos los datos oficiales embebidos. Copiar y pegar en cualquier modelo (Claude, GPT-4, Gemini) reproduce esta predicción de forma independiente."
@@ -358,9 +474,9 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
       </div>
     </IndicadorPanel>
 
-    <!-- PANEL 6: VEREDICTO + ESTRATEGIA -->
+    <!-- PANEL 7: VEREDICTO + ESTRATEGIA -->
     <IndicadorPanel
-      numero="6"
+      numero="7"
       eyebrow="Veredicto y ruta crítica"
       titulo="Predicción final y jugadas estratégicas"
       lead="La lectura política del modelo: por qué gana quien gana, dónde se decide y qué tendría que hacer el perdedor para revertirlo."
@@ -369,22 +485,22 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
         <div class="veredicto-card" style={`border-left-color: ${ganadorColor}`}>
           <h4 class="veredicto-card__title">Veredicto del modelo</h4>
           <p class="veredicto-card__big" style={`color: ${ganadorColor}`}>{ganadorNac}</p>
-          <p>Bajo los supuestos centrales (centro 60/40 a Cepeda, transferencia derecha capeada en 1.05, multiplicador izquierda real por depto), el modelo proyecta una victoria de <strong>{ganadorNac}</strong> con un margen de <strong>{Math.abs(sim.nacional.margenPp).toFixed(2)} pp</strong> ({fmtSigned(sim.nacional.margenAbs)} votos).</p>
+          <p>Bajo los supuestos centrales <em>realistas</em> (multiplicador de izquierda amortiguado λ=0.72 con techo 1.32x, transferencia de derecha con piso 0.82 por el alto rechazo de De la Espriella, centro 57/43 hacia Cepeda), el modelo proyecta una victoria de <strong>{ganadorNac}</strong> con un margen de <strong>{Math.abs(sim.nacional.margenPp).toFixed(2)} pp</strong> ({fmtSigned(sim.nacional.margenAbs)} votos). La simulación Monte Carlo (4.000 corridas) le asigna una <strong>probabilidad de {(probGanador * 100).toFixed(1)}%</strong>, con un margen que en el 80% central de los escenarios va de {mc.margenPpP10.toFixed(1)} a {mc.margenPpP90.toFixed(1)} pp. No es una certeza: es un favoritismo cuantificado.</p>
         </div>
 
         <div class="grid-2col">
           <div class="est-card izq">
             <h5>¿Por qué gana Cepeda según el modelo?</h5>
             <ol>
-              <li><strong>Multiplicador histórico:</strong> el promedio del multiplicador de izquierda 2022 (Petro 2V / Petro 1V) por departamento es {(sim.departamentos.reduce((a, d) => a + d.multIzq, 0) / sim.departamentos.length).toFixed(2)}x. Aplicado a Cepeda 1V 2026 amplifica masivamente la base.</li>
+              <li><strong>Multiplicador amortiguado:</strong> el multiplicador de izquierda aplicado (ya moderado) promedia {sim.totales.multIzqPromedio.toFixed(3)}x. Aun amortiguado, amplía la base de Cepeda más de lo que la derecha logra consolidar.</li>
               <li><strong>Costa Caribe y Pacífico:</strong> los departamentos donde Cepeda gana con más holgura son {top5Cepeda.map(d => d.nombre).join(", ")} — ahí concentra el grueso del margen.</li>
-              <li><strong>Centro a su favor:</strong> el supuesto 60/40 sobre los ~{fmtCompact(sim.departamentos.reduce((a, d) => a + d.baseCentro26, 0))} votos del centro 2026 le aporta una ventaja adicional.</li>
+              <li><strong>Centro a su favor:</strong> el reparto 57/43 sobre los ~{fmtCompact(sim.totales.baseCentro26)} votos del centro 2026 refleja el rechazo del centro a la extrema derecha y suma a la ventaja.</li>
             </ol>
           </div>
           <div class="est-card der">
             <h5>¿Por qué falla De la Espriella?</h5>
             <ol>
-              <li><strong>Desgaste de transferencia:</strong> en 2022 la derecha consolidó sólo ~93% de su voto 1V en 2V. Aplicado a su base 2026 (~{fmtCompact(sim.departamentos.reduce((a, d) => a + d.baseDer26, 0))}), la fuga supera los {fmtCompact(Math.round(sim.departamentos.reduce((a, d) => a + d.baseDer26 * (1 - d.transfDer), 0)))} votos.</li>
+              <li><strong>Desgaste de transferencia:</strong> aun con piso de consolidación 0.90, la transferencia promedio aplicada es {sim.totales.transfDerPromedio.toFixed(3)}. Sobre su base 2026 (~{fmtCompact(sim.totales.baseDer26)}), la fuga ronda los {fmtCompact(Math.round(sim.departamentos.reduce((a, d) => a + d.baseDer26 * (1 - d.transfDer), 0)))} votos.</li>
               <li><strong>Plazas fuertes pero acotadas:</strong> gana con holgura en {top5Abelardo.map(d => d.nombre).join(", ")}, pero su techo en la periferia es estructuralmente bajo.</li>
               <li><strong>Centro no neutraliza:</strong> incluso con 40% del centro, no compensa el multiplicador de izquierda en los departamentos populosos.</li>
             </ol>
@@ -396,7 +512,7 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
             <h5>🔴 Ruta al triunfo · Cepeda</h5>
             <ol>
               <li>Operación electoral extrema en bisagras: {bisagra.slice(0, 4).map(d => d.nombre).join(", ")}.</li>
-              <li>Endoso explícito y activo del centro (Fajardo, Claudia López) — proteger el supuesto 60/40.</li>
+              <li>Endoso explícito y activo del centro (Fajardo, Claudia López) — inclinar el reparto del centro a su favor.</li>
               <li>Movilización porta-a-puerta en Costa Caribe para superar la abstención histórica.</li>
             </ol>
           </div>
@@ -413,9 +529,9 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
         <div class="lectura-estrategica">
           <h4>Sensibilidad — ¿qué cambia si los supuestos se mueven?</h4>
           <ul>
-            <li>Si el <strong>centro se reparte 50/50</strong> en lugar de 60/40, el margen de Cepeda se reduce en aproximadamente {Math.round(sim.departamentos.reduce((a, d) => a + d.baseCentro26 * 0.10, 0) / 1000)}k votos. Con un margen actual de {fmtSigned(sim.nacional.margenAbs)} votos, el resultado {Math.abs(sim.nacional.margenAbs) < sim.departamentos.reduce((a, d) => a + d.baseCentro26 * 0.10, 0) ? "se voltea" : "se mantiene"}.</li>
-            <li>Si la <strong>transferencia de derecha</strong> alcanza el 100% (sin fuga), De la Espriella suma ~{fmtCompact(Math.round(sim.departamentos.reduce((a, d) => a + d.baseDer26 * (1 - d.transfDer), 0)))} votos adicionales.</li>
-            <li>Si el <strong>multiplicador de izquierda se capa</strong> en 1.30x (en lugar del real por depto), Cepeda pierde alrededor de {fmtCompact(Math.round(sim.departamentos.reduce((a, d) => a + Math.max(0, (d.multIzq - 1.30)) * d.cepeda1v26, 0)))} votos.</li>
+            <li>Si el <strong>centro se reparte 50/50</strong> en lugar de 57/43, el margen de Cepeda se reduce en aproximadamente {Math.round(sim.totales.baseCentro26 * 0.14 / 1000)}k votos. Con un margen actual de {fmtSigned(sim.nacional.margenAbs)} votos, el resultado {Math.abs(sim.nacional.margenAbs) < sim.totales.baseCentro26 * 0.14 ? "se voltea" : "se mantiene"}.</li>
+            <li>Si la <strong>transferencia de derecha</strong> alcanza el 100% (sin fuga), De la Espriella suma ~{fmtCompact(Math.round(sim.departamentos.reduce((a, d) => a + d.baseDer26 * (1 - d.transfDer), 0)))} votos adicionales — el escenario más favorable para la derecha.</li>
+            <li>El <strong>rango Monte Carlo P10–P90</strong> del margen ({mc.margenPpP10.toFixed(1)} a {mc.margenPpP90.toFixed(1)} pp) resume toda la incertidumbre conjunta: {mc.margenPpP10 < 0 ? "incluye escenarios donde el resultado se invierte" : "incluso el escenario pesimista mantiene al favorito arriba"}.</li>
           </ul>
         </div>
       </div>
@@ -491,10 +607,11 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
 
   .forecast-kpis {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
     margin: 0 0 2rem;
   }
+  @media (max-width: 1100px) { .forecast-kpis { grid-template-columns: repeat(2, 1fr); } }
   .kpi-card {
     background: #fff;
     border: 1px solid #e5e7eb;
@@ -505,6 +622,29 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
   .kpi-card--cepeda { border-left-color: #dc2626; }
   .kpi-card--abelardo { border-left-color: #2563eb; }
   .kpi-card--margen { border-left-color: #10b981; }
+  .kpi-card--prob { border-left-color: #10b981; }
+
+  /* Metodología (card 1) */
+  .metodologia { display: grid; gap: 1.5rem; }
+  .metodo-pasos { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 900px) { .metodo-pasos { grid-template-columns: 1fr; } }
+  .metodo-card { position: relative; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.1rem 1.25rem 1.1rem 3rem; }
+  .metodo-num { position: absolute; left: 1rem; top: 1.1rem; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: #2563eb; color: #fff; font-weight: 700; font-size: 0.8rem; display: inline-flex; align-items: center; justify-content: center; }
+  .metodo-card h4 { margin: 0 0 0.5rem; font-size: 0.98rem; }
+  .metodo-card p { margin: 0 0 0.5rem; font-size: 0.86rem; line-height: 1.55; color: #424a53; }
+  .metodo-card ul { margin: 0.3rem 0 0; padding-left: 1.1rem; font-size: 0.84rem; line-height: 1.5; color: #424a53; display: grid; gap: 0.25rem; }
+  .comparativo-mini { margin-top: 0.75rem; }
+  .comparativo-mini .tabla-detalle { font-size: 0.78rem; }
+
+  /* Probabilidad / Monte Carlo */
+  .prob-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 1.25rem; align-items: center; }
+  @media (max-width: 900px) { .prob-grid { grid-template-columns: 1fr; } }
+  .prob-side { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.25rem 1.4rem; }
+  .prob-big { font-size: 3rem; font-weight: 800; line-height: 1; letter-spacing: -0.03em; }
+  .prob-cap { margin: 0.4rem 0 0.9rem; font-size: 0.9rem; color: #424a53; }
+  .prob-list { list-style: none; margin: 0 0 0.9rem; padding: 0; display: grid; gap: 0.35rem; font-size: 0.84rem; color: #424a53; }
+  .prob-list strong { color: #1f2328; }
+  .prob-note { margin: 0; font-size: 0.82rem; color: #636c76; font-style: italic; border-top: 1px dashed #e5e7eb; padding-top: 0.75rem; }
   .kpi-card__label { font-size: 0.72rem; color: #636c76; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 0.45rem; font-weight: 600; }
   .kpi-card__value { font-size: 1.6rem; font-weight: 800; margin: 0; color: #1f2328; line-height: 1.1; letter-spacing: -0.02em; }
   .kpi-card__sub { font-size: 0.78rem; color: #636c76; margin: 0.35rem 0 0; line-height: 1.4; }

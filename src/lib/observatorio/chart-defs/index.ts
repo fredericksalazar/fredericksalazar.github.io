@@ -64,6 +64,7 @@ import {
   pres2026_2vPronosticoComposicion,
   pres2026_2vPronosticoMargenDepto,
   pres2026_2vPronosticoMapaGanador,
+  pres2026_2vPronosticoMontecarlo,
 } from "./elecciones-presidenciales";
 import type { ChartDef } from "./types";
 
@@ -121,6 +122,7 @@ export const CHART_DEFS = {
   [pres2026_2vPronosticoComposicion.id]: pres2026_2vPronosticoComposicion,
   [pres2026_2vPronosticoMargenDepto.id]: pres2026_2vPronosticoMargenDepto,
   [pres2026_2vPronosticoMapaGanador.id]: pres2026_2vPronosticoMapaGanador,
+  [pres2026_2vPronosticoMontecarlo.id]: pres2026_2vPronosticoMontecarlo,
 } as const satisfies Record<string, ChartDef>;
 
 export type ChartId = Extract<keyof typeof CHART_DEFS, string>;

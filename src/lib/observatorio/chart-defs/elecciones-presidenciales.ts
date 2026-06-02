@@ -2,7 +2,7 @@ import type { ChartDef } from "./types";
 import { COLORS, baseLayout } from "../charts";
 import type { IdeologiaBloque, PresEleccionData, PresCandidatosData } from "../types";
 import { joinCandidatosIdeologia } from "../derivations-elecciones";
-import { simular2026_2V } from "../simulacion-2026-2v";
+import { simular2026_2V, construirInputs, montecarlo2026_2V } from "../simulacion-2026-2v";
 
 const ideoOrder: IdeologiaBloque[] = ["izquierda", "centro", "derecha"];
 const ideoToColor = (id: IdeologiaBloque) => COLORS.ideologia[id] ?? COLORS.ideologia.centro;
@@ -1061,6 +1061,57 @@ export const pres2026_2vPronosticoMapaGanador: ChartDef = {
         yaxis: { visible: false },
       }),
       footerHtml: `<div class="cand-legend"><span class="cand-leg-item"><span class="cand-leg-dot" style="background:${CEPEDA_COLOR}"></span><span class="cand-leg-name">Iván Cepeda</span></span><span class="cand-leg-item"><span class="cand-leg-dot" style="background:${ABELARDO_COLOR}"></span><span class="cand-leg-name">Abelardo de la Espriella</span></span></div>`,
+    };
+  },
+};
+
+export const pres2026_2vPronosticoMontecarlo: ChartDef = {
+  id: "pres-2026-2v-pronostico-montecarlo",
+  titulo: "Distribución del margen (Monte Carlo, 4.000 corridas)",
+  pregunta: "¿Qué tan probable es la victoria proyectada?",
+  fuenteTexto: "Simulación propia · Monte Carlo sobre incertidumbre de supuestos",
+  datasets: ["pres-2026-1v", "pres-2022-1v", "pres-2022-2v", "pres-candidatos"],
+  height: 380,
+  ariaLabel: "Histograma de la distribución del margen proyectado en puntos porcentuales tras 4000 corridas Monte Carlo",
+  build({ "pres-2026-1v": e26, "pres-2022-1v": e22_1v, "pres-2022-2v": e22_2v, "pres-candidatos": cat }) {
+    if (!e26 || !e22_1v || !e22_2v || !cat) return { traces: [], layout: baseLayout() };
+    const inputs = construirInputs(e26, e22_1v, e22_2v, cat);
+    const mc = montecarlo2026_2V(inputs);
+
+    // Separamos las muestras en las que gana cada candidato para colorear el histograma.
+    const cepedaVals = mc.muestrasPp.filter(v => v >= 0);
+    const abelardoVals = mc.muestrasPp.filter(v => v < 0);
+
+    return {
+      traces: [
+        {
+          type: "histogram",
+          x: abelardoVals,
+          name: "Gana Abelardo",
+          marker: { color: ABELARDO_COLOR },
+          xbins: { size: 0.5 },
+          opacity: 0.85,
+          hovertemplate: "Margen %{x:.1f} pp<br>%{y} corridas<extra></extra>",
+        },
+        {
+          type: "histogram",
+          x: cepedaVals,
+          name: "Gana Cepeda",
+          marker: { color: CEPEDA_COLOR },
+          xbins: { size: 0.5 },
+          opacity: 0.85,
+          hovertemplate: "Margen +%{x:.1f} pp<br>%{y} corridas<extra></extra>",
+        },
+      ],
+      layout: baseLayout({
+        barmode: "overlay",
+        showlegend: true,
+        legend: { orientation: "h", y: -0.18 },
+        xaxis: { title: "Margen Cepeda − Abelardo (pp)", zeroline: true, zerolinecolor: COLORS.textMuted, zerolinewidth: 2 },
+        yaxis: { title: "Corridas" },
+        margin: { l: 60, r: 20, t: 20, b: 60 },
+      }),
+      pregunta: `Probabilidad de victoria de Cepeda: ${(mc.probCepeda * 100).toFixed(1)}% · margen mediano ${mc.margenPpP50.toFixed(2)} pp (rango P10–P90: ${mc.margenPpP10.toFixed(1)} a ${mc.margenPpP90.toFixed(1)} pp)`,
     };
   },
 };
