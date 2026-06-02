@@ -376,6 +376,369 @@ export const pres2022_2vMapaDeptoGanador: ChartDef = {
   },
 };
 
+// ─── 2022 2v: análisis 1V→2V ────────────────────────────────────────────────
+
+export const pres2022_2vMovimientoNacional: ChartDef = {
+  id: "pres-2022-2v-movimiento-nacional",
+  titulo: "Cómo se movió el electorado entre 1ª y 2ª vuelta",
+  pregunta: "¿Qué cambió a nivel nacional entre las dos vueltas?",
+  fuenteTexto: "Registraduría Nacional del Estado Civil",
+  datasets: ["pres-2022-2v", "pres-2022-1v"],
+  height: 480,
+  ariaLabel: "Barras agrupadas comparando censo, votos totales, válidos y abstención entre 1ª y 2ª vuelta 2022",
+  build({ "pres-2022-2v": e2, "pres-2022-1v": e1 }) {
+    if (!e1 || !e2) return { traces: [], layout: baseLayout() };
+    const n1 = e1.agregados.nacional;
+    const n2 = e2.agregados.nacional;
+    const cats = ["Votos totales", "Válidos", "Nulos"];
+    const y1 = [n1.total_votos, n1.validos, n1.nulos];
+    const y2 = [n2.total_votos, n2.validos, n2.nulos];
+    const fmt = (n: number) => new Intl.NumberFormat("es-CO", { notation: "compact", maximumFractionDigits: 2 }).format(n);
+    return {
+      traces: [
+        {
+          type: "bar", name: "1ª vuelta", x: cats, y: y1,
+          marker: { color: COLORS.border },
+          text: y1.map(fmt), textposition: "outside",
+          hovertemplate: "<b>%{x}</b><br>1ª vuelta: %{y:,.0f}<extra></extra>",
+        },
+        {
+          type: "bar", name: "2ª vuelta", x: cats, y: y2,
+          marker: { color: COLORS.brand },
+          text: y2.map(fmt), textposition: "outside",
+          hovertemplate: "<b>%{x}</b><br>2ª vuelta: %{y:,.0f}<extra></extra>",
+        },
+      ],
+      layout: baseLayout({
+        barmode: "group",
+        showlegend: true,
+        legend: { orientation: "h", y: -0.15 },
+        xaxis: { type: "category" },
+        yaxis: { type: "linear", tickformat: ".2s", automargin: true },
+        margin: { l: 60, r: 20, t: 60, b: 60 },
+      }),
+      pregunta: `Participación: ${(n1.participacion*100).toFixed(1)}% → ${(n2.participacion*100).toFixed(1)}% · Abstención: ${(n1.abstencion*100).toFixed(1)}% → ${(n2.abstencion*100).toFixed(1)}% · Δ votos totales: ${fmt(n2.total_votos - n1.total_votos)}`,
+    };
+  },
+};
+
+export const pres2022_2vDeltaValidosDepto: ChartDef = {
+  id: "pres-2022-2v-delta-validos-depto",
+  titulo: "Δ Votos válidos por departamento (2V − 1V)",
+  pregunta: "¿Dónde se activó más electorado entre vueltas?",
+  fuenteTexto: "Registraduría Nacional del Estado Civil",
+  datasets: ["pres-2022-2v", "pres-2022-1v"],
+  height: 720,
+  ariaLabel: "Barras horizontales con la variación de votos válidos por departamento entre 1ª y 2ª vuelta 2022",
+  build({ "pres-2022-2v": e2, "pres-2022-1v": e1 }) {
+    if (!e1 || !e2) return { traces: [], layout: baseLayout() };
+    const m1 = new Map(e1.agregados.departamentos.map(d => [d.cod_depto, d]));
+    const rows = e2.agregados.departamentos.map(d2 => {
+      const d1 = m1.get(d2.cod_depto);
+      const delta = d2.total_validos - (d1?.total_validos ?? 0);
+      return { nombre: d2.nombre_depto, delta };
+    }).sort((a, b) => a.delta - b.delta);
+    return {
+      traces: [{
+        type: "bar", orientation: "h",
+        x: rows.map(r => r.delta),
+        y: rows.map(r => r.nombre),
+        marker: { color: rows.map(r => r.delta >= 0 ? COLORS.brand : COLORS.textMuted) },
+        text: rows.map(r => new Intl.NumberFormat("es-CO", { signDisplay: "always" }).format(r.delta)),
+        textposition: "auto",
+        hovertemplate: "<b>%{y}</b><br>Δ válidos: %{x:,.0f}<extra></extra>",
+      }],
+      layout: baseLayout({
+        xaxis: { title: "Δ votos válidos (2V − 1V)", tickformat: ",.0f", zeroline: true, zerolinecolor: COLORS.textMuted },
+        yaxis: { automargin: true, tickfont: { size: 10 } },
+        margin: { l: 140, r: 60, t: 16, b: 50 },
+      }),
+    };
+  },
+};
+
+export const pres2022_2vDeltaPetroDepto: ChartDef = {
+  id: "pres-2022-2v-delta-petro-depto",
+  titulo: "Δ Votos Petro por departamento (2V − 1V)",
+  pregunta: "¿Qué departamentos le pusieron los votos adicionales a Petro?",
+  fuenteTexto: "Registraduría Nacional del Estado Civil",
+  datasets: ["pres-2022-2v", "pres-2022-1v"],
+  height: 720,
+  ariaLabel: "Barras horizontales con la variación de votos por Petro por departamento entre 1ª y 2ª vuelta 2022",
+  build({ "pres-2022-2v": e2, "pres-2022-1v": e1 }) {
+    if (!e1 || !e2) return { traces: [], layout: baseLayout() };
+    const m1 = new Map(e1.agregados.departamentos.map(d => [d.cod_depto, d]));
+    const rows = e2.agregados.departamentos.map(d2 => {
+      const d1 = m1.get(d2.cod_depto);
+      const p2 = d2.votos_por_candidato["gustavo_petro"] ?? 0;
+      const p1 = d1?.votos_por_candidato["gustavo_petro"] ?? 0;
+      const delta = p2 - p1;
+      const base = p1 || 1;
+      const pct = ((p2 - p1) / base) * 100;
+      return { nombre: d2.nombre_depto, delta, pct, p1, p2 };
+    }).sort((a, b) => a.delta - b.delta);
+
+    const totalDelta = rows.reduce((acc, r) => acc + r.delta, 0);
+
+    return {
+      traces: [{
+        type: "bar", orientation: "h",
+        x: rows.map(r => r.delta),
+        y: rows.map(r => r.nombre),
+        marker: { color: rows.map(r => r.delta >= 0 ? "#dc2626" : "#94a3b8") },
+        text: rows.map(r => new Intl.NumberFormat("es-CO", { signDisplay: "always" }).format(r.delta)),
+        textposition: "auto",
+        customdata: rows.map(r => [r.p1, r.p2, r.pct]),
+        hovertemplate: "<b>%{y}</b><br>1V: %{customdata[0]:,.0f}<br>2V: %{customdata[1]:,.0f}<br>Δ: %{x:,.0f} (%{customdata[2]:.1f}%)<extra></extra>",
+      }],
+      layout: baseLayout({
+        xaxis: { title: "Δ votos Petro (2V − 1V)", tickformat: ",.0f", zeroline: true, zerolinecolor: COLORS.textMuted },
+        yaxis: { automargin: true, tickfont: { size: 10 } },
+        margin: { l: 140, r: 60, t: 16, b: 50 },
+      }),
+      pregunta: `Petro sumó ${new Intl.NumberFormat("es-CO", { signDisplay: "always" }).format(totalDelta)} votos entre las dos vueltas. Los departamentos en rojo son los que aportaron ese crecimiento.`,
+    };
+  },
+};
+
+export const pres2022_2vConsolidacionAntiPetro: ChartDef = {
+  id: "pres-2022-2v-consolidacion-antipetro",
+  titulo: "Consolidación del voto anti-Petro por departamento",
+  pregunta: "¿Heredó Hernández el voto de derecha y centro de la 1ª vuelta?",
+  fuenteTexto: "Cálculo propio sobre datos de Registraduría",
+  datasets: ["pres-2022-2v", "pres-2022-1v"],
+  height: 720,
+  ariaLabel: "Comparación por departamento entre voto de derecha y centro en 1V y voto por Hernández en 2V",
+  build({ "pres-2022-2v": e2, "pres-2022-1v": e1 }) {
+    if (!e1 || !e2) return { traces: [], layout: baseLayout() };
+    const m2 = new Map(e2.agregados.departamentos.map(d => [d.cod_depto, d]));
+    const rows = e1.agregados.departamentos.map(d1 => {
+      const d2 = m2.get(d1.cod_depto);
+      const antiPetro1v = (d1.votos_por_ideologia.derecha ?? 0) + (d1.votos_por_ideologia.centro ?? 0);
+      const hernandez2v = d2?.votos_por_candidato["rodolfo_hernandez"] ?? 0;
+      return { nombre: d1.nombre_depto, antiPetro1v, hernandez2v };
+    }).sort((a, b) => b.antiPetro1v - a.antiPetro1v);
+
+    return {
+      traces: [
+        {
+          type: "bar", orientation: "h", name: "Derecha + Centro (1V)",
+          x: rows.map(r => r.antiPetro1v),
+          y: rows.map(r => r.nombre),
+          marker: { color: COLORS.border },
+          hovertemplate: "<b>%{y}</b><br>Derecha+Centro 1V: %{x:,.0f}<extra></extra>",
+        },
+        {
+          type: "bar", orientation: "h", name: "Hernández (2V)",
+          x: rows.map(r => r.hernandez2v),
+          y: rows.map(r => r.nombre),
+          marker: { color: "#eab308" },
+          hovertemplate: "<b>%{y}</b><br>Hernández 2V: %{x:,.0f}<extra></extra>",
+        },
+      ],
+      layout: baseLayout({
+        barmode: "group",
+        showlegend: true,
+        legend: { orientation: "h", y: -0.08 },
+        xaxis: { tickformat: ",.0f" },
+        yaxis: { autorange: "reversed", automargin: true, tickfont: { size: 10 } },
+        margin: { l: 140, r: 30, t: 16, b: 60 },
+      }),
+    };
+  },
+};
+
+export const pres2022_2vMapaVariacionCandidato: ChartDef = {
+  id: "pres-2022-2v-mapa-variacion-candidato",
+  titulo: "Variación de votos por candidato y departamento (1V → 2V)",
+  pregunta: "¿Dónde creció más cada candidato entre vueltas?",
+  fuenteTexto: "Registraduría · GeoJSON departamentos",
+  datasets: ["pres-2022-2v", "pres-2022-1v"],
+  height: 640,
+  ariaLabel: "Mapa interactivo de Colombia con selector por candidato (Petro o Hernández) mostrando la variación de votos por departamento entre 1ª y 2ª vuelta 2022",
+  async build({ "pres-2022-2v": e2, "pres-2022-1v": e1 }) {
+    if (!e1 || !e2) return { traces: [], layout: baseLayout() };
+
+    const geojson = await fetch("/geo/colombia-departamentos.geo.json").then(r => r.json()).catch(() => null);
+    if (!geojson || !geojson.features) return { traces: [], layout: baseLayout() };
+
+    const m1 = new Map(e1.agregados.departamentos.map(d => [d.cod_depto, d]));
+    const m2 = new Map(e2.agregados.departamentos.map(d => [d.cod_depto, d]));
+
+    const candColors: Record<string, string> = {
+      gustavo_petro: "#dc2626",
+      rodolfo_hernandez: "#eab308",
+    };
+    const candNames: Record<string, string> = {
+      gustavo_petro: "Gustavo Petro",
+      rodolfo_hernandez: "Rodolfo Hernández",
+    };
+
+    const modes = [
+      { id: "gustavo_petro", label: "Petro", kind: "variacion" as const,
+        colorscale: [
+          [0, "#fee2e2"], [0.2, "#fca5a5"], [0.4, "#f87171"],
+          [0.6, "#ef4444"], [0.8, "#dc2626"], [1, "#7f1d1d"],
+        ] as [number, string][],
+      },
+      { id: "rodolfo_hernandez", label: "Hernández", kind: "variacion" as const,
+        colorscale: [
+          [0, "#fef9c3"], [0.2, "#fde68a"], [0.4, "#fcd34d"],
+          [0.6, "#f59e0b"], [0.8, "#d97706"], [1, "#78350f"],
+        ] as [number, string][],
+      },
+      { id: "ganador", label: "Ganador", kind: "ganador" as const,
+        colorscale: [
+          [0, candColors.gustavo_petro], [0.4999, candColors.gustavo_petro],
+          [0.5, candColors.rodolfo_hernandez], [1, candColors.rodolfo_hernandez],
+        ] as [number, string][],
+      },
+    ];
+
+    type ModeData = {
+      locations: string[]; z: number[]; text: string[];
+      colorscale: [number, string][]; zmin: number; zmax: number;
+      showscale: boolean; colorbar: Record<string, unknown> | null;
+    };
+    const computedData: Record<string, ModeData> = {};
+
+    const fmt = (n: number) => new Intl.NumberFormat("es-CO").format(n);
+
+    for (const mode of modes) {
+      const locations: string[] = [];
+      const z: number[] = [];
+      const text: string[] = [];
+
+      for (const feat of geojson.features) {
+        const cod = String(feat.properties.DPTO || feat.id);
+        const d2 = m2.get(cod);
+        const d1 = m1.get(cod);
+        if (!d2) continue;
+        locations.push(cod);
+
+        if (mode.kind === "variacion") {
+          const candId = mode.id;
+          const v2 = d2.votos_por_candidato[candId] ?? 0;
+          const v1 = d1?.votos_por_candidato[candId] ?? 0;
+          const delta = v2 - v1;
+          const pct = v1 > 0 ? (delta / v1) * 100 : 0;
+          z.push(delta);
+          const sD = delta >= 0 ? "+" : "";
+          const sP = pct >= 0 ? "+" : "";
+          text.push(
+            `<b>${d2.nombre_depto}</b><br>` +
+            `1ª vuelta: ${fmt(v1)} votos<br>` +
+            `2ª vuelta: <b>${fmt(v2)}</b> votos<br>` +
+            `Δ: <b>${sD}${fmt(delta)}</b> (${sP}${pct.toFixed(1)}%)`
+          );
+        } else {
+          const ganadorId = d2.ganador_id;
+          const idx = ganadorId === "gustavo_petro" ? 0 : 1;
+          z.push(idx);
+          const vPetro = d2.votos_por_candidato.gustavo_petro ?? 0;
+          const vHern = d2.votos_por_candidato.rodolfo_hernandez ?? 0;
+          text.push(
+            `<b>${d2.nombre_depto}</b><br>` +
+            `Ganador: <b>${candNames[ganadorId] ?? ganadorId}</b><br>` +
+            `Petro: ${fmt(vPetro)} votos<br>` +
+            `Hernández: ${fmt(vHern)} votos`
+          );
+        }
+      }
+
+      const zmin = mode.kind === "variacion" ? Math.min(...z) : 0;
+      const zmax = mode.kind === "variacion" ? Math.max(...z) : 1;
+      computedData[mode.id] = {
+        locations, z, text,
+        colorscale: mode.colorscale,
+        zmin, zmax,
+        showscale: mode.kind === "variacion",
+        colorbar: mode.kind === "variacion" ? { title: "Δ votos", tickformat: ",.0f" } : null,
+      };
+    }
+
+    const defData = computedData["gustavo_petro"];
+
+    const headerHtml = `
+      <div class="tendencia-selector-container">
+        <div class="tendencia-tabs">
+          ${modes.map((m, i) =>
+            `<button class="tendencia-tab${i === 0 ? " active" : ""}" data-cand="${m.id}">${m.label}</button>`
+          ).join("")}
+        </div>
+      </div>
+      <script id="data-cand-2022-2v" type="application/json">${JSON.stringify(computedData)}</script>
+    `;
+
+    const footerHtml = `
+      <div class="tendencia-map-footer">
+        <span class="tendencia-map-info">* «Petro» y «Hernández»: el color representa el Δ absoluto de votos entre 1V y 2V (más oscuro = mayor crecimiento). «Ganador»: color del candidato que ganó cada departamento.</span>
+      </div>
+    `;
+
+    return {
+      traces: [{
+        type: "choroplethmapbox",
+        geojson,
+        locations: defData.locations,
+        z: defData.z,
+        featureidkey: "properties.DPTO",
+        colorscale: defData.colorscale,
+        zmin: defData.zmin,
+        zmax: defData.zmax,
+        showscale: defData.showscale,
+        text: defData.text,
+        hoverinfo: "text",
+        colorbar: defData.colorbar ?? {},
+        marker: { line: { width: 0.6, color: "rgba(15, 23, 42, 0.15)" } },
+      }],
+      layout: baseLayout({
+        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.0 }, zoom: 4.2 },
+        margin: { l: 0, r: 0, t: 0, b: 0 },
+        xaxis: { visible: false },
+        yaxis: { visible: false },
+      }),
+      headerHtml,
+      footerHtml,
+    };
+  },
+};
+
+// Delegación global para los tabs del mapa de variación por candidato 2022 2V.
+// Se hace a nivel document porque algunos charts (mapbox) no resuelven el await
+// de Plotly.newPlot y por tanto el hook onMount no se invoca.
+if (typeof document !== "undefined") {
+  document.addEventListener("click", (ev) => {
+    const btn = (ev.target as HTMLElement | null)?.closest?.(
+      ".tendencia-tab[data-cand]"
+    ) as HTMLButtonElement | null;
+    if (!btn) return;
+    const root = btn.closest<HTMLElement>("[data-chart-root]");
+    if (!root) return;
+    const target = root.querySelector<HTMLElement>(
+      "#chart-pres-2022-2v-mapa-variacion-candidato"
+    );
+    if (!target) return;
+    const script = root.querySelector("#data-cand-2022-2v");
+    if (!script || !(window as any).Plotly) return;
+    let data: Record<string, any>;
+    try { data = JSON.parse(script.textContent || "{}"); } catch { return; }
+    const cand = btn.dataset.cand!;
+    const d = data[cand];
+    if (!d) return;
+    root.querySelectorAll(".tendencia-tab[data-cand]").forEach(t => t.classList.remove("active"));
+    btn.classList.add("active");
+    (window as any).Plotly.restyle(target, {
+      z: [d.z],
+      text: [d.text],
+      colorscale: [d.colorscale],
+      zmin: [d.zmin],
+      zmax: [d.zmax],
+      showscale: [d.showscale],
+    });
+  });
+}
+
 export const pres2026MapaVariacionTendencia: ChartDef = {
   id: "pres-2026-mapa-variacion-tendencia",
   titulo: "Variación de votos por tendencia política (2022 vs 2026)",

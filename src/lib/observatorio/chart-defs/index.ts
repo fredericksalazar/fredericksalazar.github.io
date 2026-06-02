@@ -55,6 +55,11 @@ import {
   pres2022_2vComposicionVotos,
   pres2022_2vVotosCandidato,
   pres2022_2vMapaDeptoGanador,
+  pres2022_2vMovimientoNacional,
+  pres2022_2vDeltaValidosDepto,
+  pres2022_2vDeltaPetroDepto,
+  pres2022_2vConsolidacionAntiPetro,
+  pres2022_2vMapaVariacionCandidato,
   pres2026MapaVariacionTendencia,
 } from "./elecciones-presidenciales";
 import type { ChartDef } from "./types";
@@ -104,6 +109,11 @@ export const CHART_DEFS = {
   [pres2022_2vComposicionVotos.id]: pres2022_2vComposicionVotos,
   [pres2022_2vVotosCandidato.id]: pres2022_2vVotosCandidato,
   [pres2022_2vMapaDeptoGanador.id]: pres2022_2vMapaDeptoGanador,
+  [pres2022_2vMovimientoNacional.id]: pres2022_2vMovimientoNacional,
+  [pres2022_2vDeltaValidosDepto.id]: pres2022_2vDeltaValidosDepto,
+  [pres2022_2vDeltaPetroDepto.id]: pres2022_2vDeltaPetroDepto,
+  [pres2022_2vConsolidacionAntiPetro.id]: pres2022_2vConsolidacionAntiPetro,
+  [pres2022_2vMapaVariacionCandidato.id]: pres2022_2vMapaVariacionCandidato,
   [pres2026MapaVariacionTendencia.id]: pres2026MapaVariacionTendencia,
 } as const satisfies Record<string, ChartDef>;
 

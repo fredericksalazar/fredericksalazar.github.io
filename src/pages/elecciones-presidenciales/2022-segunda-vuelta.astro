@@ -17,12 +17,47 @@ const nacional = eleccion.agregados.nacional;
 const nacional1v = eleccion1v.agregados.nacional;
 const fmtCompact = (n: number) => new Intl.NumberFormat("es-CO", { notation: "compact", maximumFractionDigits: 1 }).format(n);
 const fmtPct = (n: number) => `${(n * 100).toFixed(1)}%`;
+const fmtSignedCompact = (n: number) => `${n >= 0 ? "+" : "−"}${fmtCompact(Math.abs(n))}`;
+const fmtSignedPctPp = (n: number) => `${n >= 0 ? "+" : "−"}${(Math.abs(n) * 100).toFixed(2)} pp`;
+const fmtSignedPctRel = (n: number) => `${n >= 0 ? "+" : "−"}${(Math.abs(n) * 100).toFixed(1)}%`;
+
+const deltaCenso = nacional.censo - nacional1v.censo;
+const deltaCensoPct = nacional1v.censo ? deltaCenso / nacional1v.censo : 0;
+const deltaParticipacion = nacional.participacion - nacional1v.participacion;
+const deltaValidos = nacional.validos - nacional1v.validos;
+const deltaValidosPct = nacional1v.validos ? deltaValidos / nacional1v.validos : 0;
+const deltaAbstencion = nacional.abstencion - nacional1v.abstencion;
 
 const kpis = [
-  { titulo: "Censo electoral", valor: fmtCompact(nacional.censo), sub: "Potencial sufragantes" },
-  { titulo: "Participación", valor: fmtPct(nacional.participacion), sub: `Abstención ${fmtPct(nacional.abstencion)}` },
-  { titulo: "Votos válidos", valor: fmtCompact(nacional.validos), sub: `${fmtCompact(nacional.nulos)} nulos · ${fmtCompact(nacional.no_marcados)} no marcados` },
-  { titulo: "Δ Participación vs 1ª V", valor: `${((nacional.participacion - nacional1v.participacion) * 100).toFixed(1)} pp`, sub: `1ª vuelta: ${fmtPct(nacional1v.participacion)}` },
+  {
+    titulo: "Censo electoral",
+    valor: fmtCompact(nacional.censo),
+    sub: `1ª vuelta: ${fmtCompact(nacional1v.censo)} · Potencial sufragantes`,
+    delta: deltaCenso,
+    deltaTxt: `${fmtSignedCompact(deltaCenso)} (${fmtSignedPctRel(deltaCensoPct)}) vs 1ª V`,
+  },
+  {
+    titulo: "Participación",
+    valor: fmtPct(nacional.participacion),
+    sub: `1ª vuelta: ${fmtPct(nacional1v.participacion)} · Abstención ${fmtPct(nacional.abstencion)}`,
+    delta: deltaParticipacion,
+    deltaTxt: `${fmtSignedPctPp(deltaParticipacion)} vs 1ª V`,
+  },
+  {
+    titulo: "Votos válidos",
+    valor: fmtCompact(nacional.validos),
+    sub: `1ª vuelta: ${fmtCompact(nacional1v.validos)} · ${fmtCompact(nacional.nulos)} nulos`,
+    delta: deltaValidos,
+    deltaTxt: `${fmtSignedCompact(deltaValidos)} (${fmtSignedPctRel(deltaValidosPct)}) vs 1ª V`,
+  },
+  {
+    titulo: "Abstención",
+    valor: fmtPct(nacional.abstencion),
+    sub: `1ª vuelta: ${fmtPct(nacional1v.abstencion)} · Más votantes → menos abstención`,
+    delta: deltaAbstencion,
+    deltaTxt: `${fmtSignedPctPp(deltaAbstencion)} vs 1ª V`,
+    invertColor: true,
+  },
 ];
 
 const jsonLd = {
@@ -43,7 +78,7 @@ const jsonLd = {
     },
     {
       "@type": "Article",
-      "headline": "Análisis Elecciones Presidenciales Colombia 2022 — 2ª Vuelta",
+      "headline": "Análisis estratégico del balotaje 2022 — censo, abstención, votos válidos y movimiento del voto departamental",
       "datePublished": "2026-06-01",
       "author": { "@type": "Person", "name": "Frederick Salazar" }
     }
@@ -52,7 +87,7 @@ const jsonLd = {
 ---
 <BaseLayout
   title="Elecciones Presidenciales Colombia 2022 — Análisis 2ª Vuelta"
-  description="Análisis descriptivo del balotaje presidencial de Colombia 2022 a nivel nacional y departamental."
+  description="Análisis estratégico del balotaje 2022: censo, abstención, votos válidos y de qué departamentos salieron los votos adicionales que le dieron la victoria a Petro."
   fullWidth={true}
 >
   <Hero
@@ -70,20 +105,43 @@ const jsonLd = {
           <p class="kpi-card__label">{k.titulo}</p>
           <p class="kpi-card__value">{k.valor}</p>
           <p class="kpi-card__sub">{k.sub}</p>
+          <div class="kpi-card__divider" />
+          <p class={`kpi-card__delta-pill ${
+            ((k as any).invertColor ? k.delta <= 0 : k.delta >= 0) ? "is-up" : "is-down"
+          }`}>
+            <span class="kpi-card__delta-arrow">{k.delta >= 0 ? "▲" : "▼"}</span>
+            <span class="kpi-card__delta-txt">{k.deltaTxt}</span>
+          </p>
         </article>
       ))}
     </section>
 
-    <IndicadorPanel numero="1" eyebrow="Votación" titulo="Panorama general" lead="Composición de votos: válidos, nulos y no marcados.">
+    <IndicadorPanel numero="1" eyebrow="Votación" titulo="Panorama general del balotaje" lead="Cómo se descompuso el sufragio en la 2ª vuelta: válidos, nulos y no marcados.">
       <Chart slot="visual" id="pres-2022-2v-composicion-votos" embedded={true} />
     </IndicadorPanel>
 
-    <IndicadorPanel numero="2" eyebrow="Candidatos" titulo="Resultado del balotaje" lead="Petro vs Hernández. Color por bloque ideológico.">
+    <IndicadorPanel numero="2" eyebrow="Candidatos" titulo="Resultado del balotaje" lead="Petro vs Hernández. Diferencia nacional de poco más de 700 mil votos en favor de Petro.">
       <Chart slot="visual" id="pres-2022-2v-votos-candidato" embedded={true} />
     </IndicadorPanel>
 
-    <IndicadorPanel numero="3" eyebrow="Geografía" titulo="Ganador por departamento" lead="Color del bloque ideológico del candidato ganador en cada departamento.">
-      <Chart slot="visual" id="pres-2022-2v-mapa-depto-ganador" embedded={true} />
+    <IndicadorPanel numero="3" eyebrow="Censo y abstención" titulo="Cómo se movió el electorado entre 1ª y 2ª vuelta" lead="El censo electoral entre vueltas es prácticamente el mismo; lo que cambió fue cuántas personas decidieron salir a votar. La 2ª vuelta movilizó cerca de 1,9 millones de votantes adicionales y la abstención cayó alrededor de 4 puntos porcentuales — ese excedente es el que define el resultado.">
+      <Chart slot="visual" id="pres-2022-2v-movimiento-nacional" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="4" eyebrow="Geografía" titulo="Mapa por departamento — Ganador y variación por candidato" lead="Selecciona una vista: «Ganador» muestra el candidato que ganó cada departamento; «Petro» y «Hernández» muestran la variación de votos de ese candidato entre 1ª y 2ª vuelta (más oscuro = mayor crecimiento).">
+      <Chart slot="visual" id="pres-2022-2v-mapa-variacion-candidato" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="5" eyebrow="Activación territorial" titulo="Δ votos válidos por departamento (2V − 1V)" lead="Dónde se activó el electorado entre las dos vueltas. Los departamentos con mayor crecimiento de votos válidos son los que cambiaron el ánimo nacional del balotaje.">
+      <Chart slot="visual" id="pres-2022-2v-delta-validos-depto" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="6" eyebrow="Origen de la victoria" titulo="Δ votos Petro por departamento (2V − 1V)" lead="El gráfico clave del análisis: qué departamentos le pusieron a Petro los votos adicionales para ganar. La Costa Caribe (Atlántico, Magdalena, Bolívar, Córdoba, Sucre) y los grandes centros urbanos (Bogotá, Valle, Cundinamarca) concentran el aporte decisivo.">
+      <Chart slot="visual" id="pres-2022-2v-delta-petro-depto" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="7" eyebrow="Voto no-Petro" titulo="¿Heredó Hernández la suma de derecha + centro de la 1V?" lead="Comparativo por departamento entre el voto total de derecha y centro en 1ª vuelta y el voto efectivo por Hernández en la 2ª vuelta. Donde la barra amarilla queda corta frente a la gris, el voto anti-Petro no se consolidó — y ese diferencial es parte de la explicación de la derrota de Hernández.">
+      <Chart slot="visual" id="pres-2022-2v-consolidacion-antipetro" embedded={true} />
     </IndicadorPanel>
 
     <DashboardFooter
@@ -103,10 +161,75 @@ const jsonLd = {
 <style>
   .observatorio-container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 2rem; }
   .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 0 0 2rem; }
-  .kpi-card { background: var(--card-bg, #fff); border: 1px solid var(--border, #e5e7eb); border-radius: 12px; padding: 1.25rem; }
-  .kpi-card__label { font-size: 0.75rem; color: var(--text-muted, #6b7280); text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 0.5rem; }
-  .kpi-card__value { font-size: 1.75rem; font-weight: 700; margin: 0; color: var(--text, #111827); }
-  .kpi-card__sub { font-size: 0.8rem; color: var(--text-muted, #6b7280); margin: 0.35rem 0 0; }
+
+  .kpi-card {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 14px;
+    padding: 1.25rem 1.35rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    transition: box-shadow 0.18s ease;
+  }
+  .kpi-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+
+  .kpi-card__label {
+    font-size: 0.72rem;
+    color: var(--text-muted, #6b7280);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 0.45rem;
+    font-weight: 600;
+  }
+  .kpi-card__value {
+    font-size: 1.9rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--color-accent, #2563eb);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .kpi-card__sub {
+    font-size: 0.78rem;
+    color: var(--text-muted, #6b7280);
+    margin: 0.3rem 0 0;
+    line-height: 1.4;
+  }
+
+  .kpi-card__divider {
+    height: 1px;
+    background: var(--border, #e5e7eb);
+    margin: 0.85rem 0 0.75rem;
+    border: none;
+  }
+
+  .kpi-card__delta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.32rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    width: fit-content;
+    line-height: 1.3;
+    border: 1.5px solid transparent;
+  }
+  .kpi-card__delta-pill.is-up {
+    background: rgba(22, 163, 74, 0.12);
+    color: #15803d;
+    border-color: rgba(22, 163, 74, 0.35);
+  }
+  .kpi-card__delta-pill.is-down {
+    background: rgba(220, 38, 38, 0.10);
+    color: #b91c1c;
+    border-color: rgba(220, 38, 38, 0.30);
+  }
+  .kpi-card__delta-arrow { font-size: 0.7rem; line-height: 1; }
+  .kpi-card__delta-txt { white-space: nowrap; }
+
   @media (max-width: 1024px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 768px) { .kpi-row { grid-template-columns: 1fr; } }
 </style>
