@@ -9,17 +9,41 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  imageAlt?: string;
   type?: 'website' | 'article';
   noindex?: boolean;
+  /** Lista de keywords específicas para esta página (sobrescribe el default). */
+  keywords?: string;
+  /** Para type="article" — fecha ISO de publicación. */
+  publishedTime?: string;
+  /** Para type="article" — fecha ISO de última modificación. */
+  modifiedTime?: string;
+  /** Para type="article" — nombre del autor (default: Frederick Salazar). */
+  articleAuthor?: string;
+  /** Para type="article" — sección/categoría del artículo (ej. "Análisis político"). */
+  articleSection?: string;
+  /** Para type="article" — tags del artículo. */
+  articleTags?: string[];
 }
 
 const {
   title,
   description,
   image = '/og-default.png',
+  imageAlt,
   type = 'website',
   noindex = false,
+  keywords,
+  publishedTime,
+  modifiedTime,
+  articleAuthor = 'Frederick Adolfo Salazar Sánchez',
+  articleSection,
+  articleTags = [],
 } = Astro.props;
+
+const DEFAULT_KEYWORDS = 'data engineer colombia, arquitecto de datos, big data latam, apache spark, databricks, azure data, python data engineering, frederick salazar, machine learning colombia, ETL pipelines, data warehouse';
+const RESOLVED_KEYWORDS = keywords ?? DEFAULT_KEYWORDS;
+const RESOLVED_IMAGE_ALT = imageAlt ?? title;
 
 const robotsContent = noindex
   ? 'noindex, follow'
@@ -103,7 +127,7 @@ const personSchema = {
 <meta name="description" content={description} />
 <meta name="author" content="Frederick Adolfo Salazar Sánchez" />
 <meta name="robots" content={robotsContent} />
-<meta name="keywords" content="data engineer colombia, arquitecto de datos, big data latam, apache spark, databricks, azure data, python data engineering, frederick salazar, machine learning colombia, ETL pipelines, data warehouse" />
+<meta name="keywords" content={RESOLVED_KEYWORDS} />
 <link rel="canonical" href={CANONICAL} />
 
 <!-- ── Dublin Core (para mejor indexación) ─────────────────────────────────────── -->
@@ -120,18 +144,44 @@ const personSchema = {
 <meta property="og:title" content={FULL_TITLE} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={IMAGE_URL} />
+<meta property="og:image:secure_url" content={IMAGE_URL} />
+<meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={RESOLVED_IMAGE_ALT} />
 <meta property="og:site_name" content={SITE_NAME} />
 <meta property="og:locale" content="es_CO" />
+<meta property="og:locale:alternate" content="en_US" />
+
+{type === 'article' && (
+  <>
+    <meta property="article:author" content={articleAuthor} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+    {articleSection && <meta property="article:section" content={articleSection} />}
+    {articleTags.map((t) => <meta property="article:tag" content={t} />)}
+  </>
+)}
 
 <!-- ── Twitter Card ──────────────────────────────────────────────────────────── -->
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@fredericksala" />
+<meta name="twitter:creator" content="@fredericksala" />
 <meta name="twitter:url" content={CANONICAL} />
 <meta name="twitter:title" content={FULL_TITLE} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={IMAGE_URL} />
-<meta name="twitter:creator" content="@fredericksala" />
+<meta name="twitter:image:alt" content={RESOLVED_IMAGE_ALT} />
+
+<!-- ── LinkedIn / Otras redes: usan Open Graph; sólo añadimos los específicos ── -->
+<meta property="og:see_also" content={SITE_URL} />
+
+<!-- ── App identity + PWA hints ──────────────────────────────────────────────── -->
+<meta name="theme-color" content="#2563eb" />
+<meta name="apple-mobile-web-app-title" content={SITE_NAME} />
+<meta name="application-name" content={SITE_NAME} />
+<meta name="msapplication-TileColor" content="#2563eb" />
+<meta name="format-detection" content="telephone=no" />
 
 <!-- ── Favicons ───────────────────────────────────────────────────────────────── -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

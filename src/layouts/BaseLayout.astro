@@ -15,12 +15,23 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  imageAlt?: string;
   type?: 'website' | 'article';
   fullWidth?: boolean;
   noindex?: boolean;
+  keywords?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  articleAuthor?: string;
+  articleSection?: string;
+  articleTags?: string[];
 }
 
-const { title, description, image, type, fullWidth = false, noindex = false } = Astro.props;
+const {
+  title, description, image, imageAlt, type,
+  fullWidth = false, noindex = false,
+  keywords, publishedTime, modifiedTime, articleAuthor, articleSection, articleTags,
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -30,8 +41,15 @@ const { title, description, image, type, fullWidth = false, noindex = false } = 
       title={title}
       description={description}
       image={image}
+      imageAlt={imageAlt}
       type={type}
       noindex={noindex}
+      keywords={keywords}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+      articleAuthor={articleAuthor}
+      articleSection={articleSection}
+      articleTags={articleTags}
     />
     <!-- Google Sans Flex -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

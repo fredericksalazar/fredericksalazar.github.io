@@ -237,7 +237,14 @@ const jsonLd = {
 <BaseLayout
   title="Elecciones Presidenciales Colombia 2026 — Análisis 1ª Vuelta"
   description="Análisis descriptivo de los resultados oficiales de la primera vuelta presidencial de Colombia 2026 a nivel nacional y departamental, con comparativo contra 2022."
+  image="/images/observatorio.png"
+  imageAlt="Observatorio · Análisis de la primera vuelta presidencial Colombia 2026"
+  type="article"
   fullWidth={true}
+  keywords="elecciones presidenciales colombia 2026, primera vuelta 2026, candidatos 2026, analisis electoral colombia, variacion del voto por departamento, izquierda centro derecha colombia, observatorio electoral colombia, registraduria, datos politicos"
+  publishedTime="2026-06-01T00:00:00+00:00"
+  articleSection="Análisis político y electoral"
+  articleTags={["Elecciones Colombia", "Primera vuelta 2026", "Análisis electoral", "Datos políticos", "Variación del voto", "Tendencias políticas"]}
 >
   <Hero
     badge={{ text: `Actualizado · ${fecha}` }}
@@ -354,21 +361,28 @@ const jsonLd = {
             <div class="tabla-wrap tendencia-tabla">
               <h4 class="tabla-titulo">
                 <span class={`chip chip--${b}`}>{b}</span> — variación por departamento
+                <span class="tabla-titulo__hint">· clic en una columna para ordenar</span>
               </h4>
               <div class="tabla-scroll">
-                <table class="tabla-detalle">
+                <table class="tabla-detalle tabla-sortable" data-sort-table>
                   <thead>
                     <tr>
-                      <th>Departamento</th>
-                      <th class="num">Votos 2022</th>
-                      <th class="num">Votos 2026</th>
-                      <th class="num">Δ votos</th>
-                      <th class="num">Δ %</th>
+                      <th data-sort-key="nombre" data-sort-type="text">Departamento <span class="sort-arrow"></span></th>
+                      <th class="num" data-sort-key="votos22" data-sort-type="num">Votos 2022 <span class="sort-arrow"></span></th>
+                      <th class="num" data-sort-key="votos26" data-sort-type="num">Votos 2026 <span class="sort-arrow"></span></th>
+                      <th class="num" data-sort-key="delta" data-sort-type="num" data-sort-default="desc">Δ votos <span class="sort-arrow">▼</span></th>
+                      <th class="num" data-sort-key="pct" data-sort-type="num">Δ % <span class="sort-arrow"></span></th>
                     </tr>
                   </thead>
                   <tbody>
                     {filasPorTendencia[b].map((f) => (
-                      <tr>
+                      <tr
+                        data-nombre={f.nombre}
+                        data-votos22={f.votos22}
+                        data-votos26={f.votos26}
+                        data-delta={f.delta}
+                        data-pct={Number.isFinite(f.pct) ? f.pct : (f.pct > 0 ? Number.MAX_VALUE : -Number.MAX_VALUE)}
+                      >
                         <td>{f.nombre}</td>
                         <td class="num">{fmtMiles(f.votos22)}</td>
                         <td class="num">{fmtMiles(f.votos26)}</td>
@@ -468,6 +482,56 @@ const jsonLd = {
   </main>
 
   <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <script is:inline>
+    (function initSortableTables() {
+      function init() {
+        document.querySelectorAll("table[data-sort-table]").forEach(function (table) {
+          if (table.__sortBound) return;
+          table.__sortBound = true;
+          const ths = table.querySelectorAll("thead th[data-sort-key]");
+          ths.forEach(function (th) {
+            th.addEventListener("click", function () {
+              const key = th.dataset.sortKey;
+              const type = th.dataset.sortType || "text";
+              const currentDir = th.dataset.sortDir || "";
+              const nextDir = currentDir === "asc" ? "desc" : "asc";
+              ths.forEach(function (other) {
+                if (other !== th) {
+                  other.dataset.sortDir = "";
+                  const arr = other.querySelector(".sort-arrow");
+                  if (arr) arr.textContent = "";
+                }
+              });
+              th.dataset.sortDir = nextDir;
+              const arrow = th.querySelector(".sort-arrow");
+              if (arrow) arrow.textContent = nextDir === "asc" ? "▲" : "▼";
+              const tbody = table.querySelector("tbody");
+              const rows = Array.from(tbody.querySelectorAll("tr"));
+              rows.sort(function (a, b) {
+                const av = a.dataset[key];
+                const bv = b.dataset[key];
+                if (type === "num") {
+                  const an = parseFloat(av);
+                  const bn = parseFloat(bv);
+                  return nextDir === "asc" ? an - bn : bn - an;
+                }
+                const cmp = String(av).localeCompare(String(bv), "es");
+                return nextDir === "asc" ? cmp : -cmp;
+              });
+              rows.forEach(function (r) { tbody.appendChild(r); });
+            });
+          });
+        });
+      }
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+      } else {
+        init();
+      }
+      document.addEventListener("astro:page-load", init);
+    })();
+  </script>
 </BaseLayout>
 
 <style>
@@ -680,7 +744,13 @@ const jsonLd = {
     gap: 1rem;
     margin: 1.5rem 0 0;
   }
-  .tendencia-tabla .tabla-titulo { display: flex; align-items: center; gap: 0.5rem; text-transform: none; letter-spacing: 0; }
+  .tendencia-tabla .tabla-titulo { display: flex; align-items: center; gap: 0.5rem; text-transform: none; letter-spacing: 0; flex-wrap: wrap; }
+  .tabla-titulo__hint { font-size: 0.72rem; font-weight: 500; color: var(--text-muted, #6b7280); text-transform: none; letter-spacing: 0; }
+  .tabla-sortable thead th[data-sort-key] { cursor: pointer; user-select: none; transition: color 0.15s ease; }
+  .tabla-sortable thead th[data-sort-key]:hover { color: var(--text, #111827); }
+  .tabla-sortable thead th[data-sort-dir="asc"],
+  .tabla-sortable thead th[data-sort-dir="desc"] { color: #1d4ed8; }
+  .sort-arrow { display: inline-block; margin-left: 0.25rem; font-size: 0.65rem; opacity: 0.85; }
   .tabla-scroll { max-height: 360px; overflow-y: auto; }
   .tabla-scroll table thead th {
     position: sticky; top: 0;
