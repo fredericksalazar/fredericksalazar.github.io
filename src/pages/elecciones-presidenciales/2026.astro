@@ -59,6 +59,89 @@ const variacionBloques = bloques.map(b => ({
 
 const fmtMiles = (n: number) => new Intl.NumberFormat("es-CO").format(n);
 
+// ── Variación por tendencia × departamento (1V 2022 → 1V 2026) ────────────
+type FilaDepto = {
+  cod: string;
+  nombre: string;
+  votos22: number;
+  votos26: number;
+  delta: number;
+  pct: number; // variación relativa
+};
+
+const deptos22Map = new Map(eleccion2022.agregados.departamentos.map(d => [d.cod_depto, d]));
+const filasPorTendencia: Record<IdeologiaBloque, FilaDepto[]> = { izquierda: [], centro: [], derecha: [] };
+
+for (const d26 of eleccion.agregados.departamentos) {
+  const d22 = deptos22Map.get(d26.cod_depto);
+  for (const b of bloques) {
+    const v26 = d26.votos_por_ideologia[b] ?? 0;
+    const v22 = d22?.votos_por_ideologia[b] ?? 0;
+    const delta = v26 - v22;
+    const pct = v22 > 0 ? (delta / v22) * 100 : (v26 > 0 ? Infinity : 0);
+    filasPorTendencia[b].push({
+      cod: d26.cod_depto,
+      nombre: d26.nombre_depto,
+      votos22: v22,
+      votos26: v26,
+      delta,
+      pct,
+    });
+  }
+}
+
+// Ordenar cada tabla por Δ absoluto descendente
+for (const b of bloques) {
+  filasPorTendencia[b].sort((a, b2) => b2.delta - a.delta);
+}
+
+// ── Resumen estratégico por tendencia ───────────────────────────────────
+type ResumenTendencia = {
+  bloque: IdeologiaBloque;
+  votos22Total: number;
+  votos26Total: number;
+  deltaTotal: number;
+  pctNacional: number;        // variación a nivel nacional
+  promedioPctDeptos: number;  // promedio de los Δ% por departamento (capando ±)
+  deptosCrecio: number;
+  deptosDecrecio: number;
+  topDepto: FilaDepto;
+  bottomDepto: FilaDepto;
+};
+
+const resumen: ResumenTendencia[] = bloques.map(b => {
+  const filas = filasPorTendencia[b];
+  const votos22Total = filas.reduce((acc, f) => acc + f.votos22, 0);
+  const votos26Total = filas.reduce((acc, f) => acc + f.votos26, 0);
+  const deltaTotal = votos26Total - votos22Total;
+  const pctNacional = votos22Total > 0 ? (deltaTotal / votos22Total) * 100 : 0;
+  const finitos = filas.filter(f => Number.isFinite(f.pct));
+  const promedioPctDeptos = finitos.length
+    ? finitos.reduce((acc, f) => acc + f.pct, 0) / finitos.length
+    : 0;
+  // Ranking por Δ % (sólo donde es finito), usando ese mismo criterio para top/bottom.
+  const porPct = [...finitos].sort((a, b2) => b2.pct - a.pct);
+  return {
+    bloque: b,
+    votos22Total,
+    votos26Total,
+    deltaTotal,
+    pctNacional,
+    promedioPctDeptos,
+    deptosCrecio: filas.filter(f => f.delta > 0).length,
+    deptosDecrecio: filas.filter(f => f.delta < 0).length,
+    topDepto: porPct[0] ?? filas[0],
+    bottomDepto: porPct[porPct.length - 1] ?? filas[filas.length - 1],
+  };
+});
+
+const fmtSignedInt = (n: number) =>
+  `${n >= 0 ? "+" : "−"}${new Intl.NumberFormat("es-CO").format(Math.abs(n))}`;
+const fmtSignedPct = (n: number) => {
+  if (!Number.isFinite(n)) return n > 0 ? "+∞" : "—";
+  return `${n >= 0 ? "+" : "−"}${Math.abs(n).toFixed(1)}%`;
+};
+
 const nacional = eleccion.agregados.nacional;
 const nacional2022 = eleccion2022.agregados.nacional;
 const fmtCompact = (n: number) => new Intl.NumberFormat("es-CO", { notation: "compact", maximumFractionDigits: 1 }).format(n);
@@ -219,7 +302,87 @@ const jsonLd = {
     </IndicadorPanel>
 
     <IndicadorPanel numero="4" eyebrow="Tendencia" titulo="Variación del voto por tendencia" lead="Porcentaje de variación de votos por tendencia política (izquierda, centro, derecha) en 2026 comparado con 2022. Selecciona la tendencia para ver el detalle por departamento.">
-      <Chart slot="visual" id="pres-2026-mapa-variacion-tendencia" embedded={true} />
+      <div slot="visual">
+        <Chart id="pres-2026-mapa-variacion-tendencia" embedded={true} />
+
+        <div class="tendencia-resumen">
+          {resumen.map((r) => (
+            <article class={`tendencia-card tendencia-card--${r.bloque}`}>
+              <p class="tendencia-card__label"><span class={`chip chip--${r.bloque}`}>{r.bloque}</span></p>
+              <p class="tendencia-card__big">{fmtSignedPct(r.pctNacional)}</p>
+              <p class="tendencia-card__sub">Δ nacional · {fmtSignedInt(r.deltaTotal)} votos</p>
+              <ul class="tendencia-card__list">
+                <li>Promedio Δ por departamento: <strong>{fmtSignedPct(r.promedioPctDeptos)}</strong></li>
+                <li>Creció en <strong>{r.deptosCrecio}</strong> deptos · cayó en <strong>{r.deptosDecrecio}</strong></li>
+                <li>Mayor crecimiento: <strong>{r.topDepto.nombre}</strong> ({fmtSignedPct(r.topDepto.pct)})</li>
+                <li>Mayor caída: <strong>{r.bottomDepto.nombre}</strong> ({fmtSignedPct(r.bottomDepto.pct)})</li>
+              </ul>
+            </article>
+          ))}
+        </div>
+
+        <div class="lectura-estrategica">
+          <h4>Lectura estratégica</h4>
+          <ul>
+            <li>
+              A nivel nacional la <strong>izquierda</strong> varía <strong>{fmtSignedPct(resumen[0].pctNacional)}</strong>
+              ({fmtSignedInt(resumen[0].deltaTotal)} votos), con un promedio departamental de
+              <strong> {fmtSignedPct(resumen[0].promedioPctDeptos)}</strong> — diferencia que indica si el crecimiento es
+              concentrado en pocos departamentos o disperso.
+            </li>
+            <li>
+              El <strong>centro</strong> registra <strong>{fmtSignedPct(resumen[1].pctNacional)}</strong>
+              ({fmtSignedInt(resumen[1].deltaTotal)} votos). Cuando el centro crece más en territorios donde la izquierda
+              también crece, suele indicar movilización del voto urbano joven; cuando crece donde la derecha cae,
+              está absorbiendo votantes desencantados con la derecha tradicional.
+            </li>
+            <li>
+              La <strong>derecha</strong> muestra <strong>{fmtSignedPct(resumen[2].pctNacional)}</strong>
+              ({fmtSignedInt(resumen[2].deltaTotal)} votos). Los departamentos donde más crece son su nuevo techo
+              electoral; los departamentos donde cae son los que abren espacio a centro o izquierda en 2ª vuelta.
+            </li>
+            <li>
+              Bloques con <strong>promedio departamental</strong> muy distinto del <strong>nacional</strong>
+              indican un cambio territorial: si el nacional crece pero el promedio depto es menor, el crecimiento se
+              concentra en los departamentos más poblados (Bogotá, Antioquia, Valle).
+            </li>
+          </ul>
+        </div>
+
+        <div class="tablas-tendencias">
+          {bloques.map((b) => (
+            <div class="tabla-wrap tendencia-tabla">
+              <h4 class="tabla-titulo">
+                <span class={`chip chip--${b}`}>{b}</span> — variación por departamento
+              </h4>
+              <div class="tabla-scroll">
+                <table class="tabla-detalle">
+                  <thead>
+                    <tr>
+                      <th>Departamento</th>
+                      <th class="num">Votos 2022</th>
+                      <th class="num">Votos 2026</th>
+                      <th class="num">Δ votos</th>
+                      <th class="num">Δ %</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filasPorTendencia[b].map((f) => (
+                      <tr>
+                        <td>{f.nombre}</td>
+                        <td class="num">{fmtMiles(f.votos22)}</td>
+                        <td class="num">{fmtMiles(f.votos26)}</td>
+                        <td class={`num ${f.delta >= 0 ? "is-up" : "is-down"}`}>{fmtSignedInt(f.delta)}</td>
+                        <td class={`num ${f.delta >= 0 ? "is-up" : "is-down"}`}>{fmtSignedPct(f.pct)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </IndicadorPanel>
 
     <IndicadorPanel numero="5" eyebrow="Ideología" titulo="Bloques ideológicos — 2022 vs 2026" lead="Agrupando candidatos por ideología, ¿hacia dónde se movió el país?">
@@ -464,4 +627,68 @@ const jsonLd = {
   .chip--centro { background: rgba(22, 163, 74, 0.12); color: #15803d; }
   .chip--derecha { background: rgba(37, 99, 235, 0.12); color: #1d4ed8; }
   @media (max-width: 900px) { .tablas-grid { grid-template-columns: 1fr; } }
+
+  /* ── Resumen + tablas por tendencia ── */
+  .tendencia-resumen {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0 0;
+  }
+  .tendencia-card {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    border-left: 4px solid var(--border, #e5e7eb);
+  }
+  .tendencia-card--izquierda { border-left-color: #dc2626; }
+  .tendencia-card--centro { border-left-color: #10b981; }
+  .tendencia-card--derecha { border-left-color: #2563eb; }
+  .tendencia-card__label { margin: 0 0 0.5rem; }
+  .tendencia-card__big {
+    font-size: 1.6rem; font-weight: 800; margin: 0 0 0.2rem;
+    color: var(--text, #111827); letter-spacing: -0.02em; line-height: 1.1;
+  }
+  .tendencia-card__sub {
+    font-size: 0.78rem; color: var(--text-muted, #6b7280); margin: 0 0 0.65rem;
+  }
+  .tendencia-card__list { list-style: none; margin: 0; padding: 0; font-size: 0.78rem; color: var(--text-muted, #6b7280); display: grid; gap: 0.25rem; }
+  .tendencia-card__list strong { color: var(--text, #111827); font-weight: 600; }
+
+  .lectura-estrategica {
+    margin: 1.5rem 0 0;
+    background: rgba(37, 99, 235, 0.04);
+    border: 1px solid rgba(37, 99, 235, 0.18);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+  }
+  .lectura-estrategica h4 {
+    margin: 0 0 0.6rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #1d4ed8;
+  }
+  .lectura-estrategica ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.4rem; font-size: 0.86rem; color: var(--text, #111827); line-height: 1.5; }
+  .lectura-estrategica strong { font-weight: 700; }
+
+  .tablas-tendencias {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0 0;
+  }
+  .tendencia-tabla .tabla-titulo { display: flex; align-items: center; gap: 0.5rem; text-transform: none; letter-spacing: 0; }
+  .tabla-scroll { max-height: 360px; overflow-y: auto; }
+  .tabla-scroll table thead th {
+    position: sticky; top: 0;
+    background: var(--card-bg, #fff);
+    z-index: 1;
+  }
+
+  @media (max-width: 900px) {
+    .tendencia-resumen { grid-template-columns: 1fr; }
+  }
 </style>

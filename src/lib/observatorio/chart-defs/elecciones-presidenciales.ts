@@ -764,30 +764,22 @@ export const pres2026MapaVariacionTendencia: ChartDef = {
       colorscale: [number, string][];
     }> = {};
 
-    // Color scales for each tendency
+    // Escala única por bloque: 3 tonos (claro → medio → oscuro) coherentes con
+    // el color identitario de cada tendencia. Más oscuro = mayor crecimiento.
     const colorScales = {
       izquierda: [
         [0, "#fee2e2"],
-        [0.2, "#fca5a5"],
-        [0.4, "#f87171"],
-        [0.6, "#ef4444"],
-        [0.8, "#dc2626"],
-        [1, "#991b1b"],
+        [0.5, "#ef4444"],
+        [1, "#7f1d1d"],
       ] as [number, string][],
       centro: [
-        [0, "#a7f3d0"], // Emerald-200 (mucho más visible)
-        [0.2, "#6ee7b7"],
-        [0.4, "#34d399"],
-        [0.6, "#059669"],
-        [0.8, "#047857"],
+        [0, "#d1fae5"],
+        [0.5, "#10b981"],
         [1, "#064e3b"],
       ] as [number, string][],
       derecha: [
         [0, "#dbeafe"],
-        [0.2, "#bfdbfe"],
-        [0.4, "#93c5fd"],
-        [0.6, "#60a5fa"],
-        [0.8, "#2563eb"],
+        [0.5, "#2563eb"],
         [1, "#1e3a8a"],
       ] as [number, string][],
     };
