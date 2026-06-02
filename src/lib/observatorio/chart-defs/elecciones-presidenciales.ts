@@ -223,7 +223,8 @@ export const pres2026ParticipacionHistorico: ChartDef = {
         textposition: "auto",
       }],
       layout: baseLayout({
-        yaxis: { title: "Participación (%)", range: [0, 100] },
+        xaxis: { type: "category" },
+        yaxis: { type: "linear", title: "Participación (%)", range: [0, 100] },
       }),
     };
   },
