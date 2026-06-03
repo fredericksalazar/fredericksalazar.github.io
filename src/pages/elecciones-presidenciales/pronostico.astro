@@ -52,167 +52,6 @@ const comparativo1v = [
   { bloque: "derecha",   v22: blo22.derecha,   s22: blo22.derecha / blo22.tot,   v26: blo26.derecha,   s26: blo26.derecha / blo26.tot },
 ];
 
-// ── Construcción del prompt completo con todos los datos ─────────────────
-function compactDeptos(e: ReturnType<typeof getPres2022_1v>) {
-  return e.agregados.departamentos.map(d => ({
-    cod: d.cod_depto,
-    depto: d.nombre_depto,
-    votos: d.votos_por_candidato,
-    ideo: d.votos_por_ideologia,
-    total_validos: d.total_validos,
-    ganador: d.ganador_id,
-    ganador_ideologia: d.ganador_ideologia,
-  }));
-}
-
-const promptDatos = {
-  contexto: {
-    pais: "Colombia",
-    eleccion_a_predecir: "Segunda vuelta presidencial 2026 (Iván Cepeda vs Abelardo de la Espriella)",
-    ultima_actualizacion: fecha,
-  },
-  candidatos_2v_2026: [
-    { id: "ivan_cepeda", nombre: "Iván Cepeda Castro", bloque: "izquierda", coalicion: "Pacto Histórico" },
-    { id: "abelardo_de_la_espriella", nombre: "Abelardo de la Espriella", bloque: "derecha", partido: "Defensores de la Patria" },
-  ],
-  datos: {
-    "1V_2022": {
-      nacional: e22_1v.agregados.nacional,
-      resultados: e22_1v.resultados,
-      candidatos: cat.candidatos["2022-1v"],
-      departamentos: compactDeptos(e22_1v),
-    },
-    "2V_2022": {
-      nacional: e22_2v.agregados.nacional,
-      resultados: e22_2v.resultados,
-      candidatos: cat.candidatos["2022-2v"],
-      departamentos: compactDeptos(e22_2v),
-    },
-    "1V_2026": {
-      nacional: e26.agregados.nacional,
-      resultados: e26.resultados,
-      candidatos: cat.candidatos["2026-1v"],
-      departamentos: compactDeptos(e26),
-    },
-  },
-};
-
-const promptTexto = `# ROL
-
-Actúa como un **analista político senior y estratega electoral** especializado en elecciones presidenciales de Colombia. Tu trabajo es producir una **predicción cuantitativa y razonada** sobre el ganador de la segunda vuelta presidencial de 2026 entre **Iván Cepeda (Pacto Histórico, izquierda)** y **Abelardo de la Espriella (Defensores de la Patria, derecha)**, usando exclusivamente los datos oficiales que se entregan a continuación.
-
-# OBJETIVO
-
-1. Estimar el resultado nacional proyectado (votos + share %).
-2. Estimar el margen de victoria en puntos porcentuales y en votos absolutos.
-3. Identificar los 5–8 departamentos bisagra que deciden el resultado.
-4. Justificar la predicción con un razonamiento causal y replicable (no opinión).
-5. Proponer la ruta crítica de campaña para el perdedor.
-
-# DATOS DISPONIBLES (autoritativos)
-
-Los datos vienen de la Registraduría Nacional del Estado Civil de Colombia (escrutinio definitivo) e incluyen tres elecciones consecutivas:
-
-- **1ª vuelta 2022** (29 mayo): 8 candidatos, ganó Petro con 40.34%.
-- **2ª vuelta 2022** (19 junio): Petro (izquierda) vs Hernández (derecha). Ganó Petro 50.44% vs 47.31%, margen ~700k votos.
-- **1ª vuelta 2026** (31 mayo 2026): 13 candidatos. De la Espriella primero, Cepeda segundo.
-
-A nivel **departamental**, cada elección tiene los votos por candidato y por bloque ideológico (izquierda / centro / derecha) para los 33 departamentos del país.
-
-\`\`\`json
-${JSON.stringify(promptDatos, null, 2)}
-\`\`\`
-
-# ADVERTENCIA METODOLÓGICA (CRÍTICA — SÉ MODERADO)
-
-La 2ª vuelta de 2022 fue un EVENTO ATÍPICO: Petro enfrentó a un outsider antisistema (Rodolfo Hernández) en un balotaje de polarización récord (IPI 0.999) que disparó la participación periférica. NO asumas que ese fenómeno se replica íntegramente en 2026, pero TAMPOCO lo aplastes: la izquierda colombiana sí tiene capacidad real de movilización en 2ª vuelta. Calibra con criterio político, no con prudencia ciega. Dos hechos clave de 2026:
-- Abelardo de la Espriella es una figura de EXTREMA DERECHA, polarizante y de alto rechazo; NO es un candidato tradicional. Por eso transfiere PEOR que el promedio: parte del voto de Paloma Valencia / Miguel Uribe y casi todo el centro lo rechazan. No le asignes una consolidación alta de la derecha.
-- El centro (Fajardo y afines) se inclina hacia la izquierda frente a un candidato de extrema derecha, como Fajardo→Petro en 2022.
-Un margen razonable en un balotaje colombiano se ubica típicamente entre 3 y 6 pp; márgenes >7 pp o <1 pp deben justificarse con cuidado.
-
-# MARCO ANALÍTICO QUE DEBES APLICAR
-
-## 1. Multiplicador de movilización de izquierda CON REGRESIÓN A LA MEDIA
-
-Para cada departamento d, calcula la señal cruda y luego AMORTÍGUALA:
-
-\`\`\`
-mult_raw_d  =  Petro_2V_2022_d / Petro_1V_2022_d
-mult_apl_d  =  1 + (mult_raw_d − 1) · λ          con λ = 0.72  (amortiguación moderada)
-mult_apl_d  =  min(mult_apl_d, 1.32)             (techo realista)
-\`\`\`
-
-El factor λ=0.72 reconoce que parte del impulso de 2022 fue coyuntural (efecto Hernández), pero conserva la mayor parte de la capacidad estructural de movilización de la izquierda. El techo de 1.32 evita proyecciones explosivas en departamentos pequeños. Aplica mult_apl_d sobre el voto de Cepeda en 2026 1V.
-
-## 2. Transferencia de la derecha CON CONSOLIDACIÓN ANTI-IZQUIERDA
-
-Para cada departamento d:
-
-\`\`\`
-base_der_22_d = votos_derecha_1V_2022_d  (Hernández + Fico + otros derecha)
-transf_raw_d  = Hernández_2V_2022_d / base_der_22_d
-transf_apl_d  = clamp(transf_raw_d, [0.82, 1.00])   (piso 0.82)
-\`\`\`
-
-El PISO de 0.82 (más bajo que en un balotaje normal) refleja que De la Espriella es una figura de extrema derecha de alto rechazo: parte del voto de Paloma Valencia, Miguel Uribe y el centro-derecha NO lo sigue (fuga a voto en blanco, abstención o cruce a Cepeda). Aplícala sobre la base de derecha 2026 (De la Espriella + Paloma Valencia + Daniel Palacios + Miguel Uribe + Camilo Romero).
-
-## 3. Distribución del centro — EQUILIBRADA
-
-El centro 2026 (Fajardo + Claudia López + Lizcano + Garvin + Murillo) se reparte **57% Cepeda / 43% De la Espriella**. El centro colombiano (Fajardo) es anti-uribista/anti-extrema y frente a un candidato de extrema derecha se inclina hacia la izquierda, como Fajardo→Petro en 2022. No es un 50/50 mecánico.
-
-## 4. Cierre nacional
-
-Suma por departamento:
-
-\`\`\`
-Cepeda_2V_d    =  Cepeda_1V_26_d · mult_apl_d   +  Centro_26_d · 0.57
-Abelardo_2V_d  =  base_der_26_d · transf_apl_d  +  Centro_26_d · 0.43
-\`\`\`
-
-Nacional = suma de los 33 departamentos.
-
-## 5. Probabilidad vía Monte Carlo (OBLIGATORIO)
-
-No entregues una predicción puntual sin cuantificar incertidumbre. Corre ≥2.000 simulaciones muestreando los 4 supuestos clave con distribuciones normales acotadas: λ ~ Normal(0.72, 0.12) en [0.45, 0.95]; techo del multiplicador ~ Normal(1.32, 0.06) en [1.18, 1.45]; centro→Cepeda ~ Normal(0.57, 0.06) en [0.42, 0.72]; escala de transferencia ~ Normal(1.00, 0.04) en [0.88, 1.10] con piso 0.82. La probabilidad de victoria de cada candidato = fracción de corridas que gana. Reporta el margen mediano y el rango P10–P90.
-
-# ENTREGABLES (formato obligatorio)
-
-## A. Tabla de proyección departamental
-
-| Departamento | Cepeda 1V 2026 | Mult. aplicado | Cepeda 2V proj | Base derecha 2026 | Transf. aplicada | Abelardo 2V proj | Margen | Ganador |
-
-## B. Resultado nacional + probabilidad
-
-- Cepeda: X votos (Y%)
-- De la Espriella: X votos (Y%)
-- Margen central: ±Z pp (±W votos)
-- Probabilidad de victoria de cada candidato (Monte Carlo) + rango P10–P90 del margen.
-
-## C. Departamentos bisagra
-
-Los 5–8 departamentos donde el margen proyectado es menor al 5% del voto local.
-
-## D. Narrativa estratégica (máximo 400 palabras)
-
-- ¿Por qué gana el ganador? (factor estructural + factor coyuntural).
-- ¿Qué le falló al perdedor? (transferencia, geografía, perfil).
-- Las **3 jugadas concretas** que debe hacer el perdedor para revertir el resultado.
-
-## E. Análisis de sensibilidad
-
-Re-corre el escenario central y muestra cómo cambia el ganador si:
-- El centro se reparte 50/50.
-- La transferencia de derecha sube a 1.00 en todos los departamentos.
-- El multiplicador de izquierda se capa en 1.15x (escenario conservador).
-
-# REGLAS
-
-- Cero opinión, cero juicios de valor. Sólo lo que los datos respaldan.
-- Sé MODERADO y prudente: un favorito no es un ganador seguro.
-- Si un dato no está en el JSON, dilo explícitamente y no inventes.
-- Todos los números deben ser auditables: muestra la fórmula.
-- Responde en español, con tablas Markdown.`;
-
 // ── Tablas y KPIs derivados de la simulación ────────────────────────────
 const top5Cepeda = [...sim.departamentos]
   .filter(d => d.ganador === "cepeda")
@@ -240,7 +79,7 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
   imageAlt="Observatorio · Pronóstico segunda vuelta presidencial Colombia 2026"
   type="article"
   fullWidth={true}
-  keywords="pronostico electoral colombia 2026, segunda vuelta 2026, abelardo de la espriella, ivan cepeda, simulador departamental, modelo cuantitativo electoral, analisis electoral colombia, estrategia electoral, prompt agente analista politico"
+  keywords="pronostico electoral colombia 2026, segunda vuelta 2026, abelardo de la espriella, ivan cepeda, simulador departamental, modelo cuantitativo electoral, analisis electoral colombia, estrategia electoral"
   publishedTime="2026-06-01T00:00:00+00:00"
   articleSection="Pronóstico político"
   articleTags={["Pronóstico electoral", "Segunda vuelta 2026", "Abelardo de la Espriella", "Iván Cepeda", "Simulador electoral", "Estrategia política", "IA política"]}
@@ -248,7 +87,7 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
   <Hero
     badge={{ text: "Experimento · Agente IA + Datos oficiales" }}
     title="🔮 Pronóstico Segunda Vuelta 2026"
-    subtitle="Modelo cuantitativo + prompt para agente analista político"
+    subtitle="Modelo cuantitativo para la segunda vuelta presidencial"
   />
   <EleccionesNav active="pronostico" />
   <PlotlyLoader />
@@ -455,28 +294,9 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
       </div>
     </IndicadorPanel>
 
-    <!-- PANEL 6: PROMPT COMPLETO -->
+    <!-- PANEL 6: VEREDICTO + ESTRATEGIA -->
     <IndicadorPanel
       numero="6"
-      eyebrow="Prompt para agente IA"
-      titulo="Ficha completa del agente analista político"
-      lead="El prompt completo, con todos los datos oficiales embebidos. Copiar y pegar en cualquier modelo (Claude, GPT-4, Gemini) reproduce esta predicción de forma independiente."
-    >
-      <div slot="visual" class="prompt-container">
-        <div class="prompt-header">
-          <span class="prompt-header__dot red"></span>
-          <span class="prompt-header__dot yellow"></span>
-          <span class="prompt-header__dot green"></span>
-          <span class="prompt-header__title">Prompt agente · Pronóstico 2V 2026</span>
-          <button class="prompt-copy" data-copy-prompt>Copiar prompt</button>
-        </div>
-        <pre class="prompt-code" id="prompt-fullsource"><code>{promptTexto}</code></pre>
-      </div>
-    </IndicadorPanel>
-
-    <!-- PANEL 7: VEREDICTO + ESTRATEGIA -->
-    <IndicadorPanel
-      numero="7"
       eyebrow="Veredicto y ruta crítica"
       titulo="Predicción final y jugadas estratégicas"
       lead="La lectura política del modelo: por qué gana quien gana, dónde se decide y qué tendría que hacer el perdedor para revertirlo."
@@ -550,20 +370,6 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
   <script is:inline>
     (function () {
       function bind() {
-        document.querySelectorAll("[data-copy-prompt]").forEach(function (btn) {
-          if (btn.__bound) return;
-          btn.__bound = true;
-          btn.addEventListener("click", function () {
-            const pre = document.getElementById("prompt-fullsource");
-            if (!pre) return;
-            const txt = pre.innerText;
-            navigator.clipboard.writeText(txt).then(function () {
-              const orig = btn.textContent;
-              btn.textContent = "✓ Copiado";
-              setTimeout(function () { btn.textContent = orig; }, 1800);
-            }).catch(function () { btn.textContent = "Error"; });
-          });
-        });
         document.querySelectorAll("table[data-sort-table]").forEach(function (table) {
           if (table.__sortBound) return;
           table.__sortBound = true;
@@ -649,37 +455,6 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
   .kpi-card__value { font-size: 1.6rem; font-weight: 800; margin: 0; color: #1f2328; line-height: 1.1; letter-spacing: -0.02em; }
   .kpi-card__sub { font-size: 0.78rem; color: #636c76; margin: 0.35rem 0 0; line-height: 1.4; }
   @media (max-width: 900px) { .forecast-kpis { grid-template-columns: 1fr; } }
-
-  .prompt-container {
-    background: #0f172a;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-  }
-  .prompt-header {
-    display: flex; align-items: center; gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    background: #1e293b;
-    border-bottom: 1px solid #334155;
-  }
-  .prompt-header__dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
-  .prompt-header__dot.red { background: #ef4444; }
-  .prompt-header__dot.yellow { background: #eab308; }
-  .prompt-header__dot.green { background: #22c55e; }
-  .prompt-header__title { color: #cbd5e1; font-size: 0.85rem; font-weight: 600; margin-left: 0.5rem; flex: 1; }
-  .prompt-copy {
-    background: #2563eb; color: white; border: 0; padding: 0.4rem 0.9rem;
-    border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer;
-    transition: background 0.15s ease;
-  }
-  .prompt-copy:hover { background: #1d4ed8; }
-  .prompt-code {
-    margin: 0; padding: 1.25rem 1.5rem;
-    color: #e2e8f0; font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 0.78rem; line-height: 1.55;
-    max-height: 580px; overflow: auto;
-    white-space: pre-wrap; word-break: break-word;
-  }
 
   .veredicto { display: grid; gap: 1.25rem; }
   .veredicto-card {
