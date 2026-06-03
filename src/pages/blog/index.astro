@@ -7,11 +7,10 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Card from '../../components/Card.astro';
 import BlogFilters from '../../components/BlogFilters.astro';
+import { urls, absUrls, SITE_URL } from '../../lib/urls';
 
 const title       = 'Blog de Data Engineering y Machine Learning';
 const description = 'Artículos técnicos sobre Data Engineering, Big Data, Machine Learning, Azure y Analytics. Tutoriales, guías y análisis de datos por Frederick Salazar, Data Engineer en Colombia.';
-
-const SITE_URL = 'https://fredericksalazar.github.io';
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 const posts    = allPosts.sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
@@ -19,7 +18,7 @@ const posts    = allPosts.sort((a, b) => b.data.fecha.getTime() - a.data.fecha.g
 const featured = posts.find((p) => p.data.destacado) ?? null;
 const rest = featured ? posts.filter((p) => p.id !== featured.id) : posts;
 
-const tagHref = (tag: string) => `/blog/tag/${encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-'))}`;
+const tagHref = (tag: string) => urls.blogTag(tag);
 
 const TIPO_LABEL: Record<string, string> = {
   tutorial: 'Tutorial',
@@ -47,13 +46,13 @@ const blogSchema = {
   '@type': 'Blog',
   name: 'Blog · Frederick Salazar',
   description,
-  url: `${SITE_URL}/blog`,
+  url: absUrls.blog(),
   inLanguage: 'es-CO',
   author: { '@type': 'Person', name: 'Frederick Salazar', url: SITE_URL },
   blogPost: posts.slice(0, 10).map((p) => ({
     '@type': 'BlogPosting',
     headline: p.data.titulo,
-    url: `${SITE_URL}/blog/${p.id}/`,
+    url: absUrls.blogPost(p.id),
     datePublished: p.data.fecha.toISOString(),
   })),
 };
@@ -62,8 +61,8 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog` },
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: absUrls.home() },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: absUrls.blog() },
   ],
 };
 ---
@@ -74,7 +73,7 @@ const breadcrumbSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
   <nav class="breadcrumb" aria-label="Migas de pan">
-    <a href="/">Inicio</a>
+    <a href={urls.home()}>Inicio</a>
     <span aria-hidden="true"> › </span>
     <span>Blog</span>
   </nav>
@@ -88,7 +87,7 @@ const breadcrumbSchema = {
     <p class="blog-hero__stats">
       <strong>{posts.length}</strong> artículos publicados
       <span aria-hidden="true">·</span>
-      <a href="/rss.xml" class="rss-link" aria-label="Suscribirse al feed RSS">
+      <a href={urls.rss()} class="rss-link" aria-label="Suscribirse al feed RSS">
         <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="currentColor">
           <path d="M5 3a16 16 0 0 1 16 16h-3A13 13 0 0 0 5 6V3Zm0 7a9 9 0 0 1 9 9h-3a6 6 0 0 0-6-6v-3Zm1.5 6a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z" />
         </svg>
@@ -100,7 +99,7 @@ const breadcrumbSchema = {
   {featured && (
     <section class="featured" aria-labelledby="featured-heading">
       <p class="featured__eyebrow" id="featured-heading">Artículo destacado</p>
-      <a class="featured__link" href={`/blog/${featured.id}/`} aria-label={featured.data.titulo}>
+      <a class="featured__link" href={urls.blogPost(featured.id)} aria-label={featured.data.titulo}>
         {featured.data.imagen && (
           <div class="featured__media">
             <img src={featured.data.imagen} alt={featured.data.titulo} loading="eager" width="1200" height="630" />
@@ -143,7 +142,7 @@ const breadcrumbSchema = {
         >
           <Card
             variant="blog"
-            href={`/blog/${post.id}/`}
+            href={urls.blogPost(post.id)}
             image={post.data.imagen}
             imageAlt={post.data.titulo}
             title={post.data.titulo}
@@ -166,11 +165,11 @@ const breadcrumbSchema = {
   </p>
 
   <section class="blog-footer-links" aria-label="Más formas de explorar">
-    <a href="/blog/tags/">Ver todos los temas</a>
+    <a href={urls.blogTags()}>Ver todos los temas</a>
     <span aria-hidden="true">·</span>
-    <a href="/blog/archivo/">Archivo completo</a>
+    <a href={urls.blogArchivo()}>Archivo completo</a>
     <span aria-hidden="true">·</span>
-    <a href="/rss.xml">RSS</a>
+    <a href={urls.rss()}>RSS</a>
   </section>
 
 </BaseLayout>

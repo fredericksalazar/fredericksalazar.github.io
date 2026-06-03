@@ -26,6 +26,23 @@ All content lives in `src/content/{blog,proyectos}/`. Dynamic routes use `getSta
 
 **No tests, no linter config** — `astro check` is the type checker (runs via Astro CLI).
 
+## Enlaces internos (vinculante)
+
+El sitio usa `trailingSlash: 'always'`. **Nunca** escribas template literals
+para rutas internas (p. ej. `` href={`/blog/${slug}/`} ``) — importa los
+helpers de [`src/lib/urls.ts`](./src/lib/urls.ts):
+
+```astro
+import { urls, absUrls } from '../lib/urls';
+<a href={urls.blogPost(post.id)}>...</a>      {/* hrefs relativos */}
+{ url: absUrls.blogPost(post.id) }            {/* JSON-LD, canonical, RSS */}
+```
+
+Si necesitas una ruta nueva, **agrégala** a `urls.ts` antes de usarla.
+`npm run build` ejecuta `scripts/check-internal-links.mjs` y falla si
+encuentra cualquier `href="/..."` sin trailing slash en el output — no hay
+forma de mergear código que reintroduzca el problema de redirecciones 301.
+
 ## Observatorio (dashboards)
 
 Cualquier trabajo en `src/pages/observatorio/`, `src/components/observatorio/`,

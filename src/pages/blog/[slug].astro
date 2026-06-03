@@ -6,6 +6,7 @@ import TableOfContents from '../../components/TableOfContents.astro';
 import ReadingProgress from '../../components/ReadingProgress.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import AuthorBio from '../../components/AuthorBio.astro';
+import { urls, absUrls, SITE_URL } from '../../lib/urls';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -18,8 +19,7 @@ export async function getStaticPaths() {
 const { post, allPosts } = Astro.props;
 const { Content, headings } = await render(post);
 
-const SITE_URL = 'https://fredericksalazar.github.io';
-const PAGE_URL = `${SITE_URL}/blog/${post.id}/`;
+const PAGE_URL = absUrls.blogPost(post.id);
 
 const formatDate = (date: Date) =>
   date.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -57,8 +57,8 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog` },
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: absUrls.home() },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: absUrls.blog() },
     { '@type': 'ListItem', position: 3, name: post.data.titulo, item: PAGE_URL },
   ],
 };
@@ -104,9 +104,9 @@ if (post.data.resumen) articleSchema.abstract = post.data.resumen;
   <ReadingProgress />
 
   <nav class="breadcrumb" aria-label="Migas de pan">
-    <a href="/">Inicio</a>
+    <a href={urls.home()}>Inicio</a>
     <span aria-hidden="true"> › </span>
-    <a href="/blog/">Blog</a>
+    <a href={urls.blog()}>Blog</a>
     <span aria-hidden="true"> › </span>
     <span>{post.data.titulo}</span>
   </nav>
@@ -117,7 +117,7 @@ if (post.data.resumen) articleSchema.abstract = post.data.resumen;
       <div class="art-badges">
         <span class={`tipo-badge tipo-badge--${post.data.tipo}`}>{tipoLabel}</span>
         {post.data.etiquetas.length > 0 && post.data.etiquetas.slice(0, 4).map((t: string) => (
-          <a href={`/blog/tag/${encodeURIComponent(t.toLowerCase().replace(/\s+/g, '-'))}/`} class="tag">{t}</a>
+          <a href={urls.blogTag(t)} class="tag">{t}</a>
         ))}
       </div>
       <h1 class="art-title">{post.data.titulo}</h1>
@@ -164,13 +164,13 @@ if (post.data.resumen) articleSchema.abstract = post.data.resumen;
     {(newer || older) && (
       <nav class="prevnext" aria-label="Navegación entre artículos">
         {older ? (
-          <a class="prevnext__link prevnext__link--prev" href={`/blog/${older.id}/`} rel="prev">
+          <a class="prevnext__link prevnext__link--prev" href={urls.blogPost(older.id)} rel="prev">
             <span class="prevnext__dir">← Artículo anterior</span>
             <span class="prevnext__title">{older.data.titulo}</span>
           </a>
         ) : <span />}
         {newer ? (
-          <a class="prevnext__link prevnext__link--next" href={`/blog/${newer.id}/`} rel="next">
+          <a class="prevnext__link prevnext__link--next" href={urls.blogPost(newer.id)} rel="next">
             <span class="prevnext__dir">Artículo siguiente →</span>
             <span class="prevnext__title">{newer.data.titulo}</span>
           </a>
@@ -185,7 +185,7 @@ if (post.data.resumen) articleSchema.abstract = post.data.resumen;
           {related.map((r) => (
             <Card
               variant="related"
-              href={`/blog/${r.id}/`}
+              href={urls.blogPost(r.id)}
               image={r.data.imagen}
               imageAlt={r.data.titulo}
               title={r.data.titulo}
@@ -198,7 +198,7 @@ if (post.data.resumen) articleSchema.abstract = post.data.resumen;
     )}
 
     <footer class="art-footer">
-      <a href="/blog/" class="back-link">← Volver al blog</a>
+      <a href={urls.blog()} class="back-link">← Volver al blog</a>
     </footer>
   </article>
 </BaseLayout>

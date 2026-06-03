@@ -1,5 +1,6 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
+import { urls } from '../lib/urls';
 
 export async function GET(context) {
   const posts = (await getCollection('blog', ({ data }) => !data.draft))
@@ -14,7 +15,7 @@ export async function GET(context) {
       title: post.data.titulo,
       pubDate: post.data.fecha,
       description: post.data.resumen ?? post.data.descripcion,
-      link: `/blog/${post.id}/`,
+      link: urls.blogPost(post.id),
       categories: post.data.etiquetas,
       author: 'fsalazars@uoc.edu (Frederick Salazar)',
     })),

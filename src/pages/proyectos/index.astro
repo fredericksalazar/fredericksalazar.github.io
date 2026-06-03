@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
 import Card from "../../components/Card.astro";
+import { urls } from "../../lib/urls";
 
 const title = "Proyectos de Data Engineering y ML";
 const description =
@@ -113,7 +114,7 @@ const countByCategoria = {
         {proyectos.map((proyecto) => (
           <Card
             variant="project"
-            href={`/proyectos/${proyecto.id}/`}
+            href={urls.proyecto(proyecto.id)}
             image={proyecto.data.imagen}
             imageAlt={`Imagen de ${proyecto.data.titulo}`}
             title={proyecto.data.titulo}

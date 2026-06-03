@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { urls } from '../../lib/urls';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
@@ -28,9 +29,9 @@ const description = 'Listado cronológico de todos los artículos publicados en 
 <BaseLayout {title} {description} noindex={true}>
 
   <nav class="breadcrumb" aria-label="Migas de pan">
-    <a href="/">Inicio</a>
+    <a href={urls.home()}>Inicio</a>
     <span aria-hidden="true"> › </span>
-    <a href="/blog/">Blog</a>
+    <a href={urls.blog()}>Blog</a>
     <span aria-hidden="true"> › </span>
     <span>Archivo</span>
   </nav>
@@ -52,7 +53,7 @@ const description = 'Listado cronológico de todos los artículos publicados en 
               {p.data.fecha.toLocaleDateString('es-CO', { month: 'short', day: '2-digit' })}
             </time>
             <span class={`tipo-mini tipo-mini--${p.data.tipo}`}>{TIPO_LABEL[p.data.tipo]}</span>
-            <a href={`/blog/${p.id}/`} class="post-item__link">{p.data.titulo}</a>
+            <a href={urls.blogPost(p.id)} class="post-item__link">{p.data.titulo}</a>
           </li>
         ))}
       </ul>

@@ -99,8 +99,8 @@ El paso cero no es comprar herramientas. El paso cero es **medir dónde estás**
 
 **Lecturas relacionadas en el blog:**
 
-- [Tips y Dimensiones en la Calidad de Datos](/blog/calidad-de-datos-tips-dimensiones-y-problemas)
-- [Dark Data en las organizaciones](/blog/dark-data-en-las-organizaciones)
-- [Ciclo de vida de la Ingeniería de datos](/blog/ciclo-de-vida-de-la-ingenieria-de-datos)
-- [Data Stewards: Guardianes de la Información en la Era Digital](/blog/data-stewards-guardianes-de-la-informacion-en-la-era-digital)
-- [Gestión de Datos Maestros (MDM): Qué Son y Cuál es su Valor](/blog/gestion-de-datos-maestros-mdm-que-son-y-cual-es-su-valor-en-la-organizacion)
+- [Tips y Dimensiones en la Calidad de Datos](/blog/calidad-de-datos-tips-dimensiones-y-problemas/)
+- [Dark Data en las organizaciones](/blog/dark-data-en-las-organizaciones/)
+- [Ciclo de vida de la Ingeniería de datos](/blog/ciclo-de-vida-de-la-ingenieria-de-datos/)
+- [Data Stewards: Guardianes de la Información en la Era Digital](/blog/data-stewards-guardianes-de-la-informacion-en-la-era-digital/)
+- [Gestión de Datos Maestros (MDM): Qué Son y Cuál es su Valor](/blog/gestion-de-datos-maestros-mdm-que-son-y-cual-es-su-valor-en-la-organizacion/)

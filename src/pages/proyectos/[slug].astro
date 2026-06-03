@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { urls, SITE_URL } from '../../lib/urls';
 
 export async function getStaticPaths() {
   const projects = await getCollection('proyectos');
@@ -15,8 +16,6 @@ const { Content } = await render(proyecto);
 
 const hasGithub = proyecto.data.github && proyecto.data.github !== '';
 const hasDemo   = proyecto.data.demo   && proyecto.data.demo   !== '';
-
-const SITE_URL = 'https://fredericksalazar.github.io';
 
 const isDataCompass = proyecto.id === 'datacompass';
 const softwareSchema = isDataCompass ? {
@@ -72,7 +71,7 @@ const softwareSchema = isDataCompass ? {
     <script type="application/ld+json" set:html={JSON.stringify(softwareSchema)} />
   )}
 
-  <nav class="breadcrumb"><a href="/proyectos/">← Proyectos</a></nav>
+  <nav class="breadcrumb"><a href={urls.proyectos()}>← Proyectos</a></nav>
 
   <article>
 
@@ -140,7 +139,7 @@ const softwareSchema = isDataCompass ? {
     </div>
 
     <footer class="proj-footer">
-      <a href="/proyectos/" class="back-link">← Volver a proyectos</a>
+      <a href={urls.proyectos()} class="back-link">← Volver a proyectos</a>
     </footer>
 
   </article>

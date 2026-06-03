@@ -3,6 +3,7 @@
  * AuthorBio.astro — Bloque de autor al pie del artículo.
  * Refuerza señales E-E-A-T (autoridad, experiencia) para SEO y LLMs.
  */
+import { urls } from '../lib/urls';
 ---
 
 <aside class="author-bio" aria-label="Sobre el autor">
@@ -26,7 +27,7 @@
       <span aria-hidden="true">·</span>
       <a href="https://github.com/fredericksalazar" target="_blank" rel="noopener noreferrer">GitHub</a>
       <span aria-hidden="true">·</span>
-      <a href="/rss.xml">RSS</a>
+      <a href={urls.rss()}>RSS</a>
     </div>
   </div>
 </aside>

@@ -1,7 +1,8 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { absUrls, SITE_URL } from '../lib/urls';
 
-const SITE = 'https://fredericksalazar.github.io';
+const SITE = SITE_URL;
 
 export const GET: APIRoute = async () => {
   const posts = (await getCollection('blog', ({ data }) => !data.draft))
@@ -16,15 +17,15 @@ export const GET: APIRoute = async () => {
   lines.push('');
   lines.push('## Páginas principales');
   lines.push('');
-  lines.push(`- [Inicio](${SITE}/): perfil, experiencia y portafolio.`);
-  lines.push(`- [Blog](${SITE}/blog): índice de artículos.`);
-  lines.push(`- [Proyectos](${SITE}/proyectos): proyectos de datos y software.`);
-  lines.push(`- [RSS feed](${SITE}/rss.xml): feed actualizado de artículos.`);
+  lines.push(`- [Inicio](${absUrls.home()}): perfil, experiencia y portafolio.`);
+  lines.push(`- [Blog](${absUrls.blog()}): índice de artículos.`);
+  lines.push(`- [Proyectos](${absUrls.proyectos()}): proyectos de datos y software.`);
+  lines.push(`- [RSS feed](${absUrls.rss()}): feed actualizado de artículos.`);
   lines.push('');
   lines.push('## Artículos del blog');
   lines.push('');
   for (const p of posts) {
-    const url = `${SITE}/blog/${p.id}/`;
+    const url = absUrls.blogPost(p.id);
     const summary = p.data.resumen ?? p.data.descripcion;
     lines.push(`- [${p.data.titulo}](${url}) — ${formatDate(p.data.fecha)} · ${p.data.tipo} — ${summary}`);
   }

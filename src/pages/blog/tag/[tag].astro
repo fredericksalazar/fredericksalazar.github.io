@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Card from '../../../components/Card.astro';
 import { descriptionFor } from '../../../data/tags';
+import { urls, absUrls } from '../../../lib/urls';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('blog', ({ data }) => !data.draft);
@@ -29,8 +30,7 @@ export async function getStaticPaths() {
 }
 
 const { tagSlug, tagLabel, posts } = Astro.props;
-const SITE_URL = 'https://fredericksalazar.github.io';
-const PAGE_URL = `${SITE_URL}/blog/tag/${tagSlug}/`;
+const PAGE_URL = absUrls.blogTag(tagLabel);
 
 const tagDescription = descriptionFor(tagSlug);
 const title = `Artículos sobre ${tagLabel}`;
@@ -48,7 +48,7 @@ const TIPO_LABEL: Record<string, string> = {
 const counts: Record<string, number> = {};
 posts.forEach((p) => { counts[p.data.tipo] = (counts[p.data.tipo] ?? 0) + 1; });
 
-const tagHref = (tag: string) => `/blog/tag/${encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-'))}`;
+const tagHref = (tag: string) => urls.blogTag(tag);
 
 // JSON-LD: CollectionPage + ItemList
 const collectionSchema = {
@@ -58,14 +58,14 @@ const collectionSchema = {
   description,
   url: PAGE_URL,
   inLanguage: 'es-CO',
-  isPartOf: { '@type': 'Blog', name: 'Blog · Frederick Salazar', url: `${SITE_URL}/blog` },
+  isPartOf: { '@type': 'Blog', name: 'Blog · Frederick Salazar', url: absUrls.blog() },
   mainEntity: {
     '@type': 'ItemList',
     numberOfItems: posts.length,
     itemListElement: posts.map((p, i) => ({
       '@type': 'ListItem',
       position: i + 1,
-      url: `${SITE_URL}/blog/${p.id}/`,
+      url: absUrls.blogPost(p.id),
       name: p.data.titulo,
     })),
   },
@@ -75,8 +75,8 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog` },
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: absUrls.home() },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: absUrls.blog() },
     { '@type': 'ListItem', position: 3, name: tagLabel, item: PAGE_URL },
   ],
 };
@@ -88,9 +88,9 @@ const breadcrumbSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
   <nav class="breadcrumb" aria-label="Migas de pan">
-    <a href="/">Inicio</a>
+    <a href={urls.home()}>Inicio</a>
     <span aria-hidden="true"> › </span>
-    <a href="/blog/">Blog</a>
+    <a href={urls.blog()}>Blog</a>
     <span aria-hidden="true"> › </span>
     <span>{tagLabel}</span>
   </nav>
@@ -112,7 +112,7 @@ const breadcrumbSchema = {
       <Card
         variant="blog"
         layout="horizontal"
-        href={`/blog/${post.id}/`}
+        href={urls.blogPost(post.id)}
         image={post.data.imagen}
         imageAlt={post.data.titulo}
         title={post.data.titulo}
@@ -127,7 +127,7 @@ const breadcrumbSchema = {
     ))}
   </div>
 
-  <p class="more-link"><a href="/blog/tags/">← Ver todos los temas</a></p>
+  <p class="more-link"><a href={urls.blogTags()}>← Ver todos los temas</a></p>
 
 </BaseLayout>
 

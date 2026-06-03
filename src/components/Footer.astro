@@ -4,6 +4,8 @@
  * Footer profesional con blueprint pattern
  * Aparece en todas las páginas
  */
+import { urls } from '../lib/urls';
+
 const currentYear = new Date().getFullYear();
 ---
 
@@ -34,11 +36,11 @@ const currentYear = new Date().getFullYear();
       <div class="site-footer__links">
         <span class="site-footer__heading">Navegación</span>
         <nav>
-          <a href="/">Inicio</a>
-          <a href="/experiencia/">Experiencia</a>
-          <a href="/proyectos/">Proyectos</a>
-          <a href="/certificaciones/">Certificaciones</a>
-          <a href="/blog/">Blog</a>
+          <a href={urls.home()}>Inicio</a>
+          <a href={urls.experiencia()}>Experiencia</a>
+          <a href={urls.proyectos()}>Proyectos</a>
+          <a href={urls.certificaciones()}>Certificaciones</a>
+          <a href={urls.blog()}>Blog</a>
         </nav>
       </div>
       

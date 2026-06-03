@@ -174,5 +174,5 @@ OpenCode, Claude Code, OpenAI Codex y Gemini Antigravity son herramientas extrao
 
 **Lecturas relacionadas en el blog:**
 
-- [OllamaFX: cómo ejecutar modelos IA en tu PC sin regalar tus datos](/blog/ollamafx-guia-ia-local-privacidad-datos)
-- [Optimiza tu trabajo diario como ingeniero de datos con ChatGPT](/blog/optimiza-tu-trabajo-diario-como-ingeniero-de-datos-con-chatgpt)
+- [OllamaFX: cómo ejecutar modelos IA en tu PC sin regalar tus datos](/blog/ollamafx-guia-ia-local-privacidad-datos/)
+- [Optimiza tu trabajo diario como ingeniero de datos con ChatGPT](/blog/optimiza-tu-trabajo-diario-como-ingeniero-de-datos-con-chatgpt/)

@@ -1,4 +1,6 @@
 ---
+import { urls } from '../../lib/urls';
+
 interface Props {
   active: string;
 }
@@ -14,12 +16,12 @@ interface DashboardItem {
 }
 
 const dashboards: DashboardItem[] = [
-  { slug: "inflacion-tasa", label: "Inflación vs Tasa", href: "/observatorio/" },
-  { slug: "empleo", label: "Empleo", href: "/observatorio/empleo/" },
-  { slug: "comercio", label: "Comercio Exterior", href: "/observatorio/comercio/" },
-  { slug: "monetario", label: "Monetario", href: "/observatorio/monetario/" },
-  { slug: "pib", label: "PIB", href: "/observatorio/pib/" },
-  { slug: "acerca", label: "Acerca", href: "/observatorio/acerca/" },
+  { slug: "inflacion-tasa", label: "Inflación vs Tasa", href: urls.observatorio() },
+  { slug: "empleo", label: "Empleo", href: urls.observatorioSub('empleo') },
+  { slug: "comercio", label: "Comercio Exterior", href: urls.observatorioSub('comercio') },
+  { slug: "monetario", label: "Monetario", href: urls.observatorioSub('monetario') },
+  { slug: "pib", label: "PIB", href: urls.observatorioSub('pib') },
+  { slug: "acerca", label: "Acerca", href: urls.observatorioSub('acerca') },
 ];
 ---
 

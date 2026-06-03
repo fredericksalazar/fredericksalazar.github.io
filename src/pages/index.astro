@@ -7,6 +7,7 @@ import IconArchitecture from "../components/icons/IconArchitecture.astro";
 import IconDataEngineering from "../components/icons/IconDataEngineering.astro";
 import IconAI from "../components/icons/IconAI.astro";
 import IconCloud from "../components/icons/IconCloud.astro";
+import { urls } from "../lib/urls";
 
 const title = "Senior Data Engineer & Arquitecto de Datos";
 const description =
@@ -130,7 +131,7 @@ const latestPosts = allPosts
             arquitecturas de datos, escríbeme.
           </p>
           <div class="about-actions">
-            <a href="/experiencia/" class="about-link">
+            <a href={urls.experiencia()} class="about-link">
               Ver experiencia completa
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -145,7 +146,7 @@ const latestPosts = allPosts
                 ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
               >
             </a>
-            <a href="/certificaciones/" class="about-link about-link--muted"
+            <a href={urls.certificaciones()} class="about-link about-link--muted"
               >Ver certificaciones →</a
             >
           </div>
@@ -226,7 +227,7 @@ const latestPosts = allPosts
           <span class="section__label">Portfolio</span>
           <h2 class="section__title">Proyectos destacados</h2>
         </div>
-        <a href="/proyectos/" class="section__link">
+        <a href={urls.proyectos()} class="section__link">
           Ver todos
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -248,7 +249,7 @@ const latestPosts = allPosts
           topProyectos.map((proyecto, index) => (
             <Card
               variant="project"
-              href={`/proyectos/${proyecto.id}/`}
+              href={urls.proyecto(proyecto.id)}
               image={proyecto.data.imagen}
               imageAlt={proyecto.data.titulo}
               title={proyecto.data.titulo}
@@ -270,7 +271,7 @@ const latestPosts = allPosts
           <span class="section__label">Blog técnico</span>
           <h2 class="section__title">Últimas publicaciones</h2>
         </div>
-        <a href="/blog/" class="section__link">
+        <a href={urls.blog()} class="section__link">
           Ver todos
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -292,7 +293,7 @@ const latestPosts = allPosts
           latestPosts.map((post, index) => (
             <Card
               variant="blog"
-              href={`/blog/${post.id}/`}
+              href={urls.blogPost(post.id)}
               image={post.data.imagen}
               imageAlt={post.data.titulo}
               title={post.data.titulo}
