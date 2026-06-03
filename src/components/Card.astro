@@ -181,9 +181,13 @@ const HeadingTag = headingLevel;
       </a>
     </Fragment>
   ) : (
-    <!-- Project, Blog, Related: link envuelve toda la card -->
+    <!--
+      Project, Blog, Related: patrón "stretched link" (SEO-friendly).
+      Solo el título es <a>; un ::after lo expande para hacer clicable toda la
+      card. El texto ancla queda corto y rico en keywords (solo el título).
+    -->
     <Fragment>
-      <a href={href} class="card__link" aria-label={title}>
+      <div class="card__layout">
         {hasImage && (
           <div class="card__media">
             <img src={image!} alt={imageAlt || title} loading="lazy" />
@@ -218,7 +222,9 @@ const HeadingTag = headingLevel;
               )}
             </div>
           )}
-          <HeadingTag class="card__title">{title}</HeadingTag>
+          <HeadingTag class="card__title">
+            <a href={href} class="card__link">{title}</a>
+          </HeadingTag>
           {description && !isCompact && (
             <p
               class={`card__description${finalLineClamp ? " card__description--clamp" : ""}`}
@@ -228,7 +234,7 @@ const HeadingTag = headingLevel;
             </p>
           )}
           {variant === "blog" && showReadMore && (
-            <span class="card__cta">
+            <span class="card__cta" aria-hidden="true">
               {ctaText || "Leer más"}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -250,7 +256,7 @@ const HeadingTag = headingLevel;
             <span class="card__date">{formattedDate}</span>
           )}
         </div>
-      </a>
+      </div>
       {showTags && tags.length > 0 && (
         <div class="card__tags card__tags--footer">
           {tags.map((tag) => (
@@ -272,6 +278,7 @@ const HeadingTag = headingLevel;
      ============================================ */
 
   .card {
+    position: relative;
     display: flex;
     flex-direction: column;
     background: var(--color-sidebar, #ffffff);
@@ -290,13 +297,36 @@ const HeadingTag = headingLevel;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
   }
 
-  /* Link wrapper */
-  .card__link {
+  /* ── Layout wrapper (media + body) ────────────────────────────────
+     Antes este wrapper era un <a> envolviendo todo. Ahora es un <div>:
+     el patrón "stretched link" hace que el <a> alrededor del título
+     extienda su área clicable a toda la card vía ::after. Así el texto
+     ancla queda corto (solo el título) y rico en keywords. */
+  .card__layout {
     display: flex;
     flex-direction: column;
     flex: 1;
-    text-decoration: none;
+  }
+
+  /* Title link — wrapper minimalista. La magia está en ::after. */
+  .card__link {
     color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .card__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  /* Los tags internos son enlaces independientes — deben quedar por
+     encima de la zona clicable del título stretched-link. */
+  .card__tags--footer .card__tag--link {
+    position: relative;
+    z-index: 2;
   }
 
   /* ============================================
@@ -498,8 +528,8 @@ const HeadingTag = headingLevel;
     margin-bottom: 0.35rem;
   }
 
-  .card__link:hover .card__title,
-  .card:hover .card__title {
+  .card:hover .card__title,
+  .card__link:hover {
     color: var(--color-accent);
   }
 
@@ -640,7 +670,7 @@ const HeadingTag = headingLevel;
     background: var(--color-hover);
   }
 
-  .card--horizontal .card__link {
+  .card--horizontal .card__layout {
     flex-direction: row;
     gap: 1.25rem;
     padding: 1rem;
@@ -728,10 +758,15 @@ const HeadingTag = headingLevel;
     }
   }
 
-  /* Focus visible for keyboard navigation */
-  .card__link:focus-visible {
+  /* Focus visible for keyboard navigation — el outline se aplica a toda
+     la card cuando el enlace del título recibe foco, manteniendo la
+     misma UX visual que antes (cuando el <a> envolvía todo). */
+  .card:focus-within {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
+  }
+  .card__link:focus-visible {
+    outline: none;
   }
 
   .card__footer:focus-visible {

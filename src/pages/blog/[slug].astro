@@ -164,16 +164,20 @@ if (post.data.resumen) articleSchema.abstract = post.data.resumen;
     {(newer || older) && (
       <nav class="prevnext" aria-label="Navegación entre artículos">
         {older ? (
-          <a class="prevnext__link prevnext__link--prev" href={urls.blogPost(older.id)} rel="prev">
-            <span class="prevnext__dir">← Artículo anterior</span>
-            <span class="prevnext__title">{older.data.titulo}</span>
-          </a>
+          <div class="prevnext__link prevnext__link--prev">
+            <span class="prevnext__dir" aria-hidden="true">← Artículo anterior</span>
+            <span class="prevnext__title">
+              <a href={urls.blogPost(older.id)} rel="prev" class="prevnext__anchor">{older.data.titulo}</a>
+            </span>
+          </div>
         ) : <span />}
         {newer ? (
-          <a class="prevnext__link prevnext__link--next" href={urls.blogPost(newer.id)} rel="next">
-            <span class="prevnext__dir">Artículo siguiente →</span>
-            <span class="prevnext__title">{newer.data.titulo}</span>
-          </a>
+          <div class="prevnext__link prevnext__link--next">
+            <span class="prevnext__dir" aria-hidden="true">Artículo siguiente →</span>
+            <span class="prevnext__title">
+              <a href={urls.blogPost(newer.id)} rel="next" class="prevnext__anchor">{newer.data.titulo}</a>
+            </span>
+          </div>
         ) : <span />}
       </nav>
     )}
@@ -425,14 +429,17 @@ if (post.data.resumen) articleSchema.abstract = post.data.resumen;
     gap: 1rem;
     margin: 2.5rem 0;
   }
+  /* "Stretched link" pattern: el <a> envuelve solo el título; el
+     ::after lo expande para que toda la card sea clicable. El anchor
+     text queda corto (solo el título). */
   .prevnext__link {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
     padding: 1rem 1.15rem;
     border: 1px solid var(--color-border);
     border-radius: 0.5rem;
-    text-decoration: none;
     background: var(--color-sidebar, #fff);
     transition: border-color 0.15s, transform 0.15s;
   }
@@ -451,6 +458,20 @@ if (post.data.resumen) articleSchema.abstract = post.data.resumen;
     font-weight: 600;
     font-size: 0.95rem;
     line-height: 1.4;
+  }
+  .prevnext__anchor {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .prevnext__anchor::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .prevnext__link:hover .prevnext__anchor {
+    color: var(--color-accent);
   }
   @media (max-width: 640px) {
     .prevnext { grid-template-columns: 1fr; }
