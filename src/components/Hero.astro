@@ -32,6 +32,7 @@ interface HeroImage {
 interface Props {
   badge?: { text: string };
   title?: string;
+  titleAs?: "h1" | "h2";
   subtitle?: string;
   kpis?: KPI[];
   tags?: string[];
@@ -40,7 +41,8 @@ interface Props {
   showPartners?: boolean;
 }
 
-const { badge, title, subtitle, kpis = [], tags = [], image, class: className, showPartners = true } = Astro.props;
+const { badge, title, titleAs = "h1", subtitle, kpis = [], tags = [], image, class: className, showPartners = true } = Astro.props;
+const TitleTag = titleAs;
 ---
 
 <section class:list={["hero", className]}>
@@ -61,7 +63,7 @@ const { badge, title, subtitle, kpis = [], tags = [], image, class: className, s
           </span>
         )}
 
-        {title && <h2 class="hero__title">{title}</h2>}
+        {title && <TitleTag class="hero__title">{title}</TitleTag>}
 
         <!-- Subtítulo / tagline -->
         {subtitle && <p class="hero__subtitle">{subtitle}</p>}

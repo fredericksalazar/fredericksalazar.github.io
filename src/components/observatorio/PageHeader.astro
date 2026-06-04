@@ -9,7 +9,7 @@ const { eyebrow, hint } = Astro.props;
 
 <section class="page-header" aria-label="Resumen del estado actual">
   <span class="page-header__eyebrow">{eyebrow}</span>
-  <h2 class="page-header__lead"><slot /></h2>
+  <p class="page-header__lead"><slot /></p>
   {hint && <p class="page-header__hint">{hint}</p>}
   <slot name="hint" />
 </section>

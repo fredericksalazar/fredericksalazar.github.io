@@ -329,7 +329,7 @@ const jsonLd = {
         </div>
 
         <div class="lectura-estrategica">
-          <h4>Lectura estratégica</h4>
+          <h3>Lectura estratégica</h3>
           <ul>
             <li>
               A nivel nacional la <strong>izquierda</strong> varía <strong>{fmtSignedPct(resumen[0].pctNacional)}</strong>
@@ -359,10 +359,10 @@ const jsonLd = {
         <div class="tablas-tendencias">
           {bloques.map((b) => (
             <div class="tabla-wrap tendencia-tabla">
-              <h4 class="tabla-titulo">
+              <h3 class="tabla-titulo">
                 <span class={`chip chip--${b}`}>{b}</span> — variación por departamento
                 <span class="tabla-titulo__hint">· clic en una columna para ordenar</span>
-              </h4>
+              </h3>
               <div class="tabla-scroll">
                 <table class="tabla-detalle tabla-sortable" data-sort-table>
                   <thead>
@@ -407,7 +407,7 @@ const jsonLd = {
         </div>
 
         <div class="tabla-wrap variacion">
-          <h4 class="tabla-titulo">Variación por bloque ideológico (2022 → 2026)</h4>
+          <h3 class="tabla-titulo">Variación por bloque ideológico (2022 → 2026)</h3>
           <table class="tabla-detalle">
             <thead>
               <tr>
@@ -442,7 +442,7 @@ const jsonLd = {
             { anio: "2026 — 1ª vuelta", filas: filas2026, total: eleccion.agregados.nacional.validos },
           ].map((t) => (
             <div class="tabla-wrap">
-              <h4 class="tabla-titulo">{t.anio}</h4>
+              <h3 class="tabla-titulo">{t.anio}</h3>
               <table class="tabla-detalle">
                 <thead>
                   <tr><th>Candidato</th><th>Partido</th><th>Bloque</th><th class="num">Votos</th><th class="num">% válidos</th></tr>

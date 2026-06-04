@@ -43,7 +43,7 @@ const jsonLd = {
   description="Producto Interno Bruto de Colombia: PIB total, crecimiento, PIB per cápita, población y deuda pública. Datos del Banco Mundial desde 1960."
   image="/images/observatorio.png" fullWidth={true}>
 
-  <Hero badge={{ text: "Cuentas Nacionales · Colombia" }} title="Observatorio de Datos de Colombia"
+  <Hero badge={{ text: "Cuentas Nacionales · Colombia" }} title="PIB y cuentas nacionales de Colombia"
     subtitle="El Observatorio de Datos de Colombia consolida, procesa y publica los indicadores macroeconómicos que definen el pulso del país: para que cualquier persona lea la economía colombiana como un gerente lee el dashboard de su empresa."
     tags={["Inflación", "Empleo", "Comercio Exterior", "PIB", "Monetario"]} showPartners={false}>
     <MapaColombia slot="visual" />
@@ -77,7 +77,7 @@ const jsonLd = {
       <Chart slot="visual" id="pib-historico" embedded={true} />
     </IndicadorPanel>
 
-    <IndicadorPanel numero="02" eyebrow="Riqueza por habitante" titulo="PIB per cápita"
+    <IndicadorPanel numero="02" eyebrow="Riqueza por habitante" titulo="PIB per cápita: la riqueza por habitante"
       lead="El PIB dividido por la población: de $258 en 1960 a $7,919 en 2024. Mide el ingreso promedio por colombiano y es la mejor métrica de bienestar material."
       fuente={fuentePIB}>
       <Fragment slot="text">

@@ -86,7 +86,7 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
 >
   <Hero
     badge={{ text: "Experimento · Agente IA + Datos oficiales" }}
-    title="🔮 Pronóstico Segunda Vuelta 2026"
+    title="Pronóstico Segunda Vuelta 2026"
     subtitle="Modelo cuantitativo para la segunda vuelta presidencial"
   />
   <EleccionesNav active="pronostico" />
@@ -128,12 +128,12 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
         <div class="metodo-pasos">
           <article class="metodo-card">
             <span class="metodo-num">A</span>
-            <h4>Análisis de 2022 (1ª y 2ª vuelta)</h4>
+            <h3>Análisis de 2022 (1ª y 2ª vuelta)</h3>
             <p>En la 1V 2022 la izquierda (Petro) partió de 8.53M. En la 2V llegó a 11.28M: un crecimiento del <strong>+32%</strong> que <strong>no</strong> fue uniforme, sino concentrado en la periferia (Caribe y Pacífico) donde la abstención se politizó. Por su parte, la derecha sumó ~11M en 1V pero sólo consolidó 10.58M detrás de Hernández en 2V: hubo <strong>fuga</strong> hacia el voto en blanco y la abstención. Esos dos comportamientos —multiplicador de movilización de izquierda y tasa de transferencia de derecha— se miden departamento por departamento.</p>
           </article>
           <article class="metodo-card">
             <span class="metodo-num">B</span>
-            <h4>Comparativo 1V 2022 vs 1V 2026 (mismo espectro)</h4>
+            <h3>Comparativo 1V 2022 vs 1V 2026 (mismo espectro)</h3>
             <p>El punto de partida de 2026 es estructuralmente parecido al de 2022: un país tripartito con una izquierda fuerte, una derecha mayoritaria pero fragmentada y un centro pequeño. La diferencia clave: en 2026 la izquierda <strong>arranca más arriba</strong> (Cepeda 2º con una base mucho mayor que la de Petro en 2022 relativo al líder), lo que cambia el punto de aplicación de los multiplicadores.</p>
             <div class="comparativo-mini">
               <table class="tabla-detalle">
@@ -155,7 +155,7 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
           </article>
           <article class="metodo-card">
             <span class="metodo-num">C</span>
-            <h4>Moderación (lo que evita el sobre-optimismo)</h4>
+            <h3>Moderación (lo que evita el sobre-optimismo)</h3>
             <p>El balotaje de 2022 fue atípico (Petro vs un outsider antisistema, polarización récord). El modelo modera ese efecto pero calibra cada supuesto con criterio político, no con prudencia ciega:</p>
             <ul>
               <li><strong>Amortigua</strong> el multiplicador de izquierda con regresión a la media (λ=0.72) y techo <strong>1.32x</strong> — promedio aplicado: <strong>{sim.totales.multIzqPromedio.toFixed(3)}x</strong>. No lo aplasta: la izquierda sí moviliza en 2ª vuelta.</li>
@@ -165,7 +165,7 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
           </article>
           <article class="metodo-card">
             <span class="metodo-num">D</span>
-            <h4>Factores técnicos considerados</h4>
+            <h3>Factores técnicos considerados</h3>
             <ul>
               <li>Voto por candidato y por bloque ideológico en los 33 departamentos × 3 elecciones.</li>
               <li>Multiplicador de movilización periférica (Caribe/Pacífico vs interior).</li>
@@ -303,14 +303,14 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
     >
       <div slot="visual" class="veredicto">
         <div class="veredicto-card" style={`border-left-color: ${ganadorColor}`}>
-          <h4 class="veredicto-card__title">Veredicto del modelo</h4>
+          <h3 class="veredicto-card__title">Veredicto del modelo</h3>
           <p class="veredicto-card__big" style={`color: ${ganadorColor}`}>{ganadorNac}</p>
           <p>Bajo los supuestos centrales <em>realistas</em> (multiplicador de izquierda amortiguado λ=0.72 con techo 1.32x, transferencia de derecha con piso 0.82 por el alto rechazo de De la Espriella, centro 57/43 hacia Cepeda), el modelo proyecta una victoria de <strong>{ganadorNac}</strong> con un margen de <strong>{Math.abs(sim.nacional.margenPp).toFixed(2)} pp</strong> ({fmtSigned(sim.nacional.margenAbs)} votos). La simulación Monte Carlo (4.000 corridas) le asigna una <strong>probabilidad de {(probGanador * 100).toFixed(1)}%</strong>, con un margen que en el 80% central de los escenarios va de {mc.margenPpP10.toFixed(1)} a {mc.margenPpP90.toFixed(1)} pp. No es una certeza: es un favoritismo cuantificado.</p>
         </div>
 
         <div class="grid-2col">
           <div class="est-card izq">
-            <h5>¿Por qué gana Cepeda según el modelo?</h5>
+            <h4>¿Por qué gana Cepeda según el modelo?</h4>
             <ol>
               <li><strong>Multiplicador amortiguado:</strong> el multiplicador de izquierda aplicado (ya moderado) promedia {sim.totales.multIzqPromedio.toFixed(3)}x. Aun amortiguado, amplía la base de Cepeda más de lo que la derecha logra consolidar.</li>
               <li><strong>Costa Caribe y Pacífico:</strong> los departamentos donde Cepeda gana con más holgura son {top5Cepeda.map(d => d.nombre).join(", ")} — ahí concentra el grueso del margen.</li>
@@ -318,7 +318,7 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
             </ol>
           </div>
           <div class="est-card der">
-            <h5>¿Por qué falla De la Espriella?</h5>
+            <h4>¿Por qué falla De la Espriella?</h4>
             <ol>
               <li><strong>Desgaste de transferencia:</strong> aun con piso de consolidación 0.90, la transferencia promedio aplicada es {sim.totales.transfDerPromedio.toFixed(3)}. Sobre su base 2026 (~{fmtCompact(sim.totales.baseDer26)}), la fuga ronda los {fmtCompact(Math.round(sim.departamentos.reduce((a, d) => a + d.baseDer26 * (1 - d.transfDer), 0)))} votos.</li>
               <li><strong>Plazas fuertes pero acotadas:</strong> gana con holgura en {top5Abelardo.map(d => d.nombre).join(", ")}, pero su techo en la periferia es estructuralmente bajo.</li>
@@ -329,7 +329,7 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
 
         <div class="grid-2col">
           <div class="est-card izq">
-            <h5>🔴 Ruta al triunfo · Cepeda</h5>
+            <h4>🔴 Ruta al triunfo · Cepeda</h4>
             <ol>
               <li>Operación electoral extrema en bisagras: {bisagra.slice(0, 4).map(d => d.nombre).join(", ")}.</li>
               <li>Endoso explícito y activo del centro (Fajardo, Claudia López) — inclinar el reparto del centro a su favor.</li>
@@ -337,7 +337,7 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
             </ol>
           </div>
           <div class="est-card der">
-            <h5>🔵 Ruta al triunfo · De la Espriella</h5>
+            <h4>🔵 Ruta al triunfo · De la Espriella</h4>
             <ol>
               <li>Cerrar la fuga de transferencia: alianza pública con Paloma Valencia, Daniel Palacios, Miguel Uribe.</li>
               <li>Disputarle el centro: bajar el supuesto a 50/50 ya cambia significativamente el margen.</li>
@@ -347,7 +347,7 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
         </div>
 
         <div class="lectura-estrategica">
-          <h4>Sensibilidad — ¿qué cambia si los supuestos se mueven?</h4>
+          <h3>Sensibilidad — ¿qué cambia si los supuestos se mueven?</h3>
           <ul>
             <li>Si el <strong>centro se reparte 50/50</strong> en lugar de 57/43, el margen de Cepeda se reduce en aproximadamente {Math.round(sim.totales.baseCentro26 * 0.14 / 1000)}k votos. Con un margen actual de {fmtSigned(sim.nacional.margenAbs)} votos, el resultado {Math.abs(sim.nacional.margenAbs) < sim.totales.baseCentro26 * 0.14 ? "se voltea" : "se mantiene"}.</li>
             <li>Si la <strong>transferencia de derecha</strong> alcanza el 100% (sin fuga), De la Espriella suma ~{fmtCompact(Math.round(sim.departamentos.reduce((a, d) => a + d.baseDer26 * (1 - d.transfDer), 0)))} votos adicionales — el escenario más favorable para la derecha.</li>

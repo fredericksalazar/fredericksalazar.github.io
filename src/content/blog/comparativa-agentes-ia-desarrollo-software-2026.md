@@ -33,19 +33,19 @@ Saber en qué paradigma encaja tu trabajo importa más que mirar solo el precio.
 
 ![Interfaz de OpenCode Go ejecutando Qwen y GLM en terminal](/images/blog/opencode-go-interfaz.png)
 
-### Capacidades técnicas
+### OpenCode Go — Capacidades técnicas
 
 - Ejecución de **múltiples subagentes en paralelo** desde la misma sesión de terminal.
 - Integración nativa con **Language Server Protocol (LSP)** para inteligencia específica por lenguaje.
 - Soporte para **modelos locales** vía Ollama y más de **75 proveedores externos** (OpenRouter, Groq, DeepSeek, Together, etc.).
 
-### Fortalezas
+### OpenCode Go — Fortalezas
 
 - **Privacidad absoluta**: no almacena código en servidores de terceros propios.
 - **Flexibilidad económica**: el plan **OpenCode Go** ofrece acceso a modelos de frontera potentes como **GLM-5.1**, **Qwen3.6 Plus**, **Kimi** y **MiniMax** por una fracción del costo tradicional.
 - **Comunidad activa** que aporta integraciones y plugins constantemente.
 
-### Debilidades
+### OpenCode Go — Debilidades
 
 - Requiere que el desarrollador **gestione activamente el uso de tokens** y cambie manualmente entre modelos pesados y ligeros para no agotar su presupuesto de **$12 USD equivalentes cada 5 horas**.
 - Curva de aprendizaje más alta que un IDE listo para usar.
@@ -56,19 +56,19 @@ Saber en qué paradigma encaja tu trabajo importa más que mirar solo el precio.
 
 ![Claude Code con Sonnet 5 Fennec ejecutando refactorización autónoma](/images/blog/claude-code-sonnet-5-fennec.png)
 
-### Capacidades técnicas
+### Claude Code — Capacidades técnicas
 
 - **Orquestación de subagentes** (fan-out) sobresaliente, capaz de paralelizar exploración, edición y validación.
 - **Refactorizaciones nativas** que abarcan decenas de archivos sin romper dependencias.
 - Retención de contexto excepcional en sesiones largas.
 
-### Fortalezas
+### Claude Code — Fortalezas
 
 - **Líder absoluto en rendimiento puro** según los benchmarks SWE-bench Verified de 2026.
 - Ideal para **bases de código heredadas** donde el costo humano de depurar supera ampliamente el costo del agente.
 - Salida de código limpia y consistente con el estilo del repositorio.
 
-### Debilidades
+### Claude Code — Debilidades
 
 - **La crisis de costos**: Anthropic retiró Claude Code de sus planes estándar de $20 USD. Hoy requiere planes **Max** que oscilan entre los **$100 y $200 USD mensuales**.
 - Inalcanzable para desarrolladores independientes sin financiación corporativa.
@@ -79,19 +79,19 @@ Saber en qué paradigma encaja tu trabajo importa más que mirar solo el precio.
 
 ![OpenAI Codex CLI escrito en Rust ejecutando GPT-5.3-Codex-Spark](/images/blog/openai-codex-cli-rust.png)
 
-### Capacidades técnicas
+### OpenAI Codex — Capacidades técnicas
 
 - Ejecución en **cloud-sandboxes aislados**, previniendo que el agente afecte el sistema operativo local.
 - Ventanas de contexto de hasta **1.05 millones de tokens**.
 - Variantes especializadas como **GPT-5.3-Codex-Spark**, que procesa hasta **1.000 tokens por segundo**.
 
-### Fortalezas
+### OpenAI Codex — Fortalezas
 
 - **Velocidad y seguridad** difíciles de superar.
 - Rey absoluto de tareas nativas de **línea de comandos**, scripting y pipelines.
 - Excelente integración con flujos de **GitHub Actions** y runners aislados.
 
-### Debilidades
+### OpenAI Codex — Debilidades
 
 - **Penalizaciones financieras agresivas**: usar el modo de contexto extendido **duplica el costo** de los tokens de entrada.
 - La CLI puede saturar la ventana de contexto si no se utilizan herramientas de compresión como **Rust Token Killer (RTK)** para filtrar el ruido de la terminal.
@@ -103,19 +103,19 @@ Saber en qué paradigma encaja tu trabajo importa más que mirar solo el precio.
 
 ![Gemini Antigravity IDE con modos de planificación y ejecución rápida](/images/blog/gemini-antigravity-ide.png)
 
-### Capacidades técnicas
+### Gemini Antigravity — Capacidades técnicas
 
 - **Contexto nativo de 1 a 2 millones de tokens**, eliminando la necesidad de sistemas RAG complejos para repositorios medianos y grandes.
 - **Modos duales**: Planificación (deliberativo) y Ejecución Rápida (Flash).
 - Comprensión de repositorios **gigantes y no documentados** con relativamente pocas indicaciones.
 
-### Fortalezas
+### Gemini Antigravity — Fortalezas
 
 - **Excelente relación calidad-precio** en la API base.
 - Interfaz visual dual muy intuitiva para alternar entre pensar y ejecutar.
 - Brillante en **razonamiento abstracto** sobre código heredado.
 
-### Debilidades
+### Gemini Antigravity — Debilidades
 
 - **Límites de cuota draconianos** en el IDE: un flujo intensivo agota el presupuesto semanal rápido.
 - **Bloqueos punitivos de hasta 7 días** para usuarios del plan Pro de $20 USD que excedan el cupo — un riesgo serio en medio de un sprint de entrega.
