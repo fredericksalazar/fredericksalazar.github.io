@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-05-28T19:37:22+00:00",
+    "ultima_actualizacion": "2026-06-05T15:51:28+00:00",
     "fuentes": {
       "banrep_trm": {
-        "nombre": "Banco de la República — TRM",
+        "nombre": "Banco de la Republica — TRM",
         "url": "https://www.banrep.gov.co/es/estadisticas/trm",
         "indicador": "Tasa Representativa del Mercado (promedio mensual)"
       },
@@ -20,7 +20,7 @@
     },
     "definiciones": {
       "trm": "Tasa Representativa del Mercado USD/COP, promedio mensual del cierre diario.",
-      "reservas_netas": "Activos externos netos del Banco de la República, en miles de millones de USD.",
+      "reservas_netas": "Activos externos netos del Banco de la Republica, en miles de millones de USD.",
       "cuenta_corriente": "Saldo de cuenta corriente como porcentaje del PIB (WDI BN.CAB.XOKA.GD.ZS).",
       "ied": "Inversion extranjera directa, ingresos netos, como porcentaje del PIB (WDI BX.KLT.DINV.WD.GD.ZS).",
       "deuda_externa": "Stock de deuda externa total como porcentaje del INB (WDI DT.DOD.DECT.GN.ZS).",
@@ -29,18 +29,18 @@
     },
     "cobertura": {
       "primer_periodo": "1960-12",
-      "ultimo_periodo": "2026-05",
-      "total_registros": 324,
+      "ultimo_periodo": "2026-06",
+      "total_registros": 325,
       "granularidad": "mensual"
     }
   },
   "indicadores": {
     "trm": {
       "actual": {
-        "periodo": "2026-05",
-        "valor": 3718.99,
-        "variacion": "subio",
-        "delta": 101.47
+        "periodo": "2026-06",
+        "valor": 3587.71,
+        "variacion": "bajo",
+        "delta": -126.31
       },
       "unidad": "COP/USD"
     },
@@ -83,9 +83,27 @@
   },
   "serie": [
     {
+      "periodo": "2026-06",
+      "trm": 3587.71,
+      "trm_delta": -126.31,
+      "trm_variacion": "bajo",
+      "reservas_netas": null,
+      "reservas_netas_delta": null,
+      "reservas_netas_variacion": null,
+      "cuenta_corriente": null,
+      "cuenta_corriente_delta": null,
+      "cuenta_corriente_variacion": null,
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null,
+      "deuda_externa": null,
+      "deuda_externa_delta": null,
+      "deuda_externa_variacion": null
+    },
+    {
       "periodo": "2026-05",
-      "trm": 3718.99,
-      "trm_delta": 101.47,
+      "trm": 3714.02,
+      "trm_delta": 96.5,
       "trm_variacion": "subio",
       "reservas_netas": null,
       "reservas_netas_delta": null,
@@ -5924,7 +5942,7 @@
       "2007": 2077.25,
       "2008": 1966.94,
       "2009": 2155.67,
-      "2010": 1898.95,
+      "2010": 1898.94,
       "2011": 1847.14,
       "2012": 1797.7,
       "2013": 1868.75,
@@ -5940,7 +5958,7 @@
       "2023": 4327.55,
       "2024": 4071.18,
       "2025": 4053.02,
-      "2026": 3686.54
+      "2026": 3669.24
     },
     "reservas_netas": {
       "1960": 0.17,
