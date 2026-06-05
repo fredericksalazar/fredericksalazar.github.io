@@ -46,7 +46,26 @@ const jsonLd = {
       "datePublished": "2026-06-01",
       "author": { "@type": "Person", "name": "Frederick Salazar" },
       "about": [
-        { "@type": "Event", "name": "Elecciones Presidenciales Colombia 2022" },
+        {
+          "@type": "Event",
+          "name": "Elecciones Presidenciales Colombia 2022 — 1ª Vuelta",
+          "description": "Primera vuelta de las elecciones presidenciales de Colombia, celebrada el 29 de mayo de 2022.",
+          "startDate": "2022-05-29",
+          "endDate": "2022-05-29",
+          "eventStatus": "https://schema.org/EventScheduled",
+          "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+          "location": {
+            "@type": "Country",
+            "name": "Colombia",
+            "address": { "@type": "PostalAddress", "addressCountry": "CO" }
+          },
+          "organizer": {
+            "@type": "GovernmentOrganization",
+            "name": "Registraduría Nacional del Estado Civil",
+            "url": "https://www.registraduria.gov.co/"
+          },
+          "image": "https://fredericksalazar.github.io/images/observatorio.png"
+        },
         { "@type": "Place", "name": "Colombia" }
       ]
     }
