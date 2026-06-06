@@ -1,5 +1,6 @@
 ---
 titulo: "Elecciones Presidenciales Colombia 2026: Análisis de la Primera Vuelta"
+tituloSeo: "Elecciones Colombia 2026: Análisis Primera Vuelta"
 fecha: 2026-06-02
 descripcion: "Análisis de datos de la primera vuelta presidencial de Colombia 2026: De la Espriella y Cepeda al balotaje, participación del 57.9% y un país partido en dos."
 etiquetas: ["Análisis de Datos", "Política", "Colombia", "Elecciones"]

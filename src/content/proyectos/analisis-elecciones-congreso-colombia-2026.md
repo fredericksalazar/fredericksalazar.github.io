@@ -1,6 +1,6 @@
 ---
 titulo: "Análisis Elecciones Congreso Colombia 2022-2026"
-descripcion: "Dashboard interactivo de resultados electorales del Congreso colombiano. Visualizaciones D3.js, mapas coropléticos, análisis comparativo 2022 vs 2026, costo por curul y distribución ideológica."
+descripcion: "Dashboard interactivo de resultados del Congreso colombiano: mapas coropléticos con D3.js, comparativo 2022 vs 2026, costo por curul y distribución ideológica."
 tecnologias: ["D3.js", "Chart.js", "Python", "Data Visualization", " electoral"]
 categoria: "data-analysis"
 fecha: "2026-03-16"

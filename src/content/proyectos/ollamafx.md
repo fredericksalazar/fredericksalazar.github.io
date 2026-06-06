@@ -1,5 +1,6 @@
 ---
 titulo: "OllamaFX: Cliente de escritorio nativo para Ollama con soporte RAG"
+tituloSeo: "OllamaFX: cliente de escritorio para Ollama"
 descripcion: "Interfaz de escritorio nativa para Ollama con soporte RAG. Gestiona modelos LLM locales, chatea con tus PDFs de forma privada y rápida."
 tecnologias: ["Java", "JavaFX", "Ollama", "RAG", "LLM", "SQLite"]
 categoria: "software"

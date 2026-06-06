@@ -1,6 +1,6 @@
 ---
 titulo: "Análisis Económico de Colombia 1960–2023"
-descripcion: "Estudio detallado de los indicadores económicos de Colombia (1960-2023): trayectoria del PIB, exportaciones, importaciones e inflación por periodos presidenciales."
+descripcion: "Estudio de los indicadores económicos de Colombia (1960-2023): trayectoria del PIB, exportaciones, importaciones e inflación por periodos presidenciales."
 tecnologias: ["Python", "Pandas", "Plotly", "Matplotlib", "Jupyter", "World Bank API"]
 categoria: "data-analysis"
 fecha: "2023-10-01"

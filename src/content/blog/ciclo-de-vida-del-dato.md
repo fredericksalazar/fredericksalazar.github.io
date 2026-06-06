@@ -1,5 +1,6 @@
 ---
 titulo: "Ciclo de Vida del Dato (Data Lifecycle): Gestión de Punta a Punta"
+tituloSeo: "Ciclo de Vida del Dato: gestión de punta a punta"
 fecha: 2024-05-02
 descripcion: "Gestión del Data Lifecycle: captura, almacenamiento, uso, archivado y eliminación del dato. Gobierno de datos y políticas de retención."
 etiquetas: ["Gestión de Datos", "Ciclo de Vida", "Data Governance"]

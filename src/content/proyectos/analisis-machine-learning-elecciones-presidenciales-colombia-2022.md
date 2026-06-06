@@ -1,6 +1,7 @@
 ---
 titulo: "Análisis de Sentimientos con ML: Elecciones Presidenciales Colombia 2022"
-descripcion: "Proyecto de Machine Learning y NLP aplicado a las elecciones presidenciales de Colombia 2022: extracción de tweets de candidatos, análisis de sentimientos y emociones con NLTK y Python."
+tituloSeo: "Análisis de Sentimientos con ML: Elecciones 2022"
+descripcion: "Machine Learning y NLP sobre las elecciones presidenciales de Colombia 2022: extracción de tweets, análisis de sentimientos y emociones con NLTK y Python."
 tecnologias: ["Python", "NLP", "Machine Learning", "NLTK", "Pandas", "Matplotlib", "Twitter API"]
 categoria: "ml"
 fecha: "2022-04-01"

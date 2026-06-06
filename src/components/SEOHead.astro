@@ -51,7 +51,13 @@ const robotsContent = noindex
   : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
 const SITE_NAME   = 'Frederick Salazar — Data Engineer & Arquitecto de Datos';
-const FULL_TITLE  = `${title} | Frederick Salazar`;
+// El sufijo de marca solo se añade si el título total se mantiene ≤ 60 caracteres
+// (límite SEO de Bing/Google). Para títulos ya descriptivos y largos se omite la
+// marca en vez de provocar truncado. Mantén cada `title` de página ≤ 60.
+const TITLE_SUFFIX = ' | Frederick Salazar';
+const FULL_TITLE  = title.length + TITLE_SUFFIX.length <= 60
+  ? `${title}${TITLE_SUFFIX}`
+  : title;
 const CANONICAL   = new URL(Astro.url.pathname, SITE_URL).href;
 const IMAGE_URL   = new URL(image, SITE_URL).href;
 

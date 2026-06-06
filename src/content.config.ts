@@ -30,6 +30,7 @@ const proyectos = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/proyectos' }),
   schema: z.object({
     titulo: z.string(),
+    tituloSeo: z.string().optional(),
     descripcion: z.string(),
     tecnologias: z.array(z.string()),
     categoria: z.enum(['data-analysis', 'ml', 'software', 'data-engineering']).default('software'),

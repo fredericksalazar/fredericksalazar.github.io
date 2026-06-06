@@ -1,6 +1,7 @@
 ---
 titulo: "DataCompass: Diagnóstico de madurez en gobierno de datos en menos de 10 minutos"
-descripcion: "Plataforma web gratuita que evalúa la madurez del gobierno de datos de tu organización con el framework CMMI y entrega un diagnóstico ejecutivo accionable al instante."
+tituloSeo: "DataCompass: diagnóstico de gobierno de datos"
+descripcion: "Plataforma web gratuita que evalúa la madurez del gobierno de datos de tu organización con el framework CMMI y entrega un diagnóstico ejecutivo al instante."
 tecnologias: []
 categoria: "data-analysis"
 fecha: "2026-05-06"

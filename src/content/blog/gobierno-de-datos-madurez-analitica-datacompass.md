@@ -1,6 +1,6 @@
 ---
 titulo: "Gobierno de Datos y Madurez Analítica: El Paso Cero para una Organización Data-Driven"
-tituloSeo: "Gobierno de Datos y Madurez Analítica: Cómo Evaluar tu Organización con DataCompass"
+tituloSeo: "Gobierno de Datos y Madurez Analítica con CMMI"
 fecha: 2026-05-29
 descripcion: "Descubre por qué el 80% de las iniciativas de gobierno de datos fracasan y cómo DataCompass evalúa tu madurez analítica con el modelo CMMI en 5 dominios."
 etiquetas: ["Data Governance", "Madurez de Datos", "CMMI", "DataCompass", "Data-Driven", "Estrategia de Datos", "CDO"]

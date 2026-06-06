@@ -10,7 +10,7 @@ import BlogFilters from '../../components/BlogFilters.astro';
 import { urls, absUrls, SITE_URL } from '../../lib/urls';
 
 const title       = 'Blog de Data Engineering y Machine Learning';
-const description = 'Artículos técnicos sobre Data Engineering, Big Data, Machine Learning, Azure y Analytics. Tutoriales, guías y análisis de datos por Frederick Salazar, Data Engineer en Colombia.';
+const description = 'Artículos técnicos sobre Data Engineering, Big Data, Machine Learning, Azure y Analytics. Tutoriales y análisis de datos por Frederick Salazar.';
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 const posts    = allPosts.sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());

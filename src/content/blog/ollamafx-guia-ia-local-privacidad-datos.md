@@ -1,7 +1,8 @@
 ---
 titulo: "OllamaFX: Cómo ejecutar modelos IA en tu PC sin regalar tus datos"
+tituloSeo: "OllamaFX: ejecuta modelos de IA locales en tu PC"
 fecha: 2026-03-05
-descripcion: "¿Te preocupa que tus datos terminen en las nubes de ChatGPT o Gemini? Descubre cómo recuperar tu soberanía digital instalando modelos de IA (LLM) localm..."
+descripcion: "¿Te preocupa que tus datos terminen en ChatGPT o Gemini? Aprende a recuperar tu soberanía digital ejecutando modelos de IA (LLM) localmente con OllamaFX."
 etiquetas: ["IA Local", "Ollama", "Privacidad", "LLM", "OllamaFX"]
 autor: "Frederick Salazar"
 imagen: "/images/blog/ollamafx-disponibles.png"

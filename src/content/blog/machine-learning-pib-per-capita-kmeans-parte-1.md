@@ -1,7 +1,8 @@
 ---
 titulo: "Machine Learning en el PIB Per Cápita: Análisis con KMeans (Parte 1)"
+tituloSeo: "Machine Learning del PIB Per Cápita con KMeans"
 fecha: 2025-02-13
-descripcion: "Descubre cómo aplicar Machine Learning al análisis del PIB Per Cápita utilizando KMeans. En esta primera parte, exploramos la clusterización de países s..."
+descripcion: "Aplica Machine Learning al análisis del PIB per cápita con KMeans. En esta primera parte exploramos la clusterización de países según su nivel de ingreso."
 etiquetas: ["Machine Learning", "KMeans", "PIB", "Python", "Análisis de Datos"]
 autor: "Frederick Salazar"
 imagen: "/images/blog/pib_per_capita_table.png"
