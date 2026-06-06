@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { urls } from '../lib/urls';
+---
+
+<BaseLayout
+  title="Página no encontrada (404)"
+  description="La página que buscas no existe o fue movida. Vuelve al inicio o explora el blog, los proyectos y el Observatorio de Datos."
+  noindex={true}
+>
+  <section class="notfound">
+    <span class="notfound__code">404</span>
+    <h1 class="notfound__title">Esta página no existe</h1>
+    <p class="notfound__lead">
+      El enlace está roto o el contenido fue movido. Desde aquí puedes seguir explorando:
+    </p>
+    <div class="notfound__links">
+      <a href={urls.home()} class="notfound__btn">Ir al inicio</a>
+      <a href={urls.blog()} class="notfound__btn notfound__btn--ghost">Blog</a>
+      <a href={urls.proyectos()} class="notfound__btn notfound__btn--ghost">Proyectos</a>
+      <a href={urls.observatorio()} class="notfound__btn notfound__btn--ghost">Observatorio</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 4rem 0;
+    text-align: center;
+  }
+  .notfound__code {
+    display: block;
+    font-size: clamp(4rem, 14vw, 8rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--color-accent);
+  }
+  .notfound__title {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 700;
+    margin: 0.75rem 0 0.5rem;
+  }
+  .notfound__lead {
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  .notfound__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+  .notfound__btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.65rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    background: var(--color-accent);
+    color: #fff;
+    border: 1px solid var(--color-accent);
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .notfound__btn:hover { background: var(--color-accent-hover); color: #fff; }
+  .notfound__btn--ghost {
+    background: transparent;
+    color: var(--color-text-secondary);
+    border-color: var(--color-border);
+  }
+  .notfound__btn--ghost:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    background: transparent;
+  }
+</style>

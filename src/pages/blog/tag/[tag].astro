@@ -84,8 +84,8 @@ const breadcrumbSchema = {
 
 <BaseLayout {title} {description} noindex={true}>
 
-  <script type="application/ld+json" set:html={JSON.stringify(collectionSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(collectionSchema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
   <nav class="breadcrumb" aria-label="Migas de pan">
     <a href={urls.home()}>Inicio</a>

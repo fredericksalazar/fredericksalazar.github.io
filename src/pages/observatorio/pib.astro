@@ -174,7 +174,7 @@ const jsonLd = {
       cobertura={`${metadata.cobertura.primer_periodo} → ${metadata.cobertura.ultimo_periodo} · ${metadata.cobertura.total_registros} registros`} />
   </div>
   <PlotlyLoader />
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </BaseLayout>
 
 <style>

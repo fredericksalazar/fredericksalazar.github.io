@@ -1,7 +1,10 @@
 ---
+import { getCollection } from 'astro:content';
 import { urls } from '../lib/urls';
 
 const currentPath = Astro.url.pathname;
+
+const proyectosCount = (await getCollection('proyectos')).length;
 
 const navItems = [
   {
@@ -62,7 +65,7 @@ const socialLinks = [
 const quickStats = [
   { label: '11+', value: 'Años' },
   { label: '10', value: 'Certs' },
-  { label: '5', value: 'Proyectos' },
+  { label: String(proyectosCount), value: 'Proyectos' },
 ];
 
 function isActive(href: string): boolean {

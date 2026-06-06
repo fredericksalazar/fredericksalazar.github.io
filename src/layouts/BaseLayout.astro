@@ -51,10 +51,8 @@ const {
       articleSection={articleSection}
       articleTags={articleTags}
     />
-    <!-- Google Sans Flex -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@100..900&display=swap" rel="stylesheet" />
+    <!-- Google Sans Flex: las etiquetas <link> de fuentes viven en SEOHead
+         (preconnect + stylesheet). No duplicar aquí. -->
     <!-- Google tag (gtag.js) -->
     <script is:inline src="https://www.googletagmanager.com/gtag/js?id=G-ZFSVVSZG6K"></script>
     <script is:inline>
@@ -62,12 +60,15 @@ const {
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-ZFSVVSZG6K');
+      // Desactivamos el page_view automático: lo emitimos manualmente en cada
+      // navegación con View Transitions para no contar doble la primera carga.
+      gtag('config', 'G-ZFSVVSZG6K', { send_page_view: false });
 
-      // Monitoreo de navegación fluida (View Transitions)
       document.addEventListener('astro:page-load', () => {
-        gtag('config', 'G-ZFSVVSZG6K', {
+        gtag('event', 'page_view', {
           page_path: window.location.pathname,
+          page_location: window.location.href,
+          page_title: document.title,
         });
       });
     </script>
