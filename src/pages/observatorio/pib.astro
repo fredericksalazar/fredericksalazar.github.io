@@ -28,13 +28,14 @@ const jsonLd = {
     "@type": "Dataset",
     name: "Observatorio de Datos de Colombia — PIB",
     description: "Producto Interno Bruto de Colombia: PIB total, crecimiento, PIB per cápita, población y deuda pública. Datos del Banco Mundial y DANE.",
-    url: "https://fredericksalazar.com/observatorio/pib",
+    url: "https://fredericksalazar.github.io/observatorio/pib/",
     keywords: ["PIB Colombia", "crecimiento económico", "PIB per cápita", "economía colombiana"],
-    creator: { "@type": "Person", name: "Frederick Salazar", url: "https://fredericksalazar.com/" },
+    creator: { "@type": "Person", name: "Frederick Salazar", url: "https://fredericksalazar.github.io/" },
     temporalCoverage: `${metadata.cobertura.primer_periodo}/${metadata.cobertura.ultimo_periodo}`,
     dateModified: metadata.ultima_actualizacion,
     license: "https://creativecommons.org/licenses/by/4.0/",
     spatialCoverage: { "@type": "Place", name: "Colombia" },
+    distribution: [{ "@type": "DataDownload", encodingFormat: "application/json", contentUrl: "https://fredericksalazar.github.io/data/data_pib.json" }],
   }],
 };
 ---

@@ -37,7 +37,7 @@ const jsonLd = {
       name: "Observatorio de Datos de Colombia — Inflación y Tasas de Interés",
       description:
         "Serie mensual consolidada de inflación anual (DANE), tasa de intervención del Banco de la República y spread real para Colombia desde 2004.",
-      url: "https://fredericksalazar.com/observatorio/",
+      url: "https://fredericksalazar.github.io/observatorio/",
       keywords: [
         "inflación Colombia",
         "tasa de interés BanRep",
@@ -48,7 +48,7 @@ const jsonLd = {
       creator: {
         "@type": "Person",
         name: "Frederick Salazar",
-        url: "https://fredericksalazar.com/",
+        url: "https://fredericksalazar.github.io/",
       },
       isBasedOn: [
         { "@type": "CreativeWork", name: fuenteInflacion.nombre, url: fuenteInflacion.url },
@@ -58,6 +58,7 @@ const jsonLd = {
       dateModified: obs.metadata.ultima_actualizacion,
       license: "https://creativecommons.org/licenses/by/4.0/",
       spatialCoverage: { "@type": "Place", name: "Colombia" },
+      distribution: [{ "@type": "DataDownload", encodingFormat: "application/json", contentUrl: "https://fredericksalazar.github.io/data/data_inflacion.json" }],
     },
     {
       "@type": "Article",
@@ -73,7 +74,7 @@ const jsonLd = {
         { "@type": "Thing", name: "Política monetaria" },
         { "@type": "Place", name: "Colombia" },
       ],
-      mainEntityOfPage: "https://fredericksalazar.com/observatorio/",
+      mainEntityOfPage: "https://fredericksalazar.github.io/observatorio/",
     },
   ],
 };

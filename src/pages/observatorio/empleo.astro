@@ -29,7 +29,7 @@ const jsonLd = {
       name: "Observatorio de Datos de Colombia — Mercado Laboral",
       description:
         "Indicadores del mercado laboral colombiano: tasa de desempleo, TGP, tasa de ocupación e informalidad. Datos del DANE (GEIH) y Banco Mundial.",
-      url: "https://fredericksalazar.com/observatorio/empleo",
+      url: "https://fredericksalazar.github.io/observatorio/empleo/",
       keywords: [
         "desempleo Colombia",
         "TGP Colombia",
@@ -41,7 +41,7 @@ const jsonLd = {
       creator: {
         "@type": "Person",
         name: "Frederick Salazar",
-        url: "https://fredericksalazar.com/",
+        url: "https://fredericksalazar.github.io/",
       },
       isBasedOn: [
         { "@type": "CreativeWork", name: fuenteEmpleo.nombre, url: fuenteEmpleo.url },
@@ -51,6 +51,7 @@ const jsonLd = {
       dateModified: metadata.ultima_actualizacion,
       license: "https://creativecommons.org/licenses/by/4.0/",
       spatialCoverage: { "@type": "Place", name: "Colombia" },
+      distribution: [{ "@type": "DataDownload", encodingFormat: "application/json", contentUrl: "https://fredericksalazar.github.io/data/data_empleo.json" }],
     },
     {
       "@type": "Article",
@@ -65,7 +66,7 @@ const jsonLd = {
         { "@type": "Thing", name: "Mercado laboral" },
         { "@type": "Place", name: "Colombia" },
       ],
-      mainEntityOfPage: "https://fredericksalazar.com/observatorio/empleo",
+      mainEntityOfPage: "https://fredericksalazar.github.io/observatorio/empleo/",
     },
   ],
 };

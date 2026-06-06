@@ -32,7 +32,7 @@ const jsonLd = {
       name: "Observatorio de Datos de Colombia — Sector Monetario y Externo",
       description:
         "Indicadores del sector monetario y externo de Colombia: TRM (USD/COP), reservas internacionales, cuenta corriente, IED y deuda externa. Datos del Banco de la República y Banco Mundial.",
-      url: "https://fredericksalazar.com/observatorio/monetario/",
+      url: "https://fredericksalazar.github.io/observatorio/monetario/",
       keywords: [
         "TRM Colombia",
         "tasa de cambio Colombia",
@@ -44,7 +44,7 @@ const jsonLd = {
       creator: {
         "@type": "Person",
         name: "Frederick Salazar",
-        url: "https://fredericksalazar.com/",
+        url: "https://fredericksalazar.github.io/",
       },
       isBasedOn: [
         { "@type": "CreativeWork", name: fuenteBanrepTRM.nombre, url: fuenteBanrepTRM.url },
@@ -54,6 +54,7 @@ const jsonLd = {
       dateModified: metadata.ultima_actualizacion,
       license: "https://creativecommons.org/licenses/by/4.0/",
       spatialCoverage: { "@type": "Place", name: "Colombia" },
+      distribution: [{ "@type": "DataDownload", encodingFormat: "application/json", contentUrl: "https://fredericksalazar.github.io/data/data_externo.json" }],
     },
     {
       "@type": "Article",
@@ -70,7 +71,7 @@ const jsonLd = {
         { "@type": "Thing", name: "Deuda externa" },
         { "@type": "Place", name: "Colombia" },
       ],
-      mainEntityOfPage: "https://fredericksalazar.com/observatorio/monetario/",
+      mainEntityOfPage: "https://fredericksalazar.github.io/observatorio/monetario/",
     },
   ],
 };

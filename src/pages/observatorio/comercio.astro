@@ -30,9 +30,9 @@ const jsonLd = {
       "@type": "Dataset",
       name: "Observatorio de Datos de Colombia — Comercio Exterior",
       description: "Indicadores de comercio exterior colombiano: exportaciones, importaciones, balanza comercial, apertura y desglose por producto. Datos del Banco Mundial y DANE.",
-      url: "https://fredericksalazar.com/observatorio/comercio",
+      url: "https://fredericksalazar.github.io/observatorio/comercio/",
       keywords: ["comercio exterior Colombia", "exportaciones Colombia", "importaciones Colombia", "balanza comercial", "apertura comercial"],
-      creator: { "@type": "Person", name: "Frederick Salazar", url: "https://fredericksalazar.com/" },
+      creator: { "@type": "Person", name: "Frederick Salazar", url: "https://fredericksalazar.github.io/" },
       isBasedOn: [
         { "@type": "CreativeWork", name: fuenteComercio.nombre, url: fuenteComercio.url },
         { "@type": "CreativeWork", name: fuenteDane.nombre, url: fuenteDane.url },
@@ -41,6 +41,7 @@ const jsonLd = {
       dateModified: metadata.ultima_actualizacion,
       license: "https://creativecommons.org/licenses/by/4.0/",
       spatialCoverage: { "@type": "Place", name: "Colombia" },
+      distribution: [{ "@type": "DataDownload", encodingFormat: "application/json", contentUrl: "https://fredericksalazar.github.io/data/data_comercio.json" }],
     },
     {
       "@type": "Article",
@@ -54,7 +55,7 @@ const jsonLd = {
         { "@type": "Thing", name: "Exportaciones" },
         { "@type": "Place", name: "Colombia" },
       ],
-      mainEntityOfPage: "https://fredericksalazar.com/observatorio/comercio",
+      mainEntityOfPage: "https://fredericksalazar.github.io/observatorio/comercio/",
     },
   ],
 };
