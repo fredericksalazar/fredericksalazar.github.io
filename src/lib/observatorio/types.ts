@@ -295,6 +295,59 @@ export interface ExternoData {
     deuda_externa: Record<string, number>;
   };
 }
+// ───────────────────────────── DEMOGRAFÍA ─────────────────────────────
+
+export interface DemografiaSerieFila {
+  periodo: string;
+  poblacion: number | null;
+  poblacion_delta: number | null;
+  poblacion_variacion: Variacion;
+  crecimiento_poblacion: number | null;
+  crecimiento_poblacion_delta: number | null;
+  crecimiento_poblacion_variacion: Variacion;
+  esperanza_vida_mujeres: number | null;
+  esperanza_vida_mujeres_delta: number | null;
+  esperanza_vida_mujeres_variacion: Variacion;
+  esperanza_vida_hombres: number | null;
+  esperanza_vida_hombres_delta: number | null;
+  esperanza_vida_hombres_variacion: Variacion;
+  brecha_esperanza_vida: number | null;
+  brecha_esperanza_vida_delta: number | null;
+  brecha_esperanza_vida_variacion: Variacion;
+  gini: number | null;
+  gini_delta: number | null;
+  gini_variacion: Variacion;
+}
+
+export interface DemografiaIndicadores {
+  poblacion: Indicador;
+  esperanza_vida_mujeres: Indicador;
+  esperanza_vida_hombres: Indicador;
+  gini: Indicador;
+}
+
+export interface DemografiaMetadata {
+  ultima_actualizacion: string;
+  fuentes: {
+    banco_mundial: Fuente;
+    calculo_propio?: Fuente;
+  };
+  definiciones: Record<string, string | number>;
+  cobertura: {
+    primer_periodo: string;
+    ultimo_periodo: string;
+    total_registros: number;
+    granularidad: "anual";
+  };
+}
+
+export interface DemografiaData {
+  metadata: DemografiaMetadata;
+  indicadores: DemografiaIndicadores;
+  serie: DemografiaSerieFila[];
+  historico: Record<string, number>;
+}
+
 export interface CandidatoPres {
   id: string;
   nombre: string;

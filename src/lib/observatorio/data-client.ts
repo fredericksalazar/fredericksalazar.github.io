@@ -4,6 +4,7 @@ import type {
   ComercioData,
   PIBData,
   ExternoData,
+  DemografiaData,
   PresEleccionData,
   PresCandidatosData,
 } from "./types";
@@ -38,6 +39,7 @@ export const loadPIB = () => load<PIBData>("data_pib");
 export const loadComercio = () => load<ComercioData>("data_comercio");
 export const loadEmpleo = () => load<EmpleoData>("data_empleo");
 export const loadExterno = () => load<ExternoData>("data_externo");
+export const loadDemografia = () => load<DemografiaData>("data_demografia");
 export const loadPresidentes = () =>
   load<{ fuente: string; nota: string; presidentes: Presidente[] }>("presidentes")
     .then((d) => d.presidentes);
@@ -52,13 +54,15 @@ export const loadEmpleoAsc = () =>
   loadEmpleo().then((d) => ({ ...d, serie: [...d.serie].reverse() }));
 export const loadExternoAsc = () =>
   loadExterno().then((d) => ({ ...d, serie: [...d.serie].reverse() }));
+export const loadDemografiaAsc = () =>
+  loadDemografia().then((d) => ({ ...d, serie: [...d.serie].reverse() }));
 
 export const loadPres2026_1v = () => load<PresEleccionData>("data_pres_2026_1v");
 export const loadPres2022_1v = () => load<PresEleccionData>("data_pres_2022_1v");
 export const loadPres2022_2v = () => load<PresEleccionData>("data_pres_2022_2v");
 export const loadPresCandidatos = () => load<PresCandidatosData>("data_pres_candidatos");
 
-export type DatasetName = "inflacion" | "pib" | "comercio" | "empleo" | "externo"
+export type DatasetName = "inflacion" | "pib" | "comercio" | "empleo" | "externo" | "demografia"
   | "pres-2026-1v" | "pres-2022-1v" | "pres-2022-2v" | "pres-candidatos";
 
 export interface LoadedDatasets {
@@ -67,6 +71,7 @@ export interface LoadedDatasets {
   comercio?: ComercioData;
   empleo?: EmpleoData;
   externo?: ExternoData;
+  demografia?: DemografiaData;
   "pres-2026-1v"?: PresEleccionData;
   "pres-2022-1v"?: PresEleccionData;
   "pres-2022-2v"?: PresEleccionData;
@@ -79,6 +84,7 @@ const ASC_LOADERS = {
   comercio: loadComercioAsc,
   empleo: loadEmpleoAsc,
   externo: loadExternoAsc,
+  demografia: loadDemografiaAsc,
   "pres-2026-1v": loadPres2026_1v,
   "pres-2022-1v": loadPres2022_1v,
   "pres-2022-2v": loadPres2022_2v,

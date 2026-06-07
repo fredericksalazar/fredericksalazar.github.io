@@ -34,7 +34,13 @@ import {
   pibHistorico,
   desempleoHistorico,
   comercioHistorico,
+  poblacionHistorica,
 } from "./historico";
+import {
+  poblacionCrecimiento,
+  esperanzaVida,
+  giniEvolucion,
+} from "./demografia";
 import {
   trmHistorica,
   reservasInternacionales,
@@ -96,6 +102,10 @@ export const CHART_DEFS = {
   [pibHistorico.id]: pibHistorico,
   [desempleoHistorico.id]: desempleoHistorico,
   [comercioHistorico.id]: comercioHistorico,
+  [poblacionHistorica.id]: poblacionHistorica,
+  [poblacionCrecimiento.id]: poblacionCrecimiento,
+  [esperanzaVida.id]: esperanzaVida,
+  [giniEvolucion.id]: giniEvolucion,
   [trmHistorica.id]: trmHistorica,
   [reservasInternacionales.id]: reservasInternacionales,
   [cuentaCorrientePib.id]: cuentaCorrientePib,

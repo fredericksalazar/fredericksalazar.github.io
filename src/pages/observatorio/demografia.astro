@@ -1,0 +1,201 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import MapaColombia from "../../components/observatorio/MapaColombia.astro";
+import DashboardNav from "../../components/observatorio/DashboardNav.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+import IndicadorCard from "../../components/observatorio/IndicadorCard.astro";
+import PageHeader from "../../components/observatorio/PageHeader.astro";
+import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
+import Chart from "../../components/observatorio/Chart.astro";
+import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
+import { getDemografia } from "../../lib/observatorio/data";
+import { formatPeriodo } from "../../lib/observatorio/formatters";
+import { absUrls, SITE_URL } from "../../lib/urls";
+
+const dem = getDemografia();
+const { indicadores, metadata } = dem;
+
+const poblacionActual = indicadores.poblacion.actual.valor ?? 0;
+const evMujeres = indicadores.esperanza_vida_mujeres.actual.valor;
+const evHombres = indicadores.esperanza_vida_hombres.actual.valor;
+const giniActual = indicadores.gini.actual.valor;
+const ultimoPeriodo = formatPeriodo(metadata.cobertura.ultimo_periodo);
+const poblacionM = (poblacionActual / 1_000_000).toFixed(1);
+
+const fuenteBM = metadata.fuentes.banco_mundial;
+const fuenteCalc = metadata.fuentes.calculo_propio ?? fuenteBM;
+
+const PAGE_URL = absUrls.observatorioSub("demografia");
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Dataset",
+      name: "Observatorio de Datos de Colombia — Demografía",
+      description:
+        "Indicadores demográficos de Colombia: población total, esperanza de vida al nacer (hombres y mujeres) y coeficiente de Gini. Datos del Banco Mundial desde 1960.",
+      url: PAGE_URL,
+      keywords: [
+        "población Colombia",
+        "esperanza de vida Colombia",
+        "coeficiente de Gini",
+        "desigualdad Colombia",
+        "demografía Colombia",
+      ],
+      creator: { "@type": "Person", name: "Frederick Salazar", url: "https://fredericksalazar.github.io/" },
+      isBasedOn: [{ "@type": "CreativeWork", name: fuenteBM.nombre, url: fuenteBM.url }],
+      temporalCoverage: `${metadata.cobertura.primer_periodo}/${metadata.cobertura.ultimo_periodo}`,
+      dateModified: metadata.ultima_actualizacion,
+      license: "https://creativecommons.org/licenses/by/4.0/",
+      spatialCoverage: { "@type": "Place", name: "Colombia" },
+      distribution: [{ "@type": "DataDownload", encodingFormat: "application/json", contentUrl: `${SITE_URL}/data/data_demografia.json` }],
+    },
+    {
+      "@type": "Article",
+      headline: "Demografía de Colombia: población, esperanza de vida y desigualdad",
+      description:
+        "Cómo ha cambiado Colombia: del tamaño de su población a cuánto vive su gente y qué tan desigual es la distribución del ingreso.",
+      author: { "@type": "Person", name: "Frederick Salazar" },
+      dateModified: metadata.ultima_actualizacion,
+      about: [
+        { "@type": "Thing", name: "Demografía" },
+        { "@type": "Thing", name: "Esperanza de vida" },
+        { "@type": "Thing", name: "Desigualdad" },
+        { "@type": "Place", name: "Colombia" },
+      ],
+      mainEntityOfPage: PAGE_URL,
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="Demografía de Colombia"
+  description="Población total, esperanza de vida al nacer (hombres y mujeres) y coeficiente de Gini de Colombia. Datos del Banco Mundial desde 1960, explicados de forma sencilla."
+  image="/images/observatorio.png"
+  fullWidth={true}
+>
+  <Hero
+    badge={{ text: "Población y Sociedad · Colombia" }}
+    title="Demografía y desigualdad de Colombia"
+    subtitle="El Observatorio de Datos de Colombia consolida, procesa y publica los indicadores macroeconómicos que definen el pulso del país: para que cualquier persona lea la economía colombiana como un gerente lee el dashboard de su empresa."
+    tags={["Población", "Esperanza de vida", "Desigualdad", "PIB", "Empleo"]}
+    showPartners={false}
+  >
+    <MapaColombia slot="visual" />
+  </Hero>
+  <DashboardNav active="demografia" />
+
+  <div class="observatorio-container">
+    <PageHeader
+      eyebrow={`Actualizado · ${ultimoPeriodo}`}
+      hint={`Población: ${poblacionM} M · Esperanza de vida: ${evMujeres}/${evHombres} años (M/H) · Gini: ${giniActual}`}
+    >
+      Colombia tiene <strong>{poblacionM} millones de habitantes</strong>. Las mujeres viven en promedio
+      <strong>{evMujeres} años</strong> y los hombres <strong>{evHombres}</strong>, mientras el coeficiente de
+      Gini se ubica en <strong>{giniActual}</strong>, uno de los más altos de la región.
+    </PageHeader>
+
+    <section class="kpi-row" aria-label="Indicadores demográficos actuales">
+      <IndicadorCard titulo="Población total" indicador={indicadores.poblacion} semantic="tasa" deltaLabel="vs año anterior" />
+      <IndicadorCard titulo="Esperanza de vida · Mujeres" indicador={indicadores.esperanza_vida_mujeres} semantic="ocupacion" deltaLabel="vs año anterior" />
+      <IndicadorCard titulo="Esperanza de vida · Hombres" indicador={indicadores.esperanza_vida_hombres} semantic="ocupacion" deltaLabel="vs año anterior" />
+      <IndicadorCard titulo="Índice de Gini" indicador={indicadores.gini} semantic="informalidad" deltaLabel="vs año anterior" />
+    </section>
+
+    <IndicadorPanel numero="01" eyebrow="Contexto histórico" titulo="La población de Colombia desde 1960"
+      lead="De 15,6 millones de habitantes en 1960 a casi 53 millones. El país más que triplicó su población en seis décadas, aunque el ritmo se desacelera."
+      fuente={fuenteBM}>
+      <Fragment slot="text">
+        <p>Colombia vive una <strong>transición demográfica</strong>: menos hijos por mujer y mayor esperanza de vida. El crecimiento poblacional, antes acelerado, hoy se modera década a década.</p>
+        <ul>
+          <li><strong>1960 – 1990:</strong> crecimiento alto, fecundidad elevada.</li>
+          <li><strong>1990 – 2010:</strong> caída sostenida de la natalidad.</li>
+          <li><strong>2010 – 2024:</strong> desaceleración y envejecimiento gradual.</li>
+        </ul>
+      </Fragment>
+      <Chart slot="visual" id="poblacion-historica" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="02" eyebrow="Ritmo de expansión" titulo="Tasa de crecimiento poblacional"
+      lead="La tasa de crecimiento revela qué tan rápido —y cada vez más lento— se expande el país: de más del 3 % anual en los años 60 a cerca del 1 % hoy."
+      fuente={fuenteCalc}>
+      <Fragment slot="text">
+        <p>Hoy Colombia ronda los <strong>{poblacionM} millones de habitantes</strong>, pero crece a un ritmo cada vez menor.</p>
+        <p>La <strong>tasa de crecimiento</strong> cayó de más del 3 % anual en los años 60 a cerca del 1 % hoy: el reflejo de la transición demográfica (menos hijos por mujer) y un país que envejece gradualmente.</p>
+      </Fragment>
+      <Chart slot="visual" id="poblacion-crecimiento" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="03" eyebrow="Cuánto vivimos" titulo="Esperanza de vida al nacer"
+      lead="La esperanza de vida resume las condiciones de salud, nutrición y desarrollo de un país. En Colombia subió de forma sostenida, con una brecha persistente a favor de las mujeres."
+      fuente={fuenteCalc}>
+      <Fragment slot="text">
+        <p>Las <strong>mujeres viven más que los hombres</strong> en Colombia, una constante observada en casi todos los países. La brecha refleja factores biológicos y sociales (accidentalidad, violencia y hábitos de riesgo más altos en hombres).</p>
+        <p>La pandemia de <strong>2020-2021</strong> interrumpió temporalmente la tendencia ascendente, un choque visible en la mayoría de los países.</p>
+      </Fragment>
+      <Chart slot="visual" id="esperanza-vida" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="04" eyebrow="Desigualdad" titulo="El coeficiente de Gini"
+      lead="El Gini mide qué tan desigual se reparte el ingreso (0 = todos ganan lo mismo, 100 = uno concentra todo). Colombia es de los países más desiguales de América Latina y la OCDE."
+      fuente={fuenteBM}>
+      <Fragment slot="text">
+        <p>Un Gini cercano a <strong>50 o más</strong> indica una concentración del ingreso muy alta. Colombia ha logrado reducirlo lentamente desde sus picos, pero sigue por encima del promedio regional.</p>
+        <p>La desigualdad tiene raíces estructurales: <strong>informalidad laboral</strong>, acceso desigual a educación de calidad y concentración de la tierra.</p>
+      </Fragment>
+      <Chart slot="visual" id="gini-evolucion" embedded={true} />
+    </IndicadorPanel>
+
+    <section class="glosario-block" aria-label="Glosario y fuentes">
+      <header class="glosario-block__header">
+        <span class="glosario-block__eyebrow">Referencia</span>
+        <h2 class="glosario-block__titulo">Glosario y fuentes</h2>
+      </header>
+      <div class="glosario-grid">
+        <article class="glosario-card"><h3 class="glosario-card__titulo">Población total</h3><p class="glosario-card__desc">Número de habitantes a mitad de año, incluyendo todas las edades y nacionalidades residentes.</p></article>
+        <article class="glosario-card"><h3 class="glosario-card__titulo">Esperanza de vida</h3><p class="glosario-card__desc">Años que en promedio viviría un recién nacido si se mantuvieran las condiciones de mortalidad actuales.</p></article>
+        <article class="glosario-card"><h3 class="glosario-card__titulo">Brecha de género</h3><p class="glosario-card__desc">Diferencia en años entre la esperanza de vida de mujeres y hombres (cálculo propio).</p></article>
+        <article class="glosario-card"><h3 class="glosario-card__titulo">Coeficiente de Gini</h3><p class="glosario-card__desc">Medida de desigualdad del ingreso de 0 (igualdad perfecta) a 100 (desigualdad total).</p></article>
+      </div>
+      <footer class="glosario-block__footer">
+        <span><strong>Fuentes:</strong> <a href={fuenteBM.url} target="_blank" rel="noopener noreferrer">Banco Mundial — WDI</a></span>
+        <span class="glosario-block__cobertura">Cobertura: {metadata.cobertura.primer_periodo} → {metadata.cobertura.ultimo_periodo}</span>
+      </footer>
+    </section>
+
+    <DashboardFooter fuentes={[fuenteBM, fuenteCalc]} ultimaActualizacion={metadata.ultima_actualizacion}
+      definiciones={[
+        { titulo: "Población", texto: "Habitantes totales del país a mitad de año (Banco Mundial)." },
+        { titulo: "Esperanza de vida", texto: "Años promedio de vida al nacer, por sexo (Banco Mundial)." },
+        { titulo: "Gini", texto: "Coeficiente de desigualdad del ingreso, de 0 (igualdad) a 100 (desigualdad total)." },
+      ]}
+      cobertura={`${metadata.cobertura.primer_periodo} → ${metadata.cobertura.ultimo_periodo} · ${metadata.cobertura.total_registros} registros`} />
+  </div>
+  <PlotlyLoader />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>
+
+<style>
+  .observatorio-container{width:97%;max-width:1800px;margin:0 auto;padding:1.75rem 0 3rem}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:0 auto 1.5rem}
+  @media(max-width:1024px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.kpi-row{grid-template-columns:1fr}}
+  .glosario-block{background:var(--color-sidebar);border:1px solid var(--color-border);border-radius:18px;padding:1.75rem 2rem;margin-bottom:1.25rem}
+  .glosario-block__header{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.25rem}
+  .glosario-block__eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent)}
+  .glosario-block__titulo{font-size:1.6rem;font-weight:700;margin:0;color:var(--color-text-primary);letter-spacing:-.015em}
+  .glosario-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.25rem}
+  .glosario-card{border:1px solid var(--color-border);border-radius:12px;padding:1rem 1.1rem;background:var(--color-bg,#fff);transition:border-color .2s,transform .2s}
+  .glosario-card:hover{border-color:rgba(37,99,235,.3);transform:translateY(-2px)}
+  .glosario-card__titulo{font-size:.95rem;font-weight:700;color:var(--color-text-primary);margin:0 0 .4rem}
+  .glosario-card__desc{font-size:.85rem;line-height:1.55;color:var(--color-text-secondary);margin:0}
+  .glosario-block__footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;font-size:.85rem;color:var(--color-text-muted);padding-top:1rem;border-top:1px solid var(--color-border)}
+  .glosario-block__footer a{color:var(--color-accent);text-decoration:none;margin:0 .15rem}
+  .glosario-block__footer a:hover{text-decoration:underline}
+  @media(max-width:1024px){.glosario-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.glosario-block{padding:1.25rem;border-radius:14px}.glosario-grid{grid-template-columns:1fr}.glosario-block__titulo{font-size:1.3rem}}
+  @media(max-width:640px){.observatorio-container{width:100%;padding:1.25rem 1rem 2rem}}
+</style>

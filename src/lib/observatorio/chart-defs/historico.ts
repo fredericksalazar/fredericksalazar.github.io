@@ -177,6 +177,25 @@ export const desempleoHistorico: ChartDef = {
   },
 };
 
+export const poblacionHistorica: ChartDef = {
+  id: "poblacion-historica",
+  titulo: "Población histórica de Colombia",
+  pregunta: "Población total anual desde 1960. Coloreada por presidente que gobernó la mayor parte del año.",
+  fuenteTexto: "Banco Mundial — World Development Indicators · Presidentes: Registraduría Nacional",
+  datasets: ["demografia"],
+  height: 420,
+  ariaLabel: "Población total histórica de Colombia desde 1960 con color por presidente",
+  build({ demografia }) {
+    return buildHistorico("poblacion-historica", {
+      historico: demografia!.historico,
+      name: "Población",
+      hoverSuffix: " hab.",
+      hoverDecimals: 0,
+      yaxisTickSuffix: "",
+    });
+  },
+};
+
 export const comercioHistorico: ChartDef = {
   id: "comercio-historico",
   titulo: "Comercio exterior histórico",
