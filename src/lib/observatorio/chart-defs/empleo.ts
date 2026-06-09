@@ -1,4 +1,4 @@
-import { COLORS, baseLayout, extractSerie } from "../charts";
+import { COLORS, baseLayout, extractSerie, minMaxAvgLines } from "../charts";
 import type { ChartDef } from "./types";
 
 const FUENTE_GEIH = "DANE — Gran Encuesta Integrada de Hogares (GEIH)";
@@ -14,6 +14,7 @@ export const desempleo: ChartDef = {
   build({ empleo }) {
     const filtered = empleo!.serie.filter((r) => r.periodo >= "2000-01");
     const { x, y } = extractSerie(filtered, "tasa_desempleo");
+    const { shapes, annotations } = minMaxAvgLines(y, { suffix: "%" });
     return {
       traces: [{
         name: "Tasa de desempleo", x, y, mode: "lines",
@@ -21,7 +22,7 @@ export const desempleo: ChartDef = {
         fillcolor: "rgba(37, 99, 235, 0.06)",
         hovertemplate: "<b>%{x|%b %Y}</b><br>Desempleo: %{y:.2f}%<extra></extra>",
       }],
-      layout: baseLayout(),
+      layout: baseLayout({ shapes, annotations }),
     };
   },
 };

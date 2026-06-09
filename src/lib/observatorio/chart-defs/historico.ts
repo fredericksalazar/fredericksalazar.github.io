@@ -1,4 +1,5 @@
 import { COLORS, baseLayout } from "../charts";
+import { recordByYear } from "../derivations";
 import {
   getPresidentesClient,
   colorsForYears,
@@ -18,11 +19,15 @@ interface HistoricoOptions {
   yaxisTickSuffix?: string;
   promedioOptions?: { showLine: boolean };
   metaBanrep?: boolean;
+  /** Estado inicial del toggle "color por presidente". Default: true (encendido). */
+  defaultOn?: boolean;
+  /** Si es false, no se renderiza el toggle ni la leyenda: barras de un solo color. Default: true. */
+  presidenteToggle?: boolean;
 }
 
-function renderLegend(presidentes: Presidente[]): string {
+function renderLegend(presidentes: Presidente[], visible: boolean): string {
   return `
-    <div class="pres-legend" data-pres-legend data-visible="true" aria-label="Presidentes representados en el gráfico">
+    <div class="pres-legend" data-pres-legend data-visible="${visible ? "true" : "false"}" aria-label="Presidentes representados en el gráfico">
       ${presidentes.map((p) => `
         <span class="pres-chip">
           <span class="pres-chip__dot" style="background:${p.color}"></span>
@@ -33,11 +38,11 @@ function renderLegend(presidentes: Presidente[]): string {
     </div>`;
 }
 
-function renderToggle(): string {
+function renderToggle(defaultOn: boolean): string {
   return `
     <label class="pres-toggle" data-pres-toggle>
       <span class="pres-toggle__label">Color por presidente</span>
-      <input type="checkbox" class="pres-toggle__input" checked />
+      <input type="checkbox" class="pres-toggle__input" ${defaultOn ? "checked" : ""} />
       <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
     </label>`;
 }
@@ -47,9 +52,15 @@ async function buildHistorico(
   opts: HistoricoOptions,
 ): Promise<ChartBuildResult> {
   const presidentes = await getPresidentesClient();
+  const defaultOn = opts.defaultOn ?? true;
+  const showToggle = opts.presidenteToggle ?? true;
   const years = Object.keys(opts.historico).sort();
   const valores = years.map((y) => opts.historico[y]);
   const colorsPorPresidente = colorsForYears(years, presidentes, COLOR_BASE);
+  // Color inicial del trace: por presidente solo si el toggle existe y arranca encendido.
+  const initialColor = showToggle && defaultOn
+    ? colorsPorPresidente
+    : colorsPorPresidente.map(() => COLOR_BASE);
   const customdata = years.map((y) => {
     const p = presidenteForYear(parseInt(y, 10), presidentes);
     return [p?.nombre ?? "Sin datos", p?.partido ?? "—"];
@@ -58,7 +69,7 @@ async function buildHistorico(
   const dec = opts.hoverDecimals ?? 2;
   const traces = [{
     type: "bar", x: years, y: valores,
-    marker: { color: colorsPorPresidente, line: { color: "rgba(0,0,0,0.08)", width: 0.5 } },
+    marker: { color: initialColor, line: { color: "rgba(0,0,0,0.08)", width: 0.5 } },
     customdata, name: opts.name,
     hovertemplate:
       `<b>%{x}</b><br>${opts.name}: <b>%{y:.${dec}f}${opts.hoverSuffix}</b><br>` +
@@ -112,8 +123,8 @@ async function buildHistorico(
   const leyenda = presidentesEnLeyenda(years, presidentes);
   return {
     traces, layout,
-    headerHtml: renderToggle(),
-    footerHtml: renderLegend(leyenda),
+    ...(showToggle ? { headerHtml: renderToggle(defaultOn) } : {}),
+    ...(showToggle ? { footerHtml: renderLegend(leyenda, defaultOn) } : {}),
     onMount: (target) => {
       target.dataset.colorsByPresident = JSON.stringify(colorsPorPresidente);
       target.dataset.colorBase = COLOR_BASE;
@@ -155,6 +166,7 @@ export const pibHistorico: ChartDef = {
       hoverSuffix: " mil M USD",
       hoverDecimals: 1,
       yaxisTickSuffix: "",
+      defaultOn: false,
     });
   },
 };
@@ -173,6 +185,7 @@ export const desempleoHistorico: ChartDef = {
       name: "Desempleo",
       hoverSuffix: "%",
       promedioOptions: { showLine: true },
+      defaultOn: false,
     });
   },
 };
@@ -192,6 +205,45 @@ export const poblacionHistorica: ChartDef = {
       hoverSuffix: " hab.",
       hoverDecimals: 0,
       yaxisTickSuffix: "",
+      presidenteToggle: false,
+    });
+  },
+};
+
+export const importacionesHistorica: ChartDef = {
+  id: "comercio-impo",
+  titulo: "Importaciones (% del PIB)",
+  pregunta: "Importaciones como % del PIB desde 1960. Coloreadas por presidente que gobernó la mayor parte del año.",
+  fuenteTexto: "Banco Mundial — World Development Indicators · Presidentes: Registraduría Nacional",
+  datasets: ["comercio"],
+  height: 420,
+  ariaLabel: "Importaciones de Colombia como porcentaje del PIB desde 1960, con color por presidente",
+  build({ comercio }) {
+    return buildHistorico("comercio-impo", {
+      historico: recordByYear(comercio!.serie, (r) => r.importaciones ?? null),
+      name: "Importaciones",
+      hoverSuffix: "% PIB",
+      defaultOn: false,
+    });
+  },
+};
+
+export const pibPerCapitaHistorico: ChartDef = {
+  id: "pib-percapita",
+  titulo: "PIB per cápita",
+  pregunta: "PIB por habitante en USD desde 1960. Pasó de $258 en 1960 a $7,919 en 2024. Coloreado por presidente.",
+  fuenteTexto: "Banco Mundial — WDI · Presidentes: Registraduría Nacional",
+  datasets: ["pib"],
+  height: 420,
+  ariaLabel: "PIB per cápita de Colombia desde 1960, con color por presidente",
+  build({ pib }) {
+    return buildHistorico("pib-percapita", {
+      historico: recordByYear(pib!.serie, (r) => r.pib_percapita ?? null),
+      name: "PIB per cápita",
+      hoverSuffix: " USD",
+      hoverDecimals: 0,
+      yaxisTickSuffix: "",
+      defaultOn: false,
     });
   },
 };
@@ -209,6 +261,7 @@ export const comercioHistorico: ChartDef = {
       historico: comercio!.historico,
       name: "Exportaciones",
       hoverSuffix: "% PIB",
+      defaultOn: false,
     });
   },
 };

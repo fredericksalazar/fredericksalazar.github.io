@@ -1,0 +1,201 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Hero from "../../../components/Hero.astro";
+import DashboardNav from "../../../components/observatorio/DashboardNav.astro";
+import { INFORMES, formatFechaInforme } from "../../../lib/observatorio/informes";
+import { urls, absUrls } from "../../../lib/urls";
+
+const informes = INFORMES.map((inf) => {
+  const vigente = inf.versiones.find((v) => v.vigente) ?? inf.versiones[0];
+  return { inf, vigente };
+});
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Informes · Observatorio de Datos de Colombia",
+  description:
+    "Informes descargables del Observatorio de Datos de Colombia: análisis históricos de los principales indicadores económicos y sociales del país, a partir de fuentes públicas oficiales.",
+  url: absUrls.observatorioInformes(),
+  isPartOf: { "@type": "WebSite", name: "Observatorio de Datos de Colombia", url: absUrls.observatorio() },
+  hasPart: INFORMES.map((inf) => ({
+    "@type": "Report",
+    name: inf.titulo,
+    abstract: inf.resumen,
+    url: absUrls.observatorioInforme(inf.slug),
+  })),
+};
+---
+
+<BaseLayout
+  title="Informes · Observatorio de Datos de Colombia"
+  description="Informes descargables del Observatorio de Datos de Colombia: análisis históricos de los principales indicadores económicos y sociales del país, a partir de fuentes públicas oficiales."
+  image="/images/observatorio.png"
+  fullWidth={true}
+>
+  <Hero
+    badge={{ text: "Activos digitales · Colombia" }}
+    title="Informes del Observatorio"
+    subtitle="Documentos descargables que consolidan y narran la evolución de Colombia a través de sus datos. Análisis históricos construidos sobre fuentes públicas oficiales, en un formato claro y accesible para cualquier persona."
+    tags={["Datos abiertos", "Descargables", "Series históricas", "Acceso libre"]}
+    showPartners={false}
+  >
+    <div slot="visual" class="informes-hero-visual" aria-hidden="true">
+      <svg viewBox="0 0 420 360" xmlns="http://www.w3.org/2000/svg" class="informes-hero-svg">
+        <defs>
+          <linearGradient id="doc-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="100%" stop-color="#eef4ff" />
+          </linearGradient>
+        </defs>
+        <rect x="150" y="40" width="200" height="270" rx="14" fill="#dbe5ff" transform="rotate(8 250 175)" opacity="0.7" />
+        <rect x="120" y="55" width="200" height="270" rx="14" fill="#cbd5ff" transform="rotate(3 220 190)" opacity="0.85" />
+        <rect x="70" y="50" width="210" height="280" rx="14" fill="url(#doc-grad)" stroke="#2563eb" stroke-width="1.5" />
+        <rect x="92" y="76" width="120" height="14" rx="4" fill="#2563eb" />
+        <rect x="92" y="100" width="166" height="8" rx="3" fill="#cbd5ff" />
+        <rect x="92" y="116" width="140" height="8" rx="3" fill="#dbe5ff" />
+        <polyline points="92,250 122,220 152,234 182,196 212,212 242,176" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+        <g fill="#2563eb">
+          <rect x="92" y="270" width="14" height="22" rx="2" />
+          <rect x="112" y="262" width="14" height="30" rx="2" />
+          <rect x="132" y="252" width="14" height="40" rx="2" />
+          <rect x="152" y="266" width="14" height="26" rx="2" />
+        </g>
+        <circle cx="280" cy="300" r="26" fill="#2563eb" />
+        <path d="M280 290 v18 M272 300 l8 8 l8 -8" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </Hero>
+
+  <DashboardNav active="informes" />
+
+  <div class="observatorio-container">
+    <header class="informes-head">
+      <span class="informes-head__eyebrow">Biblioteca</span>
+      <h2 class="informes-head__title">Informes publicados</h2>
+      <p class="informes-head__lead">
+        Cada informe es un activo digital del Observatorio: un documento que resume y
+        contextualiza la historia del país en datos. Consúltalos en línea y descarga
+        cualquier edición en PDF.
+      </p>
+    </header>
+
+    <ul class="informes-grid" role="list">
+      {informes.map(({ inf, vigente }) => (
+        <li class="informe-card">
+          <a class="informe-card__link" href={urls.observatorioInforme(inf.slug)} aria-label={`Ver informe ${inf.titulo}`}>
+            <div class="informe-card__cover">
+              {inf.portada ? (
+                <img src={inf.portada} alt={`Portada de ${inf.titulo}`} width="320" height="414" loading="lazy" />
+              ) : (
+                <span class="informe-card__cover-fallback" aria-hidden="true">PDF</span>
+              )}
+            </div>
+            <div class="informe-card__body">
+              <div class="informe-card__meta">
+                {inf.cobertura && <span class="informe-card__chip">{inf.cobertura}</span>}
+                <span class="informe-card__chip informe-card__chip--soft">
+                  {inf.versiones.length} {inf.versiones.length === 1 ? "edición" : "ediciones"}
+                </span>
+              </div>
+              <h3 class="informe-card__title">{inf.titulo}</h3>
+              <p class="informe-card__desc">{inf.resumen}</p>
+              <div class="informe-card__footer">
+                <span class="informe-card__date">Última edición · {formatFechaInforme(vigente.fecha)}</span>
+                <span class="informe-card__cta">
+                  Ver informe
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </span>
+              </div>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>
+
+<style>
+  .informes-hero-visual {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .informes-hero-svg {
+    width: 100%;
+    max-width: 440px;
+    height: auto;
+    filter: drop-shadow(0 12px 30px rgba(37, 99, 235, 0.18));
+  }
+
+  .observatorio-container { width: 97%; max-width: 1280px; margin: 0 auto; padding: 2.5rem 0 4rem; }
+
+  .informes-head { max-width: 720px; margin-bottom: 2.25rem; }
+  .informes-head__eyebrow {
+    display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--color-accent); margin-bottom: .65rem;
+  }
+  .informes-head__title {
+    font-size: clamp(1.7rem, 2.6vw, 2.25rem); font-weight: 700; letter-spacing: -.02em;
+    color: var(--color-text-primary); margin: 0 0 .75rem;
+  }
+  .informes-head__lead { font-size: 1.02rem; line-height: 1.65; color: var(--color-text-secondary); margin: 0; }
+
+  .informes-grid {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;
+  }
+
+  .informe-card {
+    border: 1px solid var(--color-border); border-radius: 16px; overflow: hidden; background: #fff;
+    transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .informe-card:hover {
+    border-color: rgba(37, 99, 235, .35); transform: translateY(-3px);
+    box-shadow: 0 14px 34px rgba(37, 99, 235, .12);
+  }
+  .informe-card__link { display: flex; flex-direction: column; height: 100%; text-decoration: none; color: inherit; }
+
+  .informe-card__cover {
+    position: relative; aspect-ratio: 16 / 9; overflow: hidden;
+    background: linear-gradient(135deg, #eef4ff 0%, #dbe5ff 100%);
+    display: flex; align-items: flex-start; justify-content: center;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .informe-card__cover img { width: 100%; height: auto; object-fit: cover; object-position: top center; display: block; }
+  .informe-card__cover-fallback {
+    align-self: center; font-size: 1.5rem; font-weight: 700; letter-spacing: .1em; color: var(--color-accent);
+  }
+
+  .informe-card__body { padding: 1.25rem 1.35rem 1.4rem; display: flex; flex-direction: column; flex: 1; gap: .65rem; }
+  .informe-card__meta { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .informe-card__chip {
+    font-size: .7rem; font-weight: 600; color: var(--color-accent);
+    background: rgba(37, 99, 235, .08); border: 1px solid rgba(37, 99, 235, .16);
+    padding: .2rem .55rem; border-radius: 100px;
+  }
+  .informe-card__chip--soft { color: var(--color-text-muted); background: var(--color-hover); border-color: var(--color-border); }
+  .informe-card__title { font-size: 1.15rem; font-weight: 700; line-height: 1.3; color: var(--color-text-primary); margin: 0; }
+  .informe-card__desc { font-size: .9rem; line-height: 1.55; color: var(--color-text-secondary); margin: 0; flex: 1; }
+  .informe-card__footer {
+    display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+    padding-top: .85rem; margin-top: .25rem; border-top: 1px solid var(--color-border);
+  }
+  .informe-card__date { font-size: .76rem; color: var(--color-text-muted); }
+  .informe-card__cta {
+    display: inline-flex; align-items: center; gap: .4rem; font-size: .82rem; font-weight: 600;
+    color: var(--color-accent); transition: gap .2s ease;
+  }
+  .informe-card__cta svg { width: 16px; height: 16px; }
+  .informe-card:hover .informe-card__cta { gap: .65rem; }
+
+  @media (max-width: 640px) {
+    .observatorio-container { width: 100%; padding: 1.75rem 1rem 3rem; }
+    .informes-grid { grid-template-columns: 1fr; }
+  }
+</style>

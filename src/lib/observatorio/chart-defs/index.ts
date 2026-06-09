@@ -8,11 +8,9 @@ import {
 import {
   crecimientoPib,
   pibTotal,
-  pibPerCapita,
   poblacionPib,
   deudaPublica,
   pibComercio,
-  leyOkun,
 } from "./pib";
 import {
   desempleo,
@@ -21,8 +19,6 @@ import {
   brechaLaboral,
 } from "./empleo";
 import {
-  exportaciones,
-  importaciones,
   balanzaComercial,
   apertura,
   matrizExportaciones,
@@ -32,8 +28,10 @@ import {
 import {
   inflacionHistorica,
   pibHistorico,
+  pibPerCapitaHistorico,
   desempleoHistorico,
   comercioHistorico,
+  importacionesHistorica,
   poblacionHistorica,
 } from "./historico";
 import {
@@ -82,17 +80,13 @@ export const CHART_DEFS = {
   [pibInflacion.id]: pibInflacion,
   [crecimientoPib.id]: crecimientoPib,
   [pibTotal.id]: pibTotal,
-  [pibPerCapita.id]: pibPerCapita,
   [poblacionPib.id]: poblacionPib,
   [deudaPublica.id]: deudaPublica,
   [pibComercio.id]: pibComercio,
-  [leyOkun.id]: leyOkun,
   [desempleo.id]: desempleo,
   [subempleo.id]: subempleo,
   [tgpToDual.id]: tgpToDual,
   [brechaLaboral.id]: brechaLaboral,
-  [exportaciones.id]: exportaciones,
-  [importaciones.id]: importaciones,
   [balanzaComercial.id]: balanzaComercial,
   [apertura.id]: apertura,
   [matrizExportaciones.id]: matrizExportaciones,
@@ -100,8 +94,10 @@ export const CHART_DEFS = {
   [productosTradicionales.id]: productosTradicionales,
   [inflacionHistorica.id]: inflacionHistorica,
   [pibHistorico.id]: pibHistorico,
+  [pibPerCapitaHistorico.id]: pibPerCapitaHistorico,
   [desempleoHistorico.id]: desempleoHistorico,
   [comercioHistorico.id]: comercioHistorico,
+  [importacionesHistorica.id]: importacionesHistorica,
   [poblacionHistorica.id]: poblacionHistorica,
   [poblacionCrecimiento.id]: poblacionCrecimiento,
   [esperanzaVida.id]: esperanzaVida,

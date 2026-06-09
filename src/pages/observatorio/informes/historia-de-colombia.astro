@@ -1,0 +1,255 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Hero from "../../../components/Hero.astro";
+import DashboardNav from "../../../components/observatorio/DashboardNav.astro";
+import { getInforme, formatFechaInforme } from "../../../lib/observatorio/informes";
+import { urls, absUrls } from "../../../lib/urls";
+
+const informe = getInforme("historia-de-colombia");
+if (!informe) throw new Error("Informe 'historia-de-colombia' no encontrado en el catálogo.");
+
+const vigente = informe.versiones.find((v) => v.vigente) ?? informe.versiones[0];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Report",
+  name: informe.titulo,
+  abstract: informe.resumen,
+  description: informe.descripcion,
+  url: absUrls.observatorioInforme(informe.slug),
+  inLanguage: "es",
+  datePublished: vigente.fecha,
+  temporalCoverage: informe.cobertura,
+  creator: { "@type": "Person", name: "Frederick Salazar", url: absUrls.home() },
+  publisher: { "@type": "Organization", name: "Observatorio de Datos de Colombia", url: absUrls.observatorio() },
+  license: "https://creativecommons.org/licenses/by/4.0/",
+  spatialCoverage: { "@type": "Place", name: "Colombia" },
+  isPartOf: { "@type": "CollectionPage", name: "Informes del Observatorio", url: absUrls.observatorioInformes() },
+  distribution: informe.versiones.map((v) => ({
+    "@type": "DataDownload",
+    name: `${informe.titulo} — ${v.version}`,
+    encodingFormat: "application/pdf",
+    contentUrl: absUrls.informePdf(v.archivo),
+    datePublished: v.fecha,
+  })),
+};
+---
+
+<BaseLayout
+  title={`${informe.titulo} · Observatorio de Datos de Colombia`}
+  description={informe.resumen}
+  image={informe.portada ?? "/images/observatorio.png"}
+  fullWidth={true}
+>
+  <Hero
+    badge={{ text: `Informe · ${informe.cobertura}` }}
+    title={informe.titulo}
+    subtitle={informe.resumen}
+    tags={informe.dimensiones ?? []}
+    showPartners={false}
+  >
+    <div slot="visual" class="hdc-hero-visual">
+      {informe.portada && (
+        <img class="hdc-hero-cover" src={informe.portada} alt={`Portada de ${informe.titulo}`} width="360" height="466" loading="eager" />
+      )}
+    </div>
+  </Hero>
+
+  <DashboardNav active="informes" />
+
+  <div class="observatorio-container">
+    <nav class="hdc-breadcrumb" aria-label="Ruta">
+      <a href={urls.observatorioInformes()}>Informes</a>
+      <span aria-hidden="true">/</span>
+      <span>{informe.titulo}</span>
+    </nav>
+
+    <div class="hdc-layout">
+      <!-- ─── Columna principal ─── -->
+      <article class="hdc-main">
+        <section class="hdc-section">
+          <span class="hdc-eyebrow">Descripción</span>
+          <h2 class="hdc-h2">Qué es este informe</h2>
+          <p class="hdc-body">{informe.descripcion}</p>
+        </section>
+
+        <section class="hdc-section">
+          <span class="hdc-eyebrow">Objetivo</span>
+          <h2 class="hdc-h2">Para qué se construye</h2>
+          <p class="hdc-body">{informe.objetivo}</p>
+        </section>
+
+        {informe.dimensiones && informe.dimensiones.length > 0 && (
+          <section class="hdc-section">
+            <span class="hdc-eyebrow">Contenido</span>
+            <h2 class="hdc-h2">Dimensiones que analiza</h2>
+            <ul class="hdc-dims" role="list">
+              {informe.dimensiones.map((d) => (
+                <li class="hdc-dim">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  {d}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <!-- ─── Versiones ─── -->
+        <section class="hdc-section" id="versiones">
+          <span class="hdc-eyebrow">Descargas</span>
+          <h2 class="hdc-h2">Versiones del informe</h2>
+          <p class="hdc-body hdc-body--muted">
+            Cada edición es un documento independiente y versionado. La más reciente está
+            marcada como vigente.
+          </p>
+
+          <ul class="version-list" role="list">
+            {informe.versiones.map((v) => (
+              <li class={`version-row ${v.vigente ? "version-row--current" : ""}`}>
+                <div class="version-row__info">
+                  <div class="version-row__head">
+                    <span class="version-row__name">{v.version}</span>
+                    {v.vigente && <span class="version-row__badge">Vigente</span>}
+                  </div>
+                  <span class="version-row__date">{formatFechaInforme(v.fecha)}</span>
+                  {v.notas && <p class="version-row__notes">{v.notas}</p>}
+                  <div class="version-row__specs">
+                    {v.paginas && <span>{v.paginas} páginas</span>}
+                    {v.tamanoMB && <span>PDF · {v.tamanoMB} MB</span>}
+                  </div>
+                </div>
+                <a class="version-row__download" href={urls.informePdf(v.archivo)} download>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Descargar PDF
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </article>
+
+      <!-- ─── Sidebar de descarga ─── -->
+      <aside class="hdc-aside">
+        <div class="hdc-download-card">
+          <span class="hdc-download-card__eyebrow">Edición vigente</span>
+          <span class="hdc-download-card__version">{vigente.version}</span>
+          <span class="hdc-download-card__date">{formatFechaInforme(vigente.fecha)}</span>
+          <dl class="hdc-download-card__specs">
+            {informe.cobertura && (<><dt>Cobertura</dt><dd>{informe.cobertura}</dd></>)}
+            {vigente.paginas && (<><dt>Páginas</dt><dd>{vigente.paginas}</dd></>)}
+            {vigente.tamanoMB && (<><dt>Tamaño</dt><dd>{vigente.tamanoMB} MB · PDF</dd></>)}
+          </dl>
+          <a class="hdc-download-card__cta" href={urls.informePdf(vigente.archivo)} download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Descargar informe
+          </a>
+          <a class="hdc-download-card__secondary" href={urls.observatorio()}>Explorar el dashboard en vivo</a>
+        </div>
+
+        <p class="hdc-aside__note">
+          Informe construido a partir de fuentes públicas oficiales (Banco Mundial, DANE,
+          Banco de la República). Uso libre con atribución.
+        </p>
+      </aside>
+    </div>
+  </div>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>
+
+<style>
+  .hdc-hero-visual {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 2rem;
+  }
+  .hdc-hero-cover {
+    width: auto; height: 80%; max-height: 460px; border-radius: 8px;
+    box-shadow: 0 22px 50px rgba(15, 23, 42, .22); border: 1px solid rgba(37, 99, 235, .15);
+    object-fit: contain;
+  }
+
+  .observatorio-container { width: 97%; max-width: 1180px; margin: 0 auto; padding: 2rem 0 4rem; }
+
+  .hdc-breadcrumb { display: flex; align-items: center; gap: .5rem; font-size: .82rem; color: var(--color-text-muted); margin-bottom: 1.75rem; }
+  .hdc-breadcrumb a { color: var(--color-accent); text-decoration: none; }
+  .hdc-breadcrumb a:hover { text-decoration: underline; }
+
+  .hdc-layout { display: grid; grid-template-columns: 1fr 340px; gap: 3rem; align-items: start; }
+
+  .hdc-section { margin-bottom: 2.5rem; }
+  .hdc-section:last-child { margin-bottom: 0; }
+  .hdc-eyebrow {
+    display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--color-accent); margin-bottom: .55rem;
+  }
+  .hdc-h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -.015em; color: var(--color-text-primary); margin: 0 0 .85rem; }
+  .hdc-body { font-size: 1.02rem; line-height: 1.7; color: var(--color-text-secondary); margin: 0; }
+  .hdc-body--muted { font-size: .95rem; margin-bottom: 1.25rem; }
+
+  .hdc-dims { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .6rem; }
+  .hdc-dim {
+    display: inline-flex; align-items: center; gap: .5rem; padding: .5rem .9rem;
+    background: #fff; border: 1px solid var(--color-border); border-radius: 100px;
+    font-size: .88rem; font-weight: 600; color: var(--color-text-primary);
+  }
+  .hdc-dim svg { width: 16px; height: 16px; color: var(--color-accent); }
+
+  /* ── Versiones ── */
+  .version-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+  .version-row {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem;
+    padding: 1.25rem 1.4rem; background: #fff; border: 1px solid var(--color-border); border-radius: 14px;
+    transition: border-color .2s ease, box-shadow .2s ease;
+  }
+  .version-row:hover { border-color: rgba(37, 99, 235, .3); box-shadow: 0 8px 22px rgba(37, 99, 235, .07); }
+  .version-row--current { border-color: rgba(37, 99, 235, .35); background: linear-gradient(180deg, #fff 0%, #f5f8ff 100%); }
+  .version-row__head { display: flex; align-items: center; gap: .6rem; }
+  .version-row__name { font-size: 1.05rem; font-weight: 700; color: var(--color-text-primary); }
+  .version-row__badge {
+    font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+    color: #15803d; background: rgba(34, 197, 94, .1); border: 1px solid rgba(34, 197, 94, .3);
+    padding: .15rem .5rem; border-radius: 100px;
+  }
+  .version-row__date { display: block; font-size: .82rem; color: var(--color-text-muted); margin-top: .2rem; }
+  .version-row__notes { font-size: .88rem; line-height: 1.55; color: var(--color-text-secondary); margin: .6rem 0 0; }
+  .version-row__specs { display: flex; flex-wrap: wrap; gap: .85rem; margin-top: .65rem; font-size: .76rem; color: var(--color-text-muted); }
+  .version-row__download {
+    flex-shrink: 0; display: inline-flex; align-items: center; gap: .5rem; white-space: nowrap;
+    padding: .6rem 1rem; background: var(--color-accent); color: #fff; font-size: .85rem; font-weight: 600;
+    border-radius: 10px; text-decoration: none; transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .version-row__download:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, .3); }
+  .version-row__download svg { width: 17px; height: 17px; }
+
+  /* ── Sidebar ── */
+  .hdc-aside { position: sticky; top: 5rem; display: flex; flex-direction: column; gap: 1rem; }
+  .hdc-download-card {
+    display: flex; flex-direction: column; padding: 1.5rem; border-radius: 16px;
+    background: linear-gradient(180deg, #ffffff 0%, #f0f6ff 100%); border: 1px solid rgba(37, 99, 235, .18);
+  }
+  .hdc-download-card__eyebrow { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--color-accent); }
+  .hdc-download-card__version { font-size: 1.3rem; font-weight: 700; color: var(--color-text-primary); margin-top: .4rem; }
+  .hdc-download-card__date { font-size: .85rem; color: var(--color-text-muted); }
+  .hdc-download-card__specs { display: grid; grid-template-columns: auto 1fr; gap: .4rem 1rem; margin: 1.1rem 0; font-size: .85rem; }
+  .hdc-download-card__specs dt { color: var(--color-text-muted); }
+  .hdc-download-card__specs dd { margin: 0; color: var(--color-text-primary); font-weight: 600; text-align: right; }
+  .hdc-download-card__cta {
+    display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
+    padding: .8rem 1.2rem; background: var(--color-accent); color: #fff; font-size: .92rem; font-weight: 600;
+    border-radius: 11px; text-decoration: none; transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .hdc-download-card__cta:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(37, 99, 235, .3); }
+  .hdc-download-card__cta svg { width: 19px; height: 19px; }
+  .hdc-download-card__secondary { margin-top: .85rem; text-align: center; font-size: .85rem; font-weight: 600; color: var(--color-accent); text-decoration: none; }
+  .hdc-download-card__secondary:hover { text-decoration: underline; }
+  .hdc-aside__note { font-size: .78rem; line-height: 1.55; color: var(--color-text-muted); margin: 0; padding: 0 .25rem; }
+
+  @media (max-width: 900px) {
+    .hdc-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .hdc-aside { position: static; }
+  }
+  @media (max-width: 640px) {
+    .observatorio-container { width: 100%; padding: 1.5rem 1rem 3rem; }
+    .version-row { flex-direction: column; gap: 1rem; }
+    .version-row__download { width: 100%; justify-content: center; }
+  }
+</style>

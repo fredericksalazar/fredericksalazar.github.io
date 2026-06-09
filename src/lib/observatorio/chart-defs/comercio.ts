@@ -1,47 +1,7 @@
-import { COLORS, baseLayout, extractSerie } from "../charts";
+import { COLORS, baseLayout, extractSerie, minMaxAvgLines } from "../charts";
 import type { ChartDef } from "./types";
 
 const FUENTE_BM = "Banco Mundial — World Development Indicators";
-
-export const exportaciones: ChartDef = {
-  id: "comercio-expo",
-  titulo: "Exportaciones (% PIB)",
-  pregunta: "¿Qué porcentaje del PIB representan las exportaciones colombianas?",
-  fuenteTexto: FUENTE_BM,
-  datasets: ["comercio"],
-  height: 340,
-  ariaLabel: "Exportaciones de Colombia como porcentaje del PIB",
-  build({ comercio }) {
-    const { x, y } = extractSerie(comercio!.serie, "exportaciones");
-    return {
-      traces: [{ name: "Exportaciones", x, y, mode: "lines",
-        line: { color: COLORS.brand, width: 2.2 }, fill: "tozeroy",
-        fillcolor: "rgba(37, 99, 235, 0.06)",
-        hovertemplate: "<b>%{x|%Y}</b><br>Exportaciones: %{y:.2f}% PIB<extra></extra>" }],
-      layout: baseLayout(),
-    };
-  },
-};
-
-export const importaciones: ChartDef = {
-  id: "comercio-impo",
-  titulo: "Importaciones (% PIB)",
-  pregunta: "¿Qué porcentaje del PIB representan las importaciones colombianas?",
-  fuenteTexto: FUENTE_BM,
-  datasets: ["comercio"],
-  height: 340,
-  ariaLabel: "Importaciones de Colombia como porcentaje del PIB",
-  build({ comercio }) {
-    const { x, y } = extractSerie(comercio!.serie, "importaciones");
-    return {
-      traces: [{ name: "Importaciones", x, y, mode: "lines",
-        line: { color: "#64748b", width: 2.2 }, fill: "tozeroy",
-        fillcolor: "rgba(100, 116, 139, 0.06)",
-        hovertemplate: "<b>%{x|%Y}</b><br>Importaciones: %{y:.2f}% PIB<extra></extra>" }],
-      layout: baseLayout(),
-    };
-  },
-};
 
 export const balanzaComercial: ChartDef = {
   id: "comercio-balanza",
@@ -81,12 +41,18 @@ export const apertura: ChartDef = {
   ariaLabel: "Grado de apertura comercial de Colombia",
   build({ comercio }) {
     const { x, y } = extractSerie(comercio!.serie, "apertura");
+    const { shapes, annotations } = minMaxAvgLines(y, { suffix: "%" });
     return {
-      traces: [{ name: "Apertura comercial", x, y, mode: "lines",
-        line: { color: COLORS.brand, width: 2.2 }, fill: "tozeroy",
-        fillcolor: "rgba(37, 99, 235, 0.06)",
-        hovertemplate: "<b>%{x|%Y}</b><br>Apertura: %{y:.2f}% PIB<extra></extra>" }],
-      layout: baseLayout(),
+      traces: [{
+        name: "Apertura comercial", x, y, mode: "lines+markers+text",
+        line: { color: COLORS.brand, width: 2.2 },
+        marker: { size: 5, color: COLORS.brand },
+        text: y.map((v) => (typeof v === "number" ? v.toFixed(1) : "")),
+        texttemplate: "%{text}", textposition: "top center",
+        textfont: { size: 8, color: "#475569" }, cliponaxis: false,
+        hovertemplate: "<b>%{x|%Y}</b><br>Apertura: %{y:.2f}% PIB<extra></extra>",
+      }],
+      layout: baseLayout({ shapes, annotations }),
     };
   },
 };

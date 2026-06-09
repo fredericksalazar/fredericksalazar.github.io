@@ -49,6 +49,12 @@ export const urls = {
   observatorio: () => '/observatorio/',
   observatorioSub: (slug: string) => withSlash(`/observatorio/${slug}`),
 
+  // Observatorio · Informes
+  observatorioInformes: () => '/observatorio/informes/',
+  observatorioInforme: (slug: string) => withSlash(`/observatorio/informes/${slug}`),
+  /** PDF real bajo public/informes/. NO lleva trailing slash (archivo real). */
+  informePdf: (archivo: string) => `/informes/${archivo}`,
+
   // Elecciones presidenciales
   elecciones: (slug: string) => withSlash(`/elecciones-presidenciales/${slug}`),
 
@@ -77,6 +83,10 @@ export const absUrls = {
 
   observatorio: () => absolute(urls.observatorio()),
   observatorioSub: (slug: string) => absolute(urls.observatorioSub(slug)),
+
+  observatorioInformes: () => absolute(urls.observatorioInformes()),
+  observatorioInforme: (slug: string) => absolute(urls.observatorioInforme(slug)),
+  informePdf: (archivo: string) => absolute(urls.informePdf(archivo)),
 
   elecciones: (slug: string) => absolute(urls.elecciones(slug)),
 

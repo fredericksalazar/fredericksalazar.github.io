@@ -95,12 +95,12 @@ const jsonLd = {
       <IndicadorCard titulo="Apertura comercial" indicador={indicadores.apertura} semantic="comercio" deltaLabel="vs ano anterior" />
     </section>
 
-    <IndicadorPanel numero="01" eyebrow="Contexto histórico" titulo="Comercio exterior de Colombia en las últimas seis décadas"
-      lead="Desde 1960, el perfil exportador e importador de Colombia ha cambiado radicalmente: del café al petróleo, de las manufacturas a los servicios. Cada presidente ha gobernado con una economía más o menos abierta al mundo."
+    <IndicadorPanel numero="01" eyebrow="Contexto histórico" titulo="Exportaciones de Colombia en las últimas seis décadas"
+      lead="Las exportaciones del país como porcentaje del PIB desde 1960. Refleja cuánto le vende Colombia al mundo y cómo cambió su perfil exportador: del café al petróleo. Activa el color por presidente para ver bajo qué gobierno ocurrió cada ciclo."
       fuente={fuenteComercio}
     >
       <Fragment slot="text">
-        <p>Colombia pasó de ser una economía casi cerrada en los años 60 (exportaciones por debajo del <strong>15% del PIB</strong>) a un pico de apertura en los 2000. La bonanza petrolera y minera de los 2010 cambió la canasta exportadora, y los TLC con EE.UU. y la UE transformaron el mapa comercial.</p>
+        <p>Esta es la serie de <strong>exportaciones del país como % del PIB</strong>. Colombia pasó de ser una economía casi cerrada en los años 60 (exportaciones por debajo del <strong>15% del PIB</strong>) a un pico de apertura en los 2000. La bonanza petrolera y minera de los 2010 cambió la canasta exportadora, y los TLC con EE.UU. y la UE transformaron el mapa comercial.</p>
         <ul>
           <li><strong>1960 – 1980:</strong> exportaciones agrícolas (café) dominan. Baja apertura.</li>
           <li><strong>1990 – 2010:</strong> apertura económica, petróleo y carbón desplazan al café.</li>
@@ -110,18 +110,7 @@ const jsonLd = {
       <Chart slot="visual" id="comercio-historico" embedded={true} />
     </IndicadorPanel>
 
-    <IndicadorPanel numero="02" eyebrow="Ventas al mundo" titulo="Exportaciones colombianas (% del PIB)"
-      lead="Las exportaciones miden lo que Colombia le vende al mundo. Un mayor porcentaje indica una economía más integrada y competitiva internacionalmente."
-      fuente={fuenteComercio}
-    >
-      <Fragment slot="text">
-        <p>Las <strong>exportaciones</strong> colombianas como porcentaje del PIB reflejan la capacidad del país de competir en mercados internacionales. En {ultimoPeriodo}, representan el <strong>{exportActual}% del PIB</strong>.</p>
-        <p>Colombia es una economía con un grado de apertura moderado comparado con sus pares latinoamericanos. La dependencia de commodities (petróleo, carbón, café) hace que las exportaciones sean vulnerables a los precios internacionales.</p>
-      </Fragment>
-      <Chart slot="visual" id="comercio-expo" embedded={true} />
-    </IndicadorPanel>
-
-    <IndicadorPanel numero="03" eyebrow="Compras al mundo" titulo="Importaciones colombianas (% del PIB)"
+    <IndicadorPanel numero="02" eyebrow="Compras al mundo" titulo="Importaciones colombianas (% del PIB)"
       lead="Las importaciones reflejan lo que Colombia compra del exterior: desde maquinaria hasta bienes de consumo. Un componente clave de la demanda interna."
       fuente={fuenteComercio}
     >
@@ -132,7 +121,7 @@ const jsonLd = {
       <Chart slot="visual" id="comercio-impo" embedded={true} />
     </IndicadorPanel>
 
-    <IndicadorPanel numero="04" eyebrow="El saldo" titulo="Balanza comercial: el saldo del comercio exterior"
+    <IndicadorPanel numero="03" eyebrow="El saldo" titulo="Balanza comercial: el saldo del comercio exterior"
       lead="La diferencia entre lo que Colombia vende y lo que compra. Un déficit persistente no es necesariamente malo: puede reflejar inversión productiva."
       fuente={fuenteComercio}
     >
@@ -147,7 +136,7 @@ const jsonLd = {
       <Chart slot="visual" id="comercio-balanza" embedded={true} />
     </IndicadorPanel>
 
-    <IndicadorPanel numero="05" eyebrow="Integración global" titulo="Grado de apertura comercial"
+    <IndicadorPanel numero="04" eyebrow="Integración global" titulo="Grado de apertura comercial"
       lead="Exportaciones + Importaciones como % del PIB. El termómetro de qué tan conectada está Colombia con la economía mundial."
       fuente={fuenteComercio}
     >
@@ -159,7 +148,7 @@ const jsonLd = {
     </IndicadorPanel>
 
     <IndicadorPanel
-      numero="06"
+      numero="05"
       eyebrow="Canasta exportadora"
       titulo="¿Qué exporta Colombia?"
       lead="Desglose de las exportaciones en 4 grupos OMC. Colombia pasó de ser un exportador agrícola (café) a depender del petróleo y el carbón."
@@ -183,7 +172,7 @@ const jsonLd = {
     </IndicadorPanel>
 
     <IndicadorPanel
-      numero="07"
+      numero="06"
       eyebrow="Canasta importadora"
       titulo="¿Qué importa Colombia?"
       lead="El 75% de las importaciones colombianas son manufacturas: maquinaria, químicos, vehículos y tecnología. Un reflejo de la dependencia industrial externa."
@@ -205,7 +194,7 @@ const jsonLd = {
     </IndicadorPanel>
 
     <IndicadorPanel
-      numero="08"
+      numero="07"
       eyebrow="Tradicionales"
       titulo="Café, carbón, petróleo y ferroníquel"
       lead="Los cuatro productos que han sostenido las exportaciones colombianas por décadas. El petróleo desplazó al café como principal producto de exportación a principios de los 90."

@@ -1,4 +1,4 @@
-import { COLORS, baseLayout, extractSerie, periodoToISODate } from "../charts";
+import { COLORS, baseLayout, extractSerie, periodoToISODate, minMaxAvgLines } from "../charts";
 import type { ChartDef } from "./types";
 
 const FUENTE_BM = "Banco Mundial — WDI";
@@ -19,6 +19,7 @@ export const poblacionCrecimiento: ChartDef = {
   ariaLabel: "Tasa de crecimiento poblacional anual de Colombia desde 1961",
   build({ demografia }) {
     const { x, y } = extractSerie(demografia!.serie, "crecimiento_poblacion");
+    const { shapes, annotations } = minMaxAvgLines(y, { suffix: "%" });
     return {
       traces: [{
         name: "Crecimiento poblacional", x, y, mode: "lines+markers",
@@ -32,6 +33,7 @@ export const poblacionCrecimiento: ChartDef = {
           showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
           tickfont: { size: 11, color: "#636c76" }, ticksuffix: "%", automargin: true,
         },
+        shapes, annotations,
       }),
     };
   },
@@ -111,6 +113,8 @@ export const giniEvolucion: ChartDef = {
       fillcolor: color, line: { width: 0 }, layer: "below",
     });
 
+    const ref = minMaxAvgLines(y);
+
     return {
       traces: [{
         name: "Gini", x, y, mode: "lines+markers",
@@ -129,7 +133,9 @@ export const giniEvolucion: ChartDef = {
           banda(40, 45, "rgba(34,197,94,0.10)"),
           banda(45, 50, "rgba(234,179,8,0.10)"),
           banda(50, 62, "rgba(220,38,38,0.10)"),
+          ...ref.shapes,
         ],
+        annotations: ref.annotations,
       }),
       footerHtml: `
         <div class="banda-leyenda">

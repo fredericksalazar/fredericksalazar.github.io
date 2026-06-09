@@ -1,5 +1,5 @@
 import { COLORS, baseLayout, extractSerie, periodoToISODate } from "../charts";
-import { comercioPorPibJoin, okunRegression, empleoAnualDiciembre } from "../derivations";
+import { comercioPorPibJoin } from "../derivations";
 import type { ChartDef } from "./types";
 
 const FUENTE_BM = "Banco Mundial — WDI";
@@ -44,29 +44,6 @@ export const pibTotal: ChartDef = {
         fillcolor: "rgba(37,99,235,0.06)",
         hovertemplate: "<b>%{x|%Y}</b><br>PIB: %{y:,.1f} mil M USD<extra></extra>" }],
       layout: baseLayout(),
-    };
-  },
-};
-
-export const pibPerCapita: ChartDef = {
-  id: "pib-percapita",
-  titulo: "PIB per cápita",
-  pregunta: "PIB dividido por la población. Pasó de $258 en 1960 a $7,919 en 2024. Mide la riqueza promedio por habitante.",
-  fuenteTexto: FUENTE_BM,
-  datasets: ["pib"],
-  height: 340,
-  ariaLabel: "PIB per cápita de Colombia",
-  build({ pib }) {
-    const { x, y } = extractSerie(pib!.serie, "pib_percapita");
-    return {
-      traces: [{ name: "PIB per cápita", x, y, mode: "lines",
-        line: { color: COLORS.brand, width: 2.2 }, fill: "tozeroy",
-        fillcolor: "rgba(37,99,235,0.06)",
-        hovertemplate: "<b>%{x|%Y}</b><br>PIB per cápita: %{y:,.0f} USD<extra></extra>" }],
-      layout: baseLayout({
-        yaxis: { showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
-          tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true },
-      }),
     };
   },
 };
@@ -198,66 +175,3 @@ export const pibComercio: ChartDef = {
   },
 };
 
-export const leyOkun: ChartDef = {
-  id: "ley-okun",
-  titulo: "Ley de Okun: crecimiento PIB vs cambio en desempleo",
-  pregunta: "Cada punto adicional de crecimiento del PIB reduce el desempleo. Colombia necesita crecer por encima de cierto umbral para no destruir empleo neto.",
-  fuenteTexto: "DANE — GEIH (desempleo Dic) · Banco Mundial — WDI (crecimiento PIB)",
-  datasets: ["pib", "empleo"],
-  height: 440,
-  ariaLabel: "Diagrama de dispersión de crecimiento PIB vs cambio en desempleo con línea de regresión",
-  build({ pib, empleo }) {
-    const empDic = empleoAnualDiciembre(empleo!.serie);
-    const { puntos, slope, intercept, umbral, n } = okunRegression(pib!.serie, empDic);
-    const xs = puntos.map((p) => p.crecimiento);
-    const ys = puntos.map((p) => p.deltaDesempleo);
-    const xMin = Math.min(...xs) - 0.5;
-    const xMax = Math.max(...xs) + 0.5;
-    const regX = [xMin, xMax];
-    const regY = regX.map((x) => intercept + slope * x);
-
-    const umbralFmt = umbral.toFixed(1);
-    const slopeFmt = slope.toFixed(2);
-
-    return {
-      traces: [
-        { name: "Año", x: xs, y: ys, mode: "markers+text", type: "scatter",
-          marker: { size: 9, color: COLORS.brand, line: { color: "white", width: 1 } },
-          text: puntos.map((p) => p.year.slice(2)),
-          textposition: "top center",
-          textfont: { size: 9, color: "#475569" },
-          hovertemplate: "<b>%{text}</b><br>Crecimiento PIB: %{x:.2f}%<br>Δ Desempleo: %{y:+.2f} pp<extra></extra>" },
-        { name: "Regresión OLS", x: regX, y: regY, mode: "lines", type: "scatter",
-          line: { color: "#dc2626", width: 2, dash: "dash" }, hoverinfo: "skip" },
-      ],
-      layout: baseLayout({
-        margin: { l: 56, r: 24, t: 24, b: 48 },
-        showlegend: false, hovermode: "closest",
-        xaxis: {
-          type: "linear", title: { text: "Crecimiento PIB (%)", font: { size: 11, color: "#636c76" } },
-          showgrid: true, gridcolor: "rgba(208,215,220,0.4)",
-          zeroline: true, zerolinecolor: "rgba(100,100,100,0.4)", zerolinewidth: 1,
-          tickfont: { size: 11, color: "#636c76" }, ticksuffix: "%", automargin: true,
-        },
-        yaxis: {
-          title: { text: "Cambio en desempleo (pp)", font: { size: 11, color: "#636c76" } },
-          showgrid: true, gridcolor: "rgba(208,215,220,0.4)",
-          zeroline: true, zerolinecolor: "rgba(100,100,100,0.4)", zerolinewidth: 1,
-          tickfont: { size: 11, color: "#636c76" }, automargin: true,
-        },
-        shapes: [{ type: "line", xref: "x", yref: "y", x0: umbral, x1: umbral, y0: -3, y1: 3,
-          line: { color: "rgba(22,163,74,0.5)", width: 1, dash: "dot" } }],
-        annotations: [{ x: umbral, y: 2.8, xref: "x", yref: "y",
-          text: `Umbral: <b>${umbralFmt}%</b>`, showarrow: false,
-          font: { size: 10, color: "#16a34a" }, bgcolor: "rgba(255,255,255,0.85)", borderpad: 3 }],
-      }),
-      pregunta: `Cada punto adicional de crecimiento del PIB reduce el desempleo en ${(-slope).toFixed(2)} pp. Colombia necesita crecer al menos ${umbralFmt}% para no destruir empleo neto.`,
-      footerHtml: `
-        <div class="okun-stat">
-          <span><strong>Pendiente OLS:</strong> ${slopeFmt}</span>
-          <span><strong>Umbral de crecimiento:</strong> ${umbralFmt}%</span>
-          <span><strong>n:</strong> ${n} años</span>
-        </div>`,
-    };
-  },
-};
