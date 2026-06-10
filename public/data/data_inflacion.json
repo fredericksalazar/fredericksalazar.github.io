@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-06-05T15:51:18+00:00",
+    "ultima_actualizacion": "2026-06-10T14:00:08+00:00",
     "fuentes": {
       "inflacion": {
         "nombre": "DANE — Departamento Administrativo Nacional de Estadística",
@@ -20,49 +20,64 @@
     },
     "cobertura": {
       "primer_periodo": "2004-01",
-      "ultimo_periodo": "2026-04",
-      "total_registros": 268
+      "ultimo_periodo": "2026-05",
+      "total_registros": 269
     }
   },
   "indicadores": {
     "inflacion_anual": {
       "actual": {
-        "periodo": "2026-04",
-        "valor": 5.69,
+        "periodo": "2026-05",
+        "valor": 5.84,
         "variacion": "subio",
-        "delta": 0.13
+        "delta": 0.15
       },
       "unidad": "%"
     },
     "inflacion_mensual": {
       "actual": {
-        "periodo": "2026-04",
-        "valor": 0.78,
-        "variacion": "igual",
-        "delta": 0.0
+        "periodo": "2026-05",
+        "valor": 0.47,
+        "variacion": "bajo",
+        "delta": -0.31
       },
       "unidad": "%"
     },
     "tasa_interes": {
       "actual": {
-        "periodo": "2026-04",
+        "periodo": "2026-05",
         "valor": 11.25,
-        "variacion": "subio",
-        "delta": 1.0
+        "variacion": "igual",
+        "delta": 0.0
       },
       "unidad": "%"
     },
     "spread": {
       "actual": {
-        "periodo": "2026-04",
-        "valor": 5.56,
-        "variacion": "subio",
-        "delta": 0.87
+        "periodo": "2026-05",
+        "valor": 5.41,
+        "variacion": "bajo",
+        "delta": -0.15
       },
       "unidad": "pp"
     }
   },
   "serie": [
+    {
+      "periodo": "2026-05",
+      "inflacion_anual": 5.84,
+      "inflacion_anual_delta": 0.15,
+      "inflacion_anual_variacion": "subio",
+      "inflacion_mensual": 0.47,
+      "inflacion_mensual_delta": -0.31,
+      "inflacion_mensual_variacion": "bajo",
+      "tasa_interes": 11.25,
+      "tasa_interes_delta": 0.0,
+      "tasa_interes_variacion": "igual",
+      "spread": 5.41,
+      "spread_delta": -0.15,
+      "spread_variacion": "bajo"
+    },
     {
       "periodo": "2026-04",
       "inflacion_anual": 5.69,
