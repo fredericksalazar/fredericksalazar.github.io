@@ -9,11 +9,18 @@ import PageHeader from "../../components/observatorio/PageHeader.astro";
 import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
 import Chart from "../../components/observatorio/Chart.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
-import { getEmpleo } from "../../lib/observatorio/data";
+import { getEmpleo, getSalarioMinimo } from "../../lib/observatorio/data";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
 
 const emp = getEmpleo();
 const { indicadores, metadata } = emp;
+
+const smlv = getSalarioMinimo();
+const fuenteSalario = smlv.metadata.fuentes.salario_minimo;
+const smlvActual = smlv.indicadores.salario_minimo.actual.valor;
+const smlvVariacion = smlv.indicadores.variacion_anual.actual.valor;
+const smlvAnio = smlv.indicadores.salario_minimo.actual.periodo.split("-")[0];
+const fmtCOP = new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 });
 
 const desempleoActual = indicadores.tasa_desempleo.actual.valor;
 const ultimoPeriodo = formatPeriodo(metadata.cobertura.ultimo_periodo);
@@ -37,6 +44,9 @@ const jsonLd = {
         "informalidad laboral",
         "mercado laboral",
         "GEIH DANE",
+        "salario mínimo Colombia",
+        "salario mínimo histórico",
+        "SMMLV",
       ],
       creator: {
         "@type": "Person",
@@ -46,6 +56,7 @@ const jsonLd = {
       isBasedOn: [
         { "@type": "CreativeWork", name: fuenteEmpleo.nombre, url: fuenteEmpleo.url },
         { "@type": "CreativeWork", name: fuenteHistorica.nombre, url: fuenteHistorica.url },
+        { "@type": "CreativeWork", name: fuenteSalario.nombre, url: fuenteSalario.url },
       ],
       temporalCoverage: `${metadata.cobertura.primer_periodo}/${metadata.cobertura.ultimo_periodo}`,
       dateModified: metadata.ultima_actualizacion,
@@ -239,6 +250,30 @@ const jsonLd = {
       <Chart slot="visual" id="subempleo" embedded={true} />
     </IndicadorPanel>
 
+    <IndicadorPanel
+      numero="06"
+      eyebrow="Salario mínimo"
+      titulo="Salario mínimo histórico: cuánto se ha decretado cada año"
+      lead="El salario mínimo mensual legal vigente (SMMLV) se fija por decreto cada diciembre. Desde 1984, cuando se unificó para todos los sectores, ha pasado de $11.298 a millones de pesos."
+      fuente={fuenteSalario}
+    >
+      <Fragment slot="text">
+        <p>
+          En {smlvAnio}, el salario mínimo en Colombia es de
+          <strong> ${smlvActual !== null ? fmtCOP.format(smlvActual) : "—"} COP</strong> mensuales,
+          un incremento del <strong>{smlvVariacion ?? "—"}%</strong> frente al año anterior.
+          Es la referencia salarial de millones de trabajadores y la base de cotizaciones,
+          multas y subsidios en todo el país.
+        </p>
+        <p>
+          Los valores del gráfico son <strong>nominales</strong> (pesos corrientes de cada año):
+          muestran lo decretado, no el poder adquisitivo. Activa el color por presidente para
+          ver qué gobierno decretó cada incremento.
+        </p>
+      </Fragment>
+      <Chart slot="visual" id="salario-minimo-historico" embedded={true} />
+    </IndicadorPanel>
+
     <section class="glosario-block" aria-label="Glosario y fuentes">
       <header class="glosario-block__header">
         <span class="glosario-block__eyebrow">Referencia</span>
@@ -276,7 +311,7 @@ const jsonLd = {
     </section>
 
     <DashboardFooter
-      fuentes={[fuenteEmpleo, fuenteHistorica]}
+      fuentes={[fuenteEmpleo, fuenteHistorica, fuenteSalario]}
       ultimaActualizacion={metadata.ultima_actualizacion}
       definiciones={[
         {

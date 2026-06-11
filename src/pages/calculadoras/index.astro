@@ -1,0 +1,213 @@
+---
+/**
+ * /calculadoras/ — Landing de las calculadoras ciudadanas.
+ *
+ * Herramientas interactivas construidas sobre los datos del Observatorio
+ * (mismos JSON, misma fuente de verdad). Cada calculadora es una página
+ * propia optimizada para SEO.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { urls, absUrls } from "../../lib/urls";
+import { getObservatorio, getSalarioMinimo } from "../../lib/observatorio/data";
+
+const title = "Calculadoras de economía colombiana: inflación, salario y poder adquisitivo";
+const description =
+  "Calculadoras interactivas con datos oficiales de Colombia: descubre cuánto vale hoy tu sueldo de hace años frente a la inflación y cómo era el país el año en que naciste. Datos del DANE, Banco de la República y Banco Mundial.";
+
+const obs = getObservatorio();
+const smlv = getSalarioMinimo();
+const inflacionActual = obs.indicadores.inflacion_anual.actual.valor;
+const smlvActual = smlv.indicadores.salario_minimo.actual.valor;
+const fmtCOP = new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 });
+
+const calculadoras = [
+  {
+    slug: "sueldo-vs-inflacion",
+    nombre: "¿Cuánto vale hoy tu sueldo de hace unos años?",
+    descripcion:
+      "Ingresa un monto y un año: la calculadora lo ajusta con la inflación oficial y te dice cuánto poder adquisitivo ganaste o perdiste, y a cuántos salarios mínimos equivale.",
+    dato: `Inflación anual actual: ${inflacionActual ?? "—"}%`,
+    emoji: "📉",
+  },
+  {
+    slug: "en-que-colombia-naciste",
+    nombre: "¿En qué Colombia naciste?",
+    descripcion:
+      "Tu año de nacimiento, convertido en datos: quién gobernaba, cuántos éramos, cuánto valía el salario mínimo y cuánto ha cambiado el país desde entonces hasta hoy.",
+    dato: `Cobertura: 1960 — hoy`,
+    emoji: "🇨🇴",
+  },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Calculadoras de economía colombiana",
+  description,
+  url: absUrls.calculadoras(),
+  inLanguage: "es",
+  creator: { "@type": "Person", name: "Frederick Salazar", url: absUrls.home() },
+  hasPart: calculadoras.map((c) => ({
+    "@type": "WebApplication",
+    name: c.nombre,
+    url: absUrls.calculadora(c.slug),
+    applicationCategory: "FinanceApplication",
+    operatingSystem: "Web",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "COP" },
+  })),
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="calc-header">
+    <span class="calc-header__eyebrow">Calculadoras · Datos oficiales de Colombia</span>
+    <h1 class="calc-header__titulo">La economía colombiana, aplicada a tu bolsillo</h1>
+    <p class="calc-header__lead">
+      Estas calculadoras usan exactamente los mismos datos del
+      <a href={urls.observatorio()}>Observatorio de Datos de Colombia</a> —
+      inflación del DANE, salario mínimo de los decretos anuales, series del
+      Banco de la República y del Banco Mundial — para responder preguntas
+      concretas sobre tu plata y tu historia. Sin opiniones: solo datos.
+    </p>
+    <div class="calc-header__kpis">
+      <span class="calc-kpi">Inflación anual: <strong>{inflacionActual ?? "—"}%</strong></span>
+      <span class="calc-kpi">Salario mínimo {smlv.indicadores.salario_minimo.actual.periodo.slice(0, 4)}: <strong>${smlvActual !== null ? fmtCOP.format(smlvActual) : "—"}</strong></span>
+    </div>
+  </header>
+
+  <section class="calc-grid" aria-label="Calculadoras disponibles">
+    {
+      calculadoras.map((c) => (
+        <a class="calc-card" href={urls.calculadora(c.slug)}>
+          <span class="calc-card__emoji" aria-hidden="true">{c.emoji}</span>
+          <h2 class="calc-card__titulo">{c.nombre}</h2>
+          <p class="calc-card__desc">{c.descripcion}</p>
+          <span class="calc-card__dato">{c.dato}</span>
+          <span class="calc-card__cta">Usar calculadora →</span>
+        </a>
+      ))
+    }
+  </section>
+
+  <section class="calc-about">
+    <h2>¿De dónde salen los datos?</h2>
+    <p>
+      Toda cifra que ves aquí nace en el pipeline de datos del Observatorio:
+      series oficiales descargadas, procesadas y publicadas como datasets
+      abiertos en este mismo sitio. La inflación proviene del DANE y del
+      Banco Mundial; el salario mínimo, de los decretos anuales del Gobierno
+      nacional; la demografía, de los World Development Indicators. Puedes
+      ver las series completas en el
+      <a href={urls.observatorio()}>Observatorio</a> y en el
+      <a href={urls.observatorioSub("empleo")}>dashboard de empleo</a>.
+    </p>
+  </section>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>
+
+<style>
+  .calc-header {
+    padding: 3rem 0 2rem;
+    max-width: 720px;
+  }
+  .calc-header__eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-accent, #2563eb);
+  }
+  .calc-header__titulo {
+    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 0.6rem 0 1rem;
+    color: var(--color-text-primary, #1f2328);
+  }
+  .calc-header__lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary, #475569);
+  }
+  .calc-header__lead a { color: var(--color-accent, #2563eb); }
+  .calc-header__kpis {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+  }
+  .calc-kpi {
+    font-size: 0.78rem;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 100px;
+    color: var(--color-text-secondary, #475569);
+    background: var(--color-sidebar, #f6f8fa);
+  }
+  .calc-kpi strong { color: var(--color-accent, #2563eb); }
+
+  .calc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin: 1rem 0 3rem;
+  }
+  .calc-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.75rem;
+    background: var(--color-sidebar, #f6f8fa);
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 18px;
+    text-decoration: none;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .calc-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-accent, #2563eb);
+    box-shadow: 0 10px 28px rgba(37, 99, 235, 0.12);
+  }
+  .calc-card__emoji { font-size: 1.8rem; }
+  .calc-card__titulo {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #1f2328);
+    margin: 0;
+  }
+  .calc-card__desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary, #475569);
+    margin: 0;
+    flex: 1;
+  }
+  .calc-card__dato {
+    font-size: 0.72rem;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    color: var(--color-text-muted, #636c76);
+  }
+  .calc-card__cta {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-accent, #2563eb);
+  }
+
+  .calc-about {
+    max-width: 720px;
+    padding-bottom: 3rem;
+  }
+  .calc-about h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: var(--color-text-primary, #1f2328);
+  }
+  .calc-about p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary, #475569);
+  }
+  .calc-about a { color: var(--color-accent, #2563eb); }
+</style>

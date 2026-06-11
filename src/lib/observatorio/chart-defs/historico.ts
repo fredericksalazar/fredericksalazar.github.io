@@ -16,6 +16,8 @@ interface HistoricoOptions {
   name: string;
   hoverSuffix: string;
   hoverDecimals?: number;
+  /** Si es true, el hover agrupa miles (`%{y:,.0f}`) — para valores COP grandes. */
+  hoverThousands?: boolean;
   yaxisTickSuffix?: string;
   promedioOptions?: { showLine: boolean };
   metaBanrep?: boolean;
@@ -67,12 +69,13 @@ async function buildHistorico(
   });
 
   const dec = opts.hoverDecimals ?? 2;
+  const yFormat = opts.hoverThousands ? ",.0f" : `.${dec}f`;
   const traces = [{
     type: "bar", x: years, y: valores,
     marker: { color: initialColor, line: { color: "rgba(0,0,0,0.08)", width: 0.5 } },
     customdata, name: opts.name,
     hovertemplate:
-      `<b>%{x}</b><br>${opts.name}: <b>%{y:.${dec}f}${opts.hoverSuffix}</b><br>` +
+      `<b>%{x}</b><br>${opts.name}: <b>%{y:${yFormat}}${opts.hoverSuffix}</b><br>` +
       "Presidente: %{customdata[0]}<br>" +
       "<span style='color:#94a3b8'>%{customdata[1]}</span><extra></extra>",
   }];
@@ -186,6 +189,25 @@ export const desempleoHistorico: ChartDef = {
       hoverSuffix: "%",
       promedioOptions: { showLine: true },
       defaultOn: false,
+    });
+  },
+};
+
+export const salarioMinimoHistorico: ChartDef = {
+  id: "salario-minimo-historico",
+  titulo: "Salario mínimo histórico de Colombia",
+  pregunta: "Salario mínimo mensual legal vigente (SMMLV) en pesos corrientes desde 1984, año en que se unificó para todos los sectores. Coloreado por presidente que lo decretó.",
+  fuenteTexto: "Ministerio del Trabajo — decretos anuales · Presidentes: Registraduría Nacional",
+  datasets: ["salario-minimo"],
+  height: 420,
+  ariaLabel: "Salario mínimo mensual de Colombia desde 1984 en pesos corrientes, con color por presidente",
+  build({ "salario-minimo": smlv }) {
+    return buildHistorico("salario-minimo-historico", {
+      historico: smlv!.historico,
+      name: "Salario mínimo",
+      hoverSuffix: " COP",
+      hoverThousands: true,
+      yaxisTickSuffix: "",
     });
   },
 };

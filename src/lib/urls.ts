@@ -58,6 +58,10 @@ export const urls = {
   // Elecciones presidenciales
   elecciones: (slug: string) => withSlash(`/elecciones-presidenciales/${slug}`),
 
+  // Calculadoras
+  calculadoras: () => '/calculadoras/',
+  calculadora: (slug: string) => withSlash(`/calculadoras/${slug}`),
+
   // Archivos reales (NO llevan trailing slash)
   rss: () => '/rss.xml',
   llms: () => '/llms.txt',
@@ -89,6 +93,9 @@ export const absUrls = {
   informePdf: (archivo: string) => absolute(urls.informePdf(archivo)),
 
   elecciones: (slug: string) => absolute(urls.elecciones(slug)),
+
+  calculadoras: () => absolute(urls.calculadoras()),
+  calculadora: (slug: string) => absolute(urls.calculadora(slug)),
 
   rss: () => absolute(urls.rss()),
 } as const;

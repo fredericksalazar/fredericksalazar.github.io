@@ -1,0 +1,532 @@
+{
+  "metadata": {
+    "ultima_actualizacion": "2026-06-11T01:00:29+00:00",
+    "fuentes": {
+      "salario_minimo": {
+        "nombre": "Ministerio del Trabajo — decretos anuales de salario mínimo (compilación Wikipedia)",
+        "url": "https://es.wikipedia.org/wiki/Anexo:Salario_m%C3%ADnimo_en_Colombia",
+        "indicador": "Salario mínimo mensual legal vigente (SMMLV)"
+      },
+      "calculo_propio": {
+        "nombre": "Cálculo propio — Observatorio de Datos de Colombia",
+        "url": "https://fredericksalazar.github.io/observatorio/",
+        "indicador": "Variación porcentual anual"
+      }
+    },
+    "definiciones": {
+      "unidad": "Pesos colombianos corrientes (COP) por mes",
+      "variacion": "Variación porcentual respecto al año inmediatamente anterior",
+      "nota_1984": "La serie inicia en 1984, año de unificación del salario mínimo para todos los sectores"
+    },
+    "cobertura": {
+      "primer_periodo": "1984-12",
+      "ultimo_periodo": "2026-12",
+      "total_registros": 43,
+      "granularidad": "anual"
+    },
+    "notas": "El salario mínimo en Colombia se fija por decreto para periodos de un año. Valores nominales en pesos corrientes; el auxilio de transporte aplica a quienes devengan hasta dos SMMLV."
+  },
+  "indicadores": {
+    "salario_minimo": {
+      "actual": {
+        "periodo": "2026-12",
+        "valor": 1750905,
+        "variacion": "subio",
+        "delta": 327405
+      },
+      "unidad": "COP"
+    },
+    "auxilio_transporte": {
+      "actual": {
+        "periodo": "2026-12",
+        "valor": 249095,
+        "variacion": "sin-dato",
+        "delta": null
+      },
+      "unidad": "COP"
+    },
+    "variacion_anual": {
+      "actual": {
+        "periodo": "2026-12",
+        "valor": 23.0,
+        "variacion": "subio",
+        "delta": null
+      },
+      "unidad": "%"
+    }
+  },
+  "serie": [
+    {
+      "periodo": "2026-12",
+      "salario_minimo": 1750905,
+      "salario_minimo_delta": 327405,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 23.0,
+      "auxilio_transporte": 249095,
+      "total_con_auxilio": 2000000
+    },
+    {
+      "periodo": "2025-12",
+      "salario_minimo": 1423500,
+      "salario_minimo_delta": 123500,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 9.5,
+      "auxilio_transporte": 200000,
+      "total_con_auxilio": 1623500
+    },
+    {
+      "periodo": "2024-12",
+      "salario_minimo": 1300000,
+      "salario_minimo_delta": 140000,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 12.07,
+      "auxilio_transporte": 162000,
+      "total_con_auxilio": 1462000
+    },
+    {
+      "periodo": "2023-12",
+      "salario_minimo": 1160000,
+      "salario_minimo_delta": 160000,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 16.0,
+      "auxilio_transporte": 162000,
+      "total_con_auxilio": 1300606
+    },
+    {
+      "periodo": "2022-12",
+      "salario_minimo": 1000000,
+      "salario_minimo_delta": 91474,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 10.07,
+      "auxilio_transporte": 117172,
+      "total_con_auxilio": 1117172
+    },
+    {
+      "periodo": "2021-12",
+      "salario_minimo": 908526,
+      "salario_minimo_delta": 30723,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 3.5,
+      "auxilio_transporte": 106454,
+      "total_con_auxilio": 1014980
+    },
+    {
+      "periodo": "2020-12",
+      "salario_minimo": 877803,
+      "salario_minimo_delta": 49687,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 6.0,
+      "auxilio_transporte": 102854,
+      "total_con_auxilio": 980657
+    },
+    {
+      "periodo": "2019-12",
+      "salario_minimo": 828116,
+      "salario_minimo_delta": 46874,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 6.0,
+      "auxilio_transporte": 97032,
+      "total_con_auxilio": 925148
+    },
+    {
+      "periodo": "2018-12",
+      "salario_minimo": 781242,
+      "salario_minimo_delta": 43525,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 5.9,
+      "auxilio_transporte": 88211,
+      "total_con_auxilio": 869453
+    },
+    {
+      "periodo": "2017-12",
+      "salario_minimo": 737717,
+      "salario_minimo_delta": 48262,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 7.0,
+      "auxilio_transporte": 83140,
+      "total_con_auxilio": 820857
+    },
+    {
+      "periodo": "2016-12",
+      "salario_minimo": 689455,
+      "salario_minimo_delta": 45105,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 7.0,
+      "auxilio_transporte": 77700,
+      "total_con_auxilio": 767155
+    },
+    {
+      "periodo": "2015-12",
+      "salario_minimo": 644350,
+      "salario_minimo_delta": 28350,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 4.6,
+      "auxilio_transporte": 74000,
+      "total_con_auxilio": 718350
+    },
+    {
+      "periodo": "2014-12",
+      "salario_minimo": 616000,
+      "salario_minimo_delta": 26500,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 4.5,
+      "auxilio_transporte": 72000,
+      "total_con_auxilio": 688000
+    },
+    {
+      "periodo": "2013-12",
+      "salario_minimo": 589500,
+      "salario_minimo_delta": 22800,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 4.02,
+      "auxilio_transporte": 70500,
+      "total_con_auxilio": 659500
+    },
+    {
+      "periodo": "2012-12",
+      "salario_minimo": 566700,
+      "salario_minimo_delta": 31100,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 5.81,
+      "auxilio_transporte": 67800,
+      "total_con_auxilio": 634500
+    },
+    {
+      "periodo": "2011-12",
+      "salario_minimo": 535600,
+      "salario_minimo_delta": 20600,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 4.0,
+      "auxilio_transporte": 63600,
+      "total_con_auxilio": 599200
+    },
+    {
+      "periodo": "2010-12",
+      "salario_minimo": 515000,
+      "salario_minimo_delta": 18100,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 3.64,
+      "auxilio_transporte": 61500,
+      "total_con_auxilio": 576500
+    },
+    {
+      "periodo": "2009-12",
+      "salario_minimo": 496900,
+      "salario_minimo_delta": 35400,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 7.67,
+      "auxilio_transporte": 59300,
+      "total_con_auxilio": 556200
+    },
+    {
+      "periodo": "2008-12",
+      "salario_minimo": 461500,
+      "salario_minimo_delta": 27800,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 6.41,
+      "auxilio_transporte": 55000,
+      "total_con_auxilio": 516500
+    },
+    {
+      "periodo": "2007-12",
+      "salario_minimo": 433700,
+      "salario_minimo_delta": 25700,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 6.3,
+      "auxilio_transporte": 50800,
+      "total_con_auxilio": 484500
+    },
+    {
+      "periodo": "2006-12",
+      "salario_minimo": 408000,
+      "salario_minimo_delta": 26500,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 6.95,
+      "auxilio_transporte": 47700,
+      "total_con_auxilio": 455700
+    },
+    {
+      "periodo": "2005-12",
+      "salario_minimo": 381500,
+      "salario_minimo_delta": 23500,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 6.56,
+      "auxilio_transporte": 44500,
+      "total_con_auxilio": 426000
+    },
+    {
+      "periodo": "2004-12",
+      "salario_minimo": 358000,
+      "salario_minimo_delta": 26000,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 7.83,
+      "auxilio_transporte": 41600,
+      "total_con_auxilio": 399600
+    },
+    {
+      "periodo": "2003-12",
+      "salario_minimo": 332000,
+      "salario_minimo_delta": 23000,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 7.44,
+      "auxilio_transporte": 37500,
+      "total_con_auxilio": 369500
+    },
+    {
+      "periodo": "2002-12",
+      "salario_minimo": 309000,
+      "salario_minimo_delta": 23000,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 8.04,
+      "auxilio_transporte": 34000,
+      "total_con_auxilio": 343000
+    },
+    {
+      "periodo": "2001-12",
+      "salario_minimo": 286000,
+      "salario_minimo_delta": 25900,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 9.96,
+      "auxilio_transporte": 30000,
+      "total_con_auxilio": 316000
+    },
+    {
+      "periodo": "2000-12",
+      "salario_minimo": 260100,
+      "salario_minimo_delta": 23640,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 10.0,
+      "auxilio_transporte": 26413,
+      "total_con_auxilio": 286513
+    },
+    {
+      "periodo": "1999-12",
+      "salario_minimo": 236460,
+      "salario_minimo_delta": 32635,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 16.01,
+      "auxilio_transporte": 24012,
+      "total_con_auxilio": 260472
+    },
+    {
+      "periodo": "1998-12",
+      "salario_minimo": 203825,
+      "salario_minimo_delta": 31820,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 18.5,
+      "auxilio_transporte": 20700,
+      "total_con_auxilio": 224525
+    },
+    {
+      "periodo": "1997-12",
+      "salario_minimo": 172005,
+      "salario_minimo_delta": 29880,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 21.02,
+      "auxilio_transporte": 17250,
+      "total_con_auxilio": 189255
+    },
+    {
+      "periodo": "1996-12",
+      "salario_minimo": 142125,
+      "salario_minimo_delta": 23731,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 20.04,
+      "auxilio_transporte": 13567,
+      "total_con_auxilio": 155692
+    },
+    {
+      "periodo": "1995-12",
+      "salario_minimo": 118394,
+      "salario_minimo_delta": 19694,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 19.95,
+      "auxilio_transporte": 10815,
+      "total_con_auxilio": 129209
+    },
+    {
+      "periodo": "1994-12",
+      "salario_minimo": 98700,
+      "salario_minimo_delta": 17190,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 21.09,
+      "auxilio_transporte": 8705,
+      "total_con_auxilio": 107405
+    },
+    {
+      "periodo": "1993-12",
+      "salario_minimo": 81510,
+      "salario_minimo_delta": 16320,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 25.03,
+      "auxilio_transporte": 7542,
+      "total_con_auxilio": 89052
+    },
+    {
+      "periodo": "1992-12",
+      "salario_minimo": 65190,
+      "salario_minimo_delta": 13470,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 26.04,
+      "auxilio_transporte": 6033,
+      "total_con_auxilio": 71223
+    },
+    {
+      "periodo": "1991-12",
+      "salario_minimo": 51720,
+      "salario_minimo_delta": 10695,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 26.07,
+      "auxilio_transporte": 4787,
+      "total_con_auxilio": 56507
+    },
+    {
+      "periodo": "1990-12",
+      "salario_minimo": 41025,
+      "salario_minimo_delta": 8465,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 26.0,
+      "auxilio_transporte": 3798,
+      "total_con_auxilio": 44823
+    },
+    {
+      "periodo": "1989-12",
+      "salario_minimo": 32560,
+      "salario_minimo_delta": 6923,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 27.0,
+      "auxilio_transporte": 3063,
+      "total_con_auxilio": 35623
+    },
+    {
+      "periodo": "1988-12",
+      "salario_minimo": 25637,
+      "salario_minimo_delta": 5127,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 25.0,
+      "auxilio_transporte": null,
+      "total_con_auxilio": null
+    },
+    {
+      "periodo": "1987-12",
+      "salario_minimo": 20510,
+      "salario_minimo_delta": 3699,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 22.0,
+      "auxilio_transporte": null,
+      "total_con_auxilio": null
+    },
+    {
+      "periodo": "1986-12",
+      "salario_minimo": 16811,
+      "salario_minimo_delta": 3253,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 23.99,
+      "auxilio_transporte": null,
+      "total_con_auxilio": null
+    },
+    {
+      "periodo": "1985-12",
+      "salario_minimo": 13558,
+      "salario_minimo_delta": 2260,
+      "salario_minimo_variacion": "subio",
+      "variacion_pct": 20.0,
+      "auxilio_transporte": null,
+      "total_con_auxilio": null
+    },
+    {
+      "periodo": "1984-12",
+      "salario_minimo": 11298,
+      "salario_minimo_delta": null,
+      "salario_minimo_variacion": "sin-dato",
+      "variacion_pct": null,
+      "auxilio_transporte": null,
+      "total_con_auxilio": null
+    }
+  ],
+  "historico": {
+    "1984": 11298,
+    "1985": 13558,
+    "1986": 16811,
+    "1987": 20510,
+    "1988": 25637,
+    "1989": 32560,
+    "1990": 41025,
+    "1991": 51720,
+    "1992": 65190,
+    "1993": 81510,
+    "1994": 98700,
+    "1995": 118394,
+    "1996": 142125,
+    "1997": 172005,
+    "1998": 203825,
+    "1999": 236460,
+    "2000": 260100,
+    "2001": 286000,
+    "2002": 309000,
+    "2003": 332000,
+    "2004": 358000,
+    "2005": 381500,
+    "2006": 408000,
+    "2007": 433700,
+    "2008": 461500,
+    "2009": 496900,
+    "2010": 515000,
+    "2011": 535600,
+    "2012": 566700,
+    "2013": 589500,
+    "2014": 616000,
+    "2015": 644350,
+    "2016": 689455,
+    "2017": 737717,
+    "2018": 781242,
+    "2019": 828116,
+    "2020": 877803,
+    "2021": 908526,
+    "2022": 1000000,
+    "2023": 1160000,
+    "2024": 1300000,
+    "2025": 1423500,
+    "2026": 1750905
+  },
+  "historico_auxilio": {
+    "1989": 3063,
+    "1990": 3798,
+    "1991": 4787,
+    "1992": 6033,
+    "1993": 7542,
+    "1994": 8705,
+    "1995": 10815,
+    "1996": 13567,
+    "1997": 17250,
+    "1998": 20700,
+    "1999": 24012,
+    "2000": 26413,
+    "2001": 30000,
+    "2002": 34000,
+    "2003": 37500,
+    "2004": 41600,
+    "2005": 44500,
+    "2006": 47700,
+    "2007": 50800,
+    "2008": 55000,
+    "2009": 59300,
+    "2010": 61500,
+    "2011": 63600,
+    "2012": 67800,
+    "2013": 70500,
+    "2014": 72000,
+    "2015": 74000,
+    "2016": 77700,
+    "2017": 83140,
+    "2018": 88211,
+    "2019": 97032,
+    "2020": 102854,
+    "2021": 106454,
+    "2022": 117172,
+    "2023": 162000,
+    "2024": 162000,
+    "2025": 200000,
+    "2026": 249095
+  }
+}

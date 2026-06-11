@@ -1,0 +1,505 @@
+---
+/**
+ * /calculadoras/sueldo-vs-inflacion/ — Calculadora de poder adquisitivo.
+ *
+ * SEO build-time (título, KPIs, FAQ, JSON-LD) + cálculo 100% client-side
+ * sobre los JSON del Observatorio (REGLA 2: los datos nunca se incrustan).
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+import { urls, absUrls } from "../../lib/urls";
+import { getObservatorio, getSalarioMinimo } from "../../lib/observatorio/data";
+
+const obs = getObservatorio();
+const smlv = getSalarioMinimo();
+
+const inflacionActual = obs.indicadores.inflacion_anual.actual.valor;
+const ultimoPeriodo = obs.metadata.cobertura.ultimo_periodo;
+const anioActual = parseInt(ultimoPeriodo.slice(0, 4), 10);
+const anioMin = parseInt(Object.keys(obs.historico).sort()[0], 10);
+const aniosDisponibles = Array.from(
+  { length: anioActual - anioMin },
+  (_, i) => anioMin + i,
+).reverse();
+
+const smlvActual = smlv.indicadores.salario_minimo.actual.valor ?? 0;
+const smlvAnio = smlv.indicadores.salario_minimo.actual.periodo.slice(0, 4);
+const fmtCOP = new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 });
+
+const title = "Calculadora: ¿cuánto vale hoy tu sueldo de hace unos años? Inflación en Colombia";
+const description = `Convierte un sueldo o monto de cualquier año desde ${anioMin} a pesos de hoy con la inflación oficial de Colombia (DANE / Banco Mundial). Descubre cuánto poder adquisitivo perdió tu plata y a cuántos salarios mínimos equivale.`;
+
+const faqs = [
+  {
+    q: "¿Cómo se calcula el valor del dinero en el tiempo?",
+    a: `Componemos la inflación anual oficial de Colombia año a año desde ${anioMin} (Banco Mundial / DANE) y los meses ya publicados del año en curso. Un monto del año que elijas se multiplica por el factor acumulado de precios hasta hoy (${ultimoPeriodo}).`,
+  },
+  {
+    q: "¿Cuánta inflación ha tenido Colombia?",
+    a: `La inflación anual más reciente es ${inflacionActual ?? "—"}% (${ultimoPeriodo}). En los años 90 Colombia llegó a tener inflaciones superiores al 30% anual; desde 1999 el Banco de la República adoptó metas de inflación y la tendencia bajó, con el repunte de 2022-2023 como excepción reciente.`,
+  },
+  {
+    q: "¿Qué significa 'perder poder adquisitivo'?",
+    a: "Si tu ingreso nominal no sube al ritmo de la inflación, cada año compras menos con la misma plata. La calculadora te muestra exactamente qué porcentaje de capacidad de compra perdió un monto que se quedó congelado.",
+  },
+  {
+    q: "¿De dónde salen los datos de salario mínimo?",
+    a: `De los decretos anuales del Gobierno nacional compilados desde 1984. El salario mínimo vigente (${smlvAnio}) es de $${fmtCOP.format(smlvActual)} COP mensuales.`,
+  },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      name: "Calculadora de poder adquisitivo en Colombia",
+      url: absUrls.calculadora("sueldo-vs-inflacion"),
+      description,
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "Web",
+      inLanguage: "es",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "COP" },
+      creator: { "@type": "Person", name: "Frederick Salazar", url: absUrls.home() },
+      dateModified: obs.metadata.ultima_actualizacion,
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} image="/images/observatorio.png">
+  <article class="calc">
+    <header class="calc__header">
+      <nav class="calc__breadcrumb" aria-label="Miga de pan">
+        <a href={urls.calculadoras()}>Calculadoras</a> <span aria-hidden="true">/</span> Sueldo vs. inflación
+      </nav>
+      <h1 class="calc__titulo">¿Cuánto vale hoy tu sueldo de hace unos años?</h1>
+      <p class="calc__lead">
+        Escribe un monto y el año en que lo ganabas. La calculadora lo ajusta con la
+        <strong>inflación oficial de Colombia</strong> y te dice cuánto necesitarías hoy
+        para comprar lo mismo, cuánto poder adquisitivo perdió esa plata si se quedó
+        congelada y a cuántos salarios mínimos equivalía y equivale.
+      </p>
+    </header>
+
+    <form class="calc__form" id="form-sueldo" aria-label="Calculadora de poder adquisitivo">
+      <div class="calc__field">
+        <label for="monto">Monto mensual (COP)</label>
+        <input
+          type="text"
+          id="monto"
+          name="monto"
+          inputmode="numeric"
+          autocomplete="off"
+          placeholder="Ej: 2.500.000"
+          required
+        />
+      </div>
+      <div class="calc__field">
+        <label for="desde">Año en que lo ganabas</label>
+        <select id="desde" name="desde">
+          {aniosDisponibles.map((a) => <option value={a} selected={a === 2018}>{a}</option>)}
+        </select>
+      </div>
+      <button type="submit" class="calc__submit">Calcular</button>
+    </form>
+
+    <section class="calc__resultados" id="resultados" hidden aria-live="polite">
+      <div class="calc__headline">
+        <span class="calc__headline-label" id="r-frase-pre"></span>
+        <span class="calc__headline-valor" id="r-equivalente"></span>
+        <span class="calc__headline-label" id="r-frase-post"></span>
+      </div>
+
+      <div class="calc__stats">
+        <div class="calc-stat">
+          <span class="calc-stat__valor" id="r-factor"></span>
+          <span class="calc-stat__label">se multiplicaron los precios desde entonces</span>
+        </div>
+        <div class="calc-stat calc-stat--rojo">
+          <span class="calc-stat__valor" id="r-perdida"></span>
+          <span class="calc-stat__label">de poder de compra perdió ese monto si quedó congelado</span>
+        </div>
+        <div class="calc-stat" id="r-smlv-card">
+          <span class="calc-stat__valor" id="r-smlv"></span>
+          <span class="calc-stat__label" id="r-smlv-label"></span>
+        </div>
+      </div>
+
+      <div class="calc__chart-card">
+        <h2 class="calc__chart-titulo">Lo que necesitarías ganar cada año para no perder</h2>
+        <div id="calc-sueldo-chart" style="height: 360px;" role="img" aria-label="Evolución del monto ajustado por inflación año a año"></div>
+      </div>
+
+      <div class="calc__share">
+        <span class="calc__share-label">Comparte tu resultado:</span>
+        <a id="share-wa" class="calc__share-btn" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        <a id="share-x" class="calc__share-btn" target="_blank" rel="noopener noreferrer">X</a>
+        <button id="share-copy" type="button" class="calc__share-btn">Copiar enlace</button>
+      </div>
+    </section>
+
+    <section class="calc__faq">
+      <h2>Preguntas frecuentes</h2>
+      {
+        faqs.map((f) => (
+          <details class="calc__faq-item">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))
+      }
+      <p class="calc__metodologia">
+        <strong>Metodología y fuentes:</strong> inflación anual {anioMin}–{anioActual - 1} del
+        Banco Mundial (WDI) y serie mensual del DANE; salario mínimo de los decretos anuales
+        del Gobierno nacional. Los mismos datasets abiertos del
+        <a href={urls.observatorio()}>Observatorio de Datos de Colombia</a>.
+        El ajuste compone la inflación de cierre de cada año; el resultado es una
+        aproximación con fines informativos.
+      </p>
+    </section>
+  </article>
+
+  <PlotlyLoader />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>
+
+<script>
+  import { loadInflacion, loadSalarioMinimo } from "../../lib/observatorio/data-client";
+  import { mountPlotly, purgeChart } from "../../lib/observatorio/plotly-mount";
+  import { COLORS, baseLayout } from "../../lib/observatorio/charts";
+  import {
+    construirIndicePrecios,
+    factorAHoy,
+    equivalenteHoy,
+    perdidaPoderAdquisitivo,
+    trayectoriaAjustada,
+    vecesSMLV,
+    anioSMLVActual,
+    fmtCOP,
+    fmtDec1,
+    fmtVeces,
+  } from "../../lib/calculadoras/calculos";
+
+  const CHART_ID = "calc-sueldo-chart";
+
+  const $ = (id: string) => document.getElementById(id);
+
+  function parseMonto(raw: string): number {
+    return parseInt(raw.replace(/\D/g, ""), 10) || 0;
+  }
+
+  async function calcular(monto: number, desde: number): Promise<void> {
+    const [inflacion, smlv] = await Promise.all([loadInflacion(), loadSalarioMinimo()]);
+    const indice = construirIndicePrecios(inflacion);
+    if (desde < indice.anioMin || desde >= indice.anioMax) return;
+
+    const equivalente = equivalenteHoy(indice, monto, desde);
+    const factor = factorAHoy(indice, desde);
+    const perdida = perdidaPoderAdquisitivo(indice, desde);
+
+    const elPre = $("r-frase-pre");
+    const elVal = $("r-equivalente");
+    const elPost = $("r-frase-post");
+    if (elPre) elPre.textContent = `${fmtCOP(monto)} de ${desde} equivalen hoy a`;
+    if (elVal) elVal.textContent = fmtCOP(equivalente);
+    if (elPost) elPost.textContent = `pesos de ${indice.anioMax} (datos a ${indice.ultimoPeriodo})`;
+
+    const elFactor = $("r-factor");
+    if (elFactor) elFactor.textContent = fmtVeces(factor);
+    const elPerdida = $("r-perdida");
+    if (elPerdida) elPerdida.textContent = `−${fmtDec1(perdida)}%`;
+
+    // Comparación contra salario mínimo (cobertura desde 1984)
+    const smlvCard = $("r-smlv-card");
+    const veces = vecesSMLV(smlv, monto, desde);
+    const anioSmlv = anioSMLVActual(smlv);
+    const smlvHoy = smlv.historico[String(anioSmlv)];
+    if (smlvCard) {
+      if (veces !== null && smlvHoy) {
+        smlvCard.hidden = false;
+        const vecesHoy = equivalente / smlvHoy;
+        const elS = $("r-smlv");
+        const elSL = $("r-smlv-label");
+        if (elS) elS.textContent = `${fmtDec1(veces)} → ${fmtDec1(vecesHoy)}`;
+        if (elSL) elSL.textContent = `salarios mínimos: los que eran en ${desde} y los que serían en ${anioSmlv}`;
+      } else {
+        smlvCard.hidden = true;
+      }
+    }
+
+    const resultados = $("resultados");
+    if (resultados) resultados.hidden = false;
+
+    // Gráfico: monto congelado vs monto ajustado por inflación
+    const { anios, valores } = trayectoriaAjustada(indice, monto, desde);
+    await mountPlotly(CHART_ID, {
+      traces: [
+        {
+          type: "scatter", mode: "lines", x: anios, y: valores.map(() => monto),
+          name: "Tu monto congelado", line: { color: COLORS.textMuted, width: 2, dash: "dot" },
+          hovertemplate: `<b>%{x}</b><br>Congelado: <b>%{y:,.0f} COP</b><extra></extra>`,
+        },
+        {
+          type: "scatter", mode: "lines", x: anios, y: valores,
+          name: "Ajustado por inflación", line: { color: COLORS.inflacion, width: 3 },
+          fill: "tonexty", fillcolor: "rgba(220, 38, 38, 0.07)",
+          hovertemplate: `<b>%{x}</b><br>Necesitarías: <b>%{y:,.0f} COP</b><extra></extra>`,
+        },
+      ],
+      layout: baseLayout({
+        margin: { l: 64, r: 24, t: 16, b: 40 },
+        showlegend: true,
+        legend: { orientation: "h", y: 1.12 },
+        hovermode: "x unified",
+        yaxis: {
+          showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
+          tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true,
+        },
+      }),
+    });
+
+    // Enlaces de compartir
+    const url = `${location.origin}${location.pathname}?monto=${monto}&desde=${desde}`;
+    history.replaceState(null, "", `?monto=${monto}&desde=${desde}`);
+    const texto = `En ${desde} ganaba ${fmtCOP(monto)}. Para comprar lo mismo hoy necesitaría ${fmtCOP(equivalente)}: los precios se multiplicaron ${fmtVeces(factor)}. Calcula el tuyo 👇 ${url}`;
+    const wa = $("share-wa") as HTMLAnchorElement | null;
+    if (wa) wa.href = `https://wa.me/?text=${encodeURIComponent(texto)}`;
+    const x = $("share-x") as HTMLAnchorElement | null;
+    if (x) x.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(texto)}`;
+    const copy = $("share-copy");
+    if (copy) {
+      copy.onclick = async () => {
+        await navigator.clipboard.writeText(url);
+        copy.textContent = "¡Copiado!";
+        setTimeout(() => { copy.textContent = "Copiar enlace"; }, 1800);
+      };
+    }
+  }
+
+  function init(): void {
+    const form = $("form-sueldo") as HTMLFormElement | null;
+    if (!form) return;
+
+    const montoInput = $("monto") as HTMLInputElement | null;
+    montoInput?.addEventListener("input", () => {
+      const n = parseMonto(montoInput.value);
+      montoInput.value = n ? new Intl.NumberFormat("es-CO").format(n) : "";
+    });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const monto = parseMonto((montoInput?.value ?? ""));
+      const desde = parseInt(($("desde") as HTMLSelectElement)?.value ?? "", 10);
+      if (monto > 0 && desde) {
+        calcular(monto, desde).catch((err) => console.error("[calc-sueldo]", err));
+      }
+    });
+
+    // URL compartida: ?monto=...&desde=... calcula de inmediato
+    const params = new URLSearchParams(location.search);
+    const monto = parseMonto(params.get("monto") ?? "");
+    const desde = parseInt(params.get("desde") ?? "", 10);
+    if (monto > 0 && desde) {
+      if (montoInput) montoInput.value = new Intl.NumberFormat("es-CO").format(monto);
+      const sel = $("desde") as HTMLSelectElement | null;
+      if (sel) sel.value = String(desde);
+      calcular(monto, desde).catch((err) => console.error("[calc-sueldo]", err));
+    }
+  }
+
+  document.addEventListener("astro:page-load", init);
+  document.addEventListener("astro:before-swap", () => purgeChart(CHART_ID));
+  if (document.readyState !== "loading") init();
+  else document.addEventListener("DOMContentLoaded", init, { once: true });
+</script>
+
+<style>
+  .calc { padding: 2.5rem 0 3rem; }
+
+  .calc__breadcrumb {
+    font-size: 0.78rem;
+    color: var(--color-text-muted, #636c76);
+    margin-bottom: 1rem;
+  }
+  .calc__breadcrumb a { color: var(--color-accent, #2563eb); text-decoration: none; }
+
+  .calc__titulo {
+    font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.18;
+    margin: 0 0 0.9rem;
+    color: var(--color-text-primary, #1f2328);
+  }
+  .calc__lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary, #475569);
+    max-width: 680px;
+  }
+
+  .calc__form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1rem;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--color-sidebar, #f6f8fa);
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 18px;
+  }
+  .calc__field { display: flex; flex-direction: column; gap: 0.35rem; flex: 1 1 180px; }
+  .calc__field label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted, #636c76);
+  }
+  .calc__field input,
+  .calc__field select {
+    font-size: 1.05rem;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--color-text-primary, #1f2328);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+  }
+  .calc__field input:focus,
+  .calc__field select:focus {
+    outline: 2px solid var(--color-accent, #2563eb);
+    outline-offset: 1px;
+    border-color: var(--color-accent, #2563eb);
+  }
+  .calc__submit {
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.7rem 1.6rem;
+    background: var(--color-accent, #2563eb);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+  .calc__submit:hover { background: #1d4ed8; transform: translateY(-1px); }
+
+  .calc__headline {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .calc__headline-label { font-size: 0.95rem; color: var(--color-text-secondary, #475569); }
+  .calc__headline-valor {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--color-accent, #2563eb);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  .calc__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+  }
+  .calc-stat {
+    padding: 1.1rem 1.25rem;
+    background: var(--color-sidebar, #f6f8fa);
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .calc-stat__valor {
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    color: var(--color-text-primary, #1f2328);
+  }
+  .calc-stat--rojo .calc-stat__valor { color: #dc2626; }
+  .calc-stat__label { font-size: 0.78rem; line-height: 1.45; color: var(--color-text-muted, #636c76); }
+
+  .calc__chart-card {
+    padding: 1.25rem;
+    background: #fff;
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 18px;
+    margin-bottom: 1.5rem;
+  }
+  .calc__chart-titulo {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+    color: var(--color-text-primary, #1f2328);
+  }
+
+  .calc__share {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .calc__share-label { font-size: 0.85rem; color: var(--color-text-muted, #636c76); }
+  .calc__share-btn {
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.45rem 1rem;
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 100px;
+    background: #fff;
+    color: var(--color-accent, #2563eb);
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .calc__share-btn:hover { border-color: var(--color-accent, #2563eb); box-shadow: 0 2px 10px rgba(37, 99, 235, 0.12); }
+
+  .calc__faq { margin-top: 3rem; max-width: 720px; }
+  .calc__faq h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary, #1f2328);
+  }
+  .calc__faq-item {
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 12px;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 0.6rem;
+    background: var(--color-sidebar, #f6f8fa);
+  }
+  .calc__faq-item summary {
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--color-text-primary, #1f2328);
+  }
+  .calc__faq-item p {
+    margin: 0.6rem 0 0;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary, #475569);
+  }
+  .calc__metodologia {
+    margin-top: 1.5rem;
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: var(--color-text-muted, #636c76);
+  }
+  .calc__metodologia a { color: var(--color-accent, #2563eb); }
+</style>

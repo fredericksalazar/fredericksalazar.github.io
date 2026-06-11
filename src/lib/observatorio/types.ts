@@ -128,6 +128,48 @@ export interface EmpleoData {
   historico: Record<string, number>;
 }
 
+// ───────────────────────── SALARIO MÍNIMO ─────────────────────────
+
+export interface SalarioMinimoSerieFila {
+  periodo: string;
+  salario_minimo: number;
+  salario_minimo_delta: number | null;
+  salario_minimo_variacion: Variacion;
+  variacion_pct: number | null;
+  auxilio_transporte: number | null;
+  total_con_auxilio: number | null;
+}
+
+export interface SalarioMinimoIndicadores {
+  salario_minimo: Indicador;
+  auxilio_transporte: Indicador;
+  variacion_anual: Indicador;
+}
+
+export interface SalarioMinimoMetadata {
+  ultima_actualizacion: string;
+  fuentes: {
+    salario_minimo: Fuente;
+    calculo_propio: Fuente;
+  };
+  definiciones: Record<string, string | number>;
+  cobertura: {
+    primer_periodo: string;
+    ultimo_periodo: string;
+    total_registros: number;
+    granularidad: "anual" | "mensual";
+  };
+  notas?: string;
+}
+
+export interface SalarioMinimoData {
+  metadata: SalarioMinimoMetadata;
+  indicadores: SalarioMinimoIndicadores;
+  serie: SalarioMinimoSerieFila[];
+  historico: Record<string, number>;
+  historico_auxilio: Record<string, number>;
+}
+
 // ───────────────────────────── COMERCIO ─────────────────────────────
 
 export interface ComercioSerieFila {

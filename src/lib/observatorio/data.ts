@@ -17,6 +17,7 @@ import type {
   PIBData,
   ExternoData,
   DemografiaData,
+  SalarioMinimoData,
   PresEleccionData,
   PresCandidatosData,
 } from "./types";
@@ -32,6 +33,7 @@ const com = readPublicJSON<ComercioData>("data_comercio");
 const pib = readPublicJSON<PIBData>("data_pib");
 const ext = readPublicJSON<ExternoData>("data_externo");
 const dem = readPublicJSON<DemografiaData>("data_demografia");
+const smlv = readPublicJSON<SalarioMinimoData>("data_salario_minimo");
 
 export const getObservatorio = (): ObservatorioData => obs;
 export const getEmpleo = (): EmpleoData => emp;
@@ -39,6 +41,7 @@ export const getComercio = (): ComercioData => com;
 export const getPIB = (): PIBData => pib;
 export const getExterno = (): ExternoData => ext;
 export const getDemografia = (): DemografiaData => dem;
+export const getSalarioMinimo = (): SalarioMinimoData => smlv;
 
 const pres2026_1v = readPublicJSON<PresEleccionData>("data_pres_2026_1v");
 const pres2022_1v = readPublicJSON<PresEleccionData>("data_pres_2022_1v");

@@ -5,6 +5,7 @@ import type {
   PIBData,
   ExternoData,
   DemografiaData,
+  SalarioMinimoData,
   PresEleccionData,
   PresCandidatosData,
 } from "./types";
@@ -40,6 +41,7 @@ export const loadComercio = () => load<ComercioData>("data_comercio");
 export const loadEmpleo = () => load<EmpleoData>("data_empleo");
 export const loadExterno = () => load<ExternoData>("data_externo");
 export const loadDemografia = () => load<DemografiaData>("data_demografia");
+export const loadSalarioMinimo = () => load<SalarioMinimoData>("data_salario_minimo");
 export const loadPresidentes = () =>
   load<{ fuente: string; nota: string; presidentes: Presidente[] }>("presidentes")
     .then((d) => d.presidentes);
@@ -56,6 +58,8 @@ export const loadExternoAsc = () =>
   loadExterno().then((d) => ({ ...d, serie: [...d.serie].reverse() }));
 export const loadDemografiaAsc = () =>
   loadDemografia().then((d) => ({ ...d, serie: [...d.serie].reverse() }));
+export const loadSalarioMinimoAsc = () =>
+  loadSalarioMinimo().then((d) => ({ ...d, serie: [...d.serie].reverse() }));
 
 export const loadPres2026_1v = () => load<PresEleccionData>("data_pres_2026_1v");
 export const loadPres2022_1v = () => load<PresEleccionData>("data_pres_2022_1v");
@@ -63,6 +67,7 @@ export const loadPres2022_2v = () => load<PresEleccionData>("data_pres_2022_2v")
 export const loadPresCandidatos = () => load<PresCandidatosData>("data_pres_candidatos");
 
 export type DatasetName = "inflacion" | "pib" | "comercio" | "empleo" | "externo" | "demografia"
+  | "salario-minimo"
   | "pres-2026-1v" | "pres-2022-1v" | "pres-2022-2v" | "pres-candidatos";
 
 export interface LoadedDatasets {
@@ -72,6 +77,7 @@ export interface LoadedDatasets {
   empleo?: EmpleoData;
   externo?: ExternoData;
   demografia?: DemografiaData;
+  "salario-minimo"?: SalarioMinimoData;
   "pres-2026-1v"?: PresEleccionData;
   "pres-2022-1v"?: PresEleccionData;
   "pres-2022-2v"?: PresEleccionData;
@@ -85,6 +91,7 @@ const ASC_LOADERS = {
   empleo: loadEmpleoAsc,
   externo: loadExternoAsc,
   demografia: loadDemografiaAsc,
+  "salario-minimo": loadSalarioMinimoAsc,
   "pres-2026-1v": loadPres2026_1v,
   "pres-2022-1v": loadPres2022_1v,
   "pres-2022-2v": loadPres2022_2v,

@@ -48,6 +48,7 @@ public/data/
   data_empleo.json       ← Pipeline → JSON. Contrato: EmpleoData
   data_comercio.json     ← Pipeline → JSON. Contrato: ComercioData
   data_pib.json          ← Pipeline → JSON. Contrato: PIBData
+  data_salario_minimo.json ← Pipeline (pipeline/salario_minimo) → JSON. Contrato: SalarioMinimoData
   presidentes.json       ← Referencia estática (no es serie temporal)
 
 src/lib/observatorio/
