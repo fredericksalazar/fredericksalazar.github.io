@@ -31,3 +31,6 @@ __pycache__/
 .pytest_cache/
 .venv/
 venv/
+
+# data
+data/raw/geih/*

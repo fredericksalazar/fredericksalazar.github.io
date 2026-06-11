@@ -1,0 +1,720 @@
+---
+/**
+ * /calculadoras/cuanto-ganas/ — ¿Cuánto ganas frente al país?
+ *
+ * Percentil de ingreso entre ocupados (GEIH) + clase social del hogar según
+ * la clasificación oficial del DANE. SEO build-time, cálculo client-side
+ * sobre los JSON del Observatorio (REGLA 2).
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import MapaColombia from "../../components/observatorio/MapaColombia.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+import { urls, absUrls } from "../../lib/urls";
+import { getIngresos, getSalariosCargos } from "../../lib/observatorio/data";
+
+const ing = getIngresos();
+const cargosData = getSalariosCargos();
+
+const fmtCOP = new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 });
+const mediana = ing.indicadores.mediana.actual.valor ?? 0;
+const pct1Smlv = ing.indicadores.pct_hasta_1smlv.actual.valor ?? 0;
+const clases = ing.clases;
+const anioGeih = ing.smlv_referencia.anio;
+const cargos = cargosData.cargos;
+
+const title = "¿Ganas bien en Colombia? Calcula tu percentil de ingreso y tu clase social (DANE)";
+const description = `Ingresa tu salario y descubre a cuántos colombianos superas, a qué clase social pertenece tu hogar según el DANE (pobreza, vulnerable, media o alta) y cuánto gana tu cargo. Datos de la GEIH ${anioGeih}: la mitad de los ocupados gana menos de $${fmtCOP.format(mediana)}.`;
+
+const faqs = [
+  {
+    q: "¿Cuánto gana un colombiano promedio?",
+    a: `Según la GEIH ${anioGeih} del DANE, la mitad de los ocupados de Colombia gana menos de $${fmtCOP.format(mediana)} al mes, y el ${pct1Smlv}% gana hasta un salario mínimo. El promedio es mayor ($${fmtCOP.format(ing.indicadores.promedio.actual.valor ?? 0)}) porque los ingresos altos lo jalonan hacia arriba.`,
+  },
+  {
+    q: "¿Cómo se clasifican las clases sociales en Colombia?",
+    a: `El DANE clasifica por ingreso per cápita mensual del hogar (metodología López-Calva & Ortiz-Juárez, valores ${clases.anio}): pobreza monetaria por debajo de $${fmtCOP.format(clases.umbrales.pobreza_hasta)}; vulnerable hasta $${fmtCOP.format(clases.umbrales.vulnerable_hasta)}; clase media hasta $${fmtCOP.format(clases.umbrales.media_hasta)}; clase alta por encima de ese valor. En ${clases.anio}: ${clases.distribucion.pobreza}% pobreza, ${clases.distribucion.vulnerable}% vulnerable, ${clases.distribucion.media}% clase media y solo ${clases.distribucion.alta}% clase alta.`,
+  },
+  {
+    q: "¿Qué significa el percentil de ingreso?",
+    a: "Si estás en el percentil 90, ganas más que el 90% de los trabajadores ocupados del país. Lo calculamos con el ingreso laboral reportado en la GEIH, ponderado por el factor de expansión para representar a todos los ocupados de Colombia.",
+  },
+  {
+    q: "¿Por qué la clase social depende de cuántas personas viven del ingreso?",
+    a: "Porque la clasificación del DANE usa el ingreso per cápita del hogar: el ingreso total dividido entre sus miembros. $5 millones para una persona sola es clase alta; para una familia de cinco es clase media.",
+  },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      name: "¿Cuánto ganas frente al país? — percentil de ingreso y clase social en Colombia",
+      url: absUrls.calculadora("cuanto-ganas"),
+      description,
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "Web",
+      inLanguage: "es",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "COP" },
+      creator: { "@type": "Person", name: "Frederick Salazar", url: absUrls.home() },
+      dateModified: ing.metadata.ultima_actualizacion,
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} image="/images/observatorio.png" fullWidth={true}>
+  <Hero
+    badge={{ text: "Calculadora · GEIH del DANE" }}
+    title="¿Ganas bien? Compárate con Colombia"
+    subtitle={`La mitad de los trabajadores ocupados de Colombia gana menos de $${fmtCOP.format(mediana)} al mes y el ${pct1Smlv}% gana hasta un salario mínimo. Ingresa tu salario y descubre a cuántos colombianos superas, a qué clase social pertenece tu hogar según el DANE y cómo se paga tu ocupación.`}
+    kpis={[
+      { value: `$${fmtCOP.format(mediana)}`, label: "Mediana nacional" },
+      { value: `${pct1Smlv}%`, label: "Gana hasta 1 SMLV" },
+      { value: `${clases.distribucion.alta}%`, label: "Es clase alta" },
+    ]}
+    showPartners={false}
+  >
+    <MapaColombia slot="visual" />
+  </Hero>
+
+  <article class="calc">
+    <nav class="calc__breadcrumb" aria-label="Miga de pan">
+      <a href={urls.calculadoras()}>Calculadoras</a> <span aria-hidden="true">/</span> ¿Cuánto ganas frente al país?
+    </nav>
+
+    <form class="calc__form" id="form-ganas" aria-label="Calculadora de percentil de ingreso y clase social">
+      <div class="calc__field">
+        <label for="ingreso">Tu ingreso mensual (COP)</label>
+        <input
+          type="text"
+          id="ingreso"
+          name="ingreso"
+          inputmode="numeric"
+          autocomplete="off"
+          placeholder="Ej: 3.000.000"
+          required
+        />
+      </div>
+      <div class="calc__field calc__field--corto">
+        <label for="hogar">Personas que viven de él</label>
+        <select id="hogar" name="hogar">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => <option value={n}>{n}</option>)}
+        </select>
+      </div>
+      <div class="calc__field">
+        <label for="cargo">Tu ocupación (opcional)</label>
+        <select id="cargo" name="cargo">
+          <option value="">— Sin especificar —</option>
+          {cargos.map((c) => <option value={c.slug}>{c.nombre_corto}</option>)}
+        </select>
+      </div>
+      <button type="submit" class="calc__submit">Comparar</button>
+    </form>
+
+    <section class="calc__resultados" id="resultados" hidden aria-live="polite">
+      <div class="calc__headline">
+        <span class="calc__headline-label">Ganas más que el</span>
+        <span class="calc__headline-valor" id="r-percentil"></span>
+        <span class="calc__headline-label" id="r-percentil-detalle"></span>
+      </div>
+
+      <div class="clase-card" id="r-clase-card">
+        <div class="clase-card__head">
+          <span class="clase-card__eyebrow">Clase social de tu hogar (DANE)</span>
+          <span class="clase-card__clase" id="r-clase"></span>
+          <span class="clase-card__detalle" id="r-clase-detalle"></span>
+        </div>
+        <div class="clase-card__escala" id="r-clase-escala"></div>
+      </div>
+
+      <div class="calc__stats">
+        <div class="calc-stat">
+          <span class="calc-stat__valor" id="r-smlv"></span>
+          <span class="calc-stat__label">salarios mínimos equivale tu ingreso</span>
+        </div>
+        <div class="calc-stat">
+          <span class="calc-stat__valor" id="r-mediana"></span>
+          <span class="calc-stat__label" id="r-mediana-label"></span>
+        </div>
+        <div class="calc-stat" id="r-cargo-card" hidden>
+          <span class="calc-stat__valor" id="r-cargo"></span>
+          <span class="calc-stat__label" id="r-cargo-label"></span>
+        </div>
+      </div>
+
+      <div class="calc__chart-card">
+        <h2 class="calc__chart-titulo">La escalera de ingresos de Colombia — tu escalón resaltado</h2>
+        <div id="calc-ganas-chart" style="height: 400px;" role="img" aria-label="Escalera de ingresos por deciles de trabajadores en Colombia con tu escalón resaltado"></div>
+        <p class="calc__chart-nota">Cómo leerla: cada escalón muestra cuánto gana, como máximo, ese porcentaje de los trabajadores del país. Ejemplo: si el escalón del 50% marca ${fmtCOP.format(mediana)}, la mitad de los ocupados gana eso o menos (GEIH {anioGeih}, DANE).</p>
+      </div>
+
+      <div class="calc__chart-card">
+        <h2 class="calc__chart-titulo">Así se reparte Colombia en clases sociales — la tuya resaltada</h2>
+        <div id="calc-clases-chart" style="height: 300px;" role="img" aria-label="Distribución de la población colombiana por clase social con la tuya resaltada"></div>
+      </div>
+
+      <div class="calc__share">
+        <span class="calc__share-label">Comparte tu resultado:</span>
+        <a id="share-wa" class="calc__share-btn" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        <a id="share-x" class="calc__share-btn" target="_blank" rel="noopener noreferrer">X</a>
+        <button id="share-copy" type="button" class="calc__share-btn">Copiar enlace</button>
+      </div>
+    </section>
+
+    <section class="calc__faq">
+      <h2>Preguntas frecuentes</h2>
+      {
+        faqs.map((f) => (
+          <details class="calc__faq-item">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))
+      }
+      <p class="calc__metodologia">
+        <strong>Metodología y fuentes:</strong> percentiles calculados sobre los microdatos
+        de los 12 meses de la GEIH {anioGeih} del DANE (ingreso laboral de ocupados,
+        ponderado por factor de expansión). Clases sociales según los umbrales oficiales
+        del DANE {clases.anio} por ingreso per cápita del hogar. Mira también
+        <a href={urls.salarios()}>cuánto gana cada ocupación en Colombia</a> y las series
+        del <a href={urls.observatorio()}>Observatorio de Datos</a>.
+      </p>
+    </section>
+  </article>
+
+  <PlotlyLoader />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>
+
+<script>
+  import { loadIngresos, loadSalariosCargos } from "../../lib/observatorio/data-client";
+  import { mountPlotly, purgeChart } from "../../lib/observatorio/plotly-mount";
+  import { COLORS, baseLayout } from "../../lib/observatorio/charts";
+  import { fmtCOP, fmtDec1 } from "../../lib/calculadoras/calculos";
+  import {
+    percentilDe,
+    claseSocialHogar,
+    cargoPorSlug,
+    percentilEnCargo,
+    CLASE_LABELS,
+    type ClaseSocial,
+  } from "../../lib/calculadoras/ingresos";
+
+  const CHART_CURVA = "calc-ganas-chart";
+  const CHART_CLASES = "calc-clases-chart";
+  const $ = (id: string) => document.getElementById(id);
+
+  const CLASE_COLORS: Record<ClaseSocial, string> = {
+    pobreza: "#dc2626",
+    vulnerable: "#ea580c",
+    media: "#16a34a",
+    alta: "#2563eb",
+  };
+
+  function parseMonto(raw: string): number {
+    return parseInt(raw.replace(/\D/g, ""), 10) || 0;
+  }
+
+  async function calcular(ingreso: number, hogar: number, cargoSlug: string): Promise<void> {
+    const [ing, cargosData] = await Promise.all([loadIngresos(), loadSalariosCargos()]);
+
+    // ── Percentil nacional ──
+    const pct = percentilDe(ingreso, ing.percentiles);
+    const top = pct >= 99;
+    const elP = $("r-percentil");
+    if (elP) elP.textContent = top ? "99%" : `${fmtDec1(pct)}%`;
+    const elPD = $("r-percentil-detalle");
+    if (elPD) {
+      elPD.textContent = top
+        ? `de los trabajadores de Colombia: estás en el 1% que más gana (GEIH ${ing.smlv_referencia.anio})`
+        : `de los trabajadores ocupados de Colombia (GEIH ${ing.smlv_referencia.anio})`;
+    }
+
+    // ── Clase social del hogar ──
+    const res = claseSocialHogar(ingreso, hogar, ing.clases);
+    const elC = $("r-clase");
+    if (elC) {
+      elC.textContent = CLASE_LABELS[res.clase];
+      elC.style.color = CLASE_COLORS[res.clase];
+    }
+    const elCD = $("r-clase-detalle");
+    if (elCD) {
+      const pcTexto = `Ingreso per cápita del hogar: ${fmtCOP(res.ingresoPerCapita)} (${hogar} ${hogar === 1 ? "persona" : "personas"})`;
+      const dist = ing.clases.distribucion[res.clase];
+      const extra = res.siguiente
+        ? ` · Te faltan ${fmtCOP(res.siguiente.faltaPerCapita)} per cápita para ${CLASE_LABELS[res.siguiente.clase].toLowerCase()}`
+        : "";
+      elCD.textContent = `${pcTexto} · El ${fmtDec1(dist)}% del país está en este grupo${extra}`;
+    }
+    const escala = $("r-clase-escala");
+    if (escala) {
+      const u = ing.clases.umbrales;
+      const tramos: Array<[ClaseSocial, string]> = [
+        ["pobreza", `< ${fmtCOP(u.pobreza_hasta)}`],
+        ["vulnerable", `hasta ${fmtCOP(u.vulnerable_hasta)}`],
+        ["media", `hasta ${fmtCOP(u.media_hasta)}`],
+        ["alta", `> ${fmtCOP(u.media_hasta)}`],
+      ];
+      escala.innerHTML = tramos.map(([clase, rango]) => {
+        const activa = clase === res.clase ? " clase-tramo--activa" : "";
+        return `<span class="clase-tramo${activa}" style="--c:${CLASE_COLORS[clase]}"><strong>${CLASE_LABELS[clase]}</strong><small>${rango}</small></span>`;
+      }).join("");
+    }
+
+    // ── Stats ──
+    const smlv = ing.smlv_referencia.valor;
+    const elS = $("r-smlv");
+    if (elS) elS.textContent = `${fmtDec1(ingreso / smlv)}×`;
+    const medianaNac = ing.indicadores.mediana.actual.valor ?? 0;
+    const elM = $("r-mediana");
+    const elML = $("r-mediana-label");
+    if (elM) elM.textContent = `${fmtDec1(ingreso / medianaNac)}×`;
+    if (elML) elML.textContent = `la mediana nacional (${fmtCOP(medianaNac)})`;
+
+    const cargoCard = $("r-cargo-card");
+    const cargo = cargoSlug ? cargoPorSlug(cargosData, cargoSlug) : undefined;
+    if (cargoCard) {
+      if (cargo) {
+        cargoCard.hidden = false;
+        const pctCargo = percentilEnCargo(ingreso, cargo);
+        const elCg = $("r-cargo");
+        const elCgL = $("r-cargo-label");
+        if (elCg) elCg.textContent = fmtCOP(cargo.mediana);
+        if (elCgL) {
+          const pos = pctCargo >= 90 ? "estás en el 10% mejor pagado del grupo"
+            : pctCargo <= 25 ? "estás en el 25% de menores ingresos del grupo"
+            : `estás cerca del percentil ${Math.round(pctCargo)} del grupo`;
+          elCgL.textContent = `gana la mitad de "${cargo.nombre_corto}" — ${pos}`;
+        }
+      } else {
+        cargoCard.hidden = true;
+      }
+    }
+
+    const resultados = $("resultados");
+    if (resultados) resultados.hidden = false;
+
+    const fmtCompact = (v: number) =>
+      `$${new Intl.NumberFormat("es-CO", { notation: "compact", maximumFractionDigits: 1 }).format(v)}`;
+
+    // ── Gráfico 1: la escalera de ingresos (deciles + top 1%) ──
+    // Cada escalón = "este % de trabajadores gana hasta este valor".
+    const escalones = [10, 20, 30, 40, 50, 60, 70, 80, 90, 99];
+    const etiquetas = escalones.map((p) => (p === 99 ? "99%" : `${p}%`));
+    const valores = escalones.map((p) => ing.percentiles[String(p)]);
+    // Tu escalón: el primero cuyo tope alcanza tu ingreso.
+    const idxUsuario = valores.findIndex((v) => ingreso <= v);
+    const sobreTodos = idxUsuario === -1;
+    const colores = valores.map((_, i) =>
+      i === idxUsuario ? "#dc2626" : "rgba(37, 99, 235, 0.55)");
+    const textos = valores.map((v, i) =>
+      i === idxUsuario ? `<b>${fmtCompact(v)}</b>` : fmtCompact(v));
+
+    const chartEscalera = mountPlotly(CHART_CURVA, {
+      traces: [{
+        type: "bar", x: etiquetas, y: valores,
+        marker: { color: colores, line: { color: "rgba(0,0,0,0.08)", width: 0.5 } },
+        text: textos, textposition: "outside",
+        textfont: { size: 11, color: "#475569" },
+        cliponaxis: false,
+        hovertemplate:
+          "El <b>%{x}</b> de los trabajadores gana hasta<br><b>%{y:,.0f} COP</b> al mes<extra></extra>",
+      }],
+      layout: baseLayout({
+        margin: { l: 56, r: 24, t: 48, b: 56 },
+        showlegend: false, hovermode: "x",
+        xaxis: {
+          type: "category",
+          title: { text: "Porcentaje de trabajadores que gana hasta ese valor", font: { size: 11, color: "#636c76" } },
+          showgrid: false, showline: true, linecolor: "#d0d7de",
+          tickfont: { size: 11, color: "#636c76" }, automargin: true,
+        },
+        yaxis: {
+          showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
+          tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true,
+          range: [0, Math.max(...valores) * 1.18],
+        },
+        annotations: [
+          sobreTodos
+            ? {
+                xref: "x", yref: "y", x: etiquetas[etiquetas.length - 1], y: valores[valores.length - 1],
+                yanchor: "bottom", ay: -42, ax: 0, showarrow: true, arrowhead: 6, arrowcolor: "#dc2626",
+                text: `<b>Tú: ${fmtCompact(ingreso)}</b><br>por encima del 99%`,
+                font: { size: 12, color: "#ffffff" },
+                bgcolor: "#dc2626", bordercolor: "#b91c1c", borderwidth: 1, borderpad: 5,
+              }
+            : {
+                xref: "x", yref: "y", x: etiquetas[idxUsuario], y: valores[idxUsuario],
+                yanchor: "bottom", ay: -42, ax: 0, showarrow: true, arrowhead: 6, arrowcolor: "#dc2626",
+                text: `<b>Tu escalón</b><br>${fmtCompact(ingreso)}`,
+                font: { size: 12, color: "#ffffff" },
+                bgcolor: "#dc2626", bordercolor: "#b91c1c", borderwidth: 1, borderpad: 5,
+              },
+        ],
+      }),
+    });
+
+    // ── Gráfico 2: distribución de clases ──
+    // Cada barra lleva el color de su clase; la del usuario en tono oscuro
+    // sólido, las demás en versión clara. El percentil nacional de ingreso
+    // va dentro de la barra del usuario.
+    const CLASE_DARK: Record<ClaseSocial, string> = {
+      pobreza: "#991b1b", vulnerable: "#9a3412", media: "#166534", alta: "#1e40af",
+    };
+    const CLASE_LIGHT: Record<ClaseSocial, string> = {
+      pobreza: "rgba(220, 38, 38, 0.30)", vulnerable: "rgba(234, 88, 12, 0.30)",
+      media: "rgba(22, 163, 74, 0.30)", alta: "rgba(37, 99, 235, 0.30)",
+    };
+    const orden: ClaseSocial[] = ["pobreza", "vulnerable", "media", "alta"];
+    const dist = ing.clases.distribucion;
+    const distUsuario = dist[res.clase];
+    const pctTexto = top ? "99+" : String(Math.round(pct));
+    // Si la barra es muy baja (ej. clase alta, 3,3%), el rótulo va encima.
+    const dentroCabe = distUsuario >= 10;
+    const chartClases = mountPlotly(CHART_CLASES, {
+      traces: [{
+        type: "bar",
+        x: orden.map((c) => CLASE_LABELS[c]),
+        y: orden.map((c) => dist[c]),
+        marker: {
+          color: orden.map((c) => c === res.clase ? CLASE_DARK[c] : CLASE_LIGHT[c]),
+          line: { color: "rgba(0,0,0,0.08)", width: 0.5 },
+        },
+        text: orden.map((c) => `${fmtDec1(dist[c])}%`),
+        textposition: "outside",
+        textfont: { size: 12, color: "#475569" },
+        cliponaxis: false,
+        hovertemplate: "<b>%{x}</b><br>%{y}% de la población de Colombia<extra></extra>",
+      }],
+      layout: baseLayout({
+        margin: { l: 48, r: 24, t: 40, b: 40 },
+        showlegend: false, hovermode: "x",
+        xaxis: {
+          type: "category",
+          showgrid: false, showline: true, linecolor: "#d0d7de",
+          tickfont: { size: 12, color: "#475569" }, automargin: true,
+        },
+        yaxis: {
+          showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
+          tickfont: { size: 11, color: "#636c76" }, ticksuffix: "%", automargin: true,
+          range: [0, Math.max(...orden.map((c) => dist[c])) * 1.3],
+        },
+        annotations: [
+          dentroCabe
+            ? {
+                xref: "x", yref: "y", x: CLASE_LABELS[res.clase], y: distUsuario / 2,
+                text: `<b>Tú</b><br>percentil ${pctTexto}<br>de ingresos`, showarrow: false,
+                font: { size: 12, color: "#ffffff" }, align: "center",
+              }
+            : {
+                xref: "x", yref: "y", x: CLASE_LABELS[res.clase], y: distUsuario,
+                yanchor: "bottom", ay: -46, ax: 0, showarrow: true, arrowhead: 6,
+                arrowcolor: CLASE_DARK[res.clase],
+                text: `<b>Tú</b> · percentil ${pctTexto} de ingresos`,
+                font: { size: 11, color: "#ffffff" },
+                bgcolor: CLASE_DARK[res.clase], borderwidth: 1, borderpad: 4,
+              },
+        ],
+      }),
+    });
+
+    // Montaje independiente: si un gráfico falla, el otro se renderiza igual.
+    const montajes = await Promise.allSettled([chartEscalera, chartClases]);
+    for (const m of montajes) {
+      if (m.status === "rejected") console.error("[calc-ganas] chart:", m.reason);
+    }
+
+    // ── Compartir ──
+    const params = `?ingreso=${ingreso}&hogar=${hogar}${cargoSlug ? `&cargo=${cargoSlug}` : ""}`;
+    const url = `${location.origin}${location.pathname}${params}`;
+    history.replaceState(null, "", params);
+    const texto = top
+      ? `Estoy en el 1% que más gana en Colombia 🇨🇴 y mi hogar es ${CLASE_LABELS[res.clase].toLowerCase()} según el DANE. ¿Y tú? 👇 ${url}`
+      : `Gano más que el ${fmtDec1(pct)}% de los trabajadores de Colombia 🇨🇴 y mi hogar es ${CLASE_LABELS[res.clase].toLowerCase()} según el DANE. ¿Y tú? 👇 ${url}`;
+    const wa = $("share-wa") as HTMLAnchorElement | null;
+    if (wa) wa.href = `https://wa.me/?text=${encodeURIComponent(texto)}`;
+    const xBtn = $("share-x") as HTMLAnchorElement | null;
+    if (xBtn) xBtn.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(texto)}`;
+    const copy = $("share-copy");
+    if (copy) {
+      copy.onclick = async () => {
+        await navigator.clipboard.writeText(url);
+        copy.textContent = "¡Copiado!";
+        setTimeout(() => { copy.textContent = "Copiar enlace"; }, 1800);
+      };
+    }
+  }
+
+  function init(): void {
+    const form = $("form-ganas") as HTMLFormElement | null;
+    if (!form) return;
+
+    const ingresoInput = $("ingreso") as HTMLInputElement | null;
+    ingresoInput?.addEventListener("input", () => {
+      const n = parseMonto(ingresoInput.value);
+      ingresoInput.value = n ? new Intl.NumberFormat("es-CO").format(n) : "";
+    });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const ingreso = parseMonto(ingresoInput?.value ?? "");
+      const hogar = parseInt(($("hogar") as HTMLSelectElement)?.value ?? "1", 10) || 1;
+      const cargoSlug = ($("cargo") as HTMLSelectElement)?.value ?? "";
+      if (ingreso > 0) {
+        calcular(ingreso, hogar, cargoSlug).catch((err) => console.error("[calc-ganas]", err));
+      }
+    });
+
+    const params = new URLSearchParams(location.search);
+    const ingreso = parseMonto(params.get("ingreso") ?? "");
+    const hogar = parseInt(params.get("hogar") ?? "1", 10) || 1;
+    const cargoSlug = params.get("cargo") ?? "";
+    if (ingreso > 0) {
+      if (ingresoInput) ingresoInput.value = new Intl.NumberFormat("es-CO").format(ingreso);
+      const selH = $("hogar") as HTMLSelectElement | null;
+      if (selH) selH.value = String(Math.min(8, Math.max(1, hogar)));
+      const selC = $("cargo") as HTMLSelectElement | null;
+      if (selC && cargoSlug) selC.value = cargoSlug;
+      calcular(ingreso, hogar, cargoSlug).catch((err) => console.error("[calc-ganas]", err));
+    }
+  }
+
+  document.addEventListener("astro:page-load", init);
+  document.addEventListener("astro:before-swap", () => {
+    purgeChart(CHART_CURVA);
+    purgeChart(CHART_CLASES);
+  });
+  if (document.readyState !== "loading") init();
+  else document.addEventListener("DOMContentLoaded", init, { once: true });
+</script>
+
+<style>
+  .calc {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 2rem 2rem 3rem;
+  }
+
+  .calc__breadcrumb {
+    font-size: 0.78rem;
+    color: var(--color-text-muted, #636c76);
+    margin-bottom: 1rem;
+  }
+  .calc__breadcrumb a { color: var(--color-accent, #2563eb); text-decoration: none; }
+
+  .calc__form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1rem;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--color-sidebar, #f6f8fa);
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 18px;
+  }
+  .calc__field { display: flex; flex-direction: column; gap: 0.35rem; flex: 1 1 180px; }
+  .calc__field--corto { flex: 0 1 150px; }
+  .calc__field label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted, #636c76);
+  }
+  .calc__field input,
+  .calc__field select {
+    font-size: 1.05rem;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--color-text-primary, #1f2328);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+  }
+  .calc__field select { font-family: inherit; }
+  .calc__field input:focus,
+  .calc__field select:focus {
+    outline: 2px solid var(--color-accent, #2563eb);
+    outline-offset: 1px;
+    border-color: var(--color-accent, #2563eb);
+  }
+  .calc__submit {
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.7rem 1.6rem;
+    background: var(--color-accent, #2563eb);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+  .calc__submit:hover { background: #1d4ed8; transform: translateY(-1px); }
+
+  .calc__headline {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .calc__headline-label { font-size: 0.95rem; color: var(--color-text-secondary, #475569); }
+  .calc__headline-valor {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--color-accent, #2563eb);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  .clase-card {
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 18px;
+    background: var(--color-sidebar, #f6f8fa);
+    padding: 1.4rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .clase-card__head { display: flex; flex-direction: column; gap: 0.2rem; }
+  .clase-card__eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted, #636c76);
+  }
+  .clase-card__clase { font-size: 1.7rem; font-weight: 800; }
+  .clase-card__detalle { font-size: 0.85rem; color: var(--color-text-secondary, #475569); line-height: 1.5; }
+
+  .calc__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+  }
+  .calc-stat {
+    padding: 1.1rem 1.25rem;
+    background: var(--color-sidebar, #f6f8fa);
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .calc-stat__valor {
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    color: var(--color-text-primary, #1f2328);
+  }
+  .calc-stat__label { font-size: 0.78rem; line-height: 1.45; color: var(--color-text-muted, #636c76); }
+
+  .calc__chart-card {
+    padding: 1.25rem;
+    background: #fff;
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 18px;
+    margin-bottom: 1.5rem;
+  }
+  .calc__chart-titulo {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+    color: var(--color-text-primary, #1f2328);
+  }
+  .calc__chart-nota { font-size: 0.75rem; color: var(--color-text-muted, #636c76); margin: 0.5rem 0 0; }
+
+  .calc__share {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .calc__share-label { font-size: 0.85rem; color: var(--color-text-muted, #636c76); }
+  .calc__share-btn {
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.45rem 1rem;
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 100px;
+    background: #fff;
+    color: var(--color-accent, #2563eb);
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .calc__share-btn:hover { border-color: var(--color-accent, #2563eb); box-shadow: 0 2px 10px rgba(37, 99, 235, 0.12); }
+
+  .calc__faq { margin-top: 3rem; max-width: 720px; }
+  .calc__faq h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary, #1f2328);
+  }
+  .calc__faq-item {
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 12px;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 0.6rem;
+    background: var(--color-sidebar, #f6f8fa);
+  }
+  .calc__faq-item summary {
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--color-text-primary, #1f2328);
+  }
+  .calc__faq-item p {
+    margin: 0.6rem 0 0;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary, #475569);
+  }
+  .calc__metodologia {
+    margin-top: 1.5rem;
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: var(--color-text-muted, #636c76);
+  }
+  .calc__metodologia a { color: var(--color-accent, #2563eb); }
+</style>
+
+<style is:global>
+  /* Escala de clases: nodos inyectados por JS (sin scoping de Astro). */
+  .clase-card__escala {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.5rem;
+  }
+  .clase-tramo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 10px;
+    border: 1px solid var(--color-border, #d0d7de);
+    background: #fff;
+    opacity: 0.55;
+  }
+  .clase-tramo strong { font-size: 0.8rem; color: var(--c); }
+  .clase-tramo small { font-size: 0.7rem; color: var(--color-text-muted, #636c76); }
+  .clase-tramo--activa {
+    opacity: 1;
+    border-color: var(--c);
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+  }
+</style>

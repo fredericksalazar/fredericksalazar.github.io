@@ -1,0 +1,156 @@
+---
+/**
+ * /salarios/ — ¿Cuánto se gana en Colombia? Índice de salarios por ocupación.
+ * Tabla build-time (indexable) desde data_salarios_cargos.json.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { urls, absUrls } from "../../lib/urls";
+import { getIngresos, getSalariosCargos } from "../../lib/observatorio/data";
+
+const ing = getIngresos();
+const data = getSalariosCargos();
+const cargos = data.cargos;
+
+const fmtCOP = new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 });
+const mediana = ing.indicadores.mediana.actual.valor ?? 0;
+const anio = data.smlv_referencia.anio;
+const smlv = data.smlv_referencia.valor;
+
+const title = `¿Cuánto se gana en Colombia? Salarios por ocupación ${anio} (DANE)`;
+const description = `Salario mediano de ${cargos.length} grupos ocupacionales en Colombia según los microdatos de la GEIH ${anio} del DANE: desde directivos hasta ocupaciones elementales. La mediana nacional es $${fmtCOP.format(mediana)}.`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  name: `Salarios por ocupación en Colombia ${anio}`,
+  description,
+  url: absUrls.salarios(),
+  creator: { "@type": "Person", name: "Frederick Salazar", url: absUrls.home() },
+  isBasedOn: [{ "@type": "CreativeWork", name: data.metadata.fuentes.geih.nombre, url: data.metadata.fuentes.geih.url }],
+  temporalCoverage: `${data.metadata.cobertura.primer_periodo}/${data.metadata.cobertura.ultimo_periodo}`,
+  dateModified: data.metadata.ultima_actualizacion,
+  license: "https://creativecommons.org/licenses/by/4.0/",
+  spatialCoverage: { "@type": "Place", name: "Colombia" },
+};
+---
+
+<BaseLayout title={title} description={description} image="/images/observatorio.png">
+  <article class="sal">
+    <header class="sal__header">
+      <span class="sal__eyebrow">Salarios · GEIH {anio} · DANE</span>
+      <h1 class="sal__titulo">¿Cuánto se gana en Colombia?</h1>
+      <p class="sal__lead">
+        Salario mediano de <strong>{cargos.length} grupos ocupacionales</strong>, calculado
+        sobre los microdatos de los 12 meses de la GEIH {anio} del DANE
+        ({fmtCOP.format(data.metadata.cobertura.total_registros)} grupos publicados con muestra suficiente).
+        La mediana nacional es <strong>${fmtCOP.format(mediana)}</strong> y el salario mínimo
+        de {anio} era <strong>${fmtCOP.format(smlv)}</strong>.
+        ¿Quieres saber dónde estás tú? Usa la
+        <a href={urls.calculadora("cuanto-ganas")}>calculadora de ingreso y clase social</a>.
+      </p>
+    </header>
+
+    <table class="sal__tabla">
+      <thead>
+        <tr>
+          <th scope="col">Ocupación</th>
+          <th scope="col" class="num">Mediana</th>
+          <th scope="col" class="num">Rango típico (p25–p75)</th>
+          <th scope="col" class="num">SMLV</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          cargos.map((c) => (
+            <tr>
+              <td><a href={urls.salarioCargo(c.slug)}>{c.nombre_corto}</a></td>
+              <td class="num">${fmtCOP.format(c.mediana)}</td>
+              <td class="num">${fmtCOP.format(c.p25)} — ${fmtCOP.format(c.p75)}</td>
+              <td class="num">{new Intl.NumberFormat("es-CO", { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(c.mediana / smlv)}×</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+
+    <p class="sal__metodologia">
+      <strong>Metodología:</strong> mediana y cuartiles del ingreso laboral mensual de ocupados
+      (variable INGLABO de la GEIH, ponderada por factor de expansión), agrupados por gran
+      subgrupo ocupacional CIUO-08 A.C. Solo se publican grupos con muestra anual ≥ {data.metadata.definiciones.n_minimo} personas.
+      Más datos en el <a href={urls.observatorio()}>Observatorio de Datos de Colombia</a>.
+    </p>
+  </article>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>
+
+<style>
+  .sal { padding: 2.5rem 0 3rem; }
+  .sal__eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-accent, #2563eb);
+  }
+  .sal__titulo {
+    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 0.6rem 0 1rem;
+    color: var(--color-text-primary, #1f2328);
+  }
+  .sal__lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary, #475569);
+    max-width: 720px;
+    margin-bottom: 2rem;
+  }
+  .sal__lead a { color: var(--color-accent, #2563eb); }
+
+  .sal__tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+  .sal__tabla th {
+    text-align: left;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted, #636c76);
+    padding: 0.6rem 0.75rem;
+    border-bottom: 2px solid var(--color-border, #d0d7de);
+  }
+  .sal__tabla td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--color-border, #d0d7de);
+    color: var(--color-text-secondary, #475569);
+  }
+  .sal__tabla td a {
+    color: var(--color-accent, #2563eb);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .sal__tabla td a:hover { text-decoration: underline; }
+  .sal__tabla .num {
+    text-align: right;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    white-space: nowrap;
+  }
+  .sal__tabla tbody tr:hover { background: var(--color-sidebar, #f6f8fa); }
+
+  .sal__metodologia {
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: var(--color-text-muted, #636c76);
+    max-width: 720px;
+  }
+  .sal__metodologia a { color: var(--color-accent, #2563eb); }
+
+  @media (max-width: 640px) {
+    .sal__tabla th:nth-child(3), .sal__tabla td:nth-child(3) { display: none; }
+  }
+</style>

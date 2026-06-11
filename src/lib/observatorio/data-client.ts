@@ -6,6 +6,8 @@ import type {
   ExternoData,
   DemografiaData,
   SalarioMinimoData,
+  IngresosData,
+  SalariosCargosData,
   PresEleccionData,
   PresCandidatosData,
 } from "./types";
@@ -42,6 +44,8 @@ export const loadEmpleo = () => load<EmpleoData>("data_empleo");
 export const loadExterno = () => load<ExternoData>("data_externo");
 export const loadDemografia = () => load<DemografiaData>("data_demografia");
 export const loadSalarioMinimo = () => load<SalarioMinimoData>("data_salario_minimo");
+export const loadIngresos = () => load<IngresosData>("data_ingresos");
+export const loadSalariosCargos = () => load<SalariosCargosData>("data_salarios_cargos");
 export const loadPresidentes = () =>
   load<{ fuente: string; nota: string; presidentes: Presidente[] }>("presidentes")
     .then((d) => d.presidentes);
@@ -67,7 +71,7 @@ export const loadPres2022_2v = () => load<PresEleccionData>("data_pres_2022_2v")
 export const loadPresCandidatos = () => load<PresCandidatosData>("data_pres_candidatos");
 
 export type DatasetName = "inflacion" | "pib" | "comercio" | "empleo" | "externo" | "demografia"
-  | "salario-minimo"
+  | "salario-minimo" | "ingresos" | "salarios-cargos"
   | "pres-2026-1v" | "pres-2022-1v" | "pres-2022-2v" | "pres-candidatos";
 
 export interface LoadedDatasets {
@@ -78,6 +82,8 @@ export interface LoadedDatasets {
   externo?: ExternoData;
   demografia?: DemografiaData;
   "salario-minimo"?: SalarioMinimoData;
+  ingresos?: IngresosData;
+  "salarios-cargos"?: SalariosCargosData;
   "pres-2026-1v"?: PresEleccionData;
   "pres-2022-1v"?: PresEleccionData;
   "pres-2022-2v"?: PresEleccionData;
@@ -92,6 +98,8 @@ const ASC_LOADERS = {
   externo: loadExternoAsc,
   demografia: loadDemografiaAsc,
   "salario-minimo": loadSalarioMinimoAsc,
+  ingresos: loadIngresos,
+  "salarios-cargos": loadSalariosCargos,
   "pres-2026-1v": loadPres2026_1v,
   "pres-2022-1v": loadPres2022_1v,
   "pres-2022-2v": loadPres2022_2v,

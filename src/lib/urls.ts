@@ -62,6 +62,10 @@ export const urls = {
   calculadoras: () => '/calculadoras/',
   calculadora: (slug: string) => withSlash(`/calculadoras/${slug}`),
 
+  // Salarios por cargo
+  salarios: () => '/salarios/',
+  salarioCargo: (slug: string) => withSlash(`/salarios/${slug}`),
+
   // Archivos reales (NO llevan trailing slash)
   rss: () => '/rss.xml',
   llms: () => '/llms.txt',
@@ -96,6 +100,9 @@ export const absUrls = {
 
   calculadoras: () => absolute(urls.calculadoras()),
   calculadora: (slug: string) => absolute(urls.calculadora(slug)),
+
+  salarios: () => absolute(urls.salarios()),
+  salarioCargo: (slug: string) => absolute(urls.salarioCargo(slug)),
 
   rss: () => absolute(urls.rss()),
 } as const;

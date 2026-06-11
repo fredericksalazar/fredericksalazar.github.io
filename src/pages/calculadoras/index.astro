@@ -7,8 +7,10 @@
  * propia optimizada para SEO.
  */
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import MapaColombia from "../../components/observatorio/MapaColombia.astro";
 import { urls, absUrls } from "../../lib/urls";
-import { getObservatorio, getSalarioMinimo } from "../../lib/observatorio/data";
+import { getObservatorio, getSalarioMinimo, getIngresos } from "../../lib/observatorio/data";
 
 const title = "Calculadoras de economía colombiana: inflación, salario y poder adquisitivo";
 const description =
@@ -16,11 +18,21 @@ const description =
 
 const obs = getObservatorio();
 const smlv = getSalarioMinimo();
+const ingresos = getIngresos();
 const inflacionActual = obs.indicadores.inflacion_anual.actual.valor;
 const smlvActual = smlv.indicadores.salario_minimo.actual.valor;
+const medianaIngreso = ingresos.indicadores.mediana.actual.valor ?? 0;
 const fmtCOP = new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 });
 
 const calculadoras = [
+  {
+    slug: "cuanto-ganas",
+    nombre: "¿Ganas bien? Compárate con Colombia",
+    descripcion:
+      "Tu salario frente a todos los trabajadores del país: en qué percentil estás, a qué clase social pertenece tu hogar según el DANE y cuánto gana tu ocupación.",
+    dato: `Mediana nacional: $${fmtCOP.format(medianaIngreso)}`,
+    emoji: "🏆",
+  },
   {
     slug: "sueldo-vs-inflacion",
     nombre: "¿Cuánto vale hoy tu sueldo de hace unos años?",
@@ -58,23 +70,22 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={title} description={description}>
-  <header class="calc-header">
-    <span class="calc-header__eyebrow">Calculadoras · Datos oficiales de Colombia</span>
-    <h1 class="calc-header__titulo">La economía colombiana, aplicada a tu bolsillo</h1>
-    <p class="calc-header__lead">
-      Estas calculadoras usan exactamente los mismos datos del
-      <a href={urls.observatorio()}>Observatorio de Datos de Colombia</a> —
-      inflación del DANE, salario mínimo de los decretos anuales, series del
-      Banco de la República y del Banco Mundial — para responder preguntas
-      concretas sobre tu plata y tu historia. Sin opiniones: solo datos.
-    </p>
-    <div class="calc-header__kpis">
-      <span class="calc-kpi">Inflación anual: <strong>{inflacionActual ?? "—"}%</strong></span>
-      <span class="calc-kpi">Salario mínimo {smlv.indicadores.salario_minimo.actual.periodo.slice(0, 4)}: <strong>${smlvActual !== null ? fmtCOP.format(smlvActual) : "—"}</strong></span>
-    </div>
-  </header>
+<BaseLayout title={title} description={description} fullWidth={true}>
+  <Hero
+    badge={{ text: "Calculadoras · Datos oficiales de Colombia" }}
+    title="La economía colombiana, aplicada a tu bolsillo"
+    subtitle="Estas calculadoras usan exactamente los mismos datos del Observatorio de Datos de Colombia — inflación del DANE, salario mínimo de los decretos anuales, microdatos de la GEIH y series del Banco de la República y del Banco Mundial — para responder preguntas concretas sobre tu plata y tu historia. Sin opiniones: solo datos."
+    kpis={[
+      { value: `${inflacionActual ?? "—"}%`, label: "Inflación anual" },
+      { value: `$${smlvActual !== null ? fmtCOP.format(smlvActual) : "—"}`, label: `Salario mínimo ${smlv.indicadores.salario_minimo.actual.periodo.slice(0, 4)}` },
+      { value: `$${fmtCOP.format(medianaIngreso)}`, label: "Mediana de ingreso" },
+    ]}
+    showPartners={false}
+  >
+    <MapaColombia slot="visual" />
+  </Hero>
 
+  <div class="calc-container">
   <section class="calc-grid" aria-label="Calculadoras disponibles">
     {
       calculadoras.map((c) => (
@@ -102,50 +113,17 @@ const jsonLd = {
       <a href={urls.observatorioSub("empleo")}>dashboard de empleo</a>.
     </p>
   </section>
+  </div>
 
   <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </BaseLayout>
 
 <style>
-  .calc-header {
-    padding: 3rem 0 2rem;
-    max-width: 720px;
+  .calc-container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 2rem 2rem 0;
   }
-  .calc-header__eyebrow {
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--color-accent, #2563eb);
-  }
-  .calc-header__titulo {
-    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
-    font-weight: 700;
-    line-height: 1.15;
-    margin: 0.6rem 0 1rem;
-    color: var(--color-text-primary, #1f2328);
-  }
-  .calc-header__lead {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: var(--color-text-secondary, #475569);
-  }
-  .calc-header__lead a { color: var(--color-accent, #2563eb); }
-  .calc-header__kpis {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    margin-top: 1.25rem;
-  }
-  .calc-kpi {
-    font-size: 0.78rem;
-    padding: 0.4rem 0.85rem;
-    border: 1px solid var(--color-border, #d0d7de);
-    border-radius: 100px;
-    color: var(--color-text-secondary, #475569);
-    background: var(--color-sidebar, #f6f8fa);
-  }
-  .calc-kpi strong { color: var(--color-accent, #2563eb); }
 
   .calc-grid {
     display: grid;

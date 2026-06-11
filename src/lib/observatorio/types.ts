@@ -170,6 +170,78 @@ export interface SalarioMinimoData {
   historico_auxilio: Record<string, number>;
 }
 
+// ───────────────────────────── INGRESOS ─────────────────────────────
+
+export interface ClasesSociales {
+  anio: number;
+  unidad: string;
+  umbrales: {
+    pobreza_hasta: number;
+    vulnerable_hasta: number;
+    media_hasta: number;
+  };
+  distribucion: {
+    pobreza: number;
+    vulnerable: number;
+    media: number;
+    alta: number;
+  };
+}
+
+export interface IngresosMetadata {
+  ultima_actualizacion: string;
+  fuentes: {
+    geih: Fuente;
+    clases: Fuente;
+    calculo_propio: Fuente;
+  };
+  definiciones: Record<string, string | number>;
+  cobertura: {
+    primer_periodo: string;
+    ultimo_periodo: string;
+    total_registros: number;
+    granularidad: "anual" | "mensual";
+  };
+  notas?: string;
+}
+
+export interface IngresosData {
+  metadata: IngresosMetadata;
+  indicadores: {
+    mediana: Indicador;
+    promedio: Indicador;
+    pct_hasta_1smlv: Indicador;
+    pct_hasta_2smlv: Indicador;
+  };
+  /** Percentil ("1".."99") → ingreso laboral mensual COP. */
+  percentiles: Record<string, number>;
+  clases: ClasesSociales;
+  smlv_referencia: { anio: number; valor: number };
+}
+
+export interface CargoSalario {
+  codigo: string;
+  slug: string;
+  nombre: string;
+  nombre_corto: string;
+  mediana: number;
+  p25: number;
+  p75: number;
+  p90: number;
+  promedio: number;
+  n_muestra: number;
+  share_empleo_pct: number;
+}
+
+export interface SalariosCargosData {
+  metadata: IngresosMetadata;
+  indicadores: {
+    mediana_nacional: Indicador;
+  };
+  smlv_referencia: { anio: number; valor: number };
+  cargos: CargoSalario[];
+}
+
 // ───────────────────────────── COMERCIO ─────────────────────────────
 
 export interface ComercioSerieFila {
