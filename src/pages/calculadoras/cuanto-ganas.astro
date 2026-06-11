@@ -128,13 +128,57 @@ const jsonLd = {
         <span class="calc__headline-label" id="r-percentil-detalle"></span>
       </div>
 
+      <div class="calc__waffle-card">
+        <p class="calc__waffle-title">Comparación de ingresos: si Colombia fuera un grupo de 100 personas</p>
+        <div class="waffle-grid" id="waffle-grid"></div>
+        <div class="waffle-legend">
+          <span class="waffle-legend__item">
+            <span class="waffle-dot waffle-dot--less"></span>
+            Ganan menos que tú
+          </span>
+          <span class="waffle-legend__item">
+            <span class="waffle-dot waffle-dot--you waffle-dot--pulse"></span>
+            Tu posición
+          </span>
+          <span class="waffle-legend__item">
+            <span class="waffle-dot waffle-dot--more"></span>
+            Ganan más que tú
+          </span>
+        </div>
+      </div>
+
       <div class="clase-card" id="r-clase-card">
         <div class="clase-card__head">
           <span class="clase-card__eyebrow">Clase social de tu hogar (DANE)</span>
           <span class="clase-card__clase" id="r-clase"></span>
           <span class="clase-card__detalle" id="r-clase-detalle"></span>
         </div>
-        <div class="clase-card__escala" id="r-clase-escala"></div>
+        
+        <div class="termometro-wrapper">
+          <div class="termometro-bar">
+            <div class="termometro-segment termometro-segment--pobreza" style={`flex: ${clases.distribucion.pobreza}`}>
+              <span class="termometro-segment-label">Pobreza</span>
+            </div>
+            <div class="termometro-segment termometro-segment--vulnerable" style={`flex: ${clases.distribucion.vulnerable}`}>
+              <span class="termometro-segment-label">Vulnerable</span>
+            </div>
+            <div class="termometro-segment termometro-segment--media" style={`flex: ${clases.distribucion.media}`}>
+              <span class="termometro-segment-label">Media</span>
+            </div>
+            <div class="termometro-segment termometro-segment--alta" style={`flex: ${clases.distribucion.alta}`}>
+              <span class="termometro-segment-label">Alta</span>
+            </div>
+            <div class="termometro-indicator" id="termometro-indicator">
+              <span class="termometro-indicator-pin"></span>
+            </div>
+          </div>
+          <div class="termometro-limits" style="position: relative; height: 1.5rem; margin-top: 0.25rem;">
+            <span style="position: absolute; left: 0%; transform: translateX(0%);">$0</span>
+            <span style={`position: absolute; left: ${clases.distribucion.pobreza}%; transform: translateX(-50%);`}>${fmtCOP.format(clases.umbrales.pobreza_hasta)}</span>
+            <span style={`position: absolute; left: ${clases.distribucion.pobreza + clases.distribucion.vulnerable}%; transform: translateX(-50%);`}>${fmtCOP.format(clases.umbrales.vulnerable_hasta)}</span>
+            <span style={`position: absolute; left: ${clases.distribucion.pobreza + clases.distribucion.vulnerable + clases.distribucion.media}%; transform: translateX(-50%);`}>${fmtCOP.format(clases.umbrales.media_hasta)}</span>
+          </div>
+        </div>
       </div>
 
       <div class="calc__stats">
@@ -146,9 +190,33 @@ const jsonLd = {
           <span class="calc-stat__valor" id="r-mediana"></span>
           <span class="calc-stat__label" id="r-mediana-label"></span>
         </div>
-        <div class="calc-stat" id="r-cargo-card" hidden>
-          <span class="calc-stat__valor" id="r-cargo"></span>
-          <span class="calc-stat__label" id="r-cargo-label"></span>
+        <div class="calc-stat calc-stat--cargo" id="r-cargo-card" hidden>
+          <div class="cargo-gauge-wrapper">
+            <span class="cargo-gauge-title">Tu nivel de ingresos en tu ocupación</span>
+            <div class="cargo-gauge-track">
+              <div class="cargo-gauge-tick" style="left: 0%;">
+                <span class="cargo-gauge-tick-label">P25</span>
+                <span class="cargo-gauge-tick-val" id="r-cargo-p25"></span>
+              </div>
+              <div class="cargo-gauge-tick" style="left: 33.3%;">
+                <span class="cargo-gauge-tick-label">Mediana</span>
+                <span class="cargo-gauge-tick-val" id="r-cargo-mediana"></span>
+              </div>
+              <div class="cargo-gauge-tick" style="left: 66.6%;">
+                <span class="cargo-gauge-tick-label">P75</span>
+                <span class="cargo-gauge-tick-val" id="r-cargo-p75"></span>
+              </div>
+              <div class="cargo-gauge-tick" style="left: 100%;">
+                <span class="cargo-gauge-tick-label">P90</span>
+                <span class="cargo-gauge-tick-val" id="r-cargo-p90"></span>
+              </div>
+              <div class="cargo-gauge-indicator" id="r-cargo-indicator">
+                <span class="cargo-gauge-indicator-pin"></span>
+                <span class="cargo-gauge-indicator-label">Tú</span>
+              </div>
+            </div>
+            <p class="cargo-gauge-desc" id="r-cargo-label"></p>
+          </div>
         </div>
       </div>
 
@@ -199,7 +267,7 @@ const jsonLd = {
 <script>
   import { loadIngresos, loadSalariosCargos } from "../../lib/observatorio/data-client";
   import { mountPlotly, purgeChart } from "../../lib/observatorio/plotly-mount";
-  import { COLORS, baseLayout } from "../../lib/observatorio/charts";
+  import { baseLayout } from "../../lib/observatorio/charts";
   import { fmtCOP, fmtDec1 } from "../../lib/calculadoras/calculos";
   import {
     percentilDe,
@@ -227,8 +295,11 @@ const jsonLd = {
 
   async function calcular(ingreso: number, hogar: number, cargoSlug: string): Promise<void> {
     const [ing, cargosData] = await Promise.all([loadIngresos(), loadSalariosCargos()]);
+    
+    const fmtCompact = (v: number) =>
+      `$${new Intl.NumberFormat("es-CO", { notation: "compact", maximumFractionDigits: 1 }).format(v)}`;
 
-    // ── Percentil nacional ──
+    // ── Percentil nacional y Waffle Chart ──
     const pct = percentilDe(ingreso, ing.percentiles);
     const top = pct >= 99;
     const elP = $("r-percentil");
@@ -240,7 +311,28 @@ const jsonLd = {
         : `de los trabajadores ocupados de Colombia (GEIH ${ing.smlv_referencia.anio})`;
     }
 
-    // ── Clase social del hogar ──
+    const waffleGrid = $("waffle-grid");
+    if (waffleGrid) {
+      waffleGrid.innerHTML = "";
+      const roundedPct = top ? 100 : Math.round(pct);
+      
+      for (let i = 1; i <= 100; i++) {
+        const dot = document.createElement("span");
+        dot.className = "waffle-dot";
+        
+        if (i === roundedPct) {
+          dot.classList.add("waffle-dot--you", "waffle-dot--pulse");
+          dot.title = `Tú estás aquí (percentil ${roundedPct})`;
+        } else if (i < roundedPct) {
+          dot.classList.add("waffle-dot--less");
+        } else {
+          dot.classList.add("waffle-dot--more");
+        }
+        waffleGrid.appendChild(dot);
+      }
+    }
+
+    // ── Clase social del hogar e Indicador de Termómetro ──
     const res = claseSocialHogar(ingreso, hogar, ing.clases);
     const elC = $("r-clase");
     if (elC) {
@@ -256,19 +348,33 @@ const jsonLd = {
         : "";
       elCD.textContent = `${pcTexto} · El ${fmtDec1(dist)}% del país está en este grupo${extra}`;
     }
-    const escala = $("r-clase-escala");
-    if (escala) {
-      const u = ing.clases.umbrales;
-      const tramos: Array<[ClaseSocial, string]> = [
-        ["pobreza", `< ${fmtCOP(u.pobreza_hasta)}`],
-        ["vulnerable", `hasta ${fmtCOP(u.vulnerable_hasta)}`],
-        ["media", `hasta ${fmtCOP(u.media_hasta)}`],
-        ["alta", `> ${fmtCOP(u.media_hasta)}`],
-      ];
-      escala.innerHTML = tramos.map(([clase, rango]) => {
-        const activa = clase === res.clase ? " clase-tramo--activa" : "";
-        return `<span class="clase-tramo${activa}" style="--c:${CLASE_COLORS[clase]}"><strong>${CLASE_LABELS[clase]}</strong><small>${rango}</small></span>`;
-      }).join("");
+
+    // Calcular la posición del indicador en el termómetro
+    const u = ing.clases.umbrales;
+    const d = ing.clases.distribucion;
+    const p1 = d.pobreza; // 31.8
+    const p2 = p1 + d.vulnerable; // 62.3
+    const p3 = p2 + d.media; // 96.7
+
+    const pc = res.ingresoPerCapita;
+    let positionPct = 0;
+    if (pc < u.pobreza_hasta) {
+      positionPct = (pc / u.pobreza_hasta) * p1;
+    } else if (pc < u.vulnerable_hasta) {
+      const frac = (pc - u.pobreza_hasta) / (u.vulnerable_hasta - u.pobreza_hasta);
+      positionPct = p1 + frac * (p2 - p1);
+    } else if (pc < u.media_hasta) {
+      const frac = (pc - u.vulnerable_hasta) / (u.media_hasta - u.vulnerable_hasta);
+      positionPct = p2 + frac * (p3 - p2);
+    } else {
+      const maxVal = u.media_hasta * 2;
+      const frac = Math.min(1, (pc - u.media_hasta) / (maxVal - u.media_hasta));
+      positionPct = p3 + frac * (100 - p3);
+    }
+
+    const termIndicator = $("termometro-indicator");
+    if (termIndicator) {
+      termIndicator.style.left = `${positionPct}%`;
     }
 
     // ── Stats ──
@@ -281,20 +387,46 @@ const jsonLd = {
     if (elM) elM.textContent = `${fmtDec1(ingreso / medianaNac)}×`;
     if (elML) elML.textContent = `la mediana nacional (${fmtCOP(medianaNac)})`;
 
+    // ── Ocupación y regleta de rango ──
     const cargoCard = $("r-cargo-card");
     const cargo = cargoSlug ? cargoPorSlug(cargosData, cargoSlug) : undefined;
     if (cargoCard) {
       if (cargo) {
         cargoCard.hidden = false;
         const pctCargo = percentilEnCargo(ingreso, cargo);
-        const elCg = $("r-cargo");
+
+        const elP25 = $("r-cargo-p25");
+        const elMediana = $("r-cargo-mediana");
+        const elP75 = $("r-cargo-p75");
+        const elP90 = $("r-cargo-p90");
+        if (elP25) elP25.textContent = fmtCompact(cargo.p25);
+        if (elMediana) elMediana.textContent = fmtCompact(cargo.mediana);
+        if (elP75) elP75.textContent = fmtCompact(cargo.p75);
+        if (elP90) elP90.textContent = fmtCompact(cargo.p90);
+
+        let cargoGaugePct = 0;
+        if (pctCargo <= 25) {
+          cargoGaugePct = 0;
+        } else if (pctCargo <= 50) {
+          cargoGaugePct = ((pctCargo - 25) / 25) * 33.3;
+        } else if (pctCargo <= 75) {
+          cargoGaugePct = 33.3 + ((pctCargo - 50) / 25) * 33.3;
+        } else {
+          cargoGaugePct = 66.6 + ((pctCargo - 75) / 15) * 33.3;
+        }
+        cargoGaugePct = Math.min(100, Math.max(0, cargoGaugePct));
+
+        const cargoIndicator = $("r-cargo-indicator");
+        if (cargoIndicator) {
+          cargoIndicator.style.left = `${cargoGaugePct}%`;
+        }
+
         const elCgL = $("r-cargo-label");
-        if (elCg) elCg.textContent = fmtCOP(cargo.mediana);
         if (elCgL) {
-          const pos = pctCargo >= 90 ? "estás en el 10% mejor pagado del grupo"
-            : pctCargo <= 25 ? "estás en el 25% de menores ingresos del grupo"
-            : `estás cerca del percentil ${Math.round(pctCargo)} del grupo`;
-          elCgL.textContent = `gana la mitad de "${cargo.nombre_corto}" — ${pos}`;
+          const pos = pctCargo >= 90 ? "estás en el 10% mejor pagado de este grupo ocupacional"
+            : pctCargo <= 25 ? "estás en el 25% de menores ingresos de este grupo ocupacional"
+            : `estás cerca del percentil ${Math.round(pctCargo)} de este grupo ocupacional`;
+          elCgL.innerHTML = `La mediana para <strong>"${cargo.nombre_corto}"</strong> es <strong>${fmtCOP(cargo.mediana)}</strong> al mes. Con tus ingresos, ${pos}.`;
         }
       } else {
         cargoCard.hidden = true;
@@ -303,9 +435,6 @@ const jsonLd = {
 
     const resultados = $("resultados");
     if (resultados) resultados.hidden = false;
-
-    const fmtCompact = (v: number) =>
-      `$${new Intl.NumberFormat("es-CO", { notation: "compact", maximumFractionDigits: 1 }).format(v)}`;
 
     // ── Gráfico 1: la escalera de ingresos (deciles + top 1%) ──
     // Cada escalón = "este % de trabajadores gana hasta este valor".
@@ -316,7 +445,7 @@ const jsonLd = {
     const idxUsuario = valores.findIndex((v) => ingreso <= v);
     const sobreTodos = idxUsuario === -1;
     const colores = valores.map((_, i) =>
-      i === idxUsuario ? "#dc2626" : "rgba(37, 99, 235, 0.55)");
+      i === idxUsuario ? "#ea580c" : "rgba(37, 99, 235, 0.35)");
     const textos = valores.map((v, i) =>
       i === idxUsuario ? `<b>${fmtCompact(v)}</b>` : fmtCompact(v));
 
@@ -348,17 +477,17 @@ const jsonLd = {
           sobreTodos
             ? {
                 xref: "x", yref: "y", x: etiquetas[etiquetas.length - 1], y: valores[valores.length - 1],
-                yanchor: "bottom", ay: -42, ax: 0, showarrow: true, arrowhead: 6, arrowcolor: "#dc2626",
+                yanchor: "bottom", ay: -42, ax: 0, showarrow: true, arrowhead: 6, arrowcolor: "#ea580c",
                 text: `<b>Tú: ${fmtCompact(ingreso)}</b><br>por encima del 99%`,
                 font: { size: 12, color: "#ffffff" },
-                bgcolor: "#dc2626", bordercolor: "#b91c1c", borderwidth: 1, borderpad: 5,
+                bgcolor: "#ea580c", bordercolor: "#c2410c", borderwidth: 1, borderpad: 5,
               }
             : {
                 xref: "x", yref: "y", x: etiquetas[idxUsuario], y: valores[idxUsuario],
-                yanchor: "bottom", ay: -42, ax: 0, showarrow: true, arrowhead: 6, arrowcolor: "#dc2626",
+                yanchor: "bottom", ay: -42, ax: 0, showarrow: true, arrowhead: 6, arrowcolor: "#ea580c",
                 text: `<b>Tu escalón</b><br>${fmtCompact(ingreso)}`,
                 font: { size: 12, color: "#ffffff" },
-                bgcolor: "#dc2626", bordercolor: "#b91c1c", borderwidth: 1, borderpad: 5,
+                bgcolor: "#ea580c", bordercolor: "#c2410c", borderwidth: 1, borderpad: 5,
               },
         ],
       }),
@@ -369,11 +498,11 @@ const jsonLd = {
     // sólido, las demás en versión clara. El percentil nacional de ingreso
     // va dentro de la barra del usuario.
     const CLASE_DARK: Record<ClaseSocial, string> = {
-      pobreza: "#991b1b", vulnerable: "#9a3412", media: "#166534", alta: "#1e40af",
+      pobreza: "#dc2626", vulnerable: "#ea580c", media: "#16a34a", alta: "#2563eb",
     };
     const CLASE_LIGHT: Record<ClaseSocial, string> = {
-      pobreza: "rgba(220, 38, 38, 0.30)", vulnerable: "rgba(234, 88, 12, 0.30)",
-      media: "rgba(22, 163, 74, 0.30)", alta: "rgba(37, 99, 235, 0.30)",
+      pobreza: "rgba(220, 38, 38, 0.15)", vulnerable: "rgba(234, 88, 12, 0.15)",
+      media: "rgba(22, 163, 74, 0.15)", alta: "rgba(37, 99, 235, 0.15)",
     };
     const orden: ClaseSocial[] = ["pobreza", "vulnerable", "media", "alta"];
     const dist = ing.clases.distribucion;
@@ -691,30 +820,294 @@ const jsonLd = {
     color: var(--color-text-muted, #636c76);
   }
   .calc__metodologia a { color: var(--color-accent, #2563eb); }
-</style>
 
-<style is:global>
-  /* Escala de clases: nodos inyectados por JS (sin scoping de Astro). */
-  .clase-card__escala {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 0.5rem;
-  }
-  .clase-tramo {
+  /* ── REDISEÑO VISUAL: NUEVOS COMPONENTES NARRATIVOS ── */
+  .calc__waffle-card {
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 18px;
+    background: var(--color-sidebar, #f6f8fa);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 0.1rem;
-    padding: 0.6rem 0.8rem;
-    border-radius: 10px;
-    border: 1px solid var(--color-border, #d0d7de);
-    background: #fff;
-    opacity: 0.55;
+    align-items: center;
+    gap: 1rem;
   }
-  .clase-tramo strong { font-size: 0.8rem; color: var(--c); }
-  .clase-tramo small { font-size: 0.7rem; color: var(--color-text-muted, #636c76); }
-  .clase-tramo--activa {
-    opacity: 1;
-    border-color: var(--c);
-    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+  .calc__waffle-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted, #636c76);
+    text-align: center;
+    margin: 0;
+  }
+  :global(.waffle-grid) {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 8px;
+    max-width: 280px;
+    margin: 0.5rem auto;
+  }
+  :global(.waffle-dot) {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: inline-block;
+    transition: all 0.2s ease;
+    border: 1px solid var(--color-border, #d0d7de);
+  }
+  :global(.waffle-dot:hover) {
+    transform: scale(1.3);
+  }
+  :global(.waffle-dot--less) {
+    background: rgba(37, 99, 235, 0.2);
+    border-color: rgba(37, 99, 235, 0.4);
+  }
+  :global(.waffle-dot--more) {
+    background: #f1f5f9;
+    border-color: rgba(208, 215, 220, 0.6);
+  }
+  :global(.waffle-dot--you) {
+    background: #ea580c;
+    border-color: #c2410c;
+    box-shadow: 0 0 10px rgba(234, 88, 12, 0.6);
+  }
+  @keyframes waffle-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.7);
+      transform: scale(1);
+    }
+    70% {
+      box-shadow: 0 0 0 8px rgba(234, 88, 12, 0);
+      transform: scale(1.15);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(234, 88, 12, 0);
+      transform: scale(1);
+    }
+  }
+  :global(.waffle-dot--pulse) {
+    animation: waffle-pulse 2s infinite;
+    position: relative;
+    z-index: 2;
+  }
+  .waffle-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem;
+    margin-top: 0.5rem;
+  }
+  .waffle-legend__item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: var(--color-text-secondary, #475569);
+  }
+  .waffle-legend__item :global(.waffle-dot) {
+    width: 12px;
+    height: 12px;
+    cursor: default;
+  }
+  .waffle-legend__item :global(.waffle-dot:hover) {
+    transform: none;
+  }
+
+  .termometro-wrapper {
+    margin: 1.5rem 0 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .termometro-bar {
+    display: flex;
+    height: 24px;
+    border-radius: 12px;
+    position: relative;
+    border: 1px solid var(--color-border, #d0d7de);
+    background: #f1f5f9;
+  }
+  .termometro-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #fff;
+    transition: all 0.3s ease;
+  }
+  .termometro-segment--pobreza {
+    background: #dc2626;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+  .termometro-segment--vulnerable {
+    background: #ea580c;
+  }
+  .termometro-segment--media {
+    background: #16a34a;
+  }
+  .termometro-segment--alta {
+    background: #2563eb;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  .termometro-segment-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    pointer-events: none;
+  }
+  @media (max-width: 480px) {
+    .termometro-segment--alta .termometro-segment-label {
+      display: none;
+    }
+  }
+  .termometro-indicator {
+    position: absolute;
+    top: -6px;
+    bottom: -6px;
+    width: 4px;
+    background: #1f2328;
+    border-radius: 2px;
+    transform: translateX(-50%);
+    transition: left 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 5;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  .termometro-indicator-pin {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 14px;
+    background: #1f2328;
+    border: 2.5px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .termometro-limits {
+    position: relative;
+    height: 1.5rem;
+    margin-top: 0.4rem;
+    font-size: 0.72rem;
+    color: var(--color-text-muted, #636c76);
+    font-family: var(--font-mono, monospace);
+    font-weight: 500;
+  }
+  .termometro-limits span {
+    white-space: nowrap;
+  }
+  @media (max-width: 500px) {
+    .termometro-limits {
+      font-size: 0.65rem;
+    }
+  }
+
+  .calc-stat--cargo {
+    grid-column: 1 / -1;
+    padding: 1.5rem 1.75rem;
+  }
+  .cargo-gauge-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+  .cargo-gauge-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted, #636c76);
+    margin: 0;
+  }
+  .cargo-gauge-track {
+    height: 6px;
+    background: var(--color-border, #d0d7de);
+    border-radius: 3px;
+    position: relative;
+    margin: 2.2rem 0 2rem;
+  }
+  .cargo-gauge-tick {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background: var(--color-border, #d0d7de);
+    border-radius: 50%;
+    border: 2px solid #fff;
+  }
+  .cargo-gauge-tick-label {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    color: var(--color-text-muted, #636c76);
+    white-space: nowrap;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .cargo-gauge-tick-val {
+    position: absolute;
+    top: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.72rem;
+    color: var(--color-text-secondary, #475569);
+    white-space: nowrap;
+    font-family: var(--font-mono, monospace);
+    font-weight: 500;
+  }
+  .cargo-gauge-indicator {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: left 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .cargo-gauge-indicator-pin {
+    width: 16px;
+    height: 16px;
+    background: #ea580c;
+    border: 2.5px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(234, 88, 12, 0.4);
+  }
+  .cargo-gauge-indicator-label {
+    position: absolute;
+    top: -30px;
+    background: #ea580c;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.2rem 0.45rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(234, 88, 12, 0.3);
+    white-space: nowrap;
+  }
+  .cargo-gauge-indicator-label::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 4px;
+    border-style: solid;
+    border-color: #ea580c transparent transparent transparent;
+  }
+  .cargo-gauge-desc {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--color-text-secondary, #475569);
+    margin: 1rem 0 0;
   }
 </style>
