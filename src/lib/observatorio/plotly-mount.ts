@@ -14,11 +14,13 @@ const mounted = new Set<string>();
 const controllers = new Map<string, AbortController>();
 
 function getPlotly(): Promise<PlotlyStatic> {
+  if (window.Plotly) {
+    return Promise.resolve(window.Plotly);
+  }
+  if (typeof (window as any).loadPlotly === "function") {
+    return (window as any).loadPlotly();
+  }
   return new Promise((resolve) => {
-    if (window.Plotly) {
-      resolve(window.Plotly);
-      return;
-    }
     window.addEventListener(
       "plotly:loaded",
       () => resolve(window.Plotly!),

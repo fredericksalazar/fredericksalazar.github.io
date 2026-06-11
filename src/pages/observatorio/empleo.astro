@@ -162,8 +162,52 @@ const jsonLd = {
       <Chart slot="visual" id="desempleo-historico" embedded={true} />
     </IndicadorPanel>
 
+    <div class="observatorio-two-column">
+      <IndicadorPanel
+        numero="02"
+        eyebrow="Salario mínimo"
+        titulo="Salario mínimo histórico: cuánto se ha decretado cada año"
+        lead="El salario mínimo mensual legal vigente (SMMLV) se fija por decreto cada diciembre. Desde 1984, cuando se unificó para todos los sectores, ha pasado de $11.298 a millones de pesos."
+        fuente={fuenteSalario}
+      >
+        <Fragment slot="text">
+          <p>
+            En {smlvAnio}, el salario mínimo en Colombia es de
+            <strong> ${smlvActual !== null ? fmtCOP.format(smlvActual) : "—"} COP</strong> mensuales,
+            un incremento del <strong>{smlvVariacion ?? "—"}%</strong> frente al año anterior.
+            Es la referencia salarial de millones de trabajadores y la base de cotizaciones,
+            multas y subsidios en todo el país.
+          </p>
+          <p>
+            Los valores del gráfico son <strong>nominales</strong> (pesos corrientes de cada año):
+            muestran lo decretado, no el poder adquisitivo. Activa el color por presidente para
+            ver qué gobierno decretó cada incremento.
+          </p>
+        </Fragment>
+        <Chart slot="visual" id="salario-minimo-historico" embedded={true} />
+      </IndicadorPanel>
+
+      <IndicadorPanel
+        numero="03"
+        eyebrow="Variación salarial"
+        titulo="Variación porcentual del salario mínimo"
+        lead="Incremento porcentual del salario mínimo respecto al año anterior. Un indicador clave de las negociaciones de fin de año y del impacto inflacionario en el salario de los colombianos."
+        fuente={fuenteSalario}
+      >
+        <Fragment slot="text">
+          <p>
+            El incremento nominal busca compensar la pérdida de poder adquisitivo por la inflación y reflejar la productividad laboral. Históricamente, las variaciones más altas se registraron en periodos de alta inflación a finales del siglo XX.
+          </p>
+          <p>
+            El dato más reciente ({smlvAnio}) muestra un aumento del <strong>{smlvVariacion ?? "—"}%</strong>. Ver en forma de barras permite colorear el incremento según el presidente de turno.
+          </p>
+        </Fragment>
+        <Chart slot="visual" id="salario-minimo-variacion" embedded={true} />
+      </IndicadorPanel>
+    </div>
+
     <IndicadorPanel
-      numero="02"
+      numero="04"
       eyebrow="Evolución reciente"
       titulo="Tasa de desempleo mensual"
       lead="El desempleo es el porcentaje de la población económicamente activa que busca trabajo y no lo encuentra. Un indicador clave del bienestar económico."
@@ -186,7 +230,7 @@ const jsonLd = {
     </IndicadorPanel>
 
     <IndicadorPanel
-      numero="03"
+      numero="05"
       eyebrow="Participación vs Ocupación"
       titulo="TGP y Tasa de Ocupación"
       lead="La TGP muestra cuántas personas participan en el mercado laboral (trabajando o buscando). La TO mide cuántas están efectivamente ocupadas. La distancia entre ambas es el desempleo."
@@ -208,7 +252,7 @@ const jsonLd = {
     </IndicadorPanel>
 
     <IndicadorPanel
-      numero="04"
+      numero="06"
       eyebrow="Desequilibrio laboral"
       titulo="Brecha entre participación y ocupación"
       lead="TGP menos TO: la diferencia neta entre quienes quieren trabajar y quienes lo logran. Es el termómetro más directo de la salud del mercado laboral."
@@ -230,7 +274,7 @@ const jsonLd = {
     </IndicadorPanel>
 
     <IndicadorPanel
-      numero="05"
+      numero="07"
       eyebrow="Indicador adelantado"
       titulo="Subempleo: los que trabajan pero menos de lo que quisieran"
       lead="El subempleo mide a los ocupados que desean y pueden trabajar más horas. Es un indicador adelantado que suele anticipar cambios en la tasa de desempleo."
@@ -248,30 +292,6 @@ const jsonLd = {
         </p>
       </Fragment>
       <Chart slot="visual" id="subempleo" embedded={true} />
-    </IndicadorPanel>
-
-    <IndicadorPanel
-      numero="06"
-      eyebrow="Salario mínimo"
-      titulo="Salario mínimo histórico: cuánto se ha decretado cada año"
-      lead="El salario mínimo mensual legal vigente (SMMLV) se fija por decreto cada diciembre. Desde 1984, cuando se unificó para todos los sectores, ha pasado de $11.298 a millones de pesos."
-      fuente={fuenteSalario}
-    >
-      <Fragment slot="text">
-        <p>
-          En {smlvAnio}, el salario mínimo en Colombia es de
-          <strong> ${smlvActual !== null ? fmtCOP.format(smlvActual) : "—"} COP</strong> mensuales,
-          un incremento del <strong>{smlvVariacion ?? "—"}%</strong> frente al año anterior.
-          Es la referencia salarial de millones de trabajadores y la base de cotizaciones,
-          multas y subsidios en todo el país.
-        </p>
-        <p>
-          Los valores del gráfico son <strong>nominales</strong> (pesos corrientes de cada año):
-          muestran lo decretado, no el poder adquisitivo. Activa el color por presidente para
-          ver qué gobierno decretó cada incremento.
-        </p>
-      </Fragment>
-      <Chart slot="visual" id="salario-minimo-historico" embedded={true} />
     </IndicadorPanel>
 
     <section class="glosario-block" aria-label="Glosario y fuentes">
@@ -341,6 +361,19 @@ const jsonLd = {
     max-width: 1800px;
     margin: 0 auto;
     padding: 1.75rem 0 3rem;
+  }
+
+  .observatorio-two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 1024px) {
+    .observatorio-two-column {
+      grid-template-columns: 1fr;
+    }
   }
 
   .kpi-row {

@@ -208,7 +208,151 @@ export const salarioMinimoHistorico: ChartDef = {
       hoverSuffix: " COP",
       hoverThousands: true,
       yaxisTickSuffix: "",
+      defaultOn: false,
     });
+  },
+};
+
+export const salarioMinimoVariacion: ChartDef = {
+  id: "salario-minimo-variacion",
+  titulo: "Variación porcentual del salario mínimo",
+  pregunta: "Incremento porcentual decretado cada año frente al anterior. Se muestra como línea por defecto; activa barras para ver el color por presidente.",
+  fuenteTexto: "Ministerio del Trabajo — decretos anuales · Presidentes: Registraduría Nacional",
+  datasets: ["salario-minimo"],
+  height: 420,
+  ariaLabel: "Variación porcentual anual del salario mínimo en Colombia desde 1985",
+  async build({ "salario-minimo": smlv }) {
+    const presidentes = await getPresidentesClient();
+
+    const variacionMap: Record<string, number> = {};
+    smlv!.serie.forEach((row) => {
+      const y = row.periodo.split("-")[0];
+      if (row.variacion_pct !== null) {
+        variacionMap[y] = row.variacion_pct;
+      }
+    });
+
+    const sortedYears = Object.keys(variacionMap).sort();
+    const sortedValores = sortedYears.map((y) => variacionMap[y]);
+
+    const colorsPorPresidente = colorsForYears(sortedYears, presidentes, COLOR_BASE);
+    const customdata = sortedYears.map((y) => {
+      const p = presidenteForYear(parseInt(y, 10), presidentes);
+      return [p?.nombre ?? "Sin datos", p?.partido ?? "—"];
+    });
+
+    const traces = [{
+      type: "scatter",
+      mode: "lines+markers",
+      x: sortedYears,
+      y: sortedValores,
+      line: { color: COLOR_BASE, width: 2 },
+      marker: { color: COLOR_BASE, size: 6 },
+      customdata,
+      name: "Variación",
+      hovertemplate:
+        `<b>%{x}</b><br>Variación: <b>%{y:.2f}%</b><br>` +
+        "Presidente: %{customdata[0]}<br>" +
+        "<span style='color:#94a3b8'>%{customdata[1]}</span><extra></extra>",
+    }];
+
+    const layout = baseLayout({
+      margin: { l: 48, r: 24, t: 16, b: 40 },
+      showlegend: false,
+      hovermode: "x",
+      yaxis: {
+        showgrid: true,
+        gridcolor: "rgba(208, 215, 220, 0.4)",
+        zeroline: false,
+        tickfont: { size: 11, color: "#636c76" },
+        ticksuffix: "%",
+        automargin: true,
+      },
+    });
+
+    const leyenda = presidentesEnLeyenda(sortedYears, presidentes);
+
+    const headerHtml = `
+      <div class="trm-toggles">
+        <label class="pres-toggle" data-type-toggle>
+          <span class="pres-toggle__label">Ver como barras</span>
+          <input type="checkbox" class="pres-toggle__input type-toggle__input" />
+          <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
+        </label>
+        <label class="pres-toggle" data-pres-toggle data-bound="true" style="display: none;">
+          <span class="pres-toggle__label">Color por presidente</span>
+          <input type="checkbox" class="pres-toggle__input pres-toggle__input-var" />
+          <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
+        </label>
+      </div>
+    `;
+
+    const footerHtml = renderLegend(leyenda, false);
+
+    return {
+      traces,
+      layout,
+      headerHtml,
+      footerHtml,
+      onMount: (target) => {
+        target.dataset.colorsByPresident = JSON.stringify(colorsPorPresidente);
+        target.dataset.colorBase = COLOR_BASE;
+
+        const root = target.closest("[data-chart-root]");
+        if (!root) return;
+
+        const typeInput = root.querySelector<HTMLInputElement>(".type-toggle__input");
+        const presContainer = root.querySelector<HTMLElement>("[data-pres-toggle]");
+        const presInput = root.querySelector<HTMLInputElement>(".pres-toggle__input-var");
+        const legend = root.querySelector<HTMLElement>("[data-pres-legend]");
+
+        if (!typeInput || !presContainer || !presInput) return;
+
+        const updateChart = () => {
+          if (!window.Plotly) return;
+
+          const isBar = typeInput.checked;
+          const isPresColor = presInput.checked;
+
+          if (isBar) {
+            presContainer.style.display = "inline-flex";
+
+            if (isPresColor) {
+              legend?.setAttribute("data-visible", "true");
+              window.Plotly.restyle(target, {
+                type: ["bar"],
+                "marker.color": [colorsPorPresidente],
+                "line.color": ["rgba(0,0,0,0.08)"],
+                "line.width": [0.5],
+              });
+            } else {
+              legend?.setAttribute("data-visible", "false");
+              window.Plotly.restyle(target, {
+                type: ["bar"],
+                "marker.color": [colorsPorPresidente.map(() => COLOR_BASE)],
+                "line.color": ["rgba(0,0,0,0.08)"],
+                "line.width": [0.5],
+              });
+            }
+          } else {
+            presContainer.style.display = "none";
+            legend?.setAttribute("data-visible", "false");
+
+            window.Plotly.restyle(target, {
+              type: ["scatter"],
+              mode: ["lines+markers"],
+              "line.color": [COLOR_BASE],
+              "line.width": [2],
+              "marker.color": [COLOR_BASE],
+              "marker.size": [6],
+            });
+          }
+        };
+
+        typeInput.addEventListener("change", updateChart);
+        presInput.addEventListener("change", updateChart);
+      },
+    };
   },
 };
 

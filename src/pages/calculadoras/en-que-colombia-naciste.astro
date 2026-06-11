@@ -147,7 +147,7 @@ const jsonLd = {
     </section>
   </article>
 
-  <PlotlyLoader />
+  <PlotlyLoader lazy={true} bundle="basic" />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </BaseLayout>
 

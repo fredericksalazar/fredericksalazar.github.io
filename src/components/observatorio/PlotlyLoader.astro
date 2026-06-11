@@ -1,8 +1,16 @@
 ---
-const PLOTLY_SRC = "https://cdn.plot.ly/plotly-2.35.2.min.js";
+interface Props {
+  lazy?: boolean;
+  bundle?: "basic" | "full";
+}
+
+const { lazy = false, bundle = "basic" } = Astro.props;
+const PLOTLY_SRC = bundle === "full"
+  ? "https://cdn.plot.ly/plotly-2.35.2.min.js"
+  : "https://cdn.plot.ly/plotly-basic-2.35.2.min.js";
 ---
 
-<script is:inline define:vars={{ PLOTLY_SRC }}>
+<script is:inline define:vars={{ PLOTLY_SRC, lazy, bundle }}>
   (function () {
     const W = window;
     const EVENT = "plotly:loaded";
@@ -11,22 +19,69 @@ const PLOTLY_SRC = "https://cdn.plot.ly/plotly-2.35.2.min.js";
       W.dispatchEvent(new CustomEvent(EVENT));
     }
 
-    function ensureLoaded() {
-      if (W.Plotly) {
-        dispatch();
-        return;
-      }
-      let script = document.querySelector('script[data-plotly]');
-      if (!script) {
+    W.loadPlotly = function () {
+      return new Promise((resolve) => {
+        if (W.Plotly) {
+          let script = document.querySelector('script[data-plotly]');
+          if (script && (script.dataset.bundle === "full" || script.dataset.bundle === bundle)) {
+            resolve(W.Plotly);
+            return;
+          }
+        }
+
+        let script = document.querySelector('script[data-plotly]');
+        if (script) {
+          if (bundle === "full" && script.dataset.bundle === "basic") {
+            script.remove();
+            delete W.Plotly;
+          } else {
+            resolve(W.Plotly);
+            return;
+          }
+        }
+
         script = document.createElement("script");
         script.src = PLOTLY_SRC;
         script.defer = true;
         script.dataset.plotly = "true";
-        script.addEventListener("load", dispatch, { once: true });
+        script.dataset.bundle = bundle;
+        script.addEventListener("load", () => {
+          dispatch();
+          resolve(W.Plotly);
+        }, { once: true });
         document.head.appendChild(script);
-      } else if (W.Plotly) {
-        dispatch();
+      });
+    };
+
+    function ensureLoaded() {
+      if (lazy) return;
+
+      if (W.Plotly) {
+        let script = document.querySelector('script[data-plotly]');
+        if (script && (script.dataset.bundle === "full" || script.dataset.bundle === bundle)) {
+          dispatch();
+          return;
+        }
       }
+
+      let script = document.querySelector('script[data-plotly]');
+      if (script) {
+        if (bundle === "full" && script.dataset.bundle === "basic") {
+          script.remove();
+          delete W.Plotly;
+        } else {
+          dispatch();
+          return;
+        }
+      }
+
+      script = document.createElement("script");
+      script.src = PLOTLY_SRC;
+      script.defer = true;
+      script.dataset.plotly = "true";
+      script.dataset.bundle = bundle;
+      script.addEventListener("load", dispatch, { once: true });
+      document.head.appendChild(script);
     }
 
     ensureLoaded();
