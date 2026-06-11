@@ -261,6 +261,9 @@ const jsonLd = {
         <span class="calc__share-label">Comparte tu resultado:</span>
         <a id="share-wa" class="calc__share-btn" target="_blank" rel="noopener noreferrer">WhatsApp</a>
         <a id="share-x" class="calc__share-btn" target="_blank" rel="noopener noreferrer">X</a>
+        <a id="share-fb" class="calc__share-btn" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a id="share-ln" class="calc__share-btn" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a id="share-tg" class="calc__share-btn" target="_blank" rel="noopener noreferrer">Telegram</a>
         <button id="share-copy" type="button" class="calc__share-btn">Copiar enlace</button>
       </div>
     </section>
@@ -636,6 +639,12 @@ const jsonLd = {
     if (wa) wa.href = `https://wa.me/?text=${encodeURIComponent(texto)}`;
     const xBtn = $("share-x") as HTMLAnchorElement | null;
     if (xBtn) xBtn.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(texto)}`;
+    const fb = $("share-fb") as HTMLAnchorElement | null;
+    if (fb) fb.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    const ln = $("share-ln") as HTMLAnchorElement | null;
+    if (ln) ln.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+    const tg = $("share-tg") as HTMLAnchorElement | null;
+    if (tg) tg.href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(texto)}`;
     const copy = $("share-copy");
     if (copy) {
       copy.onclick = async () => {
