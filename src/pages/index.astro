@@ -219,8 +219,64 @@ const latestPosts = allPosts
     </div>
   </section>
 
+  <!-- ── Datos y Calculadoras ── -->
+  <section class="section section--interactivos">
+    <div class="section__inner">
+      <div class="section__header">
+        <div class="section__title-group">
+          <span class="section__label">Datos y Herramientas</span>
+          <h2 class="section__title">Economía y Política en Datos</h2>
+        </div>
+      </div>
+
+      <div class="interactivos-grid">
+        <!-- Tarjeta Principal: Calculadoras -->
+        <div class="int-card int-card--featured">
+          <div class="int-card__content">
+            <span class="int-card__tag">Calculadoras Ciudadanas</span>
+            <h3 class="int-card__title">La economía de Colombia, aplicada a tu bolsillo</h3>
+            <p class="int-card__desc">
+              Herramientas interactivas construidas con datos oficiales del DANE y el Banco de la República. Descubre en qué percentil de ingreso estás frente al país, calcula la pérdida de valor de tu sueldo frente a la inflación o mira qué datos definían al país el año en que naciste.
+            </p>
+            <a href={urls.calculadoras()} class="int-card__cta">
+              Probar calculadoras
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Tarjetas Secundarias: Observatorio y Elecciones -->
+        <div class="int-cards-stack">
+          <!-- Observatorio -->
+          <a href={urls.observatorio()} class="int-card int-card--small">
+            <div class="int-card__content">
+              <span class="int-card__tag">Macroeconomía</span>
+              <h3 class="int-card__title">Observatorio de Datos</h3>
+              <p class="int-card__desc">
+                Monitorea la inflación mensual, el PIB real, las exportaciones, importaciones e indicadores de empleo mediante dashboards interactivos.
+              </p>
+              <span class="int-card__link">Explorar indicadores →</span>
+            </div>
+          </a>
+
+          <!-- Elecciones -->
+          <a href={urls.elecciones("pronostico")} class="int-card int-card--small">
+            <div class="int-card__content">
+              <span class="int-card__tag">Simulaciones electorales</span>
+              <h3 class="int-card__title">Elecciones Presidenciales</h3>
+              <p class="int-card__desc">
+                Consulta los resultados electorales históricos de 2022 y simula pronósticos interactivos para las próximas contiendas presidenciales.
+              </p>
+              <span class="int-card__link">Ver análisis electoral →</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── Proyectos ── -->
-  <section class="section">
+  <section class="section section--alt">
     <div class="section__inner">
       <div class="section__header">
         <div class="section__title-group">
@@ -264,7 +320,7 @@ const latestPosts = allPosts
   </section>
 
   <!-- ── Blog ── -->
-  <section class="section section--alt">
+  <section class="section">
     <div class="section__inner">
       <div class="section__header">
         <div class="section__title-group">
@@ -685,6 +741,153 @@ const latestPosts = allPosts
     .projects-grid,
     .blog-grid {
       grid-template-columns: 1fr;
+    }
+  }
+
+  /* ── Sección de Datos e Interactivos (Home) ── */
+  .section--interactivos {
+    background: #f6f8fa;
+    border-bottom: 1px solid var(--color-border);
+    padding: 5rem 2rem;
+  }
+  
+  .interactivos-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+  
+  .int-cards-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .int-card {
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    padding: 2.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  
+  .int-card--featured {
+    background: linear-gradient(135deg, #ffffff 0%, rgba(37, 99, 235, 0.03) 100%);
+    border: 1px solid rgba(37, 99, 235, 0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .int-card--featured::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--color-accent);
+  }
+  
+  .int-card--small {
+    padding: 1.5rem 1.75rem;
+    cursor: pointer;
+  }
+  
+  .int-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-accent);
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.08);
+  }
+  
+  .int-card--featured:hover {
+    box-shadow: 0 12px 28px rgba(37, 99, 235, 0.12);
+    border-color: rgba(37, 99, 235, 0.3);
+  }
+  
+  .int-card__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    height: 100%;
+  }
+  
+  .int-card__tag {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent);
+  }
+  
+  .int-card__title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.3;
+    margin: 0;
+  }
+  
+  .int-card--small .int-card__title {
+    font-size: 1.15rem;
+  }
+  
+  .int-card__desc {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0 0 1rem 0;
+  }
+  
+  .int-card--small .int-card__desc {
+    font-size: 0.88rem;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .int-card__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-accent);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    width: fit-content;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.15s ease;
+    margin-top: auto;
+  }
+  
+  .int-card__cta:hover {
+    background: var(--color-accent-hover);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+  
+  .int-card__link {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin-top: auto;
+    display: inline-block;
+    transition: color 0.2s ease;
+  }
+  
+  .int-card:hover .int-card__link {
+    color: var(--color-accent-hover);
+  }
+
+  @media (max-width: 992px) {
+    .interactivos-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
     }
   }
 </style>

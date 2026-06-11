@@ -122,27 +122,63 @@ const jsonLd = {
     </form>
 
     <section class="calc__resultados" id="resultados" hidden aria-live="polite">
-      <div class="calc__headline">
-        <span class="calc__headline-label">Ganas más que el</span>
-        <span class="calc__headline-valor" id="r-percentil"></span>
-        <span class="calc__headline-label" id="r-percentil-detalle"></span>
+      <div class="calc__header-dashboard">
+        <div class="calc__header-main">
+          <span class="calc__header-badge">Percentil nacional</span>
+          <div class="calc__header-percentil-wrapper">
+            <span class="calc__header-valor" id="r-percentil"></span>
+            <div class="calc__header-text-wrapper">
+              <span class="calc__header-label-title">Ganas más que el resto del país</span>
+              <span class="calc__header-desc" id="r-percentil-detalle"></span>
+            </div>
+          </div>
+        </div>
+        <div class="calc__header-stats">
+          <div class="calc__header-stat-card">
+            <span class="calc__header-stat-value" id="r-smlv"></span>
+            <span class="calc__header-stat-label">salarios mínimos (SMLV)</span>
+          </div>
+          <div class="calc__header-stat-card">
+            <span class="calc__header-stat-value" id="r-mediana"></span>
+            <span class="calc__header-stat-label" id="r-mediana-label"></span>
+          </div>
+        </div>
       </div>
 
       <div class="calc__waffle-card">
         <p class="calc__waffle-title">Comparación de ingresos: si Colombia fuera un grupo de 100 personas</p>
-        <div class="waffle-grid" id="waffle-grid"></div>
-        <div class="waffle-legend">
-          <span class="waffle-legend__item">
-            <span class="waffle-dot waffle-dot--less"></span>
-            Ganan menos que tú
+        <div class="pyramid-container">
+          <div class="pyramid-row" id="pyramid-row-1"></div>
+          <div class="pyramid-row" id="pyramid-row-2"></div>
+          <div class="pyramid-row" id="pyramid-row-3"></div>
+          <div class="pyramid-row" id="pyramid-row-4"></div>
+          <div class="pyramid-row" id="pyramid-row-5"></div>
+          <div class="pyramid-row" id="pyramid-row-6"></div>
+          <div class="pyramid-row" id="pyramid-row-7"></div>
+          <div class="pyramid-row" id="pyramid-row-8"></div>
+          <div class="pyramid-row" id="pyramid-row-9"></div>
+          <div class="pyramid-row" id="pyramid-row-10"></div>
+        </div>
+        <div class="pyramid-legend">
+          <span class="pyramid-legend__item">
+            <span class="pyramid-dot pyramid-dot--pobreza"></span>
+            Pobreza (32%)
           </span>
-          <span class="waffle-legend__item">
-            <span class="waffle-dot waffle-dot--you waffle-dot--pulse"></span>
+          <span class="pyramid-legend__item">
+            <span class="pyramid-dot pyramid-dot--vulnerable"></span>
+            Vulnerable (30%)
+          </span>
+          <span class="pyramid-legend__item">
+            <span class="pyramid-dot pyramid-dot--media"></span>
+            Clase Media (34%)
+          </span>
+          <span class="pyramid-legend__item">
+            <span class="pyramid-dot pyramid-dot--alta"></span>
+            Clase Alta (4%)
+          </span>
+          <span class="pyramid-legend__item" style="margin-left: 0.5rem; border-left: 1px solid var(--color-border); padding-left: 0.75rem;">
+            <span class="pyramid-dot pyramid-dot--you pyramid-dot--pulse" style="--color-base: #172554; --color-pulse: rgba(23, 37, 84, 0.8);"></span>
             Tu posición
-          </span>
-          <span class="waffle-legend__item">
-            <span class="waffle-dot waffle-dot--more"></span>
-            Ganan más que tú
           </span>
         </div>
       </div>
@@ -181,42 +217,32 @@ const jsonLd = {
         </div>
       </div>
 
-      <div class="calc__stats">
-        <div class="calc-stat">
-          <span class="calc-stat__valor" id="r-smlv"></span>
-          <span class="calc-stat__label">salarios mínimos equivale tu ingreso</span>
-        </div>
-        <div class="calc-stat">
-          <span class="calc-stat__valor" id="r-mediana"></span>
-          <span class="calc-stat__label" id="r-mediana-label"></span>
-        </div>
-        <div class="calc-stat calc-stat--cargo" id="r-cargo-card" hidden>
-          <div class="cargo-gauge-wrapper">
-            <span class="cargo-gauge-title">Tu nivel de ingresos en tu ocupación</span>
-            <div class="cargo-gauge-track">
-              <div class="cargo-gauge-tick" style="left: 0%;">
-                <span class="cargo-gauge-tick-label">P25</span>
-                <span class="cargo-gauge-tick-val" id="r-cargo-p25"></span>
-              </div>
-              <div class="cargo-gauge-tick" style="left: 33.3%;">
-                <span class="cargo-gauge-tick-label">Mediana</span>
-                <span class="cargo-gauge-tick-val" id="r-cargo-mediana"></span>
-              </div>
-              <div class="cargo-gauge-tick" style="left: 66.6%;">
-                <span class="cargo-gauge-tick-label">P75</span>
-                <span class="cargo-gauge-tick-val" id="r-cargo-p75"></span>
-              </div>
-              <div class="cargo-gauge-tick" style="left: 100%;">
-                <span class="cargo-gauge-tick-label">P90</span>
-                <span class="cargo-gauge-tick-val" id="r-cargo-p90"></span>
-              </div>
-              <div class="cargo-gauge-indicator" id="r-cargo-indicator">
-                <span class="cargo-gauge-indicator-pin"></span>
-                <span class="cargo-gauge-indicator-label">Tú</span>
-              </div>
+      <div class="clase-card" id="r-cargo-card" hidden>
+        <div class="cargo-gauge-wrapper">
+          <span class="cargo-gauge-title">Tu nivel de ingresos en tu ocupación</span>
+          <div class="cargo-gauge-track">
+            <div class="cargo-gauge-tick" style="left: 0%;">
+              <span class="cargo-gauge-tick-label">P25</span>
+              <span class="cargo-gauge-tick-val" id="r-cargo-p25"></span>
             </div>
-            <p class="cargo-gauge-desc" id="r-cargo-label"></p>
+            <div class="cargo-gauge-tick" style="left: 33.3%;">
+              <span class="cargo-gauge-tick-label">Mediana</span>
+              <span class="cargo-gauge-tick-val" id="r-cargo-mediana"></span>
+            </div>
+            <div class="cargo-gauge-tick" style="left: 66.6%;">
+              <span class="cargo-gauge-tick-label">P75</span>
+              <span class="cargo-gauge-tick-val" id="r-cargo-p75"></span>
+            </div>
+            <div class="cargo-gauge-tick" style="left: 100%;">
+              <span class="cargo-gauge-tick-label">P90</span>
+              <span class="cargo-gauge-tick-val" id="r-cargo-p90"></span>
+            </div>
+            <div class="cargo-gauge-indicator" id="r-cargo-indicator">
+              <span class="cargo-gauge-indicator-pin"></span>
+              <span class="cargo-gauge-indicator-label">Tú</span>
+            </div>
           </div>
+          <p class="cargo-gauge-desc" id="r-cargo-label"></p>
         </div>
       </div>
 
@@ -311,24 +337,60 @@ const jsonLd = {
         : `de los trabajadores ocupados de Colombia (GEIH ${ing.smlv_referencia.anio})`;
     }
 
-    const waffleGrid = $("waffle-grid");
-    if (waffleGrid) {
-      waffleGrid.innerHTML = "";
+    const rows = [
+      $("pyramid-row-1"),
+      $("pyramid-row-2"),
+      $("pyramid-row-3"),
+      $("pyramid-row-4"),
+      $("pyramid-row-5"),
+      $("pyramid-row-6"),
+      $("pyramid-row-7"),
+      $("pyramid-row-8"),
+      $("pyramid-row-9"),
+      $("pyramid-row-10")
+    ];
+
+    if (rows.every(r => r !== null)) {
+      rows.forEach(r => {
+        if (r) r.innerHTML = "";
+      });
+
       const roundedPct = top ? 100 : Math.round(pct);
-      
-      for (let i = 1; i <= 100; i++) {
-        const dot = document.createElement("span");
-        dot.className = "waffle-dot";
-        
-        if (i === roundedPct) {
-          dot.classList.add("waffle-dot--you", "waffle-dot--pulse");
-          dot.title = `Tú estás aquí (percentil ${roundedPct})`;
-        } else if (i < roundedPct) {
-          dot.classList.add("waffle-dot--less");
-        } else {
-          dot.classList.add("waffle-dot--more");
+      const rowSizes = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
+      let currentIndex = 1;
+
+      for (let r = 9; r >= 0; r--) {
+        const rowEl = rows[r];
+        if (!rowEl) continue;
+
+        const size = rowSizes[r];
+        for (let s = 0; s < size; s++) {
+          const i = currentIndex++;
+          if (i > 100) break;
+
+          const dot = document.createElement("span");
+          dot.className = "pyramid-dot";
+
+          let groupClass = "";
+          if (i <= 32) {
+            groupClass = "pyramid-dot--pobreza";
+          } else if (i <= 62) {
+            groupClass = "pyramid-dot--vulnerable";
+          } else if (i <= 96) {
+            groupClass = "pyramid-dot--media";
+          } else {
+            groupClass = "pyramid-dot--alta";
+          }
+
+          dot.classList.add(groupClass);
+
+          if (i === roundedPct) {
+            dot.classList.add("pyramid-dot--you", "pyramid-dot--pulse");
+            dot.title = `Tú estás aquí (percentil ${roundedPct})`;
+          }
+
+          rowEl.appendChild(dot);
         }
-        waffleGrid.appendChild(dot);
       }
     }
 
@@ -691,20 +753,7 @@ const jsonLd = {
   }
   .calc__submit:hover { background: #1d4ed8; transform: translateY(-1px); }
 
-  .calc__headline {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    margin-bottom: 1.5rem;
-  }
-  .calc__headline-label { font-size: 0.95rem; color: var(--color-text-secondary, #475569); }
-  .calc__headline-valor {
-    font-size: clamp(2.2rem, 5vw, 3.4rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: var(--color-accent, #2563eb);
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-  }
+
 
   .clase-card {
     border: 1px solid var(--color-border, #d0d7de);
@@ -727,28 +776,7 @@ const jsonLd = {
   .clase-card__clase { font-size: 1.7rem; font-weight: 800; }
   .clase-card__detalle { font-size: 0.85rem; color: var(--color-text-secondary, #475569); line-height: 1.5; }
 
-  .calc__stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.75rem;
-  }
-  .calc-stat {
-    padding: 1.1rem 1.25rem;
-    background: var(--color-sidebar, #f6f8fa);
-    border: 1px solid var(--color-border, #d0d7de);
-    border-radius: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-  .calc-stat__valor {
-    font-size: 1.5rem;
-    font-weight: 700;
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-    color: var(--color-text-primary, #1f2328);
-  }
-  .calc-stat__label { font-size: 0.78rem; line-height: 1.45; color: var(--color-text-muted, #636c76); }
+
 
   .calc__chart-card {
     padding: 1.25rem;

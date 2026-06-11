@@ -27,76 +27,123 @@
   text-align: center;
   margin: 0;
 }
-.waffle-grid {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
+
+/* ── COMPONENTE: PIRÁMIDE DE INGRESOS (100 PERSONAS) ── */
+.pyramid-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 8px;
-  max-width: 280px;
-  margin: 0.5rem auto;
+  width: 100%;
+  margin: 1.5rem auto;
 }
-.waffle-dot {
+
+.pyramid-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Puntos de la pirámide */
+.pyramid-dot {
   width: 16px;
   height: 16px;
   border-radius: 50%;
   display: inline-block;
-  transition: all 0.2s ease;
-  border: 1px solid var(--color-border, #d0d7de);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--color-base);
 }
-.waffle-dot:hover {
-  transform: scale(1.3);
+
+.pyramid-dot:hover {
+  transform: scale(1.4);
 }
-.waffle-dot--less {
-  background: rgba(37, 99, 235, 0.2);
-  border-color: rgba(37, 99, 235, 0.4);
+
+@media (max-width: 520px) {
+  .pyramid-dot {
+    width: 12px;
+    height: 12px;
+  }
+  .pyramid-row {
+    gap: 5px;
+  }
+  .pyramid-container {
+    gap: 5px;
+  }
 }
-.waffle-dot--more {
-  background: #f1f5f9;
-  border-color: rgba(208, 215, 220, 0.6);
+
+/* Colores de base por grupo (Normales y versión muy oscura) */
+.pyramid-dot--alta {
+  --color-base: #3b82f6;
+  --color-dark: #172554;
 }
-.waffle-dot--you {
-  background: #ea580c;
-  border-color: #c2410c;
-  box-shadow: 0 0 10px rgba(234, 88, 12, 0.6);
+.pyramid-dot--media {
+  --color-base: #22c55e;
+  --color-dark: #052e16;
 }
-@keyframes waffle-pulse {
+.pyramid-dot--vulnerable {
+  --color-base: #f97316;
+  --color-dark: #431407;
+}
+.pyramid-dot--pobreza {
+  --color-base: #ef4444;
+  --color-dark: #450a0a;
+}
+
+.pyramid-dot--you {
+  background: var(--color-dark);
+  border-color: #1f2328;
+  box-shadow: 0 0 10px var(--color-dark);
+  transform: scale(1.25);
+  z-index: 5;
+}
+
+@keyframes pyramid-pulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.7);
-    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--color-pulse, rgba(0, 0, 0, 0.45));
+    transform: scale(1.25);
   }
   70% {
-    box-shadow: 0 0 0 8px rgba(234, 88, 12, 0);
-    transform: scale(1.15);
+    box-shadow: 0 0 0 6px rgba(0, 0, 0, 0);
+    transform: scale(1.35);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(234, 88, 12, 0);
-    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    transform: scale(1.25);
   }
 }
-.waffle-dot--pulse {
-  animation: waffle-pulse 2s infinite;
+
+.pyramid-dot--pulse {
+  animation: pyramid-pulse 2s infinite;
   position: relative;
-  z-index: 2;
 }
-.waffle-legend {
+
+.pyramid-dot--alta.pyramid-dot--pulse { --color-pulse: rgba(23, 37, 84, 0.8); }
+.pyramid-dot--media.pyramid-dot--pulse { --color-pulse: rgba(5, 46, 22, 0.8); }
+.pyramid-dot--vulnerable.pyramid-dot--pulse { --color-pulse: rgba(67, 20, 7, 0.8); }
+.pyramid-dot--pobreza.pyramid-dot--pulse { --color-pulse: rgba(69, 10, 10, 0.8); }
+
+/* Leyenda de la pirámide */
+.pyramid-legend {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1.25rem;
+  gap: 1rem;
   margin-top: 0.5rem;
 }
-.waffle-legend__item {
+.pyramid-legend__item {
   display: flex;
   align-items: center;
   gap: 0.4rem;
   font-size: 0.78rem;
   color: var(--color-text-secondary, #475569);
 }
-.waffle-legend__item .waffle-dot {
-  width: 12px;
-  height: 12px;
+.pyramid-legend__item .pyramid-dot {
+  width: 10px;
+  height: 10px;
   cursor: default;
 }
-.waffle-legend__item .waffle-dot:hover {
+.pyramid-legend__item .pyramid-dot:hover {
   transform: none;
 }
 
@@ -294,4 +341,126 @@
   line-height: 1.55;
   color: var(--color-text-secondary, #475569);
   margin: 1rem 0 0;
+}
+
+/* ── COMPONENTE: DASHBOARD DE CABECERA (RESULTADOS) ── */
+.calc__header-dashboard {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .calc__header-dashboard {
+    grid-template-columns: 1fr;
+  }
+}
+
+.calc__header-main {
+  background: var(--color-sidebar, #f6f8fa);
+  border: 1px solid var(--color-border, #d0d7de);
+  border-radius: 18px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.calc__header-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent, #1d4ed8);
+  background: rgba(29, 78, 216, 0.08);
+  padding: 0.25rem 0.6rem;
+  border-radius: 100px;
+  width: fit-content;
+}
+
+.calc__header-percentil-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+@media (max-width: 480px) {
+  .calc__header-percentil-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+.calc__header-valor {
+  font-size: clamp(2.5rem, 6vw, 3.8rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--color-accent, #1d4ed8);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  line-height: 1;
+}
+
+.calc__header-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.calc__header-label-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text-primary, #1f2328);
+}
+
+.calc__header-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary, #475569);
+  line-height: 1.4;
+}
+
+.calc__header-stats {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .calc__header-stats {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+}
+@media (max-width: 480px) {
+  .calc__header-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+.calc__header-stat-card {
+  background: var(--color-sidebar, #f6f8fa);
+  border: 1px solid var(--color-border, #d0d7de);
+  border-radius: 18px;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.calc__header-stat-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  color: var(--color-text-primary, #1f2328);
+  line-height: 1.1;
+}
+
+.calc__header-stat-label {
+  font-size: 0.78rem;
+  color: var(--color-text-muted, #636c76);
+  line-height: 1.35;
 }

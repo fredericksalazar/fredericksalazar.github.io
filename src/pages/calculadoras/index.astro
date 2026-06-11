@@ -31,7 +31,6 @@ const calculadoras = [
     descripcion:
       "Tu salario frente a todos los trabajadores del país: en qué percentil estás, a qué clase social pertenece tu hogar según el DANE y cuánto gana tu ocupación.",
     dato: `Mediana nacional: $${fmtCOP.format(medianaIngreso)}`,
-    emoji: "🏆",
   },
   {
     slug: "sueldo-vs-inflacion",
@@ -39,7 +38,6 @@ const calculadoras = [
     descripcion:
       "Ingresa un monto y un año: la calculadora lo ajusta con la inflación oficial y te dice cuánto poder adquisitivo ganaste o perdiste, y a cuántos salarios mínimos equivale.",
     dato: `Inflación anual actual: ${inflacionActual ?? "—"}%`,
-    emoji: "📉",
   },
   {
     slug: "en-que-colombia-naciste",
@@ -47,7 +45,6 @@ const calculadoras = [
     descripcion:
       "Tu año de nacimiento, convertido en datos: quién gobernaba, cuántos éramos, cuánto valía el salario mínimo y cuánto ha cambiado el país desde entonces hasta hoy.",
     dato: `Cobertura: 1960 — hoy`,
-    emoji: "🇨🇴",
   },
 ];
 
@@ -90,7 +87,6 @@ const jsonLd = {
     {
       calculadoras.map((c) => (
         <a class="calc-card" href={urls.calculadora(c.slug)}>
-          <span class="calc-card__emoji" aria-hidden="true">{c.emoji}</span>
           <h2 class="calc-card__titulo">{c.nombre}</h2>
           <p class="calc-card__desc">{c.descripcion}</p>
           <span class="calc-card__dato">{c.dato}</span>
@@ -147,7 +143,6 @@ const jsonLd = {
     border-color: var(--color-accent, #2563eb);
     box-shadow: 0 10px 28px rgba(37, 99, 235, 0.12);
   }
-  .calc-card__emoji { font-size: 1.8rem; }
   .calc-card__titulo {
     font-size: 1.15rem;
     font-weight: 700;
