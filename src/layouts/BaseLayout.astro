@@ -9,6 +9,7 @@ import { ClientRouter } from 'astro:transitions';
 import SEOHead from '../components/SEOHead.astro';
 import Sidebar from '../components/Sidebar.astro';
 import Footer from '../components/Footer.astro';
+import InformePopup from '../components/observatorio/InformePopup.astro';
 import type { Crumb } from '../lib/seo';
 import '../styles/global.css';
 
@@ -38,6 +39,10 @@ const {
   keywords, publishedTime, modifiedTime, articleAuthor, articleSection, articleTags,
   breadcrumbs, website = false,
 } = Astro.props;
+
+// El popup del informe aparece en todo el sitio salvo en las propias páginas
+// de informe (donde el usuario ya está en destino).
+const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
 ---
 
 <!doctype html>
@@ -115,8 +120,10 @@ const {
 
     <!-- ── Skip to content (accesibilidad) ────────────────────────── -->
     <a href="#main-content" class="skip-link">Saltar al contenido</a>
-    
+
     <Footer />
+
+    {!isInformePage && <InformePopup />}
   </body>
 </html>
 

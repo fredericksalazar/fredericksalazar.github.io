@@ -1,16 +1,11 @@
 ---
 import { urls } from '../../lib/urls';
-import InformePopup from './InformePopup.astro';
 
 interface Props {
   active: string;
 }
 
 const { active } = Astro.props;
-
-// El popup del informe aparece en todas las páginas del observatorio salvo
-// en las propias páginas de informe (donde el usuario ya está en destino).
-const mostrarPopupInforme = active !== 'informes';
 
 interface DashboardItem {
   slug: string;
@@ -57,8 +52,6 @@ const dashboards: DashboardItem[] = [
     </ul>
   </div>
 </nav>
-
-{mostrarPopupInforme && <InformePopup />}
 
 <style>
   .dashboard-nav {

@@ -1,11 +1,11 @@
 ---
 /**
  * InformePopup.astro
- * Popup (modal) que invita a leer/descargar el informe vigente. Se inyecta una
- * sola vez desde DashboardNav, así aparece en todas las páginas del observatorio
- * (excepto las propias páginas de informe). Frecuencia capada vía localStorage
- * (una vez cada 7 días) y aparece con retardo + descartable, para minimizar el
- * impacto SEO de interstitials intrusivos en móvil.
+ * Popup (modal) que invita a leer/descargar el informe vigente. Se inyecta desde
+ * BaseLayout, así aparece en todo el sitio (excepto en las propias páginas de
+ * informe, que ya son el destino). Aparece una vez por visita/sesión
+ * (sessionStorage), con retardo y descartable, para minimizar el impacto SEO de
+ * interstitials intrusivos en móvil.
  */
 import { getInforme } from "../../lib/observatorio/informes";
 import { urls } from "../../lib/urls";
@@ -160,21 +160,18 @@ const vigente = informe?.versiones.find((v) => v.vigente) ?? informe?.versiones[
 </style>
 
 <script>
-  const STORAGE_KEY = "informe_popup_seen_v1";
-  const TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 días
+  // Una vez por visita/sesión: sessionStorage se limpia al cerrar la pestaña,
+  // así el popup reaparece "cada vez que se visita el sitio" pero no se repite
+  // en cada navegación dentro de la misma visita.
+  const STORAGE_KEY = "informe_popup_seen_session";
   const DELAY_MS = 3000;
 
-  function recientementeVisto(): boolean {
-    try {
-      const ts = Number(localStorage.getItem(STORAGE_KEY));
-      return Number.isFinite(ts) && ts > 0 && Date.now() - ts < TTL_MS;
-    } catch {
-      return false;
-    }
+  function yaVisto(): boolean {
+    try { return sessionStorage.getItem(STORAGE_KEY) === "1"; } catch { return false; }
   }
 
   function marcarVisto() {
-    try { localStorage.setItem(STORAGE_KEY, String(Date.now())); } catch {}
+    try { sessionStorage.setItem(STORAGE_KEY, "1"); } catch {}
   }
 
   function initInformePopup() {
@@ -186,7 +183,7 @@ const vigente = informe?.versiones.find((v) => v.vigente) ?? informe?.versiones[
     let lastFocus: HTMLElement | null = null;
 
     const abrir = () => {
-      if (recientementeVisto()) return;
+      if (yaVisto()) return;
       lastFocus = document.activeElement as HTMLElement;
       root.hidden = false;
       // forzar reflow para que la transición aplique
@@ -215,7 +212,7 @@ const vigente = informe?.versiones.find((v) => v.vigente) ?? informe?.versiones[
       cerrar();
     });
 
-    if (!recientementeVisto()) {
+    if (!yaVisto()) {
       timer = window.setTimeout(abrir, DELAY_MS);
     }
 
