@@ -1,0 +1,230 @@
+---
+/**
+ * InformePopup.astro
+ * Popup (modal) que invita a leer/descargar el informe vigente. Se inyecta una
+ * sola vez desde DashboardNav, así aparece en todas las páginas del observatorio
+ * (excepto las propias páginas de informe). Frecuencia capada vía localStorage
+ * (una vez cada 7 días) y aparece con retardo + descartable, para minimizar el
+ * impacto SEO de interstitials intrusivos en móvil.
+ */
+import { getInforme } from "../../lib/observatorio/informes";
+import { urls } from "../../lib/urls";
+
+const informe = getInforme("historia-de-colombia");
+const vigente = informe?.versiones.find((v) => v.vigente) ?? informe?.versiones[0];
+---
+
+{informe && vigente && (
+  <div class="informe-pop" data-informe-popup hidden>
+    <div class="informe-pop__backdrop" data-informe-pop-close></div>
+    <div class="informe-pop__dialog" role="dialog" aria-modal="true" aria-labelledby="informe-pop-title">
+      <button type="button" class="informe-pop__x" data-informe-pop-close aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      {informe.portada && (
+        <img class="informe-pop__cover" src={informe.portada} alt={`Portada del informe ${informe.titulo}`} width="1275" height="1650" loading="lazy" decoding="async" />
+      )}
+      <span class="informe-pop__eyebrow">Informe gratuito</span>
+      <h2 class="informe-pop__title" id="informe-pop-title">{informe.titulo}</h2>
+      <p class="informe-pop__desc">{informe.resumen}</p>
+      <span class="informe-pop__meta">PDF · {vigente.paginas} páginas · {vigente.tamanoMB} MB · {informe.cobertura}</span>
+      <a
+        class="informe-pop__cta"
+        href={urls.observatorioInforme(informe.slug)}
+        data-ga-event="click_informe_cta"
+        data-ga-informe={informe.slug}
+        data-ga-ubicacion="popup_observatorio"
+        data-astro-reload
+      >
+        Leer y descargar el informe
+      </a>
+      <button type="button" class="informe-pop__later" data-informe-pop-close>Quizás luego</button>
+    </div>
+  </div>
+)}
+
+<style>
+  .informe-pop {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+  }
+  .informe-pop[data-visible="true"] {
+    opacity: 1;
+    visibility: visible;
+  }
+  .informe-pop__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(2px);
+  }
+  .informe-pop__dialog {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border-radius: 18px;
+    padding: 1.75rem 1.75rem 1.5rem;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+    text-align: center;
+    transform: translateY(12px) scale(0.98);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .informe-pop[data-visible="true"] .informe-pop__dialog {
+    transform: translateY(0) scale(1);
+  }
+  .informe-pop__x {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: inline-flex;
+    padding: 0.35rem;
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted, #636c76);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .informe-pop__x:hover { background: var(--color-hover, #eaeef2); color: var(--color-text-primary, #1f2328); }
+  .informe-pop__cover {
+    width: 110px;
+    height: auto;
+    border-radius: 10px;
+    border: 1px solid var(--color-border, #d0d7de);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.15);
+    margin: 0 auto 1rem;
+  }
+  .informe-pop__eyebrow {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent, #2563eb);
+  }
+  .informe-pop__title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary, #1f2328);
+    margin: 0.35rem 0 0.5rem;
+  }
+  .informe-pop__desc {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--color-text-secondary, #424a53);
+    margin: 0 0 0.75rem;
+  }
+  .informe-pop__meta {
+    display: block;
+    font-size: 0.76rem;
+    color: var(--color-text-muted, #636c76);
+    font-weight: 500;
+    margin-bottom: 1.1rem;
+  }
+  .informe-pop__cta {
+    display: block;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: var(--color-accent, #2563eb);
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+  .informe-pop__cta:hover { background: var(--color-accent-hover, #1d4ed8); color: #fff; }
+  .informe-pop__later {
+    margin-top: 0.65rem;
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted, #636c76);
+    font-size: 0.82rem;
+    cursor: pointer;
+    padding: 0.35rem;
+  }
+  .informe-pop__later:hover { color: var(--color-text-primary, #1f2328); text-decoration: underline; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .informe-pop, .informe-pop__dialog { transition: none; }
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = "informe_popup_seen_v1";
+  const TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 días
+  const DELAY_MS = 3000;
+
+  function recientementeVisto(): boolean {
+    try {
+      const ts = Number(localStorage.getItem(STORAGE_KEY));
+      return Number.isFinite(ts) && ts > 0 && Date.now() - ts < TTL_MS;
+    } catch {
+      return false;
+    }
+  }
+
+  function marcarVisto() {
+    try { localStorage.setItem(STORAGE_KEY, String(Date.now())); } catch {}
+  }
+
+  function initInformePopup() {
+    const root = document.querySelector<HTMLElement>("[data-informe-popup]");
+    if (!root || root.dataset.bound === "true") return;
+    root.dataset.bound = "true";
+
+    let timer: number | undefined;
+    let lastFocus: HTMLElement | null = null;
+
+    const abrir = () => {
+      if (recientementeVisto()) return;
+      lastFocus = document.activeElement as HTMLElement;
+      root.hidden = false;
+      // forzar reflow para que la transición aplique
+      void root.offsetWidth;
+      root.setAttribute("data-visible", "true");
+      marcarVisto();
+      root.querySelector<HTMLElement>(".informe-pop__x")?.focus();
+      document.addEventListener("keydown", onKey);
+    };
+
+    const cerrar = () => {
+      root.removeAttribute("data-visible");
+      document.removeEventListener("keydown", onKey);
+      window.setTimeout(() => { root.hidden = true; }, 260);
+      lastFocus?.focus?.();
+    };
+
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") cerrar(); };
+
+    root.querySelectorAll<HTMLElement>("[data-informe-pop-close]").forEach((el) =>
+      el.addEventListener("click", cerrar),
+    );
+    // Al hacer clic en el CTA navegamos: lo damos por "visto" y cerramos.
+    root.querySelector<HTMLElement>(".informe-pop__cta")?.addEventListener("click", () => {
+      marcarVisto();
+      cerrar();
+    });
+
+    if (!recientementeVisto()) {
+      timer = window.setTimeout(abrir, DELAY_MS);
+    }
+
+    // Si el usuario navega antes de que dispare, limpiamos el timer.
+    document.addEventListener("astro:before-swap", () => {
+      if (timer) window.clearTimeout(timer);
+    }, { once: true });
+  }
+
+  initInformePopup();
+  document.addEventListener("astro:page-load", initInformePopup);
+</script>

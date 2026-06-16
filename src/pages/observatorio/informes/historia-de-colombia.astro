@@ -120,7 +120,8 @@ const jsonLd = {
                     {v.tamanoMB && <span>PDF · {v.tamanoMB} MB</span>}
                   </div>
                 </div>
-                <a class="version-row__download" href={urls.informePdf(v.archivo)} download>
+                <a class="version-row__download" href={urls.informePdf(v.archivo)} download
+                  data-ga-event="descarga_informe" data-ga-informe={informe.slug} data-ga-archivo={v.archivo} data-ga-version={v.version} data-ga-ubicacion="lista_versiones">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                   Descargar PDF
                 </a>
@@ -141,7 +142,8 @@ const jsonLd = {
             {vigente.paginas && (<><dt>Páginas</dt><dd>{vigente.paginas}</dd></>)}
             {vigente.tamanoMB && (<><dt>Tamaño</dt><dd>{vigente.tamanoMB} MB · PDF</dd></>)}
           </dl>
-          <a class="hdc-download-card__cta" href={urls.informePdf(vigente.archivo)} download>
+          <a class="hdc-download-card__cta" href={urls.informePdf(vigente.archivo)} download
+            data-ga-event="descarga_informe" data-ga-informe={informe.slug} data-ga-archivo={vigente.archivo} data-ga-version={vigente.version} data-ga-ubicacion="card_lateral">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Descargar informe
           </a>

@@ -124,6 +124,5 @@ export const sectionCrumb = {
   blog: { name: 'Blog', url: absUrls.blog() },
   proyectos: { name: 'Proyectos', url: absUrls.proyectos() },
   calculadoras: { name: 'Calculadoras', url: absUrls.calculadoras() },
-  salarios: { name: 'Salarios en Colombia', url: absUrls.salarios() },
   elecciones: { name: 'Elecciones Presidenciales', url: absUrls.elecciones('pronostico') },
 } as const satisfies Record<string, Crumb>;

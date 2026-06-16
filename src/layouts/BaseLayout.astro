@@ -79,6 +79,22 @@ const {
           page_title: document.title,
         });
       });
+
+      // Event-delegation para medir descargas e interacciones con CTAs.
+      // Cualquier elemento con data-ga-event dispara ese evento GA4; los demás
+      // atributos data-ga-* se mandan como parámetros. El listener se registra
+      // una sola vez (el document persiste entre navegaciones con View Transitions).
+      document.addEventListener('click', (e) => {
+        const el = e.target.closest && e.target.closest('[data-ga-event]');
+        if (!el) return;
+        const params = {};
+        for (const attr of el.attributes) {
+          if (attr.name.startsWith('data-ga-') && attr.name !== 'data-ga-event') {
+            params[attr.name.slice(8).replace(/-/g, '_')] = attr.value;
+          }
+        }
+        gtag('event', el.getAttribute('data-ga-event'), params);
+      });
     </script>
     <!-- ── View Transitions: navegación fluida con MPA estático ── -->
     <ClientRouter />

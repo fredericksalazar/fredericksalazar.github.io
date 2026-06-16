@@ -8,6 +8,10 @@ import IconDataEngineering from "../components/icons/IconDataEngineering.astro";
 import IconAI from "../components/icons/IconAI.astro";
 import IconCloud from "../components/icons/IconCloud.astro";
 import { urls } from "../lib/urls";
+import { getInforme } from "../lib/observatorio/informes";
+
+const informe = getInforme("historia-de-colombia");
+const informeVigente = informe?.versiones.find((v) => v.vigente) ?? informe?.versiones[0];
 
 const title = "Senior Data Engineer & Arquitecto de Datos";
 const description =
@@ -272,6 +276,30 @@ const latestPosts = allPosts
           </a>
         </div>
       </div>
+
+      {informe && informeVigente && (
+        <a
+          href={urls.observatorioInforme(informe.slug)}
+          class="informe-cta"
+          data-ga-event="click_informe_cta"
+          data-ga-informe={informe.slug}
+          data-ga-ubicacion="home"
+        >
+          {informe.portada && (
+            <img class="informe-cta__cover" src={informe.portada} alt={`Portada del informe ${informe.titulo}`} width="1275" height="1650" loading="lazy" decoding="async" />
+          )}
+          <div class="informe-cta__body">
+            <span class="informe-cta__eyebrow">Informe descargable · Gratis</span>
+            <h3 class="informe-cta__title">{informe.titulo}</h3>
+            <p class="informe-cta__desc">{informe.resumen}</p>
+            <span class="informe-cta__meta">PDF · {informeVigente.paginas} páginas · {informeVigente.tamanoMB} MB · {informe.cobertura}</span>
+          </div>
+          <span class="informe-cta__action">
+            Leer y descargar
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </span>
+        </a>
+      )}
     </div>
   </section>
 
@@ -888,6 +916,93 @@ const latestPosts = allPosts
     .interactivos-grid {
       grid-template-columns: 1fr;
       gap: 1.5rem;
+    }
+  }
+
+  /* ── CTA del informe descargable ── */
+  .informe-cta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .informe-cta:hover {
+    border-color: rgba(37, 99, 235, 0.35);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    transform: translateY(-2px);
+  }
+  .informe-cta__cover {
+    width: 88px;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+  }
+  .informe-cta__body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .informe-cta__eyebrow {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent);
+  }
+  .informe-cta__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .informe-cta__desc {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .informe-cta__meta {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+  .informe-cta__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-shrink: 0;
+    padding: 0.7rem 1.2rem;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: background 0.2s ease;
+  }
+  .informe-cta:hover .informe-cta__action {
+    background: var(--color-accent-hover);
+  }
+  @media (max-width: 768px) {
+    .informe-cta {
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+    .informe-cta__action {
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>

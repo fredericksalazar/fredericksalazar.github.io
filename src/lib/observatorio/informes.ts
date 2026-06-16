@@ -52,11 +52,11 @@ export interface Informe {
 export const INFORMES: Informe[] = [
   {
     slug: "historia-de-colombia",
-    titulo: "La Historia de Colombia en Datos",
+    titulo: "Colombia en Datos",
     resumen:
       "Una mirada a la evolución de Colombia desde 1960 hasta 2024 en sus principales dimensiones económicas y sociales.",
     descripcion:
-      "La Historia de Colombia en Datos consolida y analiza el comportamiento histórico de los principales indicadores macroeconómicos y demográficos del país. A partir del procesamiento de fuentes públicas oficiales —Banco Mundial, DANE y Banco de la República— el informe recorre la evolución demográfica, el PIB, el mercado laboral, el costo de vida, el comercio exterior y la composición de exportaciones e importaciones, ofreciendo una lectura clara y accesible de cómo ha cambiado Colombia en más de seis décadas.",
+      "«Colombia en Datos» consolida y analiza el comportamiento histórico de los principales indicadores macroeconómicos y demográficos del país. A partir del procesamiento de fuentes públicas oficiales —Banco Mundial, DANE y Banco de la República— el informe recorre la evolución demográfica, el PIB, el mercado laboral, el costo de vida, el comercio exterior y la composición de exportaciones e importaciones, ofreciendo una lectura clara y accesible de cómo ha cambiado Colombia en más de seis décadas.",
     objetivo:
       "Democratizar y alfabetizar con datos históricos para que cualquier persona pueda comprender cómo evoluciona el país en términos económicos, sociales y demográficos. Al presentar la información de forma visual y ordenada, el informe busca fomentar una cultura de toma de decisiones basada en evidencia y fortalecer el entendimiento colectivo de la realidad nacional.",
     cobertura: "1960 – 2024",
@@ -69,8 +69,8 @@ export const INFORMES: Informe[] = [
         archivo: "historia-de-colombia-2026-06.pdf",
         notas:
           "Edición inicial. Seis secciones: evolución demográfica, PIB, mercado laboral, costo de vida (inflación y tasas), comercio exterior y composición de exportaciones e importaciones.",
-        paginas: 9,
-        tamanoMB: 3.6,
+        paginas: 12,
+        tamanoMB: 4.1,
         vigente: true,
       },
     ],
