@@ -2,7 +2,8 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
 import DashboardNav from "../../components/observatorio/DashboardNav.astro";
-import { urls } from "../../lib/urls";
+import { urls, absUrls } from "../../lib/urls";
+import { trail, sectionCrumb } from "../../lib/seo";
 
 const capacidades = [
   {
@@ -108,6 +109,7 @@ const metodologia = [
   title="Acerca del Observatorio de Datos de Colombia"
   description="Quiénes somos, misión, principios y metodología del Observatorio de Datos de Colombia: una infraestructura abierta para entender el país con datos."
   fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.observatorio, { name: "Acerca", url: absUrls.observatorioSub("acerca") })}
 >
   <Hero
     badge={{ text: "Proyecto independiente · Colombia" }}

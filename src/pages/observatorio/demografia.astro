@@ -12,6 +12,7 @@ import DashboardFooter from "../../components/observatorio/DashboardFooter.astro
 import { getDemografia } from "../../lib/observatorio/data";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
 import { absUrls, SITE_URL } from "../../lib/urls";
+import { trail, sectionCrumb } from "../../lib/seo";
 
 const dem = getDemografia();
 const { indicadores, metadata } = dem;
@@ -76,6 +77,7 @@ const jsonLd = {
   description="Población total, esperanza de vida al nacer (hombres y mujeres) y coeficiente de Gini de Colombia. Datos del Banco Mundial desde 1960, explicados de forma sencilla."
   image="/images/observatorio.png"
   fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.observatorio, { name: "Demografía", url: absUrls.observatorioSub("demografia") })}
 >
   <Hero
     badge={{ text: "Población y Sociedad · Colombia" }}

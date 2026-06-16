@@ -11,6 +11,7 @@ import Hero from "../../components/Hero.astro";
 import MapaColombia from "../../components/observatorio/MapaColombia.astro";
 import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
 import { urls, absUrls } from "../../lib/urls";
+import { trail, sectionCrumb } from "../../lib/seo";
 import { getIngresos, getSalariosCargos } from "../../lib/observatorio/data";
 
 const ing = getIngresos();
@@ -72,7 +73,8 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={title} description={description} image="/images/observatorio.png" fullWidth={true}>
+<BaseLayout title={title} description={description} image="/images/observatorio.png" fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.calculadoras, { name: "¿Ganas bien en Colombia?", url: absUrls.calculadora("cuanto-ganas") })}>
   <Hero
     badge={{ text: "Calculadora · GEIH del DANE" }}
     title="¿Ganas bien? Compárate con Colombia"

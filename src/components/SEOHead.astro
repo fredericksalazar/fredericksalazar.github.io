@@ -5,6 +5,7 @@
  * Incluye: meta estándar, Open Graph, Twitter Cards y JSON-LD (Person Schema).
  */
 import { SITE_URL, urls } from '../lib/urls';
+import { personSchema, webSiteSchema, breadcrumbList, type Crumb } from '../lib/seo';
 
 interface Props {
   title: string;
@@ -25,6 +26,10 @@ interface Props {
   articleSection?: string;
   /** Para type="article" — tags del artículo. */
   articleTags?: string[];
+  /** Ruta de migas (absolutas) → emite BreadcrumbList JSON-LD. */
+  breadcrumbs?: Crumb[];
+  /** Emite WebSite JSON-LD (solo la home). */
+  website?: boolean;
 }
 
 const {
@@ -40,6 +45,8 @@ const {
   articleAuthor = 'Frederick Adolfo Salazar Sánchez',
   articleSection,
   articleTags = [],
+  breadcrumbs,
+  website = false,
 } = Astro.props;
 
 const DEFAULT_KEYWORDS = 'data engineer colombia, arquitecto de datos, big data latam, apache spark, databricks, azure data, python data engineering, frederick salazar, machine learning colombia, ETL pipelines, data warehouse';
@@ -60,61 +67,6 @@ const FULL_TITLE  = title.length + TITLE_SUFFIX.length <= 60
   : title;
 const CANONICAL   = new URL(Astro.url.pathname, SITE_URL).href;
 const IMAGE_URL   = new URL(image, SITE_URL).href;
-
-// ─── JSON-LD: Person Schema ───────────────────────────────────────────────────
-const personSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Ing. Frederick Adolfo Salazar Sánchez',
-  url: SITE_URL,
-  jobTitle: 'Senior Data Engineer & Arquitecto de Datos',
-  description:
-    'Senior Data Engineer & Arquitecto de Datos con más de 11 años de experiencia. Especializado en Data Engineering, Big Data, IA y Analytics en Colombia y LATAM.',
-  image: `${SITE_URL}/images/profile.png`,
-  knowsAbout: [
-    'Data Engineering',
-    'Big Data',
-    'Apache Spark',
-    'Azure Data Factory',
-    'Databricks',
-    'Python',
-    'Machine Learning',
-    'Inteligencia Artificial',
-    'SQL',
-    'Data Architecture',
-    'dbt',
-    'Apache Airflow',
-    'ETL/ELT',
-  ],
-  sameAs: [
-    'https://www.linkedin.com/in/fredericksalazar',
-    'https://github.com/fredericksalazar',
-    'https://www.kaggle.com/fredericksalazar',
-  ],
-  worksFor: {
-    '@type': 'Organization',
-    name: 'Globant',
-    url: 'https://www.globant.com',
-  },
-  alumniOf: {
-    '@type': 'CollegeOrUniversity',
-    name: 'Universitat Oberta de Catalunya',
-    url: 'https://www.uoc.edu',
-  },
-  address: {
-    '@type': 'PostalAddress',
-    addressCountry: 'CO',
-    addressLocality: 'Cali',
-  },
-  knowsLanguage: [
-    { '@type': 'Language', name: 'Español' },
-    { '@type': 'Language', name: 'Inglés' },
-  ],
-  birthPlace: {
-    '@type': 'Place',
-    address: 'Cali, Colombia',
-  },
-};
 ---
 
 <!-- ── Charset & Viewport ──────────────────────────────────────────────────── -->
@@ -157,7 +109,6 @@ const personSchema = {
 <meta property="og:image:alt" content={RESOLVED_IMAGE_ALT} />
 <meta property="og:site_name" content={SITE_NAME} />
 <meta property="og:locale" content="es_CO" />
-<meta property="og:locale:alternate" content="en_US" />
 
 {type === 'article' && (
   <>
@@ -204,5 +155,15 @@ const personSchema = {
   rel="stylesheet"
 />
 
-<!-- ── JSON-LD: Person Schema ────────────────────────────────────────────────── -->
+<!-- ── JSON-LD: Person Schema (entidad del autor, en todas las páginas) ───────── -->
 <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+
+<!-- ── JSON-LD: WebSite Schema (solo home) ───────────────────────────────────── -->
+{website && (
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(webSiteSchema)} />
+)}
+
+<!-- ── JSON-LD: BreadcrumbList (páginas internas con ruta de migas) ───────────── -->
+{breadcrumbs && breadcrumbs.length > 0 && (
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbList(breadcrumbs))} />
+)}

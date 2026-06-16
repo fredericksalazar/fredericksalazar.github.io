@@ -5,6 +5,7 @@
  */
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { urls, absUrls } from "../../lib/urls";
+import { trail, sectionCrumb } from "../../lib/seo";
 import { getIngresos, getSalariosCargos } from "../../lib/observatorio/data";
 
 const ing = getIngresos();
@@ -34,7 +35,8 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={title} description={description} image="/images/observatorio.png">
+<BaseLayout title={title} description={description} image="/images/observatorio.png"
+  breadcrumbs={trail(sectionCrumb.salarios)}>
   <article class="sal">
     <header class="sal__header">
       <span class="sal__eyebrow">Salarios · GEIH {anio} · DANE</span>

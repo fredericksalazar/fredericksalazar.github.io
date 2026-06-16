@@ -1,7 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { urls, SITE_URL } from '../../lib/urls';
+import { urls, absUrls, SITE_URL } from '../../lib/urls';
+import { trail, sectionCrumb } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const projects = await getCollection('proyectos');
@@ -66,6 +67,7 @@ const softwareSchema = isDataCompass ? {
   title={proyecto.data.tituloSeo ?? proyecto.data.titulo}
   description={proyecto.data.descripcion}
   image={proyecto.data.imagen}
+  breadcrumbs={trail(sectionCrumb.proyectos, { name: proyecto.data.titulo, url: absUrls.proyecto(proyecto.id) })}
 >
   {softwareSchema && (
     <script is:inline type="application/ld+json" set:html={JSON.stringify(softwareSchema)} />

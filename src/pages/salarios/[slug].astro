@@ -7,6 +7,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
 import { urls, absUrls } from "../../lib/urls";
+import { trail, sectionCrumb } from "../../lib/seo";
 import { getIngresos, getSalariosCargos } from "../../lib/observatorio/data";
 
 export function getStaticPaths() {
@@ -74,7 +75,8 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={title} description={description} image="/images/observatorio.png">
+<BaseLayout title={title} description={description} image="/images/observatorio.png"
+  breadcrumbs={trail(sectionCrumb.salarios, { name: cargo.nombre_corto, url: absUrls.salarioCargo(cargo.slug) })}>
   <article class="sal">
     <header class="sal__header">
       <nav class="sal__breadcrumb" aria-label="Miga de pan">

@@ -7,6 +7,7 @@ import ReadingProgress from '../../components/ReadingProgress.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import AuthorBio from '../../components/AuthorBio.astro';
 import { urls, absUrls, SITE_URL } from '../../lib/urls';
+import { trail, sectionCrumb } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -53,15 +54,6 @@ const newer = idx > 0 ? ordered[idx - 1] : null;
 const older = idx >= 0 && idx < ordered.length - 1 ? ordered[idx + 1] : null;
 
 // ── JSON-LD ──
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Inicio', item: absUrls.home() },
-    { '@type': 'ListItem', position: 2, name: 'Blog', item: absUrls.blog() },
-    { '@type': 'ListItem', position: 3, name: post.data.titulo, item: PAGE_URL },
-  ],
-};
 
 const articleSchema: Record<string, unknown> = {
   '@context': 'https://schema.org',
@@ -97,8 +89,8 @@ if (post.data.resumen) articleSchema.abstract = post.data.resumen;
   description={post.data.descripcion}
   image={post.data.imagen}
   type="article"
+  breadcrumbs={trail(sectionCrumb.blog, { name: post.data.titulo, url: PAGE_URL })}
 >
-  <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 
   <ReadingProgress />

@@ -10,6 +10,7 @@ import Hero from "../../components/Hero.astro";
 import MapaColombia from "../../components/observatorio/MapaColombia.astro";
 import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
 import { urls, absUrls } from "../../lib/urls";
+import { trail, sectionCrumb } from "../../lib/seo";
 import { getDemografia, getPIB } from "../../lib/observatorio/data";
 
 const dem = getDemografia();
@@ -70,7 +71,8 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={title} description={description} image="/images/observatorio.png" fullWidth={true}>
+<BaseLayout title={title} description={description} image="/images/observatorio.png" fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.calculadoras, { name: "¿En qué Colombia naciste?", url: absUrls.calculadora("en-que-colombia-naciste") })}>
   <Hero
     badge={{ text: "Calculadora · Series históricas desde 1960" }}
     title="¿En qué Colombia naciste?"

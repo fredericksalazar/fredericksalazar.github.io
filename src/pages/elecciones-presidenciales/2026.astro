@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { trail, sectionCrumb } from "../../lib/seo";
+import { absUrls } from "../../lib/urls";
 import Hero from "../../components/Hero.astro";
 import EleccionesNav from "../../components/observatorio/EleccionesNav.astro";
 import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
@@ -261,6 +263,7 @@ const jsonLd = {
   imageAlt="Observatorio · Análisis de la primera vuelta presidencial Colombia 2026"
   type="article"
   fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.elecciones, { name: "Análisis 1ª vuelta 2026", url: absUrls.elecciones("2026") })}
   keywords="elecciones presidenciales colombia 2026, primera vuelta 2026, candidatos 2026, analisis electoral colombia, variacion del voto por departamento, izquierda centro derecha colombia, observatorio electoral colombia, registraduria, datos politicos"
   publishedTime="2026-06-01T00:00:00+00:00"
   articleSection="Análisis político y electoral"

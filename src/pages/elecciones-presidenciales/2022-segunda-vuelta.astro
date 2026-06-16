@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { trail, sectionCrumb } from "../../lib/seo";
+import { absUrls } from "../../lib/urls";
 import Hero from "../../components/Hero.astro";
 import EleccionesNav from "../../components/observatorio/EleccionesNav.astro";
 import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
@@ -93,6 +95,7 @@ const jsonLd = {
   imageAlt="Observatorio · Análisis del balotaje presidencial Colombia 2022"
   type="article"
   fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.elecciones, { name: "Análisis 2ª vuelta 2022", url: absUrls.elecciones("2022-segunda-vuelta") })}
   keywords="elecciones presidenciales colombia 2022, balotaje 2022, segunda vuelta petro hernandez, analisis electoral colombia, voto por departamento colombia, abstencion electoral 2022, registraduria, observatorio electoral colombia"
   publishedTime="2026-06-01T00:00:00+00:00"
   articleSection="Análisis político y electoral"

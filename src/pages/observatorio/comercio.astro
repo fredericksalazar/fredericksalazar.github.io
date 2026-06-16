@@ -10,6 +10,8 @@ import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
 import Chart from "../../components/observatorio/Chart.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
 import { getComercio } from "../../lib/observatorio/data";
+import { absUrls } from "../../lib/urls";
+import { trail, sectionCrumb } from "../../lib/seo";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
 
 const com = getComercio();
@@ -66,6 +68,7 @@ const jsonLd = {
   description="Indicadores de comercio exterior colombiano: exportaciones, importaciones, balanza comercial y grado de apertura. Datos del Banco Mundial y DANE."
   image="/images/observatorio.png"
   fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.observatorio, { name: "Comercio Exterior", url: absUrls.observatorioSub("comercio") })}
 >
   <Hero
     badge={{ text: "Comercio Exterior · Colombia" }}
@@ -120,6 +123,11 @@ const jsonLd = {
       </Fragment>
       <Chart slot="visual" id="comercio-impo" embedded={true} />
     </IndicadorPanel>
+
+    <div class="observatorio-two-column" aria-label="Participación por grupo OMC">
+      <Chart id="participacion-expo" />
+      <Chart id="participacion-impo" />
+    </div>
 
     <IndicadorPanel numero="03" eyebrow="El saldo" titulo="Balanza comercial: el saldo del comercio exterior"
       lead="La diferencia entre lo que Colombia vende y lo que compra. Un déficit persistente no es necesariamente malo: puede reflejar inversión productiva."
@@ -254,6 +262,8 @@ const jsonLd = {
 
 <style>
   .observatorio-container { width: 97%; max-width: 1800px; margin: 0 auto; padding: 1.75rem 0 3rem; }
+  .observatorio-two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  @media (max-width: 1024px) { .observatorio-two-column { grid-template-columns: 1fr; } }
   .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 0 auto 1.5rem; }
   @media (max-width: 1024px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 560px) { .kpi-row { grid-template-columns: 1fr; } }

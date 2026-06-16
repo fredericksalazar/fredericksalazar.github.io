@@ -10,6 +10,7 @@ import Hero from "../../components/Hero.astro";
 import MapaColombia from "../../components/observatorio/MapaColombia.astro";
 import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
 import { urls, absUrls } from "../../lib/urls";
+import { trail, sectionCrumb } from "../../lib/seo";
 import { getObservatorio, getSalarioMinimo } from "../../lib/observatorio/data";
 
 const obs = getObservatorio();
@@ -77,7 +78,8 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={title} description={description} image="/images/observatorio.png" fullWidth={true}>
+<BaseLayout title={title} description={description} image="/images/observatorio.png" fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.calculadoras, { name: "Sueldo vs inflación", url: absUrls.calculadora("sueldo-vs-inflacion") })}>
   <Hero
     badge={{ text: "Calculadora · Inflación oficial DANE" }}
     title="¿Cuánto vale hoy tu sueldo de hace unos años?"

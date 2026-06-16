@@ -10,6 +10,8 @@ import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
 import Chart from "../../components/observatorio/Chart.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
 import { getPIB } from "../../lib/observatorio/data";
+import { absUrls } from "../../lib/urls";
+import { trail, sectionCrumb } from "../../lib/seo";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
 
 const pib = getPIB();
@@ -42,7 +44,8 @@ const jsonLd = {
 
 <BaseLayout title="PIB · Observatorio de Datos de Colombia"
   description="Producto Interno Bruto de Colombia: PIB total, crecimiento, PIB per cápita, población y deuda pública. Datos del Banco Mundial desde 1960."
-  image="/images/observatorio.png" fullWidth={true}>
+  image="/images/observatorio.png" fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.observatorio, { name: "PIB", url: absUrls.observatorioSub("pib") })}>
 
   <Hero badge={{ text: "Cuentas Nacionales · Colombia" }} title="PIB y cuentas nacionales de Colombia"
     subtitle="El Observatorio de Datos de Colombia consolida, procesa y publica los indicadores macroeconómicos que definen el pulso del país: para que cualquier persona lea la economía colombiana como un gerente lee el dashboard de su empresa."

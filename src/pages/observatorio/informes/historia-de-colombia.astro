@@ -4,6 +4,7 @@ import Hero from "../../../components/Hero.astro";
 import DashboardNav from "../../../components/observatorio/DashboardNav.astro";
 import { getInforme, formatFechaInforme } from "../../../lib/observatorio/informes";
 import { urls, absUrls } from "../../../lib/urls";
+import { trail, sectionCrumb } from "../../../lib/seo";
 
 const informe = getInforme("historia-de-colombia");
 if (!informe) throw new Error("Informe 'historia-de-colombia' no encontrado en el catálogo.");
@@ -40,6 +41,7 @@ const jsonLd = {
   description={informe.resumen}
   image={informe.portada ?? "/images/observatorio.png"}
   fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.observatorio, sectionCrumb.informes, { name: informe.titulo, url: absUrls.observatorioInforme("historia-de-colombia") })}
 >
   <Hero
     badge={{ text: `Informe · ${informe.cobertura}` }}

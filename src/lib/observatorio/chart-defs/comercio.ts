@@ -83,6 +83,32 @@ function buildMatriz(matriz: Record<string, Record<string, number | null>>) {
     barmode: "stack", showlegend: true,
     legend: { orientation: "h", yanchor: "bottom", y: 1.04, xanchor: "left", x: 0, font: { size: 11 }, bgcolor: "rgba(0,0,0,0)" },
     margin: { l: 48, r: 24, t: 16, b: 40 }, hovermode: "x",
+    yaxis: { showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
+      tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true },
+  });
+  return { traces, layout };
+}
+
+function buildMatrizParticipacion(matriz: Record<string, Record<string, number | null>>) {
+  const years = Object.keys(matriz).sort();
+  const traces = MATRIZ_GRUPOS.map((g) => ({
+    name: MATRIZ_LABELS[g], x: years,
+    y: years.map((y) => {
+      const total = matriz[y]?.total;
+      const v = matriz[y]?.[g];
+      return typeof total === "number" && total > 0 && typeof v === "number"
+        ? (v / total) * 100
+        : null;
+    }),
+    type: "bar", marker: { color: MATRIZ_COLORS[g] },
+    hovertemplate: `<b>%{x}</b><br>${MATRIZ_LABELS[g]}: %{y:.1f}%<extra></extra>`,
+  }));
+  const layout = baseLayout({
+    barmode: "stack", showlegend: true,
+    legend: { orientation: "h", yanchor: "bottom", y: 1.04, xanchor: "left", x: 0, font: { size: 11 }, bgcolor: "rgba(0,0,0,0)" },
+    margin: { l: 48, r: 24, t: 16, b: 40 }, hovermode: "x",
+    yaxis: { showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
+      tickfont: { size: 11, color: "#636c76" }, ticksuffix: "%", automargin: true, range: [0, 100] },
   });
   return { traces, layout };
 }
@@ -110,6 +136,32 @@ export const matrizImportaciones: ChartDef = {
   ariaLabel: "Matriz importadora",
   build({ comercio }) {
     return buildMatriz(comercio!.matriz_importaciones);
+  },
+};
+
+export const participacionExportaciones: ChartDef = {
+  id: "participacion-expo",
+  titulo: "Participación en las exportaciones",
+  pregunta: "Peso porcentual de cada grupo OMC en el total exportado cada año. Las barras suman 100%.",
+  fuenteTexto: "Cálculo propio sobre DANE — Comercio Internacional",
+  datasets: ["comercio"],
+  height: 380,
+  ariaLabel: "Participación porcentual de cada grupo OMC en las exportaciones anuales de Colombia",
+  build({ comercio }) {
+    return buildMatrizParticipacion(comercio!.matriz_exportaciones);
+  },
+};
+
+export const participacionImportaciones: ChartDef = {
+  id: "participacion-impo",
+  titulo: "Participación en las importaciones",
+  pregunta: "Peso porcentual de cada grupo OMC en el total importado cada año. Las barras suman 100%.",
+  fuenteTexto: "Cálculo propio sobre DANE — Comercio Internacional",
+  datasets: ["comercio"],
+  height: 380,
+  ariaLabel: "Participación porcentual de cada grupo OMC en las importaciones anuales de Colombia",
+  build({ comercio }) {
+    return buildMatrizParticipacion(comercio!.matriz_importaciones);
   },
 };
 
@@ -142,6 +194,8 @@ export const productosTradicionales: ChartDef = {
         showlegend: true,
         legend: { orientation: "h", yanchor: "bottom", y: 1.04, xanchor: "left", x: 0, font: { size: 11 }, bgcolor: "rgba(0,0,0,0)" },
         margin: { l: 48, r: 24, t: 16, b: 40 }, hovermode: "x",
+        yaxis: { showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
+          tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true },
       }),
     };
   },

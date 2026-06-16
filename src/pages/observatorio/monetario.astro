@@ -10,6 +10,8 @@ import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
 import Chart from "../../components/observatorio/Chart.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
 import { getExterno } from "../../lib/observatorio/data";
+import { absUrls } from "../../lib/urls";
+import { trail, sectionCrumb } from "../../lib/seo";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
 
 const ext = getExterno();
@@ -82,6 +84,7 @@ const jsonLd = {
   description="TRM, reservas internacionales, cuenta corriente, IED y deuda externa de Colombia. Datos del Banco de la República y Banco Mundial."
   image="/images/observatorio.png"
   fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.observatorio, { name: "Sector Monetario", url: absUrls.observatorioSub("monetario") })}
 >
   <Hero
     badge={{ text: "Sector Monetario · Colombia" }}

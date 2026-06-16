@@ -9,6 +9,7 @@ import { ClientRouter } from 'astro:transitions';
 import SEOHead from '../components/SEOHead.astro';
 import Sidebar from '../components/Sidebar.astro';
 import Footer from '../components/Footer.astro';
+import type { Crumb } from '../lib/seo';
 import '../styles/global.css';
 
 interface Props {
@@ -25,12 +26,17 @@ interface Props {
   articleAuthor?: string;
   articleSection?: string;
   articleTags?: string[];
+  /** Ruta de migas (absolutas) → BreadcrumbList JSON-LD. */
+  breadcrumbs?: Crumb[];
+  /** Emite WebSite JSON-LD (solo la home). */
+  website?: boolean;
 }
 
 const {
   title, description, image, imageAlt, type,
   fullWidth = false, noindex = false,
   keywords, publishedTime, modifiedTime, articleAuthor, articleSection, articleTags,
+  breadcrumbs, website = false,
 } = Astro.props;
 ---
 
@@ -50,6 +56,8 @@ const {
       articleAuthor={articleAuthor}
       articleSection={articleSection}
       articleTags={articleTags}
+      breadcrumbs={breadcrumbs}
+      website={website}
     />
     <!-- Google Sans Flex: las etiquetas <link> de fuentes viven en SEOHead
          (preconnect + stylesheet). No duplicar aquí. -->

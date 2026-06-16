@@ -84,12 +84,13 @@ function isActive(href: string): boolean {
   <div class="sidebar__profile">
     <div class="sidebar__avatar-wrapper">
       <img
-        src="/images/profile.png"
+        src="/images/profile-avatar.webp"
         alt="Frederick Salazar — Data Engineer"
         class="sidebar__avatar"
         width="56"
         height="56"
         loading="eager"
+        decoding="async"
         onerror="this.src='https://api.dicebear.com/8.x/initials/svg?seed=FS&backgroundColor=1d4ed8'"
       />
       <span class="sidebar__status" title="Disponible para proyectos"></span>

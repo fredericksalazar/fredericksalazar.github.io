@@ -4,6 +4,8 @@
  * URL: /experiencia
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { trail } from "../lib/seo";
+import { absUrls } from "../lib/urls";
 import Hero from "../components/Hero.astro";
 
 const title = "Experiencia como Data Engineer";
@@ -159,7 +161,8 @@ const experienciaData = [
 ];
 ---
 
-<BaseLayout title={title} description={description} fullWidth={true}>
+<BaseLayout title={title} description={description} fullWidth={true}
+  breadcrumbs={trail({ name: "Experiencia", url: absUrls.experiencia() })}>
   <!-- Hero Section -->
   <Hero
     badge={{ text: "Trayectoria profesional" }}

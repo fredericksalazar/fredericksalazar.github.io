@@ -10,6 +10,8 @@ import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
 import Chart from "../../components/observatorio/Chart.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
 import { getEmpleo, getSalarioMinimo } from "../../lib/observatorio/data";
+import { absUrls } from "../../lib/urls";
+import { trail, sectionCrumb } from "../../lib/seo";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
 
 const emp = getEmpleo();
@@ -88,6 +90,7 @@ const jsonLd = {
   description="Indicadores del mercado laboral colombiano: tasa de desempleo, TGP, tasa de ocupación e informalidad. Datos del DANE (GEIH) y Banco Mundial."
   image="/images/observatorio.png"
   fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.observatorio, { name: "Empleo", url: absUrls.observatorioSub("empleo") })}
 >
   <Hero
     badge={{ text: "Mercado Laboral · Colombia" }}

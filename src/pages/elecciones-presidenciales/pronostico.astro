@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { trail, sectionCrumb } from "../../lib/seo";
 import Hero from "../../components/Hero.astro";
 import EleccionesNav from "../../components/observatorio/EleccionesNav.astro";
 import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
@@ -79,6 +80,7 @@ const ganadorColor = sim.nacional.ganador === "cepeda" ? "#dc2626" : "#2563eb";
   imageAlt="Observatorio · Pronóstico segunda vuelta presidencial Colombia 2026"
   type="article"
   fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.elecciones)}
   keywords="pronostico electoral colombia 2026, segunda vuelta 2026, abelardo de la espriella, ivan cepeda, simulador departamental, modelo cuantitativo electoral, analisis electoral colombia, estrategia electoral"
   publishedTime="2026-06-01T00:00:00+00:00"
   articleSection="Pronóstico político"

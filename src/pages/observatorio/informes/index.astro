@@ -4,6 +4,7 @@ import Hero from "../../../components/Hero.astro";
 import DashboardNav from "../../../components/observatorio/DashboardNav.astro";
 import { INFORMES, formatFechaInforme } from "../../../lib/observatorio/informes";
 import { urls, absUrls } from "../../../lib/urls";
+import { trail, sectionCrumb } from "../../../lib/seo";
 
 const informes = INFORMES.map((inf) => {
   const vigente = inf.versiones.find((v) => v.vigente) ?? inf.versiones[0];
@@ -32,6 +33,7 @@ const jsonLd = {
   description="Informes descargables del Observatorio de Datos de Colombia: análisis históricos de los principales indicadores económicos y sociales del país, a partir de fuentes públicas oficiales."
   image="/images/observatorio.png"
   fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.observatorio, sectionCrumb.informes)}
 >
   <Hero
     badge={{ text: "Activos digitales · Colombia" }}

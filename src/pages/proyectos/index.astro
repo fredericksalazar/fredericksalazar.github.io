@@ -3,7 +3,8 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
 import Card from "../../components/Card.astro";
-import { urls } from "../../lib/urls";
+import { urls, absUrls } from "../../lib/urls";
+import { trail, sectionCrumb } from "../../lib/seo";
 
 const title = "Proyectos de Data Engineering y ML";
 const description =
@@ -20,7 +21,8 @@ const countByCategoria = {
 };
 ---
 
-<BaseLayout title={title} description={description} fullWidth={true}>
+<BaseLayout title={title} description={description} fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.proyectos)}>
   <Hero class="hero--constellation">
     <Fragment slot="content">
       <span class="proj-badge">

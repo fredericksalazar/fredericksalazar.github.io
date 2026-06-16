@@ -4,6 +4,8 @@
  * URL: /certificaciones
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { trail } from "../lib/seo";
+import { absUrls } from "../lib/urls";
 import Hero from "../components/Hero.astro";
 import Card from "../components/Card.astro";
 
@@ -133,7 +135,8 @@ const totalCertificaciones = empresas.reduce(
 );
 ---
 
-<BaseLayout title={title} description={description} fullWidth={true}>
+<BaseLayout title={title} description={description} fullWidth={true}
+  breadcrumbs={trail({ name: "Certificaciones", url: absUrls.certificaciones() })}>
   <!-- Hero Section -->
   <Hero
     badge={{ text: "Credenciales verificadas" }}

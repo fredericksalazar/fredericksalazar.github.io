@@ -11,6 +11,8 @@ import GlosarioGrid from "../../components/observatorio/GlosarioGrid.astro";
 import Chart from "../../components/observatorio/Chart.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
 import { getObservatorio } from "../../lib/observatorio/data";
+import { absUrls } from "../../lib/urls";
+import { trail, sectionCrumb } from "../../lib/seo";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
 import { FUENTE_CALCULO_PROPIO, FUENTE_HISTORICA_BM } from "../../lib/observatorio/fuentes";
 
@@ -85,6 +87,7 @@ const jsonLd = {
   description="Inflación del DANE, tasa del Banco de la República y spread real en Colombia. Datos mensuales desde 2004 explicados de forma sencilla."
   image="/images/observatorio.png"
   fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.observatorio)}
 >
   <Hero
     badge={{ text: "Datos Públicos · Colombia" }}

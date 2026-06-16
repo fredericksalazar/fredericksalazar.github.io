@@ -23,6 +23,8 @@ import {
   apertura,
   matrizExportaciones,
   matrizImportaciones,
+  participacionExportaciones,
+  participacionImportaciones,
   productosTradicionales,
 } from "./comercio";
 import {
@@ -93,6 +95,8 @@ export const CHART_DEFS = {
   [apertura.id]: apertura,
   [matrizExportaciones.id]: matrizExportaciones,
   [matrizImportaciones.id]: matrizImportaciones,
+  [participacionExportaciones.id]: participacionExportaciones,
+  [participacionImportaciones.id]: participacionImportaciones,
   [productosTradicionales.id]: productosTradicionales,
   [inflacionHistorica.id]: inflacionHistorica,
   [pibHistorico.id]: pibHistorico,
