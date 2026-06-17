@@ -22,6 +22,7 @@ import type {
   SalariosCargosData,
   PresEleccionData,
   PresCandidatosData,
+  ComparativoData,
 } from "./types";
 
 function readPublicJSON<T>(name: string): T {
@@ -58,3 +59,6 @@ export const getPres2026_1v = (): PresEleccionData => pres2026_1v;
 export const getPres2022_1v = (): PresEleccionData => pres2022_1v;
 export const getPres2022_2v = (): PresEleccionData => pres2022_2v;
 export const getPresCandidatos = (): PresCandidatosData => presCandidatos;
+
+const comparativoColUzb = readPublicJSON<ComparativoData>("data_comparativo_col_uzb");
+export const getComparativoColUzb = (): ComparativoData => comparativoColUzb;

@@ -1,0 +1,169 @@
+---
+/**
+ * MarcadorEconomico.astro
+ * "Marcador" head-to-head Colombia vs Uzbekistán por indicador (Banco Mundial).
+ * Build-time desde getComparativoColUzb() → números reales en el HTML inicial
+ * (clave para SEO/indexación y para previews sociales). Se usa dentro del
+ * artículo MDX comparativo.
+ */
+import { getComparativoColUzb } from "../../lib/observatorio/data";
+
+const data = getComparativoColUzb();
+// Orden de presentación del marcador.
+const ORDEN = [
+  "pib_percapita", "pib_total", "poblacion", "inflacion", "desempleo",
+  "gini", "esperanza_vida", "apertura", "deuda_externa", "ied",
+] as const;
+
+const nf = (v: number, dec = 0) =>
+  new Intl.NumberFormat("es-CO", { minimumFractionDigits: dec, maximumFractionDigits: dec }).format(v);
+
+function display(id: string, v: number): string {
+  switch (id) {
+    case "pib_percapita": return `US$ ${nf(v)}`;
+    case "pib_total": return `US$ ${nf(v / 1000, 1)} mil M`;
+    case "poblacion": return `${nf(v / 1_000_000, 1)} M`;
+    case "gini": return nf(v, 1);
+    case "esperanza_vida": return `${nf(v, 1)} años`;
+    default: return `${nf(v, v < 10 ? 2 : 1)} %`;
+  }
+}
+
+type Ganador = "colombia" | "uzbekistan" | null;
+function ganadorDe(co: number | null, uz: number | null, mejor: string): Ganador {
+  if (co === null || uz === null || co === uz) return null;
+  const coGana = mejor === "mayor" ? co > uz : co < uz;
+  return coGana ? "colombia" : "uzbekistan";
+}
+
+const filas = ORDEN
+  .map((id) => ({ id, ind: data.indicadores[id] }))
+  .filter((f) => f.ind && f.ind.colombia !== null && f.ind.uzbekistan !== null)
+  .map((f) => ({
+    id: f.id,
+    label: f.ind.label,
+    anio: f.ind.anio,
+    mejor: f.ind.mejor,
+    coRaw: f.ind.colombia as number,
+    uzRaw: f.ind.uzbekistan as number,
+    co: display(f.id, f.ind.colombia as number),
+    uz: display(f.id, f.ind.uzbekistan as number),
+    ganador: ganadorDe(f.ind.colombia, f.ind.uzbekistan, f.ind.mejor),
+  }));
+
+const scoreCol = filas.filter((f) => f.ganador === "colombia").length;
+const scoreUzb = filas.filter((f) => f.ganador === "uzbekistan").length;
+const anioMin = data.metadata.cobertura.primer_anio;
+const anioMax = data.metadata.cobertura.ultimo_anio;
+---
+
+<aside class="marcador" aria-label="Marcador económico Colombia vs Uzbekistán">
+  <div class="marcador__board">
+    <div class="marcador__team marcador__team--co">
+      <span class="marcador__flag" aria-hidden="true">🇨🇴</span>
+      <span class="marcador__name">Colombia</span>
+      <span class="marcador__score">{scoreCol}</span>
+    </div>
+    <span class="marcador__vs">–</span>
+    <div class="marcador__team marcador__team--uz">
+      <span class="marcador__score">{scoreUzb}</span>
+      <span class="marcador__name">Uzbekistán</span>
+      <span class="marcador__flag" aria-hidden="true">🇺🇿</span>
+    </div>
+  </div>
+  <p class="marcador__caption">
+    Marcador por indicadores del Banco Mundial. Cada país "anota" en los indicadores donde lidera
+    (mayor o menor según convenga). Datos {anioMin}–{anioMax}.
+  </p>
+
+  <table class="marcador__table">
+    <thead>
+      <tr>
+        <th scope="col">Indicador</th>
+        <th scope="col" class="marcador__col--co">Colombia</th>
+        <th scope="col" class="marcador__col--uz">Uzbekistán</th>
+        <th scope="col" class="marcador__col--year">Año</th>
+      </tr>
+    </thead>
+    <tbody>
+      {filas.map((f) => (
+        <tr>
+          <th scope="row">{f.label}</th>
+          <td class={`marcador__val ${f.ganador === "colombia" ? "is-win is-win--co" : ""}`}>
+            {f.co}{f.ganador === "colombia" && <span class="marcador__chk" aria-label="lidera Colombia">▲</span>}
+          </td>
+          <td class={`marcador__val ${f.ganador === "uzbekistan" ? "is-win is-win--uz" : ""}`}>
+            {f.uz}{f.ganador === "uzbekistan" && <span class="marcador__chk" aria-label="lidera Uzbekistán">▲</span>}
+          </td>
+          <td class="marcador__year">{f.anio}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</aside>
+
+<style>
+  .marcador {
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 16px;
+    background: var(--color-sidebar, #fff);
+    padding: 1.5rem;
+    margin: 2rem 0;
+  }
+  .marcador__board {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .marcador__team {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .marcador__flag { font-size: 1.8rem; line-height: 1; }
+  .marcador__name { font-size: 1.05rem; font-weight: 700; color: var(--color-text-primary, #1f2328); }
+  .marcador__score {
+    font-size: 2.6rem;
+    font-weight: 800;
+    line-height: 1;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+  }
+  .marcador__team--co .marcador__score { color: #2563eb; }
+  .marcador__team--uz .marcador__score { color: #16a34a; }
+  .marcador__vs { font-size: 1.8rem; font-weight: 700; color: var(--color-text-muted, #636c76); }
+  .marcador__caption {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--color-text-muted, #636c76);
+    margin: 0.75rem 0 1.25rem;
+    line-height: 1.45;
+  }
+  .marcador__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  .marcador__table th,
+  .marcador__table td {
+    padding: 0.6rem 0.5rem;
+    border-top: 1px solid var(--color-border, #d0d7de);
+    text-align: right;
+  }
+  .marcador__table thead th { border-top: none; color: var(--color-text-muted, #636c76); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .marcador__table tbody th[scope="row"] { text-align: left; font-weight: 600; color: var(--color-text-secondary, #424a53); }
+  .marcador__col--co, .marcador__val.is-win--co { color: #2563eb; }
+  .marcador__col--uz, .marcador__val.is-win--uz { color: #16a34a; }
+  .marcador__val { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .marcador__val.is-win { font-weight: 800; }
+  .marcador__chk { font-size: 0.6rem; vertical-align: middle; margin-left: 0.25rem; }
+  .marcador__col--year, .marcador__year { color: var(--color-text-muted, #636c76); font-size: 0.8rem; }
+
+  @media (max-width: 560px) {
+    .marcador { padding: 1.1rem; }
+    .marcador__table { font-size: 0.82rem; }
+    .marcador__table th, .marcador__table td { padding: 0.5rem 0.3rem; }
+    .marcador__col--year, .marcador__year { display: none; }
+  }
+</style>

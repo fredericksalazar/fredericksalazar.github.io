@@ -35,7 +35,15 @@ const PLOTLY_SRC = bundle === "full"
             script.remove();
             delete W.Plotly;
           } else {
-            resolve(W.Plotly);
+            // El script ya está insertado. Si Plotly aún no terminó de cargar,
+            // esperar el evento de carga en vez de resolver `undefined` (evita
+            // el race "Cannot read properties of undefined (reading 'newPlot')"
+            // cuando varios charts montan en la primera carga sin caché).
+            if (W.Plotly) {
+              resolve(W.Plotly);
+            } else {
+              W.addEventListener(EVENT, function () { resolve(W.Plotly); }, { once: true });
+            }
             return;
           }
         }

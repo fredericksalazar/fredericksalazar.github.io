@@ -10,6 +10,7 @@ import type {
   SalariosCargosData,
   PresEleccionData,
   PresCandidatosData,
+  ComparativoData,
 } from "./types";
 import type { Presidente } from "./presidentes";
 
@@ -70,9 +71,12 @@ export const loadPres2022_1v = () => load<PresEleccionData>("data_pres_2022_1v")
 export const loadPres2022_2v = () => load<PresEleccionData>("data_pres_2022_2v");
 export const loadPresCandidatos = () => load<PresCandidatosData>("data_pres_candidatos");
 
+export const loadComparativoColUzb = () => load<ComparativoData>("data_comparativo_col_uzb");
+
 export type DatasetName = "inflacion" | "pib" | "comercio" | "empleo" | "externo" | "demografia"
   | "salario-minimo" | "ingresos" | "salarios-cargos"
-  | "pres-2026-1v" | "pres-2022-1v" | "pres-2022-2v" | "pres-candidatos";
+  | "pres-2026-1v" | "pres-2022-1v" | "pres-2022-2v" | "pres-candidatos"
+  | "comparativo-col-uzb";
 
 export interface LoadedDatasets {
   inflacion?: ObservatorioData;
@@ -88,6 +92,7 @@ export interface LoadedDatasets {
   "pres-2022-1v"?: PresEleccionData;
   "pres-2022-2v"?: PresEleccionData;
   "pres-candidatos"?: PresCandidatosData;
+  "comparativo-col-uzb"?: ComparativoData;
 }
 
 const ASC_LOADERS = {
@@ -104,6 +109,7 @@ const ASC_LOADERS = {
   "pres-2022-1v": loadPres2022_1v,
   "pres-2022-2v": loadPres2022_2v,
   "pres-candidatos": loadPresCandidatos,
+  "comparativo-col-uzb": loadComparativoColUzb,
 } as const;
 
 export async function loadDatasets(

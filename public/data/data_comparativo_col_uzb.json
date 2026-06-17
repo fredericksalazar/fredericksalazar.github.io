@@ -1,0 +1,2942 @@
+{
+  "metadata": {
+    "fuente": {
+      "nombre": "Banco Mundial — World Development Indicators",
+      "url": "https://databank.worldbank.org/source/world-development-indicators"
+    },
+    "paises": {
+      "colombia": "Colombia",
+      "uzbekistan": "Uzbekistán"
+    },
+    "cobertura": {
+      "primer_anio": 1960,
+      "ultimo_anio": 2025
+    },
+    "ultima_actualizacion": "2026-06-17",
+    "nota": "Cada indicador usa el último año con dato disponible en ambos países; el año se indica en cada fila. Placeholders del CSV (0 y -100) tratados como nulos."
+  },
+  "indicadores": {
+    "pib_percapita": {
+      "anio": 2024,
+      "colombia": 7919.21,
+      "uzbekistan": 3161.7,
+      "unidad": "USD",
+      "label": "PIB per cápita",
+      "mejor": "mayor"
+    },
+    "pib_total": {
+      "anio": 2024,
+      "colombia": 418818,
+      "uzbekistan": 114965,
+      "unidad": "millones USD",
+      "label": "PIB total",
+      "mejor": "mayor"
+    },
+    "poblacion": {
+      "anio": 2024,
+      "colombia": 52886363,
+      "uzbekistan": 36361859,
+      "unidad": "habitantes",
+      "label": "Población",
+      "mejor": "mayor"
+    },
+    "inflacion": {
+      "anio": 2024,
+      "colombia": 6.61,
+      "uzbekistan": 9.63,
+      "unidad": "%",
+      "label": "Inflación",
+      "mejor": "menor"
+    },
+    "desempleo": {
+      "anio": 2025,
+      "colombia": 8.29,
+      "uzbekistan": 4.62,
+      "unidad": "%",
+      "label": "Desempleo",
+      "mejor": "menor"
+    },
+    "gini": {
+      "anio": 2023,
+      "colombia": 53.9,
+      "uzbekistan": 34.5,
+      "unidad": "índice 0–100",
+      "label": "Desigualdad (Gini)",
+      "mejor": "menor"
+    },
+    "esperanza_vida": {
+      "anio": 2022,
+      "colombia": 73.73,
+      "uzbekistan": 71.66,
+      "unidad": "años",
+      "label": "Esperanza de vida",
+      "mejor": "mayor"
+    },
+    "apertura": {
+      "anio": 2024,
+      "colombia": 37.03,
+      "uzbekistan": 60.73,
+      "unidad": "% del PIB",
+      "label": "Apertura comercial",
+      "mejor": "mayor"
+    },
+    "deuda_externa": {
+      "anio": 2024,
+      "colombia": 48.17,
+      "uzbekistan": 61.11,
+      "unidad": "% del PIB",
+      "label": "Deuda externa",
+      "mejor": "menor"
+    },
+    "ied": {
+      "anio": 2024,
+      "colombia": 3.27,
+      "uzbekistan": 2.6,
+      "unidad": "% del PIB",
+      "label": "Inversión extranjera directa",
+      "mejor": "mayor"
+    }
+  },
+  "series": {
+    "pib_percapita": [
+      {
+        "anio": 1960,
+        "colombia": 258.3,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1961,
+        "colombia": 282.1,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1962,
+        "colombia": 298.54,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1963,
+        "colombia": 282.59,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1964,
+        "colombia": 338.68,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1965,
+        "colombia": 317.06,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1966,
+        "colombia": 290.25,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1967,
+        "colombia": 302.83,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1968,
+        "colombia": 301.53,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1969,
+        "colombia": 317.87,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1970,
+        "colombia": 345.88,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1971,
+        "colombia": 366.83,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1972,
+        "colombia": 397.41,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1973,
+        "colombia": 462.06,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1974,
+        "colombia": 541.75,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1975,
+        "colombia": 561.1,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1976,
+        "colombia": 643.01,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1977,
+        "colombia": 798.2,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1978,
+        "colombia": 932.39,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1979,
+        "colombia": 1095.03,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1980,
+        "colombia": 1279.5,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1981,
+        "colombia": 1362.18,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1982,
+        "colombia": 1425.4,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1983,
+        "colombia": 1383.79,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1984,
+        "colombia": 1335.53,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1985,
+        "colombia": 1192.22,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1986,
+        "colombia": 1169.46,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1987,
+        "colombia": 1192.59,
+        "uzbekistan": 450.24
+      },
+      {
+        "anio": 1988,
+        "colombia": 1259.62,
+        "uzbekistan": 551.0
+      },
+      {
+        "anio": 1989,
+        "colombia": 1244.33,
+        "uzbekistan": 598.12
+      },
+      {
+        "anio": 1990,
+        "colombia": 1474.85,
+        "uzbekistan": 652.94
+      },
+      {
+        "anio": 1991,
+        "colombia": 1485.74,
+        "uzbekistan": 658.31
+      },
+      {
+        "anio": 1992,
+        "colombia": 1730.39,
+        "uzbekistan": 602.92
+      },
+      {
+        "anio": 1993,
+        "colombia": 1929.27,
+        "uzbekistan": 595.78
+      },
+      {
+        "anio": 1994,
+        "colombia": 2325.92,
+        "uzbekistan": 574.23
+      },
+      {
+        "anio": 1995,
+        "colombia": 2583.67,
+        "uzbekistan": 582.54
+      },
+      {
+        "anio": 1996,
+        "colombia": 2664.64,
+        "uzbekistan": 597.33
+      },
+      {
+        "anio": 1997,
+        "colombia": 2873.28,
+        "uzbekistan": 620.59
+      },
+      {
+        "anio": 1998,
+        "colombia": 2604.87,
+        "uzbekistan": 621.05
+      },
+      {
+        "anio": 1999,
+        "colombia": 2241.23,
+        "uzbekistan": 697.76
+      },
+      {
+        "anio": 2000,
+        "colombia": 2555.01,
+        "uzbekistan": 555.15
+      },
+      {
+        "anio": 2001,
+        "colombia": 2472.99,
+        "uzbekistan": 454.42
+      },
+      {
+        "anio": 2002,
+        "colombia": 2428.93,
+        "uzbekistan": 381.41
+      },
+      {
+        "anio": 2003,
+        "colombia": 2311.94,
+        "uzbekistan": 394.16
+      },
+      {
+        "anio": 2004,
+        "colombia": 2818.57,
+        "uzbekistan": 462.17
+      },
+      {
+        "anio": 2005,
+        "colombia": 3456.07,
+        "uzbekistan": 542.84
+      },
+      {
+        "anio": 2006,
+        "colombia": 3789.85,
+        "uzbekistan": 649.12
+      },
+      {
+        "anio": 2007,
+        "colombia": 4769.93,
+        "uzbekistan": 824.03
+      },
+      {
+        "anio": 2008,
+        "colombia": 5541.84,
+        "uzbekistan": 1074.73
+      },
+      {
+        "anio": 2009,
+        "colombia": 5250.97,
+        "uzbekistan": 1205.8
+      },
+      {
+        "anio": 2010,
+        "colombia": 6398.3,
+        "uzbekistan": 1753.21
+      },
+      {
+        "anio": 2011,
+        "colombia": 7400.99,
+        "uzbekistan": 2087.86
+      },
+      {
+        "anio": 2012,
+        "colombia": 8108.6,
+        "uzbekistan": 2307.35
+      },
+      {
+        "anio": 2013,
+        "colombia": 8279.1,
+        "uzbekistan": 2461.98
+      },
+      {
+        "anio": 2014,
+        "colombia": 8187.21,
+        "uzbekistan": 2674.96
+      },
+      {
+        "anio": 2015,
+        "colombia": 6248.51,
+        "uzbekistan": 2803.19
+      },
+      {
+        "anio": 2016,
+        "colombia": 5959.84,
+        "uzbekistan": 2753.38
+      },
+      {
+        "anio": 2017,
+        "colombia": 6479.53,
+        "uzbekistan": 2190.6
+      },
+      {
+        "anio": 2018,
+        "colombia": 6816.97,
+        "uzbekistan": 1813.09
+      },
+      {
+        "anio": 2019,
+        "colombia": 6472.55,
+        "uzbekistan": 2041.38
+      },
+      {
+        "anio": 2020,
+        "colombia": 5339.69,
+        "uzbekistan": 1978.28
+      },
+      {
+        "anio": 2021,
+        "colombia": 6222.62,
+        "uzbekistan": 2258.52
+      },
+      {
+        "anio": 2022,
+        "colombia": 6680.45,
+        "uzbekistan": 2578.67
+      },
+      {
+        "anio": 2023,
+        "colombia": 7000.84,
+        "uzbekistan": 2878.97
+      },
+      {
+        "anio": 2024,
+        "colombia": 7919.21,
+        "uzbekistan": 3161.7
+      }
+    ],
+    "pib_total": [
+      {
+        "anio": 1960,
+        "colombia": 4031,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1961,
+        "colombia": 4540,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1962,
+        "colombia": 4956,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1963,
+        "colombia": 4836,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1964,
+        "colombia": 5973,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1965,
+        "colombia": 5761,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1966,
+        "colombia": 5429,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1967,
+        "colombia": 5825,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1968,
+        "colombia": 5960,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1969,
+        "colombia": 6450,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1970,
+        "colombia": 7198,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1971,
+        "colombia": 7820,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1972,
+        "colombia": 8671,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1973,
+        "colombia": 10316,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1974,
+        "colombia": 12370,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1975,
+        "colombia": 13099,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1976,
+        "colombia": 15341,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1977,
+        "colombia": 19471,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1978,
+        "colombia": 23264,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1979,
+        "colombia": 27940,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1980,
+        "colombia": 33401,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1981,
+        "colombia": 36388,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1982,
+        "colombia": 38968,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1983,
+        "colombia": 38730,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1984,
+        "colombia": 38253,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1985,
+        "colombia": 34894,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1986,
+        "colombia": 34942,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1987,
+        "colombia": 36373,
+        "uzbekistan": 8523
+      },
+      {
+        "anio": 1988,
+        "colombia": 39213,
+        "uzbekistan": 10723
+      },
+      {
+        "anio": 1989,
+        "colombia": 39540,
+        "uzbekistan": 11949
+      },
+      {
+        "anio": 1990,
+        "colombia": 47844,
+        "uzbekistan": 13362
+      },
+      {
+        "anio": 1991,
+        "colombia": 49176,
+        "uzbekistan": 13800
+      },
+      {
+        "anio": 1992,
+        "colombia": 58419,
+        "uzbekistan": 12954
+      },
+      {
+        "anio": 1993,
+        "colombia": 66447,
+        "uzbekistan": 13100
+      },
+      {
+        "anio": 1994,
+        "colombia": 81704,
+        "uzbekistan": 12899
+      },
+      {
+        "anio": 1995,
+        "colombia": 92507,
+        "uzbekistan": 13350
+      },
+      {
+        "anio": 1996,
+        "colombia": 97160,
+        "uzbekistan": 13949
+      },
+      {
+        "anio": 1997,
+        "colombia": 106660,
+        "uzbekistan": 14745
+      },
+      {
+        "anio": 1998,
+        "colombia": 98444,
+        "uzbekistan": 14989
+      },
+      {
+        "anio": 1999,
+        "colombia": 86186,
+        "uzbekistan": 17078
+      },
+      {
+        "anio": 2000,
+        "colombia": 99875,
+        "uzbekistan": 13761
+      },
+      {
+        "anio": 2001,
+        "colombia": 98201,
+        "uzbekistan": 11401
+      },
+      {
+        "anio": 2002,
+        "colombia": 97946,
+        "uzbekistan": 9688
+      },
+      {
+        "anio": 2003,
+        "colombia": 94645,
+        "uzbekistan": 10134
+      },
+      {
+        "anio": 2004,
+        "colombia": 117092,
+        "uzbekistan": 12030
+      },
+      {
+        "anio": 2005,
+        "colombia": 145601,
+        "uzbekistan": 14308
+      },
+      {
+        "anio": 2006,
+        "colombia": 161793,
+        "uzbekistan": 17331
+      },
+      {
+        "anio": 2007,
+        "colombia": 206230,
+        "uzbekistan": 22311
+      },
+      {
+        "anio": 2008,
+        "colombia": 242504,
+        "uzbekistan": 29549
+      },
+      {
+        "anio": 2009,
+        "colombia": 232469,
+        "uzbekistan": 33689
+      },
+      {
+        "anio": 2010,
+        "colombia": 286499,
+        "uzbekistan": 49766
+      },
+      {
+        "anio": 2011,
+        "colombia": 334966,
+        "uzbekistan": 60179
+      },
+      {
+        "anio": 2012,
+        "colombia": 370691,
+        "uzbekistan": 67517
+      },
+      {
+        "anio": 2013,
+        "colombia": 382094,
+        "uzbekistan": 73180
+      },
+      {
+        "anio": 2014,
+        "colombia": 381241,
+        "uzbekistan": 80845
+      },
+      {
+        "anio": 2015,
+        "colombia": 293492,
+        "uzbekistan": 86196
+      },
+      {
+        "anio": 2016,
+        "colombia": 282720,
+        "uzbekistan": 86138
+      },
+      {
+        "anio": 2017,
+        "colombia": 311867,
+        "uzbekistan": 69703
+      },
+      {
+        "anio": 2018,
+        "colombia": 334198,
+        "uzbekistan": 58696
+      },
+      {
+        "anio": 2019,
+        "colombia": 323032,
+        "uzbekistan": 67294
+      },
+      {
+        "anio": 2020,
+        "colombia": 270348,
+        "uzbekistan": 66443
+      },
+      {
+        "anio": 2021,
+        "colombia": 318525,
+        "uzbekistan": 77340
+      },
+      {
+        "anio": 2022,
+        "colombia": 345632,
+        "uzbekistan": 90096
+      },
+      {
+        "anio": 2023,
+        "colombia": 366292,
+        "uzbekistan": 102642
+      },
+      {
+        "anio": 2024,
+        "colombia": 418818,
+        "uzbekistan": 114965
+      }
+    ],
+    "poblacion": [
+      {
+        "anio": 1960,
+        "colombia": 15606209,
+        "uzbekistan": 8209109
+      },
+      {
+        "anio": 1961,
+        "colombia": 16095203,
+        "uzbekistan": 8517711
+      },
+      {
+        "anio": 1962,
+        "colombia": 16599029,
+        "uzbekistan": 8854368
+      },
+      {
+        "anio": 1963,
+        "colombia": 17113823,
+        "uzbekistan": 9202246
+      },
+      {
+        "anio": 1964,
+        "colombia": 17637411,
+        "uzbekistan": 9557611
+      },
+      {
+        "anio": 1965,
+        "colombia": 18169050,
+        "uzbekistan": 9921681
+      },
+      {
+        "anio": 1966,
+        "colombia": 18702688,
+        "uzbekistan": 10289294
+      },
+      {
+        "anio": 1967,
+        "colombia": 19235618,
+        "uzbekistan": 10659180
+      },
+      {
+        "anio": 1968,
+        "colombia": 19766796,
+        "uzbekistan": 11032155
+      },
+      {
+        "anio": 1969,
+        "colombia": 20291942,
+        "uzbekistan": 11403150
+      },
+      {
+        "anio": 1970,
+        "colombia": 20811782,
+        "uzbekistan": 11762638
+      },
+      {
+        "anio": 1971,
+        "colombia": 21319096,
+        "uzbekistan": 12111511
+      },
+      {
+        "anio": 1972,
+        "colombia": 21819563,
+        "uzbekistan": 12465106
+      },
+      {
+        "anio": 1973,
+        "colombia": 22325374,
+        "uzbekistan": 12831047
+      },
+      {
+        "anio": 1974,
+        "colombia": 22833469,
+        "uzbekistan": 13209011
+      },
+      {
+        "anio": 1975,
+        "colombia": 23344644,
+        "uzbekistan": 13598521
+      },
+      {
+        "anio": 1976,
+        "colombia": 23858810,
+        "uzbekistan": 13998620
+      },
+      {
+        "anio": 1977,
+        "colombia": 24393494,
+        "uzbekistan": 14408822
+      },
+      {
+        "anio": 1978,
+        "colombia": 24950337,
+        "uzbekistan": 14816349
+      },
+      {
+        "anio": 1979,
+        "colombia": 25515626,
+        "uzbekistan": 15215587
+      },
+      {
+        "anio": 1980,
+        "colombia": 26104498,
+        "uzbekistan": 15619936
+      },
+      {
+        "anio": 1981,
+        "colombia": 26713267,
+        "uzbekistan": 16035032
+      },
+      {
+        "anio": 1982,
+        "colombia": 27338331,
+        "uzbekistan": 16462736
+      },
+      {
+        "anio": 1983,
+        "colombia": 27988173,
+        "uzbekistan": 16908400
+      },
+      {
+        "anio": 1984,
+        "colombia": 28642690,
+        "uzbekistan": 17378846
+      },
+      {
+        "anio": 1985,
+        "colombia": 29268470,
+        "uzbekistan": 17875339
+      },
+      {
+        "anio": 1986,
+        "colombia": 29879112,
+        "uzbekistan": 18395621
+      },
+      {
+        "anio": 1987,
+        "colombia": 30499467,
+        "uzbekistan": 18930070
+      },
+      {
+        "anio": 1988,
+        "colombia": 31130524,
+        "uzbekistan": 19460630
+      },
+      {
+        "anio": 1989,
+        "colombia": 31776279,
+        "uzbekistan": 19977183
+      },
+      {
+        "anio": 1990,
+        "colombia": 32440069,
+        "uzbekistan": 20464956
+      },
+      {
+        "anio": 1991,
+        "colombia": 33098372,
+        "uzbekistan": 20962910
+      },
+      {
+        "anio": 1992,
+        "colombia": 33760571,
+        "uzbekistan": 21485090
+      },
+      {
+        "anio": 1993,
+        "colombia": 34441473,
+        "uzbekistan": 21987955
+      },
+      {
+        "anio": 1994,
+        "colombia": 35127410,
+        "uzbekistan": 22463291
+      },
+      {
+        "anio": 1995,
+        "colombia": 35804662,
+        "uzbekistan": 22917589
+      },
+      {
+        "anio": 1996,
+        "colombia": 36462745,
+        "uzbekistan": 23351981
+      },
+      {
+        "anio": 1997,
+        "colombia": 37121149,
+        "uzbekistan": 23758960
+      },
+      {
+        "anio": 1998,
+        "colombia": 37792165,
+        "uzbekistan": 24134929
+      },
+      {
+        "anio": 1999,
+        "colombia": 38454863,
+        "uzbekistan": 24476008
+      },
+      {
+        "anio": 2000,
+        "colombia": 39089934,
+        "uzbekistan": 24787054
+      },
+      {
+        "anio": 2001,
+        "colombia": 39709262,
+        "uzbekistan": 25090283
+      },
+      {
+        "anio": 2002,
+        "colombia": 40324680,
+        "uzbekistan": 25399980
+      },
+      {
+        "anio": 2003,
+        "colombia": 40937429,
+        "uzbekistan": 25711259
+      },
+      {
+        "anio": 2004,
+        "colombia": 41543171,
+        "uzbekistan": 26029350
+      },
+      {
+        "anio": 2005,
+        "colombia": 42128977,
+        "uzbekistan": 26356975
+      },
+      {
+        "anio": 2006,
+        "colombia": 42691084,
+        "uzbekistan": 26699043
+      },
+      {
+        "anio": 2007,
+        "colombia": 43235374,
+        "uzbekistan": 27076008
+      },
+      {
+        "anio": 2008,
+        "colombia": 43758808,
+        "uzbekistan": 27494774
+      },
+      {
+        "anio": 2009,
+        "colombia": 44271541,
+        "uzbekistan": 27939328
+      },
+      {
+        "anio": 2010,
+        "colombia": 44777319,
+        "uzbekistan": 28385506
+      },
+      {
+        "anio": 2011,
+        "colombia": 45259614,
+        "uzbekistan": 28823196
+      },
+      {
+        "anio": 2012,
+        "colombia": 45715810,
+        "uzbekistan": 29261903
+      },
+      {
+        "anio": 2013,
+        "colombia": 46151584,
+        "uzbekistan": 29724065
+      },
+      {
+        "anio": 2014,
+        "colombia": 46565429,
+        "uzbekistan": 30222994
+      },
+      {
+        "anio": 2015,
+        "colombia": 46969940,
+        "uzbekistan": 30749346
+      },
+      {
+        "anio": 2016,
+        "colombia": 47437512,
+        "uzbekistan": 31284568
+      },
+      {
+        "anio": 2017,
+        "colombia": 48131078,
+        "uzbekistan": 31819178
+      },
+      {
+        "anio": 2018,
+        "colombia": 49024465,
+        "uzbekistan": 32373490
+      },
+      {
+        "anio": 2019,
+        "colombia": 49907985,
+        "uzbekistan": 32964701
+      },
+      {
+        "anio": 2020,
+        "colombia": 50629997,
+        "uzbekistan": 33586372
+      },
+      {
+        "anio": 2021,
+        "colombia": 51188173,
+        "uzbekistan": 34243696
+      },
+      {
+        "anio": 2022,
+        "colombia": 51737944,
+        "uzbekistan": 34938955
+      },
+      {
+        "anio": 2023,
+        "colombia": 52321152,
+        "uzbekistan": 35652307
+      },
+      {
+        "anio": 2024,
+        "colombia": 52886363,
+        "uzbekistan": 36361859
+      }
+    ],
+    "inflacion": [
+      {
+        "anio": 1960,
+        "colombia": 5.81,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1961,
+        "colombia": 8.28,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1962,
+        "colombia": 4.7,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1963,
+        "colombia": 26.36,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1964,
+        "colombia": 17.07,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1965,
+        "colombia": 7.59,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1966,
+        "colombia": 16.73,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1967,
+        "colombia": 8.33,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1968,
+        "colombia": 7.45,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1969,
+        "colombia": 6.98,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1970,
+        "colombia": 6.91,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1971,
+        "colombia": 11.94,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1972,
+        "colombia": 12.44,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1973,
+        "colombia": 22.53,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1974,
+        "colombia": 23.87,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1975,
+        "colombia": 23.44,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1976,
+        "colombia": 19.83,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1977,
+        "colombia": 33.8,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1978,
+        "colombia": 17.76,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1979,
+        "colombia": 24.13,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1980,
+        "colombia": 26.55,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1981,
+        "colombia": 27.45,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1982,
+        "colombia": 24.72,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1983,
+        "colombia": 19.6,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1984,
+        "colombia": 16.16,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1985,
+        "colombia": 24.09,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1986,
+        "colombia": 18.84,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1987,
+        "colombia": 23.3,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1988,
+        "colombia": 28.11,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1989,
+        "colombia": 25.87,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1990,
+        "colombia": 29.15,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1991,
+        "colombia": 30.39,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1992,
+        "colombia": 27.01,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1993,
+        "colombia": 22.44,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1994,
+        "colombia": 22.85,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1995,
+        "colombia": 20.89,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1996,
+        "colombia": 20.8,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1997,
+        "colombia": 18.47,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1998,
+        "colombia": 18.68,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1999,
+        "colombia": 10.87,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2000,
+        "colombia": 9.23,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2001,
+        "colombia": 7.97,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2002,
+        "colombia": 6.35,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2003,
+        "colombia": 7.13,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2004,
+        "colombia": 5.9,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2005,
+        "colombia": 5.05,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2006,
+        "colombia": 4.29,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2007,
+        "colombia": 5.54,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2008,
+        "colombia": 7.0,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2009,
+        "colombia": 4.2,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2010,
+        "colombia": 2.27,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2011,
+        "colombia": 3.42,
+        "uzbekistan": 13.78
+      },
+      {
+        "anio": 2012,
+        "colombia": 3.17,
+        "uzbekistan": 13.21
+      },
+      {
+        "anio": 2013,
+        "colombia": 2.02,
+        "uzbekistan": 11.84
+      },
+      {
+        "anio": 2014,
+        "colombia": 2.9,
+        "uzbekistan": 9.28
+      },
+      {
+        "anio": 2015,
+        "colombia": 4.99,
+        "uzbekistan": 8.75
+      },
+      {
+        "anio": 2016,
+        "colombia": 7.51,
+        "uzbekistan": 8.13
+      },
+      {
+        "anio": 2017,
+        "colombia": 4.31,
+        "uzbekistan": 13.88
+      },
+      {
+        "anio": 2018,
+        "colombia": 3.24,
+        "uzbekistan": 17.52
+      },
+      {
+        "anio": 2019,
+        "colombia": 3.52,
+        "uzbekistan": 14.53
+      },
+      {
+        "anio": 2020,
+        "colombia": 2.53,
+        "uzbekistan": 12.87
+      },
+      {
+        "anio": 2021,
+        "colombia": 3.5,
+        "uzbekistan": 10.85
+      },
+      {
+        "anio": 2022,
+        "colombia": 10.18,
+        "uzbekistan": 11.45
+      },
+      {
+        "anio": 2023,
+        "colombia": 11.74,
+        "uzbekistan": 9.96
+      },
+      {
+        "anio": 2024,
+        "colombia": 6.61,
+        "uzbekistan": 9.63
+      }
+    ],
+    "desempleo": [
+      {
+        "anio": 1991,
+        "colombia": 10.12,
+        "uzbekistan": 1.9
+      },
+      {
+        "anio": 1992,
+        "colombia": 9.44,
+        "uzbekistan": 2.9
+      },
+      {
+        "anio": 1993,
+        "colombia": 7.8,
+        "uzbekistan": 4.9
+      },
+      {
+        "anio": 1994,
+        "colombia": 8.25,
+        "uzbekistan": 7.3
+      },
+      {
+        "anio": 1995,
+        "colombia": 8.72,
+        "uzbekistan": 7.8
+      },
+      {
+        "anio": 1996,
+        "colombia": 11.81,
+        "uzbekistan": 10.7
+      },
+      {
+        "anio": 1997,
+        "colombia": 12.14,
+        "uzbekistan": 10.9
+      },
+      {
+        "anio": 1998,
+        "colombia": 15.0,
+        "uzbekistan": 13.3
+      },
+      {
+        "anio": 1999,
+        "colombia": 20.06,
+        "uzbekistan": 13.3
+      },
+      {
+        "anio": 2000,
+        "colombia": 20.52,
+        "uzbekistan": 12.3
+      },
+      {
+        "anio": 2001,
+        "colombia": 15.04,
+        "uzbekistan": 11.28
+      },
+      {
+        "anio": 2002,
+        "colombia": 14.48,
+        "uzbekistan": 10.26
+      },
+      {
+        "anio": 2003,
+        "colombia": 13.22,
+        "uzbekistan": 9.22
+      },
+      {
+        "anio": 2004,
+        "colombia": 13.72,
+        "uzbekistan": 8.15
+      },
+      {
+        "anio": 2005,
+        "colombia": 11.06,
+        "uzbekistan": 7.09
+      },
+      {
+        "anio": 2006,
+        "colombia": 11.09,
+        "uzbekistan": 6.04
+      },
+      {
+        "anio": 2007,
+        "colombia": 11.2,
+        "uzbekistan": 4.99
+      },
+      {
+        "anio": 2008,
+        "colombia": 11.27,
+        "uzbekistan": 4.89
+      },
+      {
+        "anio": 2009,
+        "colombia": 12.07,
+        "uzbekistan": 5.04
+      },
+      {
+        "anio": 2010,
+        "colombia": 11.15,
+        "uzbekistan": 5.36
+      },
+      {
+        "anio": 2011,
+        "colombia": 10.29,
+        "uzbekistan": 4.96
+      },
+      {
+        "anio": 2012,
+        "colombia": 9.96,
+        "uzbekistan": 4.87
+      },
+      {
+        "anio": 2013,
+        "colombia": 9.25,
+        "uzbekistan": 4.86
+      },
+      {
+        "anio": 2014,
+        "colombia": 8.8,
+        "uzbekistan": 5.09
+      },
+      {
+        "anio": 2015,
+        "colombia": 8.57,
+        "uzbekistan": 5.15
+      },
+      {
+        "anio": 2016,
+        "colombia": 8.92,
+        "uzbekistan": 5.16
+      },
+      {
+        "anio": 2017,
+        "colombia": 9.09,
+        "uzbekistan": 5.83
+      },
+      {
+        "anio": 2018,
+        "colombia": 9.36,
+        "uzbekistan": 5.39
+      },
+      {
+        "anio": 2019,
+        "colombia": 10.28,
+        "uzbekistan": 4.94
+      },
+      {
+        "anio": 2020,
+        "colombia": 15.98,
+        "uzbekistan": 5.29
+      },
+      {
+        "anio": 2021,
+        "colombia": 13.9,
+        "uzbekistan": 5.36
+      },
+      {
+        "anio": 2022,
+        "colombia": 10.54,
+        "uzbekistan": 4.46
+      },
+      {
+        "anio": 2023,
+        "colombia": 9.59,
+        "uzbekistan": 4.43
+      },
+      {
+        "anio": 2024,
+        "colombia": 9.62,
+        "uzbekistan": 4.44
+      },
+      {
+        "anio": 2025,
+        "colombia": 8.29,
+        "uzbekistan": 4.62
+      }
+    ],
+    "gini": [
+      {
+        "anio": 1980,
+        "colombia": 55.1,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1988,
+        "colombia": 53.1,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1989,
+        "colombia": 52.8,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1991,
+        "colombia": 51.3,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1992,
+        "colombia": 51.3,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1996,
+        "colombia": 56.8,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1998,
+        "colombia": null,
+        "uzbekistan": 44.1
+      },
+      {
+        "anio": 1999,
+        "colombia": 58.5,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2000,
+        "colombia": 58.4,
+        "uzbekistan": 35.9
+      },
+      {
+        "anio": 2001,
+        "colombia": 57.3,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2002,
+        "colombia": 56.0,
+        "uzbekistan": 33.0
+      },
+      {
+        "anio": 2003,
+        "colombia": 53.6,
+        "uzbekistan": 35.2
+      },
+      {
+        "anio": 2004,
+        "colombia": 55.0,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2005,
+        "colombia": 53.9,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2008,
+        "colombia": 55.3,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2009,
+        "colombia": 54.3,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2010,
+        "colombia": 54.6,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2011,
+        "colombia": 53.5,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2012,
+        "colombia": 52.6,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2013,
+        "colombia": 52.6,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2014,
+        "colombia": 52.5,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2015,
+        "colombia": 51.0,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2016,
+        "colombia": 50.6,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2017,
+        "colombia": 49.7,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2018,
+        "colombia": 50.4,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2019,
+        "colombia": 51.3,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2020,
+        "colombia": 53.5,
+        "uzbekistan": null
+      },
+      {
+        "anio": 2021,
+        "colombia": 55.1,
+        "uzbekistan": 32.9
+      },
+      {
+        "anio": 2022,
+        "colombia": 54.8,
+        "uzbekistan": 31.2
+      },
+      {
+        "anio": 2023,
+        "colombia": 53.9,
+        "uzbekistan": 34.5
+      },
+      {
+        "anio": 2024,
+        "colombia": null,
+        "uzbekistan": 34.6
+      }
+    ],
+    "esperanza_vida": [
+      {
+        "anio": 1960,
+        "colombia": 57.14,
+        "uzbekistan": 57.45
+      },
+      {
+        "anio": 1961,
+        "colombia": 57.74,
+        "uzbekistan": 57.77
+      },
+      {
+        "anio": 1962,
+        "colombia": 58.31,
+        "uzbekistan": 58.03
+      },
+      {
+        "anio": 1963,
+        "colombia": 58.89,
+        "uzbekistan": 58.41
+      },
+      {
+        "anio": 1964,
+        "colombia": 59.38,
+        "uzbekistan": 58.81
+      },
+      {
+        "anio": 1965,
+        "colombia": 59.81,
+        "uzbekistan": 59.16
+      },
+      {
+        "anio": 1966,
+        "colombia": 60.2,
+        "uzbekistan": 59.42
+      },
+      {
+        "anio": 1967,
+        "colombia": 60.53,
+        "uzbekistan": 59.75
+      },
+      {
+        "anio": 1968,
+        "colombia": 60.87,
+        "uzbekistan": 60.16
+      },
+      {
+        "anio": 1969,
+        "colombia": 61.21,
+        "uzbekistan": 60.67
+      },
+      {
+        "anio": 1970,
+        "colombia": 61.56,
+        "uzbekistan": 60.88
+      },
+      {
+        "anio": 1971,
+        "colombia": 62.05,
+        "uzbekistan": 61.27
+      },
+      {
+        "anio": 1972,
+        "colombia": 62.56,
+        "uzbekistan": 61.58
+      },
+      {
+        "anio": 1973,
+        "colombia": 63.06,
+        "uzbekistan": 61.61
+      },
+      {
+        "anio": 1974,
+        "colombia": 63.64,
+        "uzbekistan": 61.95
+      },
+      {
+        "anio": 1975,
+        "colombia": 64.28,
+        "uzbekistan": 62.12
+      },
+      {
+        "anio": 1976,
+        "colombia": 64.85,
+        "uzbekistan": 62.45
+      },
+      {
+        "anio": 1977,
+        "colombia": 65.44,
+        "uzbekistan": 62.28
+      },
+      {
+        "anio": 1978,
+        "colombia": 65.97,
+        "uzbekistan": 62.52
+      },
+      {
+        "anio": 1979,
+        "colombia": 66.41,
+        "uzbekistan": 62.64
+      },
+      {
+        "anio": 1980,
+        "colombia": 66.9,
+        "uzbekistan": 62.98
+      },
+      {
+        "anio": 1981,
+        "colombia": 67.23,
+        "uzbekistan": 63.25
+      },
+      {
+        "anio": 1982,
+        "colombia": 67.57,
+        "uzbekistan": 63.51
+      },
+      {
+        "anio": 1983,
+        "colombia": 67.8,
+        "uzbekistan": 63.75
+      },
+      {
+        "anio": 1984,
+        "colombia": 68.03,
+        "uzbekistan": 63.95
+      },
+      {
+        "anio": 1985,
+        "colombia": 66.33,
+        "uzbekistan": 64.24
+      },
+      {
+        "anio": 1986,
+        "colombia": 68.34,
+        "uzbekistan": 64.67
+      },
+      {
+        "anio": 1987,
+        "colombia": 68.38,
+        "uzbekistan": 64.94
+      },
+      {
+        "anio": 1988,
+        "colombia": 68.53,
+        "uzbekistan": 65.12
+      },
+      {
+        "anio": 1989,
+        "colombia": 68.68,
+        "uzbekistan": 65.26
+      },
+      {
+        "anio": 1990,
+        "colombia": 68.81,
+        "uzbekistan": 65.33
+      },
+      {
+        "anio": 1991,
+        "colombia": 68.97,
+        "uzbekistan": 65.12
+      },
+      {
+        "anio": 1992,
+        "colombia": 69.19,
+        "uzbekistan": 65.11
+      },
+      {
+        "anio": 1993,
+        "colombia": 69.49,
+        "uzbekistan": 64.83
+      },
+      {
+        "anio": 1994,
+        "colombia": 69.75,
+        "uzbekistan": 64.7
+      },
+      {
+        "anio": 1995,
+        "colombia": 70.06,
+        "uzbekistan": 64.66
+      },
+      {
+        "anio": 1996,
+        "colombia": 70.31,
+        "uzbekistan": 64.73
+      },
+      {
+        "anio": 1997,
+        "colombia": 70.62,
+        "uzbekistan": 64.79
+      },
+      {
+        "anio": 1998,
+        "colombia": 70.85,
+        "uzbekistan": 65.05
+      },
+      {
+        "anio": 1999,
+        "colombia": 71.03,
+        "uzbekistan": 65.41
+      },
+      {
+        "anio": 2000,
+        "colombia": 71.43,
+        "uzbekistan": 65.75
+      },
+      {
+        "anio": 2001,
+        "colombia": 71.6,
+        "uzbekistan": 66.11
+      },
+      {
+        "anio": 2002,
+        "colombia": 72.03,
+        "uzbekistan": 66.62
+      },
+      {
+        "anio": 2003,
+        "colombia": 72.44,
+        "uzbekistan": 67.06
+      },
+      {
+        "anio": 2004,
+        "colombia": 72.77,
+        "uzbekistan": 67.42
+      },
+      {
+        "anio": 2005,
+        "colombia": 73.14,
+        "uzbekistan": 67.5
+      },
+      {
+        "anio": 2006,
+        "colombia": 73.52,
+        "uzbekistan": 67.89
+      },
+      {
+        "anio": 2007,
+        "colombia": 73.88,
+        "uzbekistan": 68.3
+      },
+      {
+        "anio": 2008,
+        "colombia": 74.33,
+        "uzbekistan": 68.77
+      },
+      {
+        "anio": 2009,
+        "colombia": 74.77,
+        "uzbekistan": 68.88
+      },
+      {
+        "anio": 2010,
+        "colombia": 75.06,
+        "uzbekistan": 69.23
+      },
+      {
+        "anio": 2011,
+        "colombia": 75.34,
+        "uzbekistan": 69.64
+      },
+      {
+        "anio": 2012,
+        "colombia": 75.62,
+        "uzbekistan": 69.88
+      },
+      {
+        "anio": 2013,
+        "colombia": 75.84,
+        "uzbekistan": 70.0
+      },
+      {
+        "anio": 2014,
+        "colombia": 76.06,
+        "uzbekistan": 70.25
+      },
+      {
+        "anio": 2015,
+        "colombia": 76.27,
+        "uzbekistan": 70.49
+      },
+      {
+        "anio": 2016,
+        "colombia": 76.48,
+        "uzbekistan": 70.76
+      },
+      {
+        "anio": 2017,
+        "colombia": 76.65,
+        "uzbekistan": 71.02
+      },
+      {
+        "anio": 2018,
+        "colombia": 76.75,
+        "uzbekistan": 71.15
+      },
+      {
+        "anio": 2019,
+        "colombia": 76.76,
+        "uzbekistan": 71.33
+      },
+      {
+        "anio": 2020,
+        "colombia": 74.84,
+        "uzbekistan": 70.34
+      },
+      {
+        "anio": 2021,
+        "colombia": 72.92,
+        "uzbekistan": 70.86
+      },
+      {
+        "anio": 2022,
+        "colombia": 73.73,
+        "uzbekistan": 71.66
+      }
+    ],
+    "apertura": [
+      {
+        "anio": 1960,
+        "colombia": 30.45,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1961,
+        "colombia": 26.82,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1962,
+        "colombia": 24.45,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1963,
+        "colombia": 24.33,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1964,
+        "colombia": 24.61,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1965,
+        "colombia": 21.84,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1966,
+        "colombia": 24.33,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1967,
+        "colombia": 21.55,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1968,
+        "colombia": 24.58,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1969,
+        "colombia": 25.55,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1970,
+        "colombia": 27.82,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1971,
+        "colombia": 27.99,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1972,
+        "colombia": 26.05,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1973,
+        "colombia": 27.58,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1974,
+        "colombia": 30.17,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1975,
+        "colombia": 29.83,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1976,
+        "colombia": 30.95,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1977,
+        "colombia": 30.07,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1978,
+        "colombia": 30.43,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1979,
+        "colombia": 28.67,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1980,
+        "colombia": 31.82,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1981,
+        "colombia": 27.27,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1982,
+        "colombia": 26.1,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1983,
+        "colombia": 23.7,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1984,
+        "colombia": 24.34,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1985,
+        "colombia": 26.34,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1986,
+        "colombia": 30.83,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1987,
+        "colombia": 29.87,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1988,
+        "colombia": 30.15,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1989,
+        "colombia": 31.82,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1990,
+        "colombia": 34.78,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1991,
+        "colombia": 33.53,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1992,
+        "colombia": 33.61,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1993,
+        "colombia": 36.17,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1994,
+        "colombia": 35.92,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1995,
+        "colombia": 35.49,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1996,
+        "colombia": 36.04,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1997,
+        "colombia": 35.6,
+        "uzbekistan": 57.2
+      },
+      {
+        "anio": 1998,
+        "colombia": 35.91,
+        "uzbekistan": 45.41
+      },
+      {
+        "anio": 1999,
+        "colombia": 36.15,
+        "uzbekistan": 36.62
+      },
+      {
+        "anio": 2000,
+        "colombia": 32.67,
+        "uzbekistan": 44.05
+      },
+      {
+        "anio": 2001,
+        "colombia": 33.9,
+        "uzbekistan": 56.78
+      },
+      {
+        "anio": 2002,
+        "colombia": 32.99,
+        "uzbekistan": 58.95
+      },
+      {
+        "anio": 2003,
+        "colombia": 36.52,
+        "uzbekistan": 70.46
+      },
+      {
+        "anio": 2004,
+        "colombia": 35.86,
+        "uzbekistan": 76.6
+      },
+      {
+        "anio": 2005,
+        "colombia": 37.42,
+        "uzbekistan": 69.53
+      },
+      {
+        "anio": 2006,
+        "colombia": 39.64,
+        "uzbekistan": 67.47
+      },
+      {
+        "anio": 2007,
+        "colombia": 37.1,
+        "uzbekistan": 74.41
+      },
+      {
+        "anio": 2008,
+        "colombia": 39.17,
+        "uzbekistan": 79.75
+      },
+      {
+        "anio": 2009,
+        "colombia": 35.15,
+        "uzbekistan": 68.67
+      },
+      {
+        "anio": 2010,
+        "colombia": 34.26,
+        "uzbekistan": 49.27
+      },
+      {
+        "anio": 2011,
+        "colombia": 39.47,
+        "uzbekistan": 49.66
+      },
+      {
+        "anio": 2012,
+        "colombia": 38.83,
+        "uzbekistan": 44.24
+      },
+      {
+        "anio": 2013,
+        "colombia": 37.99,
+        "uzbekistan": 42.38
+      },
+      {
+        "anio": 2014,
+        "colombia": 37.48,
+        "uzbekistan": 36.36
+      },
+      {
+        "anio": 2015,
+        "colombia": 38.36,
+        "uzbekistan": 30.75
+      },
+      {
+        "anio": 2016,
+        "colombia": 36.21,
+        "uzbekistan": 29.19
+      },
+      {
+        "anio": 2017,
+        "colombia": 35.29,
+        "uzbekistan": 42.56
+      },
+      {
+        "anio": 2018,
+        "colombia": 36.54,
+        "uzbekistan": 64.14
+      },
+      {
+        "anio": 2019,
+        "colombia": 37.56,
+        "uzbekistan": 64.96
+      },
+      {
+        "anio": 2020,
+        "colombia": 34.05,
+        "uzbekistan": 56.06
+      },
+      {
+        "anio": 2021,
+        "colombia": 40.06,
+        "uzbekistan": 57.46
+      },
+      {
+        "anio": 2022,
+        "colombia": 48.28,
+        "uzbekistan": 62.84
+      },
+      {
+        "anio": 2023,
+        "colombia": 40.39,
+        "uzbekistan": 66.1
+      },
+      {
+        "anio": 2024,
+        "colombia": 37.03,
+        "uzbekistan": 60.73
+      }
+    ],
+    "deuda_externa": [
+      {
+        "anio": 1970,
+        "colombia": 32.47,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1971,
+        "colombia": 33.71,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1972,
+        "colombia": 34.19,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1973,
+        "colombia": 32.25,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1974,
+        "colombia": 28.42,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1975,
+        "colombia": 30.04,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1976,
+        "colombia": 26.88,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1977,
+        "colombia": 26.87,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1978,
+        "colombia": 22.73,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1979,
+        "colombia": 21.68,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1980,
+        "colombia": 21.36,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1981,
+        "colombia": 24.53,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1982,
+        "colombia": 27.0,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1983,
+        "colombia": 30.05,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1984,
+        "colombia": 32.09,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1985,
+        "colombia": 41.48,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1986,
+        "colombia": 44.6,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1987,
+        "colombia": 47.39,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1988,
+        "colombia": 43.9,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1989,
+        "colombia": 43.18,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1990,
+        "colombia": 36.39,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1991,
+        "colombia": 35.35,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1992,
+        "colombia": 30.06,
+        "uzbekistan": 0.46
+      },
+      {
+        "anio": 1993,
+        "colombia": 28.94,
+        "uzbekistan": 7.88
+      },
+      {
+        "anio": 1994,
+        "colombia": 27.2,
+        "uzbekistan": 9.67
+      },
+      {
+        "anio": 1995,
+        "colombia": 27.4,
+        "uzbekistan": 13.51
+      },
+      {
+        "anio": 1996,
+        "colombia": 30.06,
+        "uzbekistan": 17.17
+      },
+      {
+        "anio": 1997,
+        "colombia": 30.26,
+        "uzbekistan": 19.9
+      },
+      {
+        "anio": 1998,
+        "colombia": 33.95,
+        "uzbekistan": 22.54
+      },
+      {
+        "anio": 1999,
+        "colombia": 40.43,
+        "uzbekistan": 31.12
+      },
+      {
+        "anio": 2000,
+        "colombia": 34.37,
+        "uzbekistan": 35.99
+      },
+      {
+        "anio": 2001,
+        "colombia": 37.29,
+        "uzbekistan": 45.75
+      },
+      {
+        "anio": 2002,
+        "colombia": 34.29,
+        "uzbekistan": 53.12
+      },
+      {
+        "anio": 2003,
+        "colombia": 39.44,
+        "uzbekistan": 52.58
+      },
+      {
+        "anio": 2004,
+        "colombia": 32.66,
+        "uzbekistan": 43.33
+      },
+      {
+        "anio": 2005,
+        "colombia": 25.75,
+        "uzbekistan": 32.42
+      },
+      {
+        "anio": 2006,
+        "colombia": 23.87,
+        "uzbekistan": 26.08
+      },
+      {
+        "anio": 2007,
+        "colombia": 21.49,
+        "uzbekistan": 20.92
+      },
+      {
+        "anio": 2008,
+        "colombia": 19.4,
+        "uzbekistan": 17.18
+      },
+      {
+        "anio": 2009,
+        "colombia": 23.09,
+        "uzbekistan": 21.66
+      },
+      {
+        "anio": 2010,
+        "colombia": 22.49,
+        "uzbekistan": 16.05
+      },
+      {
+        "anio": 2011,
+        "colombia": 22.74,
+        "uzbekistan": 13.65
+      },
+      {
+        "anio": 2012,
+        "colombia": 21.38,
+        "uzbekistan": 12.66
+      },
+      {
+        "anio": 2013,
+        "colombia": 24.25,
+        "uzbekistan": 14.1
+      },
+      {
+        "anio": 2014,
+        "colombia": 27.45,
+        "uzbekistan": 15.11
+      },
+      {
+        "anio": 2015,
+        "colombia": 38.64,
+        "uzbekistan": 15.74
+      },
+      {
+        "anio": 2016,
+        "colombia": 42.76,
+        "uzbekistan": 17.8
+      },
+      {
+        "anio": 2017,
+        "colombia": 40.48,
+        "uzbekistan": 23.96
+      },
+      {
+        "anio": 2018,
+        "colombia": 39.92,
+        "uzbekistan": 31.11
+      },
+      {
+        "anio": 2019,
+        "colombia": 43.05,
+        "uzbekistan": 37.09
+      },
+      {
+        "anio": 2020,
+        "colombia": 57.65,
+        "uzbekistan": 55.92
+      },
+      {
+        "anio": 2021,
+        "colombia": 54.08,
+        "uzbekistan": 58.02
+      },
+      {
+        "anio": 2022,
+        "colombia": 53.38,
+        "uzbekistan": 59.48
+      },
+      {
+        "anio": 2023,
+        "colombia": 53.55,
+        "uzbekistan": 59.99
+      },
+      {
+        "anio": 2024,
+        "colombia": 48.17,
+        "uzbekistan": 61.11
+      }
+    ],
+    "ied": [
+      {
+        "anio": 1970,
+        "colombia": 0.6,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1971,
+        "colombia": 0.55,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1972,
+        "colombia": 0.21,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1973,
+        "colombia": 0.23,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1974,
+        "colombia": 0.33,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1975,
+        "colombia": 0.28,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1976,
+        "colombia": 0.16,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1977,
+        "colombia": 0.33,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1978,
+        "colombia": 0.46,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1979,
+        "colombia": 0.45,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1980,
+        "colombia": 0.47,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1981,
+        "colombia": 0.73,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1982,
+        "colombia": 0.94,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1983,
+        "colombia": 1.6,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1984,
+        "colombia": 1.53,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1985,
+        "colombia": 2.93,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1986,
+        "colombia": 1.93,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1987,
+        "colombia": 0.88,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1988,
+        "colombia": 0.52,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1989,
+        "colombia": 1.46,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1990,
+        "colombia": 1.05,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1991,
+        "colombia": 0.93,
+        "uzbekistan": null
+      },
+      {
+        "anio": 1992,
+        "colombia": 1.25,
+        "uzbekistan": 0.07
+      },
+      {
+        "anio": 1993,
+        "colombia": 1.44,
+        "uzbekistan": 0.37
+      },
+      {
+        "anio": 1994,
+        "colombia": 1.77,
+        "uzbekistan": 0.57
+      },
+      {
+        "anio": 1995,
+        "colombia": 1.05,
+        "uzbekistan": -0.18
+      },
+      {
+        "anio": 1996,
+        "colombia": 3.2,
+        "uzbekistan": 0.65
+      },
+      {
+        "anio": 1997,
+        "colombia": 5.21,
+        "uzbekistan": 1.13
+      },
+      {
+        "anio": 1998,
+        "colombia": 2.87,
+        "uzbekistan": 0.93
+      },
+      {
+        "anio": 1999,
+        "colombia": 1.75,
+        "uzbekistan": 0.71
+      },
+      {
+        "anio": 2000,
+        "colombia": 2.44,
+        "uzbekistan": 0.54
+      },
+      {
+        "anio": 2001,
+        "colombia": 2.59,
+        "uzbekistan": 0.73
+      },
+      {
+        "anio": 2002,
+        "colombia": 2.18,
+        "uzbekistan": 0.67
+      },
+      {
+        "anio": 2003,
+        "colombia": 1.82,
+        "uzbekistan": 0.82
+      },
+      {
+        "anio": 2004,
+        "colombia": 2.66,
+        "uzbekistan": 1.47
+      },
+      {
+        "anio": 2005,
+        "colombia": 7.03,
+        "uzbekistan": 1.49
+      },
+      {
+        "anio": 2006,
+        "colombia": 4.17,
+        "uzbekistan": 1.2
+      },
+      {
+        "anio": 2007,
+        "colombia": 4.31,
+        "uzbekistan": 2.99
+      },
+      {
+        "anio": 2008,
+        "colombia": 4.36,
+        "uzbekistan": 1.85
+      },
+      {
+        "anio": 2009,
+        "colombia": 3.46,
+        "uzbekistan": 1.82
+      },
+      {
+        "anio": 2010,
+        "colombia": 2.24,
+        "uzbekistan": 3.34
+      },
+      {
+        "anio": 2011,
+        "colombia": 4.37,
+        "uzbekistan": 2.68
+      },
+      {
+        "anio": 2012,
+        "colombia": 4.06,
+        "uzbekistan": 1.1
+      },
+      {
+        "anio": 2013,
+        "colombia": 4.24,
+        "uzbekistan": 0.95
+      },
+      {
+        "anio": 2014,
+        "colombia": 4.24,
+        "uzbekistan": 1.0
+      },
+      {
+        "anio": 2015,
+        "colombia": 3.96,
+        "uzbekistan": 1.21
+      },
+      {
+        "anio": 2016,
+        "colombia": 4.9,
+        "uzbekistan": 1.93
+      },
+      {
+        "anio": 2017,
+        "colombia": 4.39,
+        "uzbekistan": 2.58
+      },
+      {
+        "anio": 2018,
+        "colombia": 3.38,
+        "uzbekistan": 1.06
+      },
+      {
+        "anio": 2019,
+        "colombia": 4.33,
+        "uzbekistan": 3.44
+      },
+      {
+        "anio": 2020,
+        "colombia": 2.76,
+        "uzbekistan": 2.6
+      },
+      {
+        "anio": 2021,
+        "colombia": 3.0,
+        "uzbekistan": 2.95
+      },
+      {
+        "anio": 2022,
+        "colombia": 4.97,
+        "uzbekistan": 2.95
+      },
+      {
+        "anio": 2023,
+        "colombia": 4.58,
+        "uzbekistan": 2.1
+      },
+      {
+        "anio": 2024,
+        "colombia": 3.27,
+        "uzbekistan": 2.6
+      }
+    ]
+  }
+}

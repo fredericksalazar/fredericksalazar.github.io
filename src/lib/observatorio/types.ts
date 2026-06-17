@@ -514,3 +514,36 @@ export interface PresCandidatosData {
     "2026-1v": CandidatoPres[];
   };
 }
+
+// ──────────────────── COMPARATIVO COLOMBIA vs UZBEKISTÁN ────────────────────
+// Dataset para el artículo de blog comparativo (Banco Mundial WDI). No es un
+// dashboard del Observatorio, pero reutiliza su infraestructura de gráficos.
+
+export interface ComparativoIndicador {
+  /** Último año con dato real en AMBOS países (null si nunca coincide). */
+  anio: number | null;
+  colombia: number | null;
+  uzbekistan: number | null;
+  unidad: string;
+  label: string;
+  /** Dirección que "gana" la categoría en el marcador. */
+  mejor: "mayor" | "menor";
+}
+
+export interface ComparativoSeriePunto {
+  anio: number;
+  colombia: number | null;
+  uzbekistan: number | null;
+}
+
+export interface ComparativoData {
+  metadata: {
+    fuente: { nombre: string; url: string };
+    paises: { colombia: string; uzbekistan: string };
+    cobertura: { primer_anio: number; ultimo_anio: number };
+    ultima_actualizacion: string;
+    nota: string;
+  };
+  indicadores: Record<string, ComparativoIndicador>;
+  series: Record<string, ComparativoSeriePunto[]>;
+}

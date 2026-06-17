@@ -1,0 +1,83 @@
+---
+titulo: "Colombia vs Uzbekistán: quién gana el partido de los datos"
+tituloSeo: "Colombia vs Uzbekistán en datos (Banco Mundial)"
+fecha: 2026-06-16
+descripcion: "Más allá del Mundial: comparamos a Colombia y Uzbekistán con datos del Banco Mundial — PIB, desigualdad, empleo, inflación y más. ¿Quién gana en cifras?"
+etiquetas: ["Colombia", "Uzbekistán", "Mundial", "Economía", "Datos", "Banco Mundial"]
+autor: "Frederick Salazar"
+imagen: "/images/blog/colombia-vs-uzbekistan-cover.png"
+draft: false
+tipo: "analisis"
+destacado: true
+resumen: "Hoy Colombia y Uzbekistán se enfrentan en el Mundial. Aprovechamos el momento para jugar otro partido: el de los datos del Banco Mundial. PIB, desigualdad, empleo, inflación, comercio y más, país contra país."
+---
+
+import MarcadorEconomico from "../../components/blog/MarcadorEconomico.astro";
+import Chart from "../../components/observatorio/Chart.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+
+Hoy **Colombia se enfrenta a Uzbekistán** por el Mundial. Dos selecciones, noventa minutos y un marcador. Pero hay otro partido —menos comentado y mucho más largo— que estos dos países llevan jugando desde hace décadas: el de su **desarrollo económico y social**.
+
+Así que aprovecho el momento para hacer lo que mejor sé hacer: poner los **datos sobre la mesa**. Tomé las series históricas del **Banco Mundial** para ambos países y armé un marcador, indicador por indicador. No es fútbol, pero también se gana y se pierde.
+
+<MarcadorEconomico />
+
+<PlotlyLoader />
+
+A primera vista Colombia "gana" el marcador, pero el resultado engaña: las victorias colombianas son sobre todo de **tamaño y riqueza acumulada**, mientras que Uzbekistán se impone justo donde más le duele a Colombia: **igualdad, empleo e integración comercial**. Vamos indicador por indicador.
+
+## Tamaño y riqueza: el terreno de Colombia
+
+En dinero, Colombia juega en otra categoría. Su **PIB per cápita** ronda los **US$ 7.900**, más del doble de los **US$ 3.200** de Uzbekistán. La economía colombiana también es varias veces más grande en términos absolutos.
+
+<Chart id="cmp-pib-percapita" embedded={true} />
+
+<Chart id="cmp-pib-total" embedded={true} />
+
+Parte de la diferencia es de población: Colombia supera los **52 millones** de habitantes frente a unos **36 millones** de Uzbekistán, aunque el país centroasiático crece a mayor ritmo.
+
+<Chart id="cmp-poblacion" embedded={true} />
+
+## Costo de vida y empleo: aquí se empareja el partido
+
+La foto cambia cuando miramos el día a día de la gente. En **inflación** ambos países han librado batallas duras; al cierre de los últimos datos comparables Colombia logró una cifra algo más baja.
+
+<Chart id="cmp-inflacion" embedded={true} />
+
+Pero en **desempleo** Uzbekistán saca ventaja clara: su tasa (en torno al **4–5%**) es prácticamente la mitad de la colombiana (cercana al **8–9%**). Es uno de los goles más contundentes del partido.
+
+<Chart id="cmp-desempleo" embedded={true} />
+
+## Desigualdad: el gol de media cancha de Uzbekistán
+
+Si hay un indicador donde la diferencia es abrumadora, es la **desigualdad**. El coeficiente de Gini de Colombia (cercano a **54**) la ubica entre las economías más desiguales del mundo; el de Uzbekistán (alrededor de **35**) refleja una sociedad mucho más pareja en ingresos.
+
+<Chart id="cmp-gini" embedded={true} />
+
+## Calidad de vida: empate técnico con ventaja colombiana
+
+En **esperanza de vida** ambos países han mejorado de forma sostenida durante décadas. Colombia mantiene una ligera ventaja, pero la brecha es pequeña.
+
+<Chart id="cmp-esperanza-vida" embedded={true} />
+
+## Comercio y finanzas externas
+
+Uzbekistán es hoy una economía **más abierta**: la suma de exportaciones e importaciones pesa más sobre su PIB que en Colombia. En contraste, Colombia mantiene una **deuda externa** algo más contenida como porcentaje del PIB y atrae algo más de **inversión extranjera directa**.
+
+<Chart id="cmp-apertura" embedded={true} />
+
+<Chart id="cmp-deuda-externa" embedded={true} />
+
+<Chart id="cmp-ied" embedded={true} />
+
+## El veredicto
+
+En el marcador frío, **Colombia gana 7 a 3**. Pero el relato detrás de los números es más interesante que el resultado: Colombia es una economía **más grande y más rica por habitante**, mientras que Uzbekistán es **más igualitaria, con menos desempleo y más abierta al comercio**.
+
+Dicho de otro modo: si el partido se jugara por *tamaño del bolsillo*, gana Colombia; si se jugara por *cómo se reparte ese bolsillo*, gana Uzbekistán. Y ese, más que cualquier resultado en la cancha, es el verdadero desafío estructural del país: **crecer sin dejar a tanta gente atrás**.
+
+## Metodología y fuentes
+
+Todas las cifras provienen del **Banco Mundial — World Development Indicators**, la misma base que alimenta el [Observatorio de Datos de Colombia](/observatorio/). Para cada indicador se usó el **último año con dato disponible en ambos países** (entre 2022 y 2025 según la serie), indicado en cada fila del marcador. Los valores faltantes del archivo de origen se tratan como nulos. Los gráficos son interactivos: pasa el cursor (o toca) para ver el valor exacto de cada año.
+
+Este es un análisis independiente con fines informativos y educativos. ¡Y que gane el mejor en la cancha! 🇨🇴🇺🇿
