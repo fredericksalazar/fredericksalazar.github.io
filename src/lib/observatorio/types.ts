@@ -523,7 +523,7 @@ export interface ComparativoIndicador {
   /** Último año con dato real en AMBOS países (null si nunca coincide). */
   anio: number | null;
   colombia: number | null;
-  uzbekistan: number | null;
+  oponente: number | null;
   unidad: string;
   label: string;
   /** Dirección que "gana" la categoría en el marcador. */
@@ -533,13 +533,14 @@ export interface ComparativoIndicador {
 export interface ComparativoSeriePunto {
   anio: number;
   colombia: number | null;
-  uzbekistan: number | null;
+  oponente: number | null;
 }
 
 export interface ComparativoData {
   metadata: {
     fuente: { nombre: string; url: string };
-    paises: { colombia: string; uzbekistan: string };
+    /** País rival de la comparación (Colombia es siempre el otro lado). */
+    oponente: { nombre: string; bandera: string; color: string };
     cobertura: { primer_anio: number; ultimo_anio: number };
     ultima_actualizacion: string;
     nota: string;

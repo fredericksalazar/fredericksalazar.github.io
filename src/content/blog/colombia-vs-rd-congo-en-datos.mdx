@@ -1,0 +1,85 @@
+---
+titulo: "Colombia vs RD Congo: el partido de datos donde el marcador engaña"
+tituloSeo: "Colombia vs RD Congo en datos (Banco Mundial)"
+fecha: 2026-06-16
+descripcion: "Colombia vs RD Congo más allá del Mundial: PIB, pobreza, desigualdad, empleo y esperanza de vida con datos del Banco Mundial. Y por qué el marcador engaña."
+etiquetas: ["Colombia", "RD Congo", "Congo", "Mundial", "Economía", "Datos", "Banco Mundial"]
+autor: "Frederick Salazar"
+imagen: "/images/blog/colombia-vs-rd-congo-cover.png"
+draft: false
+tipo: "analisis"
+destacado: true
+resumen: "Colombia se mide ante la República Democrática del Congo. Jugamos el otro partido —el de los datos del Banco Mundial— y descubrimos por qué ganar el marcador no es lo mismo que ganar en desarrollo."
+---
+
+import MarcadorEconomico from "../../components/blog/MarcadorEconomico.astro";
+import Chart from "../../components/observatorio/Chart.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+
+Hoy **Colombia se enfrenta a la República Democrática del Congo** (RD Congo) por el Mundial. Y como ya es costumbre en este blog, mientras rueda el balón yo juego el otro partido: el de los **datos del Banco Mundial**, país contra país.
+
+Pero esta vez hay una trampa en el resultado. Armé el marcador igual que siempre —cada país "anota" en los indicadores donde lidera— y el tablero quedó así:
+
+<MarcadorEconomico opponent="cog" />
+
+<PlotlyLoader />
+
+**RD Congo gana 7 a 3.** Y sin embargo, sería un error gravísimo concluir que a un congoleño le va mejor que a un colombiano. Este es justo el tipo de caso donde **los números, leídos sin contexto, mienten**. Vamos a desarmarlo.
+
+## El abismo de la riqueza
+
+Empecemos por lo que el marcador sí captura bien. Un colombiano produce, en promedio, **US$ 7.919 al año**; un congoleño, **US$ 649**. Colombia es **doce veces más rica por habitante**. La brecha no es un matiz: es un abismo.
+
+<Chart id="cmp-cog-pib-percapita" embedded={true} />
+
+En tamaño total de la economía la distancia también es enorme, pese a que RD Congo tiene el doble de habitantes.
+
+<Chart id="cmp-cog-pib-total" embedded={true} />
+
+## Un país joven y enorme
+
+Aquí RD Congo "anota" su primer punto legítimo: con **109 millones de habitantes** más que duplica a Colombia (53 millones), y crece mucho más rápido. Es uno de los países más poblados de África.
+
+<Chart id="cmp-cog-poblacion" embedded={true} />
+
+## Vivir más: la ventaja silenciosa de Colombia
+
+El indicador que mejor resume el bienestar de una población es cuánto vive su gente. Un colombiano vive en promedio **casi 74 años**; un congoleño, **menos de 60**. Catorce años de diferencia. Ambos países han mejorado, pero la brecha sigue siendo profunda.
+
+<Chart id="cmp-cog-esperanza-vida" embedded={true} />
+
+## Por qué el marcador engaña
+
+Aquí viene lo interesante. RD Congo "gana" la mayoría de los indicadores restantes, pero **casi todos son síntomas de subdesarrollo disfrazados de buenas noticias**:
+
+- **Menos desigualdad (Gini más bajo).** RD Congo es más "igualitario"… porque es una **igualdad en la pobreza**: cuando casi todos tienen poco, la brecha entre ricos y pobres se comprime. La desigualdad de Colombia es un problema real y serio, pero no se arregla empobreciendo a todos.
+
+<Chart id="cmp-cog-gini" embedded={true} />
+
+- **Menos desempleo.** En una economía de subsistencia e informalidad casi total, "estar ocupado" no significa tener un empleo digno: significa rebuscarse el día. La tasa de desempleo formal pierde sentido como medida de bienestar.
+
+<Chart id="cmp-cog-desempleo" embedded={true} />
+
+- **Menos deuda externa.** Suena bien, pero refleja en buena parte un **acceso limitado al crédito internacional**, no una disciplina fiscal superior.
+
+<Chart id="cmp-cog-deuda-externa" embedded={true} />
+
+- **Más apertura comercial.** RD Congo comercia más del **100% de su PIB**… porque su economía depende de **exportar minerales en bruto** (cobre, cobalto, coltán). Apertura no es lo mismo que diversificación ni que valor agregado.
+
+<Chart id="cmp-cog-apertura" embedded={true} />
+
+La inversión extranjera (IED) cuenta una historia parecida: llega atraída sobre todo por la minería.
+
+<Chart id="cmp-cog-ied" embedded={true} />
+
+## El veredicto
+
+En el tablero frío, **RD Congo gana 7–3**. Pero el marcador engaña: la mayoría de sus "goles" no son señales de que su gente viva mejor, sino del lugar donde está en su camino de desarrollo. Los dos indicadores que de verdad miden bienestar —**lo que produce cada persona y cuántos años vive**— favorecen a Colombia de forma contundente.
+
+¿La lección? **Ganar el marcador no es ganar en desarrollo.** Y, al mismo tiempo, hay un espejo incómodo para Colombia: su **desigualdad** sigue siendo tan alta que un país mucho más pobre la supera en ese indicador. Crecer es importante; repartir bien ese crecimiento, también.
+
+## Metodología y fuentes
+
+Todas las cifras provienen del **Banco Mundial — World Development Indicators**, la misma base que alimenta el [Observatorio de Datos de Colombia](/observatorio/). Para cada indicador se usó el **último año con dato disponible en ambos países** (entre 2016 y 2025 según la serie), indicado en cada fila del marcador. La inflación aparece en el marcador (dato de 2016) pero se omite como gráfico de línea, porque la hiperinflación que vivió RD Congo en los años 90 (picos superiores al **20.000%**) haría ilegible cualquier comparación reciente. La serie de Gini de RD Congo tiene pocos años disponibles. Los gráficos son interactivos: pasa el cursor (o toca) para ver el valor exacto de cada año.
+
+Análisis independiente, con fines informativos y educativos. ¡Y que gane el mejor en la cancha! 🇨🇴🇨🇩

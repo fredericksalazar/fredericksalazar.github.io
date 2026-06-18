@@ -27,18 +27,7 @@ import {
   participacionImportaciones,
   productosTradicionales,
 } from "./comercio";
-import {
-  cmpPibPercapita,
-  cmpPibTotal,
-  cmpPoblacion,
-  cmpInflacion,
-  cmpDesempleo,
-  cmpGini,
-  cmpEsperanzaVida,
-  cmpApertura,
-  cmpDeudaExterna,
-  cmpIed,
-} from "./comparativo";
+import { comparativoUzb, comparativoCog } from "./comparativo";
 import {
   inflacionHistorica,
   pibHistorico,
@@ -88,7 +77,8 @@ import {
 } from "./elecciones-presidenciales";
 import type { ChartDef } from "./types";
 
-export const CHART_DEFS = {
+// Charts del Observatorio: registro explícito → TypeScript detecta ids duplicados.
+const BASE_DEFS = {
   [inflacionAnual.id]: inflacionAnual,
   [tasaInteres.id]: tasaInteres,
   [spread.id]: spread,
@@ -110,16 +100,6 @@ export const CHART_DEFS = {
   [participacionExportaciones.id]: participacionExportaciones,
   [participacionImportaciones.id]: participacionImportaciones,
   [productosTradicionales.id]: productosTradicionales,
-  [cmpPibPercapita.id]: cmpPibPercapita,
-  [cmpPibTotal.id]: cmpPibTotal,
-  [cmpPoblacion.id]: cmpPoblacion,
-  [cmpInflacion.id]: cmpInflacion,
-  [cmpDesempleo.id]: cmpDesempleo,
-  [cmpGini.id]: cmpGini,
-  [cmpEsperanzaVida.id]: cmpEsperanzaVida,
-  [cmpApertura.id]: cmpApertura,
-  [cmpDeudaExterna.id]: cmpDeudaExterna,
-  [cmpIed.id]: cmpIed,
   [inflacionHistorica.id]: inflacionHistorica,
   [pibHistorico.id]: pibHistorico,
   [pibPerCapitaHistorico.id]: pibPerCapitaHistorico,
@@ -161,9 +141,18 @@ export const CHART_DEFS = {
   [pres2026_2vPronosticoMontecarlo.id]: pres2026_2vPronosticoMontecarlo,
 } as const satisfies Record<string, ChartDef>;
 
-export type ChartId = Extract<keyof typeof CHART_DEFS, string>;
+// Sets comparativos (Colombia vs rival): generados por factory, ids únicos por
+// construcción (clave de rival × indicador). Se fusionan en el registro de lookup.
+const COMPARATIVO_DEFS: ChartDef[] = [...comparativoUzb, ...comparativoCog];
 
-export const getChartDef = (id: string): ChartDef | undefined =>
-  (CHART_DEFS as Record<string, ChartDef>)[id];
+const CHART_DEFS: Record<string, ChartDef> = {
+  ...BASE_DEFS,
+  ...Object.fromEntries(COMPARATIVO_DEFS.map((d) => [d.id, d])),
+};
+
+/** Ids con autocompletado para los charts del Observatorio; acepta también los `cmp-*`. */
+export type ChartId = Extract<keyof typeof BASE_DEFS, string> | (string & {});
+
+export const getChartDef = (id: string): ChartDef | undefined => CHART_DEFS[id];
 
 export type { ChartDef };

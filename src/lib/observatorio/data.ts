@@ -60,5 +60,9 @@ export const getPres2022_1v = (): PresEleccionData => pres2022_1v;
 export const getPres2022_2v = (): PresEleccionData => pres2022_2v;
 export const getPresCandidatos = (): PresCandidatosData => presCandidatos;
 
-const comparativoColUzb = readPublicJSON<ComparativoData>("data_comparativo_col_uzb");
-export const getComparativoColUzb = (): ComparativoData => comparativoColUzb;
+const comparativos: Record<string, ComparativoData> = {
+  uzb: readPublicJSON<ComparativoData>("data_comparativo_col_uzb"),
+  cog: readPublicJSON<ComparativoData>("data_comparativo_col_cog"),
+};
+/** Dataset comparativo Colombia vs oponente, por clave ("uzb", "cog", ...). */
+export const getComparativo = (key: string): ComparativoData => comparativos[key];

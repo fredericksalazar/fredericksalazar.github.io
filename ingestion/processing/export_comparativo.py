@@ -1,18 +1,17 @@
-"""Exporta el dataset comparativo Colombia vs Uzbekistán para el blog.
+"""Exporta datasets comparativos "Colombia vs <oponente>" para el blog.
 
-Lee el CSV crudo del Banco Mundial (todos los países) ya presente en el repo,
-filtra COLOMBIA y UZBEKISTAN, nulifica los placeholders (0.0 y -100 → null,
-REGLA 7 del Observatorio) y emite `public/data/data_comparativo_col_uzb.json`.
+Lee el CSV crudo del Banco Mundial (todos los países) ya presente en el repo y,
+para cada oponente del registro `OPONENTES`, filtra COLOMBIA y el oponente,
+nulifica los placeholders (0.0 y -100 → null, REGLA 7 del Observatorio) y emite
+`public/data/data_comparativo_col_<key>.json`.
 
-Contrato de salida:
+Para agregar un rival nuevo: añade una entrada a `OPONENTES` y vuelve a correr.
+
+Contrato de salida (genérico, campo `oponente` en vez del nombre del país):
 {
-  "metadata": { fuente, cobertura, paises, ultima_actualizacion },
-  "indicadores": {            # snapshot del último año con dato real en AMBOS países
-    "<id>": { anio, colombia, uzbekistan, unidad, label, mejor }
-  },
-  "series": {                 # serie anual ascendente para los gráficos
-    "<id>": [ { anio, colombia, uzbekistan }, ... ]
-  }
+  "metadata": { fuente, oponente: {nombre, bandera}, cobertura, ultima_actualizacion, nota },
+  "indicadores": { "<id>": { anio, colombia, oponente, unidad, label, mejor } },
+  "series":      { "<id>": [ { anio, colombia, oponente }, ... ] }
 }
 
 Uso: python3 -m ingestion.processing.export_comparativo
@@ -22,16 +21,21 @@ from __future__ import annotations
 
 import csv
 import json
-from datetime import date, timezone, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 CSV_PATH = Path("data/raw/world_bank/macro_economics_indicators_2026.csv")
-OUT_PATH = Path("public/data/data_comparativo_col_uzb.json")
+OUT_DIR = Path("public/data")
 
 PLACEHOLDERS = {0.0, -100.0}
 
-# id, label, unidad, mejor("mayor"|"menor"), columnas[], combinacion
-# combinacion: "valor" (1 col), "promedio" (media de cols), "suma" (suma de cols)
+# key, país en el CSV, nombre visible, bandera (emoji), color de marca de la serie
+OPONENTES = [
+    {"key": "uzb", "pais": "UZBEKISTAN", "nombre": "Uzbekistán", "bandera": "🇺🇿", "color": "#16a34a"},
+    {"key": "cog", "pais": "REPUBLIC DEMOCRATIC OF CONGO", "nombre": "RD Congo", "bandera": "🇨🇩", "color": "#d97706"},
+]
+
+# id, label, unidad, mejor("mayor"|"menor"), columnas[], combinacion("valor"|"promedio"|"suma")
 INDICADORES = [
     ("pib_percapita", "PIB per cápita", "USD", "mayor", ["total_gdp_percapita"], "valor"),
     ("pib_total", "PIB total", "millones USD", "mayor", ["total_gdp_million"], "valor"),
@@ -47,8 +51,6 @@ INDICADORES = [
     ("ied", "Inversión extranjera directa", "% del PIB", "mayor",
      ["foreign_direct_investment"], "valor"),
 ]
-
-PAISES = {"colombia": "COLOMBIA", "uzbekistan": "UZBEKISTAN"}
 
 
 def _num(raw: str | None) -> float | None:
@@ -83,13 +85,12 @@ def _redondear(v: float | None, ind_id: str) -> float | int | None:
     return round(v, 2)
 
 
-def main() -> None:
-    rows = list(csv.DictReader(CSV_PATH.open(encoding="utf-8"), delimiter=";"))
+def exportar(op: dict, rows: list[dict]) -> None:
     por_pais = {
-        clave: {int(r["year"]): r for r in rows if r["country_name"] == nombre}
-        for clave, nombre in PAISES.items()
+        "colombia": {int(r["year"]): r for r in rows if r["country_name"] == "COLOMBIA"},
+        "oponente": {int(r["year"]): r for r in rows if r["country_name"] == op["pais"]},
     }
-    anios = sorted(set(por_pais["colombia"]) | set(por_pais["uzbekistan"]))
+    anios = sorted(set(por_pais["colombia"]) | set(por_pais["oponente"]))
 
     series: dict[str, list[dict]] = {}
     indicadores: dict[str, dict] = {}
@@ -98,28 +99,27 @@ def main() -> None:
         serie = []
         for y in anios:
             co_row = por_pais["colombia"].get(y)
-            uz_row = por_pais["uzbekistan"].get(y)
+            op_row = por_pais["oponente"].get(y)
             co = _combinar(co_row, cols, modo) if co_row else None
-            uz = _combinar(uz_row, cols, modo) if uz_row else None
-            if co is None and uz is None:
+            opv = _combinar(op_row, cols, modo) if op_row else None
+            if co is None and opv is None:
                 continue
             serie.append({
                 "anio": y,
                 "colombia": _redondear(co, ind_id),
-                "uzbekistan": _redondear(uz, ind_id),
+                "oponente": _redondear(opv, ind_id),
             })
         series[ind_id] = serie
 
-        # snapshot: último año con dato real en AMBOS
         snap = next(
             (p for p in reversed(serie)
-             if p["colombia"] is not None and p["uzbekistan"] is not None),
+             if p["colombia"] is not None and p["oponente"] is not None),
             None,
         )
         indicadores[ind_id] = {
             "anio": snap["anio"] if snap else None,
             "colombia": snap["colombia"] if snap else None,
-            "uzbekistan": snap["uzbekistan"] if snap else None,
+            "oponente": snap["oponente"] if snap else None,
             "unidad": unidad,
             "label": label,
             "mejor": mejor,
@@ -127,7 +127,7 @@ def main() -> None:
 
     cobertura_anios = [
         p["anio"] for s in series.values() for p in s
-        if p["colombia"] is not None and p["uzbekistan"] is not None
+        if p["colombia"] is not None and p["oponente"] is not None
     ]
 
     out = {
@@ -136,7 +136,7 @@ def main() -> None:
                 "nombre": "Banco Mundial — World Development Indicators",
                 "url": "https://databank.worldbank.org/source/world-development-indicators",
             },
-            "paises": {"colombia": "Colombia", "uzbekistan": "Uzbekistán"},
+            "oponente": {"nombre": op["nombre"], "bandera": op["bandera"], "color": op["color"]},
             "cobertura": {
                 "primer_anio": min(cobertura_anios),
                 "ultimo_anio": max(cobertura_anios),
@@ -151,18 +151,24 @@ def main() -> None:
         "series": series,
     }
 
-    OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUT_PATH.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+    out_path = OUT_DIR / f"data_comparativo_col_{op['key']}.json"
+    out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    # Resumen en consola
-    print(f"OK → {OUT_PATH}")
-    for ind_id, _l, unidad, mejor, *_ in INDICADORES:
+    print(f"\nOK → {out_path}  (Colombia vs {op['nombre']})")
+    for ind_id, _l, _u, mejor, *_ in INDICADORES:
         d = indicadores[ind_id]
         lider = "—"
-        if d["colombia"] is not None and d["uzbekistan"] is not None:
-            co_gana = (d["colombia"] > d["uzbekistan"]) if mejor == "mayor" else (d["colombia"] < d["uzbekistan"])
-            lider = "Colombia" if co_gana else "Uzbekistán"
-        print(f"  {ind_id:16} {str(d['anio']):>6}  CO={d['colombia']}  UZ={d['uzbekistan']}  → {lider}")
+        if d["colombia"] is not None and d["oponente"] is not None:
+            co_gana = (d["colombia"] > d["oponente"]) if mejor == "mayor" else (d["colombia"] < d["oponente"])
+            lider = "Colombia" if co_gana else op["nombre"]
+        print(f"  {ind_id:16} {str(d['anio']):>6}  CO={d['colombia']}  OP={d['oponente']}  → {lider}")
+
+
+def main() -> None:
+    rows = list(csv.DictReader(CSV_PATH.open(encoding="utf-8"), delimiter=";"))
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    for op in OPONENTES:
+        exportar(op, rows)
 
 
 if __name__ == "__main__":
