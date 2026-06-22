@@ -19,7 +19,8 @@
       "elecciones": [
         "2022-1v",
         "2022-2v",
-        "2026-1v"
+        "2026-1v",
+        "2026-2v"
       ]
     }
   },
@@ -172,6 +173,21 @@
         "nombre": "Gustavo Matamoros Camacho",
         "partido": "Salvación y Desarrollo",
         "ideologia": "derecha"
+      }
+    ],
+    "2026-2v": [
+      {
+        "id": "abelardo_de_la_espriella",
+        "nombre": "Abelardo de la Espriella",
+        "partido": "Defensores de la Patria",
+        "ideologia": "derecha"
+      },
+      {
+        "id": "ivan_cepeda",
+        "nombre": "Iván Cepeda Castro",
+        "partido": "Polo Democrático Alternativo",
+        "ideologia": "izquierda",
+        "coalicion": "Pacto Histórico"
       }
     ]
   }

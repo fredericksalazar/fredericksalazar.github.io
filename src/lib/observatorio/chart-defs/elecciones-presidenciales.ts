@@ -741,6 +741,416 @@ if (typeof document !== "undefined") {
   });
 }
 
+// ════════════════════════════════════════════════════════════════════════════
+// 2026 · 2ª vuelta (resultado real, preconteo) — análisis 1V → 2V
+// Ganador: Abelardo de la Espriella (derecha, azul) vs Iván Cepeda (izquierda,
+// rojo). Misma paleta por ideología que el resto del módulo electoral.
+// ════════════════════════════════════════════════════════════════════════════
+
+const DE_COLOR = "#2563eb";
+const CEP_COLOR = "#dc2626";
+
+export const pres2026_2vComposicionVotos: ChartDef = {
+  id: "pres-2026-2v-composicion-votos",
+  titulo: "Composición de la votación — 2026 2ª vuelta",
+  pregunta: "¿Qué proporción de los votos fueron válidos, nulos o no marcados?",
+  fuenteTexto: "Registraduría Nacional del Estado Civil (preconteo)",
+  datasets: ["pres-2026-2v"],
+  height: 380,
+  ariaLabel: "Composición de votos válidos, nulos y no marcados en 2026 2ª vuelta",
+  build({ "pres-2026-2v": e }) {
+    if (!e) return { traces: [], layout: baseLayout() };
+    return buildComposicion(e);
+  },
+};
+
+export const pres2026_2vVotosCandidato: ChartDef = {
+  id: "pres-2026-2v-votos-candidato",
+  titulo: "Votos por candidato — 2026 2ª vuelta",
+  pregunta: "¿Cómo se distribuyó el balotaje?",
+  fuenteTexto: "Registraduría Nacional del Estado Civil (preconteo)",
+  datasets: ["pres-2026-2v", "pres-candidatos"],
+  height: 320,
+  ariaLabel: "Barras horizontales con votos del balotaje 2026",
+  build({ "pres-2026-2v": e, "pres-candidatos": cat }) {
+    if (!e || !cat) return { traces: [], layout: baseLayout() };
+    return buildVotosCandidato(e, cat.candidatos["2026-2v"]);
+  },
+};
+
+export const pres2026_2vMapaDeptoGanador: ChartDef = {
+  id: "pres-2026-2v-mapa-depto-ganador",
+  titulo: "Ganador por departamento — 2026 2ª vuelta",
+  pregunta: "¿Quién ganó cada departamento en el balotaje?",
+  fuenteTexto: "Registraduría · GeoJSON departamentos",
+  datasets: ["pres-2026-2v", "pres-candidatos"],
+  height: 600,
+  ariaLabel: "Mapa coroplético de Colombia con el candidato ganador por departamento en 2026 2ª vuelta",
+  async build({ "pres-2026-2v": e, "pres-candidatos": cat }) {
+    if (!e || !cat) return { traces: [], layout: baseLayout() };
+    return await buildMapaDepto(e, cat.candidatos["2026-2v"]);
+  },
+};
+
+export const pres2026_2vMovimientoNacional: ChartDef = {
+  id: "pres-2026-2v-movimiento-nacional",
+  titulo: "Cómo se movió el electorado entre 1ª y 2ª vuelta",
+  pregunta: "¿Qué cambió a nivel nacional entre las dos vueltas?",
+  fuenteTexto: "Registraduría Nacional del Estado Civil (preconteo)",
+  datasets: ["pres-2026-2v", "pres-2026-1v"],
+  height: 480,
+  ariaLabel: "Barras agrupadas comparando votos totales, válidos y nulos entre 1ª y 2ª vuelta 2026",
+  build({ "pres-2026-2v": e2, "pres-2026-1v": e1 }) {
+    if (!e1 || !e2) return { traces: [], layout: baseLayout() };
+    const n1 = e1.agregados.nacional;
+    const n2 = e2.agregados.nacional;
+    const cats = ["Votos totales", "Válidos", "Nulos"];
+    const y1 = [n1.total_votos, n1.validos, n1.nulos];
+    const y2 = [n2.total_votos, n2.validos, n2.nulos];
+    const fmt = (n: number) => new Intl.NumberFormat("es-CO", { notation: "compact", maximumFractionDigits: 2 }).format(n);
+    return {
+      traces: [
+        {
+          type: "bar", name: "1ª vuelta", x: cats, y: y1,
+          marker: { color: COLORS.border },
+          text: y1.map(fmt), textposition: "outside",
+          hovertemplate: "<b>%{x}</b><br>1ª vuelta: %{y:,.0f}<extra></extra>",
+        },
+        {
+          type: "bar", name: "2ª vuelta", x: cats, y: y2,
+          marker: { color: COLORS.brand },
+          text: y2.map(fmt), textposition: "outside",
+          hovertemplate: "<b>%{x}</b><br>2ª vuelta: %{y:,.0f}<extra></extra>",
+        },
+      ],
+      layout: baseLayout({
+        barmode: "group",
+        showlegend: true,
+        legend: { orientation: "h", y: -0.15 },
+        xaxis: { type: "category" },
+        yaxis: { type: "linear", tickformat: ".2s", automargin: true },
+        margin: { l: 60, r: 20, t: 60, b: 60 },
+      }),
+      pregunta: `Participación: ${(n1.participacion*100).toFixed(1)}% → ${(n2.participacion*100).toFixed(1)}% · Abstención: ${(n1.abstencion*100).toFixed(1)}% → ${(n2.abstencion*100).toFixed(1)}% · Δ votos totales: ${fmt(n2.total_votos - n1.total_votos)}`,
+    };
+  },
+};
+
+export const pres2026_2vDeltaValidosDepto: ChartDef = {
+  id: "pres-2026-2v-delta-validos-depto",
+  titulo: "Δ Votos válidos por departamento (2V − 1V)",
+  pregunta: "¿Dónde se activó más electorado entre vueltas?",
+  fuenteTexto: "Registraduría Nacional del Estado Civil (preconteo)",
+  datasets: ["pres-2026-2v", "pres-2026-1v"],
+  height: 720,
+  ariaLabel: "Barras horizontales con la variación de votos válidos por departamento entre 1ª y 2ª vuelta 2026",
+  build({ "pres-2026-2v": e2, "pres-2026-1v": e1 }) {
+    if (!e1 || !e2) return { traces: [], layout: baseLayout() };
+    const m1 = new Map(e1.agregados.departamentos.map(d => [d.cod_depto, d]));
+    const rows = e2.agregados.departamentos.map(d2 => {
+      const d1 = m1.get(d2.cod_depto);
+      const delta = d2.total_validos - (d1?.total_validos ?? 0);
+      return { nombre: d2.nombre_depto, delta };
+    }).sort((a, b) => a.delta - b.delta);
+    return {
+      traces: [{
+        type: "bar", orientation: "h",
+        x: rows.map(r => r.delta),
+        y: rows.map(r => r.nombre),
+        marker: { color: rows.map(r => r.delta >= 0 ? COLORS.brand : COLORS.textMuted) },
+        text: rows.map(r => new Intl.NumberFormat("es-CO", { signDisplay: "always" }).format(r.delta)),
+        textposition: "auto",
+        hovertemplate: "<b>%{y}</b><br>Δ válidos: %{x:,.0f}<extra></extra>",
+      }],
+      layout: baseLayout({
+        xaxis: { title: "Δ votos válidos (2V − 1V)", tickformat: ",.0f", zeroline: true, zerolinecolor: COLORS.textMuted },
+        yaxis: { automargin: true, tickfont: { size: 10 } },
+        margin: { l: 140, r: 60, t: 16, b: 50 },
+      }),
+    };
+  },
+};
+
+export const pres2026_2vDeltaGanadorDepto: ChartDef = {
+  id: "pres-2026-2v-delta-ganador-depto",
+  titulo: "Δ Votos De la Espriella por departamento (2V − 1V)",
+  pregunta: "¿Qué departamentos le pusieron los votos adicionales a De la Espriella?",
+  fuenteTexto: "Registraduría Nacional del Estado Civil (preconteo)",
+  datasets: ["pres-2026-2v", "pres-2026-1v"],
+  height: 720,
+  ariaLabel: "Barras horizontales con la variación de votos por De la Espriella por departamento entre 1ª y 2ª vuelta 2026",
+  build({ "pres-2026-2v": e2, "pres-2026-1v": e1 }) {
+    if (!e1 || !e2) return { traces: [], layout: baseLayout() };
+    const m1 = new Map(e1.agregados.departamentos.map(d => [d.cod_depto, d]));
+    const rows = e2.agregados.departamentos.map(d2 => {
+      const d1 = m1.get(d2.cod_depto);
+      const p2 = d2.votos_por_candidato["abelardo_de_la_espriella"] ?? 0;
+      const p1 = d1?.votos_por_candidato["abelardo_de_la_espriella"] ?? 0;
+      const delta = p2 - p1;
+      const base = p1 || 1;
+      const pct = ((p2 - p1) / base) * 100;
+      return { nombre: d2.nombre_depto, delta, pct, p1, p2 };
+    }).sort((a, b) => a.delta - b.delta);
+
+    const totalDelta = rows.reduce((acc, r) => acc + r.delta, 0);
+
+    return {
+      traces: [{
+        type: "bar", orientation: "h",
+        x: rows.map(r => r.delta),
+        y: rows.map(r => r.nombre),
+        marker: { color: rows.map(r => r.delta >= 0 ? DE_COLOR : "#94a3b8") },
+        text: rows.map(r => new Intl.NumberFormat("es-CO", { signDisplay: "always" }).format(r.delta)),
+        textposition: "auto",
+        customdata: rows.map(r => [r.p1, r.p2, r.pct]),
+        hovertemplate: "<b>%{y}</b><br>1V: %{customdata[0]:,.0f}<br>2V: %{customdata[1]:,.0f}<br>Δ: %{x:,.0f} (%{customdata[2]:.1f}%)<extra></extra>",
+      }],
+      layout: baseLayout({
+        xaxis: { title: "Δ votos De la Espriella (2V − 1V)", tickformat: ",.0f", zeroline: true, zerolinecolor: COLORS.textMuted },
+        yaxis: { automargin: true, tickfont: { size: 10 } },
+        margin: { l: 140, r: 60, t: 16, b: 50 },
+      }),
+      pregunta: `De la Espriella sumó ${new Intl.NumberFormat("es-CO", { signDisplay: "always" }).format(totalDelta)} votos entre las dos vueltas. Los departamentos en azul son los que aportaron ese crecimiento.`,
+    };
+  },
+};
+
+export const pres2026_2vConsolidacionBloque: ChartDef = {
+  id: "pres-2026-2v-consolidacion-bloque",
+  titulo: "Consolidación del voto anti-De la Espriella por departamento",
+  pregunta: "¿Heredó Cepeda el voto de izquierda y centro de la 1ª vuelta?",
+  fuenteTexto: "Cálculo propio sobre datos de Registraduría (preconteo)",
+  datasets: ["pres-2026-2v", "pres-2026-1v"],
+  height: 720,
+  ariaLabel: "Comparación por departamento entre voto de izquierda y centro en 1V y voto por Cepeda en 2V",
+  build({ "pres-2026-2v": e2, "pres-2026-1v": e1 }) {
+    if (!e1 || !e2) return { traces: [], layout: baseLayout() };
+    const m2 = new Map(e2.agregados.departamentos.map(d => [d.cod_depto, d]));
+    const rows = e1.agregados.departamentos.map(d1 => {
+      const d2 = m2.get(d1.cod_depto);
+      const antiDerecha1v = (d1.votos_por_ideologia.izquierda ?? 0) + (d1.votos_por_ideologia.centro ?? 0);
+      const cepeda2v = d2?.votos_por_candidato["ivan_cepeda"] ?? 0;
+      return { nombre: d1.nombre_depto, antiDerecha1v, cepeda2v };
+    }).sort((a, b) => b.antiDerecha1v - a.antiDerecha1v);
+
+    return {
+      traces: [
+        {
+          type: "bar", orientation: "h", name: "Izquierda + Centro (1V)",
+          x: rows.map(r => r.antiDerecha1v),
+          y: rows.map(r => r.nombre),
+          marker: { color: COLORS.border },
+          hovertemplate: "<b>%{y}</b><br>Izquierda+Centro 1V: %{x:,.0f}<extra></extra>",
+        },
+        {
+          type: "bar", orientation: "h", name: "Cepeda (2V)",
+          x: rows.map(r => r.cepeda2v),
+          y: rows.map(r => r.nombre),
+          marker: { color: CEP_COLOR },
+          hovertemplate: "<b>%{y}</b><br>Cepeda 2V: %{x:,.0f}<extra></extra>",
+        },
+      ],
+      layout: baseLayout({
+        barmode: "group",
+        showlegend: true,
+        legend: { orientation: "h", y: -0.08 },
+        xaxis: { tickformat: ",.0f" },
+        yaxis: { autorange: "reversed", automargin: true, tickfont: { size: 10 } },
+        margin: { l: 140, r: 30, t: 16, b: 60 },
+      }),
+    };
+  },
+};
+
+export const pres2026_2vMapaVariacionCandidato: ChartDef = {
+  id: "pres-2026-2v-mapa-variacion-candidato",
+  titulo: "Variación de votos por candidato y departamento (1V → 2V)",
+  pregunta: "¿Dónde creció más cada candidato entre vueltas?",
+  fuenteTexto: "Registraduría · GeoJSON departamentos",
+  datasets: ["pres-2026-2v", "pres-2026-1v"],
+  height: 640,
+  ariaLabel: "Mapa interactivo de Colombia con selector por candidato (De la Espriella o Cepeda) mostrando la variación de votos por departamento entre 1ª y 2ª vuelta 2026",
+  async build({ "pres-2026-2v": e2, "pres-2026-1v": e1 }) {
+    if (!e1 || !e2) return { traces: [], layout: baseLayout() };
+
+    const geojson = await fetch("/geo/colombia-departamentos.geo.json").then(r => r.json()).catch(() => null);
+    if (!geojson || !geojson.features) return { traces: [], layout: baseLayout() };
+
+    const m1 = new Map(e1.agregados.departamentos.map(d => [d.cod_depto, d]));
+    const m2 = new Map(e2.agregados.departamentos.map(d => [d.cod_depto, d]));
+
+    const candColors: Record<string, string> = {
+      abelardo_de_la_espriella: DE_COLOR,
+      ivan_cepeda: CEP_COLOR,
+    };
+    const candNames: Record<string, string> = {
+      abelardo_de_la_espriella: "Abelardo de la Espriella",
+      ivan_cepeda: "Iván Cepeda",
+    };
+
+    const modes = [
+      { id: "abelardo_de_la_espriella", label: "De la Espriella", kind: "variacion" as const,
+        colorscale: [
+          [0, "#dbeafe"], [0.2, "#93c5fd"], [0.4, "#60a5fa"],
+          [0.6, "#3b82f6"], [0.8, "#1d4ed8"], [1, "#1e3a8a"],
+        ] as [number, string][],
+      },
+      { id: "ivan_cepeda", label: "Cepeda", kind: "variacion" as const,
+        colorscale: [
+          [0, "#fee2e2"], [0.2, "#fca5a5"], [0.4, "#f87171"],
+          [0.6, "#ef4444"], [0.8, "#dc2626"], [1, "#7f1d1d"],
+        ] as [number, string][],
+      },
+      { id: "ganador", label: "Ganador", kind: "ganador" as const,
+        colorscale: [
+          [0, candColors.abelardo_de_la_espriella], [0.4999, candColors.abelardo_de_la_espriella],
+          [0.5, candColors.ivan_cepeda], [1, candColors.ivan_cepeda],
+        ] as [number, string][],
+      },
+    ];
+
+    type ModeData = {
+      locations: string[]; z: number[]; text: string[];
+      colorscale: [number, string][]; zmin: number; zmax: number;
+      showscale: boolean; colorbar: Record<string, unknown> | null;
+    };
+    const computedData: Record<string, ModeData> = {};
+
+    const fmt = (n: number) => new Intl.NumberFormat("es-CO").format(n);
+
+    for (const mode of modes) {
+      const locations: string[] = [];
+      const z: number[] = [];
+      const text: string[] = [];
+
+      for (const feat of geojson.features) {
+        const cod = String(feat.properties.DPTO || feat.id);
+        const d2 = m2.get(cod);
+        const d1 = m1.get(cod);
+        if (!d2) continue;
+        locations.push(cod);
+
+        if (mode.kind === "variacion") {
+          const candId = mode.id;
+          const v2 = d2.votos_por_candidato[candId] ?? 0;
+          const v1 = d1?.votos_por_candidato[candId] ?? 0;
+          const delta = v2 - v1;
+          const pct = v1 > 0 ? (delta / v1) * 100 : 0;
+          z.push(delta);
+          const sD = delta >= 0 ? "+" : "";
+          const sP = pct >= 0 ? "+" : "";
+          text.push(
+            `<b>${d2.nombre_depto}</b><br>` +
+            `1ª vuelta: ${fmt(v1)} votos<br>` +
+            `2ª vuelta: <b>${fmt(v2)}</b> votos<br>` +
+            `Δ: <b>${sD}${fmt(delta)}</b> (${sP}${pct.toFixed(1)}%)`
+          );
+        } else {
+          const ganadorId = d2.ganador_id;
+          const idx = ganadorId === "abelardo_de_la_espriella" ? 0 : 1;
+          z.push(idx);
+          const vDe = d2.votos_por_candidato.abelardo_de_la_espriella ?? 0;
+          const vCep = d2.votos_por_candidato.ivan_cepeda ?? 0;
+          text.push(
+            `<b>${d2.nombre_depto}</b><br>` +
+            `Ganador: <b>${candNames[ganadorId] ?? ganadorId}</b><br>` +
+            `De la Espriella: ${fmt(vDe)} votos<br>` +
+            `Cepeda: ${fmt(vCep)} votos`
+          );
+        }
+      }
+
+      const zmin = mode.kind === "variacion" ? Math.min(...z) : 0;
+      const zmax = mode.kind === "variacion" ? Math.max(...z) : 1;
+      computedData[mode.id] = {
+        locations, z, text,
+        colorscale: mode.colorscale,
+        zmin, zmax,
+        showscale: mode.kind === "variacion",
+        colorbar: mode.kind === "variacion" ? { title: "Δ votos", tickformat: ",.0f" } : null,
+      };
+    }
+
+    const defData = computedData["abelardo_de_la_espriella"];
+
+    const headerHtml = `
+      <div class="tendencia-selector-container">
+        <div class="tendencia-tabs">
+          ${modes.map((m, i) =>
+            `<button class="tendencia-tab${i === 0 ? " active" : ""}" data-cand="${m.id}">${m.label}</button>`
+          ).join("")}
+        </div>
+      </div>
+      <script id="data-cand-2026-2v" type="application/json">${JSON.stringify(computedData)}</script>
+    `;
+
+    const footerHtml = `
+      <div class="tendencia-map-footer">
+        <span class="tendencia-map-info">* «De la Espriella» y «Cepeda»: el color representa el Δ absoluto de votos entre 1V y 2V (más oscuro = mayor crecimiento). «Ganador»: color del candidato que ganó cada departamento.</span>
+      </div>
+    `;
+
+    return {
+      traces: [{
+        type: "choroplethmapbox",
+        geojson,
+        locations: defData.locations,
+        z: defData.z,
+        featureidkey: "properties.DPTO",
+        colorscale: defData.colorscale,
+        zmin: defData.zmin,
+        zmax: defData.zmax,
+        showscale: defData.showscale,
+        text: defData.text,
+        hoverinfo: "text",
+        colorbar: defData.colorbar ?? {},
+        marker: { line: { width: 0.6, color: "rgba(15, 23, 42, 0.15)" } },
+      }],
+      layout: baseLayout({
+        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.0 }, zoom: 4.2 },
+        margin: { l: 0, r: 0, t: 0, b: 0 },
+        xaxis: { visible: false },
+        yaxis: { visible: false },
+      }),
+      headerHtml,
+      footerHtml,
+    };
+  },
+};
+
+// Delegación global para los tabs del mapa de variación por candidato 2026 2V.
+if (typeof document !== "undefined") {
+  document.addEventListener("click", (ev) => {
+    const btn = (ev.target as HTMLElement | null)?.closest?.(
+      ".tendencia-tab[data-cand]"
+    ) as HTMLButtonElement | null;
+    if (!btn) return;
+    const root = btn.closest<HTMLElement>("[data-chart-root]");
+    if (!root) return;
+    const target = root.querySelector<HTMLElement>(
+      "#chart-pres-2026-2v-mapa-variacion-candidato"
+    );
+    if (!target) return;
+    const script = root.querySelector("#data-cand-2026-2v");
+    if (!script || !(window as any).Plotly) return;
+    let data: Record<string, any>;
+    try { data = JSON.parse(script.textContent || "{}"); } catch { return; }
+    const cand = btn.dataset.cand!;
+    const d = data[cand];
+    if (!d) return;
+    root.querySelectorAll(".tendencia-tab[data-cand]").forEach(t => t.classList.remove("active"));
+    btn.classList.add("active");
+    (window as any).Plotly.restyle(target, {
+      z: [d.z],
+      text: [d.text],
+      colorscale: [d.colorscale],
+      zmin: [d.zmin],
+      zmax: [d.zmax],
+      showscale: [d.showscale],
+    });
+  });
+}
+
 export const pres2026MapaVariacionTendencia: ChartDef = {
   id: "pres-2026-mapa-variacion-tendencia",
   titulo: "Variación de votos por tendencia política (2022 vs 2026)",
@@ -1113,6 +1523,122 @@ export const pres2026_2vPronosticoMontecarlo: ChartDef = {
         margin: { l: 60, r: 20, t: 20, b: 60 },
       }),
       pregunta: `Probabilidad de victoria de Cepeda: ${(mc.probCepeda * 100).toFixed(1)}% · margen mediano ${mc.margenPpP50.toFixed(2)} pp (rango P10–P90: ${mc.margenPpP10.toFixed(1)} a ${mc.margenPpP90.toFixed(1)} pp)`,
+    };
+  },
+};
+
+export const pres2026_2vDiferenciaVariacion: ChartDef = {
+  id: "pres-2026-2v-diferencia-variacion",
+  titulo: "Diferencia de variación en participación de votos (De la Espriella − Cepeda)",
+  pregunta: "¿Qué candidato ganó mayor participación (pp) en cada departamento?",
+  fuenteTexto: "Registraduría Nacional del Estado Civil (preconteo)",
+  datasets: ["pres-2026-2v", "pres-2026-1v"],
+  height: 600,
+  ariaLabel: "Mapa coroplético mostrando la diferencia de variación en puntos porcentuales de votos entre De la Espriella y Cepeda por departamento",
+  async build({ "pres-2026-2v": e2, "pres-2026-1v": e1 }) {
+    if (!e1 || !e2) return { traces: [], layout: baseLayout() };
+    const geojson = await fetch("/geo/colombia-departamentos.geo.json").then(r => r.json()).catch(() => null);
+    if (!geojson || !geojson.features) return { traces: [], layout: baseLayout() };
+
+    const m1 = new Map(e1.agregados.departamentos.map(d => [d.cod_depto, d]));
+
+    const locations: string[] = [];
+    const z: number[] = [];
+    const text: string[] = [];
+
+    const rawRows = e2.agregados.departamentos.map(d2 => {
+      const d1 = m1.get(d2.cod_depto);
+      const cep1v = d1?.votos_por_candidato["ivan_cepeda"] ?? 0;
+      const de1v = d1?.votos_por_candidato["abelardo_de_la_espriella"] ?? 0;
+      const val1v = d1?.total_validos ?? 1;
+
+      const cep2v = d2.votos_por_candidato["ivan_cepeda"] ?? 0;
+      const de2v = d2.votos_por_candidato["abelardo_de_la_espriella"] ?? 0;
+      const val2v = d2.total_validos ?? 1;
+
+      const cepShare1v = (cep1v / val1v) * 100;
+      const deShare1v = (de1v / val1v) * 100;
+
+      const cepShare2v = (cep2v / val2v) * 100;
+      const deShare2v = (de2v / val2v) * 100;
+
+      const cepDeltaPp = cepShare2v - cepShare1v;
+      const deDeltaPp = deShare2v - deShare1v;
+      const diffPp = deDeltaPp - cepDeltaPp; // De la Espriella - Cepeda
+
+      return {
+        cod: d2.cod_depto,
+        nombre: d2.nombre_depto,
+        cepShare1v,
+        deShare1v,
+        cepShare2v,
+        deShare2v,
+        cepDeltaPp,
+        deDeltaPp,
+        diffPp,
+      };
+    });
+
+    const maxAbs = Math.max(...rawRows.map(r => Math.abs(r.diffPp)), 1);
+
+    for (const feat of geojson.features) {
+      const cod = String(feat.properties.DPTO || feat.id);
+      const row = rawRows.find(r => r.cod === cod);
+      if (!row) continue;
+      locations.push(cod);
+      z.push(row.diffPp);
+
+      const absDiff = Math.abs(row.diffPp);
+      const winner = row.diffPp >= 0 ? "De la Espriella" : "Cepeda";
+      const signDe = row.deDeltaPp >= 0 ? "+" : "";
+      const signCep = row.cepDeltaPp >= 0 ? "+" : "";
+      text.push(
+        `<b>${row.nombre}</b><br>` +
+        `Δ Share De la Espriella: ${signDe}${row.deDeltaPp.toFixed(2)} pp (1V: ${row.deShare1v.toFixed(1)}% → 2V: ${row.deShare2v.toFixed(1)}%)<br>` +
+        `Δ Share Cepeda: ${signCep}${row.cepDeltaPp.toFixed(2)} pp (1V: ${row.cepShare1v.toFixed(1)}% → 2V: ${row.cepShare2v.toFixed(1)}%)<br>` +
+        `Diferencia: <b>${absDiff.toFixed(2)} pp</b> a favor de ${winner}`
+      );
+    }
+
+    const colorscale = [
+      [0.0, "#7f1d1d"],   // Cepeda (rojo oscuro, negativo)
+      [0.3, "#ef4444"],   // Cepeda (rojo, negativo)
+      [0.45, "#fee2e2"],  // Cepeda (rojo muy claro, negativo)
+      [0.5, "#f8fafc"],   // Blanco / Neutro (0)
+      [0.55, "#dbeafe"],  // De la Espriella (azul muy claro, positivo)
+      [0.7, "#3b82f6"],   // De la Espriella (azul, positivo)
+      [1.0, "#1e3a8a"]    // De la Espriella (azul oscuro, positivo)
+    ];
+
+    const footerHtml = `
+      <div class="tendencia-map-footer">
+        <span class="tendencia-map-info">* En azul, departamentos donde Abelardo de la Espriella ganó más participación (pp). En rojo, departamentos donde Iván Cepeda ganó más participación (pp). El color es proporcional a la diferencia en puntos porcentuales.</span>
+      </div>
+    `;
+
+    return {
+      traces: [{
+        type: "choroplethmapbox",
+        geojson,
+        locations,
+        z,
+        featureidkey: "properties.DPTO",
+        colorscale,
+        zmin: -maxAbs,
+        zmax: maxAbs,
+        showscale: true,
+        text,
+        hoverinfo: "text",
+        colorbar: { title: "Diferencia (pp)", tickformat: "+.0f" },
+        marker: { line: { width: 0.6, color: "rgba(15, 23, 42, 0.15)" } },
+      }],
+      layout: baseLayout({
+        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.0 }, zoom: 4.2 },
+        margin: { l: 0, r: 0, t: 0, b: 0 },
+        xaxis: { visible: false },
+        yaxis: { visible: false },
+      }),
+      footerHtml,
     };
   },
 };

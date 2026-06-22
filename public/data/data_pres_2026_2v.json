@@ -1,0 +1,685 @@
+{
+  "metadata": {
+    "ultima_actualizacion": "2026-06-22T14:27:54+00:00",
+    "fuentes": {
+      "wikipedia": {
+        "nombre": "Wikipedia (es) — tabla de Registraduría (preconteo segunda vuelta)",
+        "url": "https://es.wikipedia.org/wiki/Elecciones_presidenciales_de_Colombia_de_2026"
+      },
+      "registraduria": {
+        "nombre": "Registraduría Nacional del Estado Civil",
+        "url": "https://resultados.registraduria.gov.co/v2/resultados/0/00"
+      }
+    },
+    "definiciones": {
+      "estado": "preconteo",
+      "nota_norte_de_santander": "Votos de Norte de Santander imputados por residual contra el total nacional: el preconteo reproducido aún no publicaba su desglose."
+    },
+    "cobertura": {
+      "eleccion": "2026-2v",
+      "fecha": "2026-06-21",
+      "total_registros": 33
+    }
+  },
+  "eleccion": {
+    "anio": 2026,
+    "vuelta": 2,
+    "fecha": "2026-06-21"
+  },
+  "resultados": [
+    {
+      "id": "abelardo_de_la_espriella",
+      "votos": 12959515,
+      "porcentaje": 0.4966
+    },
+    {
+      "id": "ivan_cepeda",
+      "votos": 12708695,
+      "porcentaje": 0.487
+    }
+  ],
+  "agregados": {
+    "nacional": {
+      "censo": 41421973,
+      "total_votos": 26343135,
+      "validos": 26092873,
+      "nulos": 220763,
+      "no_marcados": 29499,
+      "participacion": 0.636,
+      "abstencion": 0.364
+    },
+    "departamentos": [
+      {
+        "cod_depto": "05",
+        "nombre_depto": "Antioquia",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 2185834,
+          "ivan_cepeda": 1133681
+        },
+        "votos_por_ideologia": {
+          "izquierda": 1133681,
+          "centro": 0,
+          "derecha": 2185834
+        },
+        "total_validos": 3319515,
+        "total_votos": 3319515,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "08",
+        "nombre_depto": "Atlántico",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 505091,
+          "ivan_cepeda": 732403
+        },
+        "votos_por_ideologia": {
+          "izquierda": 732403,
+          "centro": 0,
+          "derecha": 505091
+        },
+        "total_validos": 1237494,
+        "total_votos": 1237494,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "11",
+        "nombre_depto": "Bogotá D.C.",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 1933243,
+          "ivan_cepeda": 2235514
+        },
+        "votos_por_ideologia": {
+          "izquierda": 2235514,
+          "centro": 0,
+          "derecha": 1933243
+        },
+        "total_validos": 4168757,
+        "total_votos": 4168757,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "13",
+        "nombre_depto": "Bolívar",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 391458,
+          "ivan_cepeda": 591870
+        },
+        "votos_por_ideologia": {
+          "izquierda": 591870,
+          "centro": 0,
+          "derecha": 391458
+        },
+        "total_validos": 983328,
+        "total_votos": 983328,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "15",
+        "nombre_depto": "Boyacá",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 441557,
+          "ivan_cepeda": 280199
+        },
+        "votos_por_ideologia": {
+          "izquierda": 280199,
+          "centro": 0,
+          "derecha": 441557
+        },
+        "total_validos": 721756,
+        "total_votos": 721756,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "17",
+        "nombre_depto": "Caldas",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 306735,
+          "ivan_cepeda": 203704
+        },
+        "votos_por_ideologia": {
+          "izquierda": 203704,
+          "centro": 0,
+          "derecha": 306735
+        },
+        "total_validos": 510439,
+        "total_votos": 510439,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "18",
+        "nombre_depto": "Caquetá",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 101588,
+          "ivan_cepeda": 102286
+        },
+        "votos_por_ideologia": {
+          "izquierda": 102286,
+          "centro": 0,
+          "derecha": 101588
+        },
+        "total_validos": 203874,
+        "total_votos": 203874,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "19",
+        "nombre_depto": "Cauca",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 176901,
+          "ivan_cepeda": 585479
+        },
+        "votos_por_ideologia": {
+          "izquierda": 585479,
+          "centro": 0,
+          "derecha": 176901
+        },
+        "total_validos": 762380,
+        "total_votos": 762380,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "20",
+        "nombre_depto": "Cesar",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 265645,
+          "ivan_cepeda": 281730
+        },
+        "votos_por_ideologia": {
+          "izquierda": 281730,
+          "centro": 0,
+          "derecha": 265645
+        },
+        "total_validos": 547375,
+        "total_votos": 547375,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "23",
+        "nombre_depto": "Córdoba",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 349190,
+          "ivan_cepeda": 499149
+        },
+        "votos_por_ideologia": {
+          "izquierda": 499149,
+          "centro": 0,
+          "derecha": 349190
+        },
+        "total_validos": 848339,
+        "total_votos": 848339,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "25",
+        "nombre_depto": "Cundinamarca",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 896844,
+          "ivan_cepeda": 768378
+        },
+        "votos_por_ideologia": {
+          "izquierda": 768378,
+          "centro": 0,
+          "derecha": 896844
+        },
+        "total_validos": 1665222,
+        "total_votos": 1665222,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "27",
+        "nombre_depto": "Chocó",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 33360,
+          "ivan_cepeda": 152674
+        },
+        "votos_por_ideologia": {
+          "izquierda": 152674,
+          "centro": 0,
+          "derecha": 33360
+        },
+        "total_validos": 186034,
+        "total_votos": 186034,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "41",
+        "nombre_depto": "Huila",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 375032,
+          "ivan_cepeda": 229048
+        },
+        "votos_por_ideologia": {
+          "izquierda": 229048,
+          "centro": 0,
+          "derecha": 375032
+        },
+        "total_validos": 604080,
+        "total_votos": 604080,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "44",
+        "nombre_depto": "La Guajira",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 126501,
+          "ivan_cepeda": 198557
+        },
+        "votos_por_ideologia": {
+          "izquierda": 198557,
+          "centro": 0,
+          "derecha": 126501
+        },
+        "total_validos": 325058,
+        "total_votos": 325058,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "47",
+        "nombre_depto": "Magdalena",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 255098,
+          "ivan_cepeda": 347228
+        },
+        "votos_por_ideologia": {
+          "izquierda": 347228,
+          "centro": 0,
+          "derecha": 255098
+        },
+        "total_validos": 602326,
+        "total_votos": 602326,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "50",
+        "nombre_depto": "Meta",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 339754,
+          "ivan_cepeda": 225693
+        },
+        "votos_por_ideologia": {
+          "izquierda": 225693,
+          "centro": 0,
+          "derecha": 339754
+        },
+        "total_validos": 565447,
+        "total_votos": 565447,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "52",
+        "nombre_depto": "Nariño",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 188619,
+          "ivan_cepeda": 651839
+        },
+        "votos_por_ideologia": {
+          "izquierda": 651839,
+          "centro": 0,
+          "derecha": 188619
+        },
+        "total_validos": 840458,
+        "total_votos": 840458,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "54",
+        "nombre_depto": "Norte de Santander",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 602625,
+          "ivan_cepeda": 174135
+        },
+        "votos_por_ideologia": {
+          "izquierda": 174135,
+          "centro": 0,
+          "derecha": 602625
+        },
+        "total_validos": 776760,
+        "total_votos": 776760,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "63",
+        "nombre_depto": "Quindío",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 179562,
+          "ivan_cepeda": 122068
+        },
+        "votos_por_ideologia": {
+          "izquierda": 122068,
+          "centro": 0,
+          "derecha": 179562
+        },
+        "total_validos": 301630,
+        "total_votos": 301630,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "66",
+        "nombre_depto": "Risaralda",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 288680,
+          "ivan_cepeda": 237624
+        },
+        "votos_por_ideologia": {
+          "izquierda": 237624,
+          "centro": 0,
+          "derecha": 288680
+        },
+        "total_validos": 526304,
+        "total_votos": 526304,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "68",
+        "nombre_depto": "Santander",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 822592,
+          "ivan_cepeda": 431551
+        },
+        "votos_por_ideologia": {
+          "izquierda": 431551,
+          "centro": 0,
+          "derecha": 822592
+        },
+        "total_validos": 1254143,
+        "total_votos": 1254143,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "70",
+        "nombre_depto": "Sucre",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 188380,
+          "ivan_cepeda": 279312
+        },
+        "votos_por_ideologia": {
+          "izquierda": 279312,
+          "centro": 0,
+          "derecha": 188380
+        },
+        "total_validos": 467692,
+        "total_votos": 467692,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "73",
+        "nombre_depto": "Tolima",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 425172,
+          "ivan_cepeda": 299389
+        },
+        "votos_por_ideologia": {
+          "izquierda": 299389,
+          "centro": 0,
+          "derecha": 425172
+        },
+        "total_validos": 724561,
+        "total_votos": 724561,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "76",
+        "nombre_depto": "Valle del Cauca",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 870000,
+          "ivan_cepeda": 1404083
+        },
+        "votos_por_ideologia": {
+          "izquierda": 1404083,
+          "centro": 0,
+          "derecha": 870000
+        },
+        "total_validos": 2274083,
+        "total_votos": 2274083,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "81",
+        "nombre_depto": "Arauca",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 63523,
+          "ivan_cepeda": 46420
+        },
+        "votos_por_ideologia": {
+          "izquierda": 46420,
+          "centro": 0,
+          "derecha": 63523
+        },
+        "total_validos": 109943,
+        "total_votos": 109943,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "85",
+        "nombre_depto": "Casanare",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 161203,
+          "ivan_cepeda": 68474
+        },
+        "votos_por_ideologia": {
+          "izquierda": 68474,
+          "centro": 0,
+          "derecha": 161203
+        },
+        "total_validos": 229677,
+        "total_votos": 229677,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "86",
+        "nombre_depto": "Putumayo",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 33900,
+          "ivan_cepeda": 131958
+        },
+        "votos_por_ideologia": {
+          "izquierda": 131958,
+          "centro": 0,
+          "derecha": 33900
+        },
+        "total_validos": 165858,
+        "total_votos": 165858,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "88",
+        "nombre_depto": "San Andrés y Providencia",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 10024,
+          "ivan_cepeda": 12311
+        },
+        "votos_por_ideologia": {
+          "izquierda": 12311,
+          "centro": 0,
+          "derecha": 10024
+        },
+        "total_validos": 22335,
+        "total_votos": 22335,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "91",
+        "nombre_depto": "Amazonas",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 10584,
+          "ivan_cepeda": 17849
+        },
+        "votos_por_ideologia": {
+          "izquierda": 17849,
+          "centro": 0,
+          "derecha": 10584
+        },
+        "total_validos": 28433,
+        "total_votos": 28433,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "94",
+        "nombre_depto": "Guainía",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 5388,
+          "ivan_cepeda": 9690
+        },
+        "votos_por_ideologia": {
+          "izquierda": 9690,
+          "centro": 0,
+          "derecha": 5388
+        },
+        "total_validos": 15078,
+        "total_votos": 15078,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "95",
+        "nombre_depto": "Guaviare",
+        "ganador_id": "abelardo_de_la_espriella",
+        "ganador_ideologia": "derecha",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 20678,
+          "ivan_cepeda": 17504
+        },
+        "votos_por_ideologia": {
+          "izquierda": 17504,
+          "centro": 0,
+          "derecha": 20678
+        },
+        "total_validos": 38182,
+        "total_votos": 38182,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "97",
+        "nombre_depto": "Vaupés",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 2119,
+          "ivan_cepeda": 9481
+        },
+        "votos_por_ideologia": {
+          "izquierda": 9481,
+          "centro": 0,
+          "derecha": 2119
+        },
+        "total_validos": 11600,
+        "total_votos": 11600,
+        "censo": 0,
+        "participacion": 0.0
+      },
+      {
+        "cod_depto": "99",
+        "nombre_depto": "Vichada",
+        "ganador_id": "ivan_cepeda",
+        "ganador_ideologia": "izquierda",
+        "votos_por_candidato": {
+          "abelardo_de_la_espriella": 11686,
+          "ivan_cepeda": 14274
+        },
+        "votos_por_ideologia": {
+          "izquierda": 14274,
+          "centro": 0,
+          "derecha": 11686
+        },
+        "total_validos": 25960,
+        "total_votos": 25960,
+        "censo": 0,
+        "participacion": 0.0
+      }
+    ],
+    "municipios": []
+  },
+  "indicadores": {
+    "polarizacion": 0.9999
+  }
+}

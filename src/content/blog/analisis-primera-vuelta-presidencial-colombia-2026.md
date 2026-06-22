@@ -77,7 +77,7 @@ Segundo, **la fragmentación de la derecha es su gran riesgo, y la concentració
 
 Tercero, **el centro volvió a ser el gran derrotado**. Quedó reducido a menos del 6% y, sin embargo, será determinante: esos votos de Fajardo y Claudia López son justamente los que pueden inclinar la balanza el día del balotaje.
 
-Como ejercicio adicional, y solo con fines técnicos, construí un [modelo de pronóstico para la segunda vuelta](https://fredericksalazar.github.io/elecciones-presidenciales/pronostico/) en la cual quisé poner a prueba la capacidad de la **Inteligencia Aritificial** probando el modelo Opus 4.8 de Anthropic, que estima el resultado aplicando el comportamiento real de transferencia y movilización de 2022 a la base de 2026. No es una bola de cristal —la incertidumbre es enorme a varias semanas de la elección—, pero es una forma honesta de poner números sobre la mesa en lugar de opinar al aire.
+Como ejercicio adicional, y solo con fines técnicos, construí un modelo de pronóstico para la segunda vuelta en la cual quisé poner a prueba la capacidad de la **Inteligencia Aritificial** probando el modelo Opus 4.8 de Anthropic, que estima el resultado aplicando el comportamiento real de transferencia y movilización de 2022 a la base de 2026. No es una bola de cristal —la incertidumbre es enorme a varias semanas de la elección—, pero es una forma honesta de poner números sobre la mesa en lugar de opinar al aire.
 
 En definitiva, Colombia decidió ir a un balotaje entre dos visiones de país claramente opuestas, con una participación al alza y un centro casi inexistente. Lo que pase el día de la segunda vuelta dependerá, como casi siempre, de quién logre movilizar mejor a los que aún no han decidido y de los millones que todavía no salen a votar.
 

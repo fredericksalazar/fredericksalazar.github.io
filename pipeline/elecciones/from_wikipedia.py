@@ -134,6 +134,11 @@ CANDS_2026_1V = [
     ("camilo_romero_matamoros",  "Gustavo Matamoros Camacho",        "Matamoros"),
 ]
 
+CANDS_2026_2V = [
+    ("abelardo_de_la_espriella", "Abelardo de la Espriella", "De la Espriella"),
+    ("ivan_cepeda",              "Iván Cepeda Castro",       "Cepeda"),
+]
+
 # Bloques ideológicos unificados: izquierda · centro · derecha.
 # (Se descartaron los matices centro-izquierda / centro-derecha / extrema-derecha
 # para simplificar la lectura visual y agrupar candidatos afines).
@@ -218,6 +223,23 @@ RANK_2026_1V_TOP4 = {
     "ivan_cepeda":              (9688361,  0.4090),
     "paloma_valencia":          (1639685,  0.0692),
     "sergio_fajardo":           (1009073,  0.0426),
+}
+
+# 2026 2V — preconteo Registraduría (≈99,99 % mesas) reproducido en Wikipedia (es).
+# Totales nacionales de la tabla "sortable" de candidatos.
+NACIONAL_2026_2V = {
+    "censo":         41421973,   # mismo censo electoral que 1V (Registraduría)
+    "total_votos":   26343135,
+    "validos":       26092873,
+    "nulos":         220763,
+    "no_marcados":   29499,
+    "blanco":        426801,
+    "participacion": round(26343135 / 41421973, 4),   # 0.636
+    "abstencion":    round(1 - 26343135 / 41421973, 4),
+}
+RANK_2026_2V = {
+    "abelardo_de_la_espriella": (12959515, 0.4966),
+    "ivan_cepeda":              (12708695, 0.4870),
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -589,6 +611,127 @@ def build_2026_1v(html: str):
     }
 
 
+def _find_depto_table_2026_2v(html: str):
+    """Localiza la tabla departamental de 2ª vuelta 2026 por contenido.
+
+    Distintivo: contiene una fila 'Antioquia' con el layout de 2 candidatos
+    (fila corta), a diferencia de la tabla de 1ª vuelta (13 candidatos → fila
+    larga). Las tablas se devuelven en orden de documento, así que la de 1V
+    (que aparece antes) se descarta por longitud.
+    """
+    for t in get_wikitables(html):
+        rows = parse_table(t)
+        for r in rows:
+            if r and r[0] == "Antioquia" and 9 <= len(r) <= 14:
+                return rows
+    return None
+
+
+def build_2026_2v(html: str):
+    rows = _find_depto_table_2026_2v(html)
+    if rows is None:
+        raise RuntimeError(
+            "No se encontró la tabla departamental de 2ª vuelta 2026 en el HTML "
+            "(¿el caché es anterior al 21-jun-2026?)."
+        )
+    cand_ids = [c[0] for c in CANDS_2026_2V]
+
+    # Layout de cada fila tras limpiar:
+    # [Depto, DE_votos, DE_%, CEP_votos, CEP_%, blanco, blanco_%, nulos, no_marcados, total, total_%]
+    depto_rows = []
+    for r in rows:
+        if not r or not r[0]:
+            continue
+        name = r[0]
+        if name in {"Votos", "%", "Departamentos"}:
+            continue
+        if name not in DEPTO_DIVIPOLA and name not in EXTERIOR_KEYS:
+            continue
+        if len(r) < 1 + 2 * 2:
+            continue
+        votes = [to_int_votes(r[1]), to_int_votes(r[3])]
+        blanco = to_int_votes(r[5]) if len(r) > 5 else None
+        depto_rows.append((name, votes, blanco))
+
+    # Norte de Santander viene vacío en el preconteo reproducido en Wikipedia →
+    # se imputa por residual contra el total nacional (que incluye el exterior).
+    nat_de = RANK_2026_2V["abelardo_de_la_espriella"][0]
+    nat_cep = RANK_2026_2V["ivan_cepeda"][0]
+    ext_de = ext_cep = sum_de = sum_cep = 0
+    nds_idx = None
+    for i, (name, votes, _b) in enumerate(depto_rows):
+        if name in EXTERIOR_KEYS:
+            ext_de += votes[0]; ext_cep += votes[1]
+        elif name == "Norte de Santander":
+            nds_idx = i
+        else:
+            sum_de += votes[0]; sum_cep += votes[1]
+    nds_imputado = False
+    if nds_idx is not None and depto_rows[nds_idx][1] == [0, 0]:
+        depto_rows[nds_idx] = (
+            "Norte de Santander",
+            [nat_de - ext_de - sum_de, nat_cep - ext_cep - sum_cep],
+            None,
+        )
+        nds_imputado = True
+
+    deptos, no_map = build_depto_aggregates(depto_rows, cand_ids, CANDIDATOS_META)
+
+    resultados = [
+        {"id": cid, "votos": v, "porcentaje": round(p, 4)}
+        for cid, (v, p) in RANK_2026_2V.items()
+    ]
+    resultados.sort(key=lambda r: -r["votos"])
+    res_dict = {r["id"]: r["votos"] for r in resultados}
+    polar = polarizacion_por_bloques(res_dict, CANDIDATOS_META)
+
+    definiciones = {"estado": "preconteo"}
+    if nds_imputado:
+        definiciones["nota_norte_de_santander"] = (
+            "Votos de Norte de Santander imputados por residual contra el total "
+            "nacional: el preconteo reproducido aún no publicaba su desglose."
+        )
+
+    return {
+        "metadata": {
+            "ultima_actualizacion": NOW_ISO,
+            "fuentes": {
+                "wikipedia": {
+                    "nombre": "Wikipedia (es) — tabla de Registraduría (preconteo segunda vuelta)",
+                    "url": URL_2026,
+                },
+                "registraduria": {
+                    "nombre": "Registraduría Nacional del Estado Civil",
+                    "url": "https://resultados.registraduria.gov.co/v2/resultados/0/00",
+                },
+            },
+            "definiciones": definiciones,
+            "cobertura": {
+                "eleccion": "2026-2v",
+                "fecha": "2026-06-21",
+                "total_registros": len(deptos),
+            },
+        },
+        "eleccion": {"anio": 2026, "vuelta": 2, "fecha": "2026-06-21"},
+        "resultados": resultados,
+        "agregados": {
+            "nacional": {
+                "censo": NACIONAL_2026_2V["censo"],
+                "total_votos": NACIONAL_2026_2V["total_votos"],
+                "validos": NACIONAL_2026_2V["validos"],
+                "nulos": NACIONAL_2026_2V["nulos"],
+                "no_marcados": NACIONAL_2026_2V["no_marcados"],
+                "participacion": NACIONAL_2026_2V["participacion"],
+                "abstencion": NACIONAL_2026_2V["abstencion"],
+            },
+            "departamentos": deptos,
+            "municipios": [],
+        },
+        "indicadores": {"polarizacion": round(polar, 4)},
+        "_no_mapeados": no_map,
+    }
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Outputs auxiliares
 # ─────────────────────────────────────────────────────────────────────────────
@@ -616,17 +759,18 @@ def build_candidatos():
                 "ideologia": "Clasificación analítica del autor basada en trayectoria pública.",
                 "bloques": ["izquierda", "centro", "derecha"],
             },
-            "cobertura": {"elecciones": ["2022-1v", "2022-2v", "2026-1v"]},
+            "cobertura": {"elecciones": ["2022-1v", "2022-2v", "2026-1v", "2026-2v"]},
         },
         "candidatos": {
             "2022-1v": [fila(cid, nm) for cid, nm, _ in CANDS_2022_1V],
             "2022-2v": [fila(cid, nm) for cid, nm, _ in CANDS_2022_2V],
             "2026-1v": [fila(cid, nm) for cid, nm, _ in CANDS_2026_1V],
+            "2026-2v": [fila(cid, nm) for cid, nm, _ in CANDS_2026_2V],
         },
     }
 
 
-def build_geografia(d2022_1v, d2022_2v, d2026_1v):
+def build_geografia(d2022_1v, d2022_2v, d2026_1v, d2026_2v):
     def project(d):
         return [
             {
@@ -646,11 +790,12 @@ def build_geografia(d2022_1v, d2022_2v, d2026_1v):
                 "wikipedia": {"nombre": "Wikipedia — tablas Registraduría", "url": URL_2022 + " / " + URL_2026},
             },
             "definiciones": {"nivel": "departamento"},
-            "cobertura": {"elecciones": ["2022-1v", "2022-2v", "2026-1v"]},
+            "cobertura": {"elecciones": ["2022-1v", "2022-2v", "2026-1v", "2026-2v"]},
         },
         "departamentos_2022_1v": project(d2022_1v),
         "departamentos_2022_2v": project(d2022_2v),
         "departamentos_2026_1v": project(d2026_1v),
+        "departamentos_2026_2v": project(d2026_2v),
     }
 
 
@@ -718,11 +863,15 @@ def main():
     d_2026_1v = build_2026_1v(html_2026)
     print(f"   {len(d_2026_1v['agregados']['departamentos'])} deptos, no_mapeados={d_2026_1v.pop('_no_mapeados')}")
 
+    print("→ Construyendo 2026 2V …")
+    d_2026_2v = build_2026_2v(html_2026)
+    print(f"   {len(d_2026_2v['agregados']['departamentos'])} deptos, no_mapeados={d_2026_2v.pop('_no_mapeados')}")
+
     print("→ Catálogo de candidatos …")
     cands = build_candidatos()
 
     print("→ Geografía compacta …")
-    geo = build_geografia(d_2022_1v, d_2022_2v, d_2026_1v)
+    geo = build_geografia(d_2022_1v, d_2022_2v, d_2026_1v, d_2026_2v)
 
     print("→ Comparativo 2022 vs 2026 …")
     comp = build_comparativo(d_2022_1v, d_2026_1v)
@@ -732,6 +881,7 @@ def main():
         "data_pres_2022_1v.json":   d_2022_1v,
         "data_pres_2022_2v.json":   d_2022_2v,
         "data_pres_2026_1v.json":   d_2026_1v,
+        "data_pres_2026_2v.json":   d_2026_2v,
         "data_pres_candidatos.json": cands,
         "data_pres_geografia.json": geo,
         "data_pres_comparativo.json": comp,
@@ -746,6 +896,8 @@ def main():
     print(f"  2022 1V polarización = {d_2022_1v['indicadores']['polarizacion']}")
     print(f"  2022 2V polarización = {d_2022_2v['indicadores']['polarizacion']}")
     print(f"  2026 1V polarización = {d_2026_1v['indicadores']['polarizacion']}")
+    print(f"  2026 2V polarización = {d_2026_2v['indicadores']['polarizacion']}")
+    print(f"  Top-2 2026 2V: {[(r['id'], r['votos']) for r in d_2026_2v['resultados'][:2]]}")
     print(f"  Top-3 2022 1V: {[(r['id'], r['votos']) for r in d_2022_1v['resultados'][:3]]}")
     print(f"  Top-3 2022 2V: {[(r['id'], r['votos']) for r in d_2022_2v['resultados'][:3]]}")
     print(f"  Top-3 2026 1V: {[(r['id'], r['votos']) for r in d_2026_1v['resultados'][:3]]}")

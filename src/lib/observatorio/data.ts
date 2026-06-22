@@ -51,11 +51,13 @@ export const getIngresos = (): IngresosData => ing;
 export const getSalariosCargos = (): SalariosCargosData => cargos;
 
 const pres2026_1v = readPublicJSON<PresEleccionData>("data_pres_2026_1v");
+const pres2026_2v = readPublicJSON<PresEleccionData>("data_pres_2026_2v");
 const pres2022_1v = readPublicJSON<PresEleccionData>("data_pres_2022_1v");
 const pres2022_2v = readPublicJSON<PresEleccionData>("data_pres_2022_2v");
 const presCandidatos = readPublicJSON<PresCandidatosData>("data_pres_candidatos");
 
 export const getPres2026_1v = (): PresEleccionData => pres2026_1v;
+export const getPres2026_2v = (): PresEleccionData => pres2026_2v;
 export const getPres2022_1v = (): PresEleccionData => pres2022_1v;
 export const getPres2022_2v = (): PresEleccionData => pres2022_2v;
 export const getPresCandidatos = (): PresCandidatosData => presCandidatos;

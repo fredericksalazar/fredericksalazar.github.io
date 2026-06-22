@@ -67,6 +67,7 @@ export const loadSalarioMinimoAsc = () =>
   loadSalarioMinimo().then((d) => ({ ...d, serie: [...d.serie].reverse() }));
 
 export const loadPres2026_1v = () => load<PresEleccionData>("data_pres_2026_1v");
+export const loadPres2026_2v = () => load<PresEleccionData>("data_pres_2026_2v");
 export const loadPres2022_1v = () => load<PresEleccionData>("data_pres_2022_1v");
 export const loadPres2022_2v = () => load<PresEleccionData>("data_pres_2022_2v");
 export const loadPresCandidatos = () => load<PresCandidatosData>("data_pres_candidatos");
@@ -76,7 +77,7 @@ export const loadComparativoColCog = () => load<ComparativoData>("data_comparati
 
 export type DatasetName = "inflacion" | "pib" | "comercio" | "empleo" | "externo" | "demografia"
   | "salario-minimo" | "ingresos" | "salarios-cargos"
-  | "pres-2026-1v" | "pres-2022-1v" | "pres-2022-2v" | "pres-candidatos"
+  | "pres-2026-1v" | "pres-2026-2v" | "pres-2022-1v" | "pres-2022-2v" | "pres-candidatos"
   | "comparativo-col-uzb" | "comparativo-col-cog";
 
 export interface LoadedDatasets {
@@ -90,6 +91,7 @@ export interface LoadedDatasets {
   ingresos?: IngresosData;
   "salarios-cargos"?: SalariosCargosData;
   "pres-2026-1v"?: PresEleccionData;
+  "pres-2026-2v"?: PresEleccionData;
   "pres-2022-1v"?: PresEleccionData;
   "pres-2022-2v"?: PresEleccionData;
   "pres-candidatos"?: PresCandidatosData;
@@ -108,6 +110,7 @@ const ASC_LOADERS = {
   ingresos: loadIngresos,
   "salarios-cargos": loadSalariosCargos,
   "pres-2026-1v": loadPres2026_1v,
+  "pres-2026-2v": loadPres2026_2v,
   "pres-2022-1v": loadPres2022_1v,
   "pres-2022-2v": loadPres2022_2v,
   "pres-candidatos": loadPresCandidatos,

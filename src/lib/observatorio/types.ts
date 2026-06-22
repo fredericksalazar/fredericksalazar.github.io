@@ -512,6 +512,7 @@ export interface PresCandidatosData {
     "2022-1v": CandidatoPres[];
     "2022-2v": CandidatoPres[];
     "2026-1v": CandidatoPres[];
+    "2026-2v": CandidatoPres[];
   };
 }
 

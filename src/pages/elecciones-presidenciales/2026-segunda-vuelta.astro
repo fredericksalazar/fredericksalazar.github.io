@@ -1,0 +1,724 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { trail, sectionCrumb } from "../../lib/seo";
+import { absUrls } from "../../lib/urls";
+import Hero from "../../components/Hero.astro";
+import EleccionesNav from "../../components/observatorio/EleccionesNav.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
+import Chart from "../../components/observatorio/Chart.astro";
+import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
+
+import { getPres2026_2v, getPres2026_1v } from "../../lib/observatorio/data";
+
+const eleccion = getPres2026_2v();
+const eleccion1v = getPres2026_1v();
+const fecha = eleccion.eleccion?.fecha || "2026-06-21";
+
+const nacional = eleccion.agregados.nacional;
+const nacional1v = eleccion1v.agregados.nacional;
+const fmtCompact = (n: number) => new Intl.NumberFormat("es-CO", { notation: "compact", maximumFractionDigits: 1 }).format(n);
+const fmtPct = (n: number) => `${(n * 100).toFixed(1)}%`;
+const fmtSignedCompact = (n: number) => `${n >= 0 ? "+" : "−"}${fmtCompact(Math.abs(n))}`;
+const fmtSignedPctPp = (n: number) => `${n >= 0 ? "+" : "−"}${(Math.abs(n) * 100).toFixed(2)} pp`;
+const fmtSignedPctRel = (n: number) => `${n >= 0 ? "+" : "−"}${(Math.abs(n) * 100).toFixed(1)}%`;
+
+// --- Cálculos de variación de candidatos 2V vs 1V ---
+const d26_1vMap = new Map(eleccion1v.agregados.departamentos.map(d => [d.cod_depto, d]));
+
+const candidates = [
+  { id: "abelardo_de_la_espriella", nombre: "Abelardo de la Espriella", class: "derecha" },
+  { id: "ivan_cepeda", nombre: "Iván Cepeda", class: "izquierda" }
+];
+
+const filasPorCandidato = {
+  abelardo_de_la_espriella: [] as any[],
+  ivan_cepeda: [] as any[]
+};
+
+for (const d2v of eleccion.agregados.departamentos) {
+  const d1v = d26_1vMap.get(d2v.cod_depto);
+  for (const cand of candidates) {
+    const v1v = d1v?.votos_por_candidato[cand.id] ?? 0;
+    const v2v = d2v.votos_por_candidato[cand.id] ?? 0;
+    const delta = v2v - v1v;
+    const pct = v1v > 0 ? (delta / v1v) * 100 : (v2v > 0 ? Infinity : 0);
+    filasPorCandidato[cand.id as "abelardo_de_la_espriella" | "ivan_cepeda"].push({
+      cod: d2v.cod_depto,
+      nombre: d2v.nombre_depto,
+      votos1v: v1v,
+      votos2v: v2v,
+      delta,
+      pct
+    });
+  }
+}
+
+for (const cand of candidates) {
+  filasPorCandidato[cand.id as "abelardo_de_la_espriella" | "ivan_cepeda"].sort((a, b) => b.delta - a.delta);
+}
+
+const resumenCandidatos = candidates.map(cand => {
+  const filas = filasPorCandidato[cand.id as "abelardo_de_la_espriella" | "ivan_cepeda"];
+  const votos1vTotal = filas.reduce((acc, f) => acc + f.votos1v, 0);
+  const votos2vTotal = filas.reduce((acc, f) => acc + f.votos2v, 0);
+  const deltaTotal = votos2vTotal - votos1vTotal;
+  const pctNacional = votos1vTotal > 0 ? (deltaTotal / votos1vTotal) * 100 : 0;
+  const finitos = filas.filter(f => Number.isFinite(f.pct));
+  const promedioPctDeptos = finitos.length
+    ? finitos.reduce((acc, f) => acc + f.pct, 0) / finitos.length
+    : 0;
+  const porPct = [...finitos].sort((a, b) => b.pct - a.pct);
+  return {
+    id: cand.id,
+    nombre: cand.nombre,
+    class: cand.class,
+    votos1vTotal,
+    votos2vTotal,
+    deltaTotal,
+    pctNacional,
+    promedioPctDeptos,
+    deptosCrecio: filas.filter(f => f.delta > 0).length,
+    deptosDecrecio: filas.filter(f => f.delta < 0).length,
+    topDepto: porPct[0] ?? filas[0],
+    bottomDepto: porPct[porPct.length - 1] ?? filas[filas.length - 1],
+  };
+});
+
+const fmtSignedInt = (n: number) =>
+  `${n >= 0 ? "+" : "−"}${new Intl.NumberFormat("es-CO").format(Math.abs(n))}`;
+const fmtSignedPct = (n: number) => {
+  if (!Number.isFinite(n)) return n > 0 ? "+∞" : "—";
+  return `${n >= 0 ? "+" : "−"}${Math.abs(n).toFixed(1)}%`;
+};
+const fmtSignedPp = (n: number) => {
+  if (!Number.isFinite(n)) return n > 0 ? "+∞" : "—";
+  return `${n >= 0 ? "+" : "−"}${Math.abs(n).toFixed(2)} pp`;
+};
+const fmtMiles = (n: number) => new Intl.NumberFormat("es-CO").format(n);
+
+const tableRows = eleccion.agregados.departamentos.map(d2v => {
+  const d1v = d26_1vMap.get(d2v.cod_depto);
+  
+  const de_1v = d1v?.votos_por_candidato["abelardo_de_la_espriella"] ?? 0;
+  const de_2v = d2v.votos_por_candidato["abelardo_de_la_espriella"] ?? 0;
+  const de_delta = de_2v - de_1v;
+  const de_pct = de_1v > 0 ? (de_delta / de_1v) * 100 : (de_2v > 0 ? Infinity : 0);
+
+  const cep_1v = d1v?.votos_por_candidato["ivan_cepeda"] ?? 0;
+  const cep_2v = d2v.votos_por_candidato["ivan_cepeda"] ?? 0;
+  const cep_delta = cep_2v - cep_1v;
+  const cep_pct = cep_1v > 0 ? (cep_delta / cep_1v) * 100 : (cep_2v > 0 ? Infinity : 0);
+
+  return {
+    nombre: d2v.nombre_depto,
+    de_1v,
+    de_2v,
+    de_delta,
+    de_pct: Number.isFinite(de_pct) ? de_pct : (de_pct > 0 ? Number.MAX_VALUE : -Number.MAX_VALUE),
+    de_pct_raw: de_pct,
+    cep_1v,
+    cep_2v,
+    cep_delta,
+    cep_pct: Number.isFinite(cep_pct) ? cep_pct : (cep_pct > 0 ? Number.MAX_VALUE : -Number.MAX_VALUE),
+    cep_pct_raw: cep_pct,
+  };
+}).sort((a, b) => b.de_delta - a.de_delta);
+
+const rowsDiferencia = eleccion.agregados.departamentos.map(d2v => {
+  const d1v = d26_1vMap.get(d2v.cod_depto);
+  const cep1v = d1v?.votos_por_candidato["ivan_cepeda"] ?? 0;
+  const de1v = d1v?.votos_por_candidato["abelardo_de_la_espriella"] ?? 0;
+  const val1v = d1v?.total_validos ?? 1;
+
+  const cep2v = d2v.votos_por_candidato["ivan_cepeda"] ?? 0;
+  const de2v = d2v.votos_por_candidato["abelardo_de_la_espriella"] ?? 0;
+  const val2v = d2v.total_validos ?? 1;
+
+  const cepShare1v = (cep1v / val1v) * 100;
+  const deShare1v = (de1v / val1v) * 100;
+
+  const cepShare2v = (cep2v / val2v) * 100;
+  const deShare2v = (de2v / val2v) * 100;
+
+  const cepDeltaPp = cepShare2v - cepShare1v;
+  const deDeltaPp = deShare2v - deShare1v;
+  const diffPct = deDeltaPp - cepDeltaPp; // De la Espriella - Cepeda
+  const diffDelta = de2v - de1v - (cep2v - cep1v);
+
+  return {
+    nombre: d2v.nombre_depto,
+    cepPct: cepDeltaPp, // mapped to cepPct to retain typing/selectors
+    dePct: deDeltaPp,   // mapped to dePct to retain typing/selectors
+    diffPct,
+    diffDelta,
+    cepDelta: cep2v - cep1v,
+    deDelta: de2v - de1v,
+  };
+}).sort((a, b) => b.diffPct - a.diffPct);
+
+const deltaCenso = nacional.censo - nacional1v.censo;
+const deltaCensoPct = nacional1v.censo ? deltaCenso / nacional1v.censo : 0;
+const deltaParticipacion = nacional.participacion - nacional1v.participacion;
+const deltaValidos = nacional.validos - nacional1v.validos;
+const deltaValidosPct = nacional1v.validos ? deltaValidos / nacional1v.validos : 0;
+const deltaAbstencion = nacional.abstencion - nacional1v.abstencion;
+
+const kpis = [
+  {
+    titulo: "Censo electoral",
+    valor: fmtCompact(nacional.censo),
+    sub: `1ª vuelta: ${fmtCompact(nacional1v.censo)} · Potencial sufragantes`,
+    delta: deltaCenso,
+    deltaTxt: `${fmtSignedCompact(deltaCenso)} (${fmtSignedPctRel(deltaCensoPct)}) vs 1ª V`,
+  },
+  {
+    titulo: "Participación",
+    valor: fmtPct(nacional.participacion),
+    sub: `1ª vuelta: ${fmtPct(nacional1v.participacion)} · Abstención ${fmtPct(nacional.abstencion)}`,
+    delta: deltaParticipacion,
+    deltaTxt: `${fmtSignedPctPp(deltaParticipacion)} vs 1ª V`,
+  },
+  {
+    titulo: "Votos válidos",
+    valor: fmtCompact(nacional.validos),
+    sub: `1ª vuelta: ${fmtCompact(nacional1v.validos)} · ${fmtCompact(nacional.nulos)} nulos`,
+    delta: deltaValidos,
+    deltaTxt: `${fmtSignedCompact(deltaValidos)} (${fmtSignedPctRel(deltaValidosPct)}) vs 1ª V`,
+  },
+  {
+    titulo: "Abstención",
+    valor: fmtPct(nacional.abstencion),
+    sub: `1ª vuelta: ${fmtPct(nacional1v.abstencion)} · Más votantes → menos abstención`,
+    delta: deltaAbstencion,
+    deltaTxt: `${fmtSignedPctPp(deltaAbstencion)} vs 1ª V`,
+    invertColor: true,
+  },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Dataset",
+      "name": "Resultados Elecciones Presidenciales Colombia 2026 — 2ª Vuelta",
+      "description": "Dataset consolidado del preconteo de la Registraduría para el balotaje presidencial de Colombia 2026 (De la Espriella vs Cepeda) a nivel nacional y departamental.",
+      "creator": { "@type": "Person", "name": "Frederick Salazar", "url": "https://fredericksalazar.github.io/" },
+      "isBasedOn": [
+        { "@type": "CreativeWork", "name": "Registraduría Nacional del Estado Civil", "url": "https://resultados.registraduria.gov.co/v2/resultados/0/00" },
+        { "@type": "CreativeWork", "name": "Wikipedia", "url": "https://es.wikipedia.org/wiki/Elecciones_presidenciales_de_Colombia_de_2026" }
+      ],
+      "spatialCoverage": { "@type": "Place", "name": "Colombia" },
+      "temporalCoverage": "2026-06-21/2026-06-21",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "distribution": [{ "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://fredericksalazar.github.io/data/data_pres_2026_2v.json" }]
+    },
+    {
+      "@type": "Article",
+      "headline": "Análisis estratégico del balotaje 2026 — participación, votos válidos y movimiento del voto departamental entre 1ª y 2ª vuelta",
+      "datePublished": "2026-06-22",
+      "author": { "@type": "Person", "name": "Frederick Salazar" }
+    }
+  ]
+};
+---
+<BaseLayout
+  title="Elecciones Presidenciales Colombia 2026 — Análisis 2ª Vuelta"
+  description="Análisis estratégico del balotaje 2026: participación, abstención, votos válidos y de qué departamentos salieron los votos que le dieron la victoria a De la Espriella frente a Cepeda."
+  image="/images/observatorio.png"
+  imageAlt="Observatorio · Análisis del balotaje presidencial Colombia 2026"
+  type="article"
+  fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.elecciones, { name: "Análisis 2ª vuelta 2026", url: absUrls.elecciones("2026-segunda-vuelta") })}
+  keywords="elecciones presidenciales colombia 2026, balotaje 2026, segunda vuelta de la espriella cepeda, analisis electoral colombia, voto por departamento colombia, abstencion electoral 2026, registraduria, preconteo, observatorio electoral colombia"
+  publishedTime="2026-06-22T00:00:00+00:00"
+  articleSection="Análisis político y electoral"
+  articleTags={["Elecciones Colombia", "Segunda vuelta 2026", "Abelardo de la Espriella", "Iván Cepeda", "Análisis electoral", "Datos políticos"]}
+>
+  <Hero
+    badge={{ text: `Preconteo · ${fecha}` }}
+    title="Elecciones Presidenciales 2026 — Balotaje"
+    subtitle="Segunda vuelta · 21 de junio de 2026"
+  />
+  <EleccionesNav active="2026-2v" />
+  <PlotlyLoader bundle="full" />
+
+  <main class="observatorio-container">
+    <p class="preconteo-aviso">
+      Cifras de <strong>preconteo de la Registraduría</strong> (≈99,99 % de mesas), de carácter
+      informativo y no vinculante; el escrutinio definitivo de las comisiones escrutadoras
+      puede ajustarlas. Norte de Santander aún no tenía desglose publicado en la fuente y se
+      estimó por residual contra el total nacional.
+    </p>
+
+    <section class="kpi-row" aria-label="Indicadores generales 2026 2ª vuelta">
+      {kpis.map((k) => (
+        <article class="kpi-card">
+          <p class="kpi-card__label">{k.titulo}</p>
+          <p class="kpi-card__value">{k.valor}</p>
+          <p class="kpi-card__sub">{k.sub}</p>
+          <div class="kpi-card__divider" />
+          <p class={`kpi-card__delta-pill ${
+            ((k as any).invertColor ? k.delta <= 0 : k.delta >= 0) ? "is-up" : "is-down"
+          }`}>
+            <span class="kpi-card__delta-arrow">{k.delta >= 0 ? "▲" : "▼"}</span>
+            <span class="kpi-card__delta-txt">{k.deltaTxt}</span>
+          </p>
+        </article>
+      ))}
+    </section>
+
+    <IndicadorPanel numero="1" eyebrow="Votación" titulo="Panorama general del balotaje" lead="Cómo se descompuso el sufragio en la 2ª vuelta: válidos, nulos y no marcados.">
+      <Chart slot="visual" id="pres-2026-2v-composicion-votos" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="2" eyebrow="Candidatos" titulo="Resultado del balotaje" lead="De la Espriella vs Cepeda. Diferencia nacional de poco más de 250 mil votos en favor de De la Espriella, que se convierte en el candidato más votado de la historia de Colombia.">
+      <Chart slot="visual" id="pres-2026-2v-votos-candidato" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="3" eyebrow="Censo y abstención" titulo="Cómo se movió el electorado entre 1ª y 2ª vuelta" lead="El censo electoral entre vueltas es el mismo; lo que cambió fue cuántas personas salieron a votar. La 2ª vuelta movilizó cerca de 2,4 millones de votantes adicionales y la abstención cayó alrededor de 6 puntos porcentuales — ese excedente es el que define un resultado tan estrecho.">
+      <Chart slot="visual" id="pres-2026-2v-movimiento-nacional" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="4" eyebrow="Geografía comparada" titulo="El mapa que cambió — ganador por departamento, 1ª vs 2ª vuelta" lead="A la izquierda, quién ganó cada departamento en la 1ª vuelta; a la derecha, en el balotaje. Comparar los dos mapas muestra qué territorios se mantuvieron y cuáles cambiaron de bloque entre las dos vueltas (azul = De la Espriella, rojo = Cepeda).">
+      <div slot="visual" class="mapas-duo">
+        <Chart id="pres-2026-mapa-depto-ganador" embedded={true} />
+        <Chart id="pres-2026-2v-mapa-depto-ganador" embedded={true} />
+      </div>
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="5" eyebrow="Geografía" titulo="Mapa por departamento — Ganador y variación por candidato" lead="Selecciona una vista: «Ganador» muestra el candidato que ganó cada departamento; «De la Espriella» y «Cepeda» muestran la variación de votos de ese candidato entre 1ª y 2ª vuelta (más oscuro = mayor crecimiento).">
+      <div slot="visual">
+        <Chart id="pres-2026-2v-mapa-variacion-candidato" embedded={true} />
+
+        <div class="tendencia-resumen--2">
+          {resumenCandidatos.map((r) => (
+            <article class={`tendencia-card tendencia-card--${r.class}`}>
+              <p class="tendencia-card__label"><span class={`chip chip--${r.class}`}>{r.nombre}</span></p>
+              <p class="tendencia-card__big">{fmtSignedPct(r.pctNacional)}</p>
+              <p class="tendencia-card__sub">Δ nacional · {fmtSignedInt(r.deltaTotal)} votos</p>
+              <ul class="tendencia-card__list">
+                <li>Promedio Δ por departamento: <strong>{fmtSignedPct(r.promedioPctDeptos)}</strong></li>
+                <li>Creció en <strong>{r.deptosCrecio}</strong> deptos · cayó en <strong>{r.deptosDecrecio}</strong></li>
+                <li>Mayor crecimiento: <strong>{r.topDepto.nombre}</strong> ({fmtSignedPct(r.topDepto.pct)})</li>
+                <li>Mayor caída: <strong>{r.bottomDepto.nombre}</strong> ({fmtSignedPct(r.bottomDepto.pct)})</li>
+              </ul>
+            </article>
+          ))}
+        </div>
+
+        <div class="tabla-wrap tendencia-tabla">
+          <h3 class="tabla-titulo">
+            Análisis detallado de variación por departamento (2ª Vuelta vs 1ª Vuelta)
+            <span class="tabla-titulo__hint">· clic en una columna para ordenar</span>
+          </h3>
+          <div class="tabla-scroll">
+            <table class="tabla-detalle tabla-sortable" data-sort-table>
+              <thead>
+                <tr>
+                  <th rowspan="2" data-sort-key="nombre" data-sort-type="text">Departamento <span class="sort-arrow"></span></th>
+                  <th colspan="4" class="header-group header-group--de border-left">Abelardo de la Espriella</th>
+                  <th colspan="4" class="header-group header-group--cep border-left">Iván Cepeda</th>
+                </tr>
+                <tr>
+                  <th class="num border-left" data-sort-key="de_1v" data-sort-type="num">Votos 1V <span class="sort-arrow"></span></th>
+                  <th class="num" data-sort-key="de_2v" data-sort-type="num">Votos 2V <span class="sort-arrow"></span></th>
+                  <th class="num" data-sort-key="de_delta" data-sort-type="num" data-sort-default="desc">Δ Votos <span class="sort-arrow">▼</span></th>
+                  <th class="num" data-sort-key="de_pct" data-sort-type="num">% Var <span class="sort-arrow"></span></th>
+                  <th class="num border-left" data-sort-key="cep_1v" data-sort-type="num">Votos 1V <span class="sort-arrow"></span></th>
+                  <th class="num" data-sort-key="cep_2v" data-sort-type="num">Votos 2V <span class="sort-arrow"></span></th>
+                  <th class="num" data-sort-key="cep_delta" data-sort-type="num">Δ Votos <span class="sort-arrow"></span></th>
+                  <th class="num" data-sort-key="cep_pct" data-sort-type="num">% Var <span class="sort-arrow"></span></th>
+                </tr>
+              </thead>
+              <tbody>
+                {tableRows.map((r) => (
+                  <tr
+                    data-nombre={r.nombre}
+                    data-de_1v={r.de_1v}
+                    data-de_2v={r.de_2v}
+                    data-de_delta={r.de_delta}
+                    data-de_pct={r.de_pct}
+                    data-cep_1v={r.cep_1v}
+                    data-cep_2v={r.cep_2v}
+                    data-cep_delta={r.cep_delta}
+                    data-cep_pct={r.cep_pct}
+                  >
+                    <td>{r.nombre}</td>
+                    <td class="num border-left">{fmtMiles(r.de_1v)}</td>
+                    <td class="num">{fmtMiles(r.de_2v)}</td>
+                    <td class={`num ${r.de_delta >= 0 ? "is-up" : "is-down"}`}>{fmtSignedInt(r.de_delta)}</td>
+                    <td class={`num ${r.de_delta >= 0 ? "is-up" : "is-down"}`}>{fmtSignedPct(r.de_pct_raw)}</td>
+                    <td class="num border-left">{fmtMiles(r.cep_1v)}</td>
+                    <td class="num">{fmtMiles(r.cep_2v)}</td>
+                    <td class={`num ${r.cep_delta >= 0 ? "is-up" : "is-down"}`}>{fmtSignedInt(r.cep_delta)}</td>
+                    <td class={`num ${r.cep_delta >= 0 ? "is-up" : "is-down"}`}>{fmtSignedPct(r.cep_pct_raw)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="6" eyebrow="Activación territorial" titulo="Δ votos válidos por departamento (2V − 1V)" lead="Dónde se activó el electorado entre las dos vueltas. Los departamentos con mayor crecimiento de votos válidos son los que cambiaron el ánimo nacional del balotaje.">
+      <Chart slot="visual" id="pres-2026-2v-delta-validos-depto" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="7" eyebrow="Origen de la victoria" titulo="Δ votos De la Espriella por departamento (2V − 1V)" lead="Qué departamentos le pusieron a De la Espriella los votos adicionales para ganar. Antioquia, la región Andina conservadora (Santander, Boyacá, los Santanderes) y los consulados concentran buena parte de su crecimiento decisivo.">
+      <Chart slot="visual" id="pres-2026-2v-delta-ganador-depto" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="8" eyebrow="Distribución del voto" titulo="Porcentaje de votos por candidato y departamento" lead="Distribución porcentual de los votos válidos en el balotaje para cada departamento. Muestra la correlación de fuerzas territoriales entre Abelardo de la Espriella (azul) e Iván Cepeda (rojo), ordenado por porcentaje de votación por Cepeda.">
+      <Chart slot="visual" id="pres-2026-2v-consolidacion-bloque" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel numero="9" eyebrow="Diferencia de crecimiento" titulo="Diferencia de variación de apoyo por departamento" lead="Comparación entre la variación de participación sobre los votos válidos (pp) de Cepeda y De la Espriella por departamento. Muestra quién ganó más influencia o tracción territorial entre la 1ª y 2ª vuelta (azul = mayor crecimiento de De la Espriella, rojo = mayor crecimiento de Cepeda).">
+      <div slot="visual">
+        <Chart id="pres-2026-2v-diferencia-variacion" embedded={true} />
+
+
+        <div class="explicacion-block">
+          <h4 class="explicacion-titulo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            Metodología e Interpretación de Datos
+          </h4>
+          <p>
+            Este indicador evalúa la <strong>variación de participación (share) sobre los votos válidos en puntos porcentuales (pp)</strong> en lugar del crecimiento porcentual simple del caudal de votos. Esto soluciona metodológicamente el <em>sesgo de base pequeña</em>, evitando que un candidato muestre crecimientos porcentuales inflados (ej. +100%) solo por partir de una base de votación muy reducida en la primera vuelta.
+          </p>
+          <div class="explicacion-seccion">
+            <strong>¿Cómo se calcula?</strong>
+            <ul class="explicacion-lista">
+              <li><strong>Share por vuelta:</strong> Se divide la votación del candidato en una vuelta entre los votos válidos totales de esa vuelta en el departamento.</li>
+              <li><strong>Variación de Share (pp):</strong> Es el Share obtenido en la segunda vuelta menos el de la primera vuelta (<code>Δ Share = Share 2V − Share 1V</code>).</li>
+              <li><strong>Diferencia de Share (pp):</strong> Resta de la variación de Abelardo de la Espriella menos la de Iván Cepeda (<code>Δ Abelardo − Δ Cepeda</code>).</li>
+            </ul>
+          </div>
+          <p>
+            <strong>¿Cómo interpretar el mapa y la tabla?</strong>
+            <br />
+            Un valor <strong>positivo (tonos azules en el mapa, "Abelardo" en la tabla)</strong> indica que De la Espriella ganó mayor porción del electorado relativo en ese departamento frente a Cepeda. Un valor <strong>negativo (tonos rojos en el mapa, "Cepeda" en la tabla)</strong> indica que Iván Cepeda avanzó con mayor fuerza o dominó la absorción de los votos en esa región.
+          </p>
+        </div>
+
+        <div class="tabla-wrap tendencia-tabla">
+          <h3 class="tabla-titulo">
+            Detalle de variación de participación (pp) y absoluto
+            <span class="tabla-titulo__hint">· clic en una columna para ordenar</span>
+          </h3>
+          <div class="tabla-scroll">
+            <table class="tabla-detalle tabla-sortable" data-sort-table>
+              <thead>
+                <tr>
+                  <th data-sort-key="nombre" data-sort-type="text">Departamento <span class="sort-arrow"></span></th>
+                  <th class="num" data-sort-key="cepPct" data-sort-type="num">Δ Share Cepeda <span class="sort-arrow"></span></th>
+                  <th class="num" data-sort-key="dePct" data-sort-type="num">Δ Share Abelardo <span class="sort-arrow"></span></th>
+                  <th class="num" data-sort-key="diffPct" data-sort-type="num" data-sort-default="desc">Diferencia Share <span class="sort-arrow">▼</span></th>
+                  <th class="num" data-sort-key="cepDelta" data-sort-type="num">Δ Votos Cepeda <span class="sort-arrow"></span></th>
+                  <th class="num" data-sort-key="deDelta" data-sort-type="num">Δ Votos Abelardo <span class="sort-arrow"></span></th>
+                  <th class="num" data-sort-key="diffDelta" data-sort-type="num">Diferencia Votos <span class="sort-arrow"></span></th>
+                </tr>
+              </thead>
+              <tbody>
+                {rowsDiferencia.map((r) => {
+                  const winner = r.diffPct >= 0 ? "Abelardo" : "Cepeda";
+                  const winnerClass = r.diffPct >= 0 ? "is-up" : "is-down";
+                  return (
+                    <tr
+                      data-nombre={r.nombre}
+                      data-cepPct={r.cepPct}
+                      data-dePct={r.dePct}
+                      data-diffPct={r.diffPct}
+                      data-cepDelta={r.cepDelta}
+                      data-deDelta={r.deDelta}
+                      data-diffDelta={r.diffDelta}
+                    >
+                      <td>{r.nombre}</td>
+                      <td class="num">{fmtSignedPp(r.cepPct)}</td>
+                      <td class="num">{fmtSignedPp(r.dePct)}</td>
+                      <td class={`num ${winnerClass}`}>
+                        {fmtSignedPp(r.diffPct)} ({winner})
+                      </td>
+                      <td class="num">+{fmtMiles(r.cepDelta)}</td>
+                      <td class="num">+{fmtMiles(r.deDelta)}</td>
+                      <td class={`num ${r.diffDelta >= 0 ? "is-up" : "is-down"}`}>
+                        {fmtSignedInt(r.diffDelta)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </IndicadorPanel>
+
+    <DashboardFooter
+      fuentes={[
+        { nombre: "Registraduría Nacional del Estado Civil", url: "https://resultados.registraduria.gov.co/v2/resultados/0/00", indicador: "Preconteo segunda vuelta" },
+        { nombre: "Wikipedia (es)", url: "https://es.wikipedia.org/wiki/Elecciones_presidenciales_de_Colombia_de_2026", indicador: "Tablas departamentales" },
+        { nombre: "Cálculo propio", url: "https://github.com/fredericksalazar/fredericksalazar.github.io", indicador: "Clasificación ideológica e imputación N. de Santander" },
+      ]}
+      cobertura="Elección 2026 2ª vuelta · preconteo"
+      ultimaActualizacion={eleccion.metadata.ultima_actualizacion}
+    />
+  </main>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <script is:inline>
+    (function initSortableTables() {
+      function init() {
+        document.querySelectorAll("table[data-sort-table]").forEach(function (table) {
+          if (table.__sortBound) return;
+          table.__sortBound = true;
+          const ths = table.querySelectorAll("thead th[data-sort-key]");
+          ths.forEach(function (th) {
+            th.addEventListener("click", function () {
+              const key = th.dataset.sortKey;
+              const type = th.dataset.sortType || "text";
+              const currentDir = th.dataset.sortDir || "";
+              const nextDir = currentDir === "asc" ? "desc" : "asc";
+              ths.forEach(function (other) {
+                if (other !== th) {
+                  other.dataset.sortDir = "";
+                  const arr = other.querySelector(".sort-arrow");
+                  if (arr) arr.textContent = "";
+                }
+              });
+              th.dataset.sortDir = nextDir;
+              const arrow = th.querySelector(".sort-arrow");
+              if (arrow) arrow.textContent = nextDir === "asc" ? "▲" : "▼";
+              const tbody = table.querySelector("tbody");
+              const rows = Array.from(tbody.querySelectorAll("tr"));
+              rows.sort(function (a, b) {
+                const av = a.dataset[key];
+                const bv = b.dataset[key];
+                if (type === "num") {
+                  const an = parseFloat(av);
+                  const bn = parseFloat(bv);
+                  return nextDir === "asc" ? an - bn : bn - an;
+                }
+                const cmp = String(av).localeCompare(String(bv), "es");
+                return nextDir === "asc" ? cmp : -cmp;
+              });
+              rows.forEach(function (r) { tbody.appendChild(r); });
+            });
+          });
+        });
+      }
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+      } else {
+        init();
+      }
+      document.addEventListener("astro:page-load", init);
+    })();
+  </script>
+</BaseLayout>
+
+<style>
+  .observatorio-container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 2rem; }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 0 0 2rem; }
+
+  .mapas-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; align-items: start; }
+  @media (max-width: 860px) { .mapas-duo { grid-template-columns: 1fr; } }
+
+  .preconteo-aviso {
+    background: rgba(234, 179, 8, 0.08);
+    border: 1px solid rgba(234, 179, 8, 0.35);
+    border-radius: 12px;
+    padding: 0.85rem 1.1rem;
+    margin: 0 0 1.75rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-muted, #6b7280);
+  }
+
+  .kpi-card {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 14px;
+    padding: 1.25rem 1.35rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    transition: box-shadow 0.18s ease;
+  }
+  .kpi-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+
+  .kpi-card__label {
+    font-size: 0.72rem;
+    color: var(--text-muted, #6b7280);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 0.45rem;
+    font-weight: 600;
+  }
+  .kpi-card__value {
+    font-size: 1.9rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--color-accent, #2563eb);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .kpi-card__sub {
+    font-size: 0.78rem;
+    color: var(--text-muted, #6b7280);
+    margin: 0.3rem 0 0;
+    line-height: 1.4;
+  }
+
+  .kpi-card__divider {
+    height: 1px;
+    background: var(--border, #e5e7eb);
+    margin: 0.85rem 0 0.75rem;
+    border: none;
+  }
+
+  .kpi-card__delta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.32rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    width: fit-content;
+    line-height: 1.3;
+    border: 1.5px solid transparent;
+  }
+  .kpi-card__delta-pill.is-up {
+    background: rgba(22, 163, 74, 0.12);
+    color: #15803d;
+    border-color: rgba(22, 163, 74, 0.35);
+  }
+  .kpi-card__delta-pill.is-down {
+    background: rgba(220, 38, 38, 0.10);
+    color: #b91c1c;
+    border-color: rgba(220, 38, 38, 0.30);
+  }
+  .kpi-card__delta-arrow { font-size: 0.7rem; line-height: 1; }
+  .kpi-card__delta-txt { white-space: nowrap; }
+
+  @media (max-width: 1024px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 768px) { .kpi-row { grid-template-columns: 1fr; } }
+
+  /* --- Estilos para la tabla detallada y tarjetas de resumen --- */
+  .tendencia-resumen--2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0 0;
+  }
+  .tendencia-card {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    border-left: 4px solid var(--border, #e5e7eb);
+  }
+  .tendencia-card--izquierda { border-left-color: #dc2626; }
+  .tendencia-card--derecha { border-left-color: #2563eb; }
+  .tendencia-card__label { margin: 0 0 0.5rem; }
+  .tendencia-card__big {
+    font-size: 1.6rem; font-weight: 800; margin: 0 0 0.2rem;
+    color: var(--text, #111827); letter-spacing: -0.02em; line-height: 1.1;
+  }
+  .tendencia-card__sub {
+    font-size: 0.78rem; color: var(--text-muted, #6b7280); margin: 0 0 0.65rem;
+  }
+  .tendencia-card__list { list-style: none; margin: 0; padding: 0; font-size: 0.78rem; color: var(--text-muted, #6b7280); display: grid; gap: 0.25rem; }
+  .tendencia-card__list strong { color: var(--text, #111827); font-weight: 600; }
+
+  .chip { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; text-transform: capitalize; }
+  .chip--izquierda { background: rgba(220, 38, 38, 0.12); color: #b91c1c; }
+  .chip--derecha { background: rgba(37, 99, 235, 0.12); color: #1d4ed8; }
+
+  .tabla-wrap { background: var(--card-bg, #fff); border: 1px solid var(--border, #e5e7eb); border-radius: 12px; padding: 1rem 1.25rem; overflow-x: auto; margin-top: 1.5rem; }
+  .tabla-titulo { margin: 0 0 0.75rem; font-size: 0.9rem; font-weight: 600; color: var(--text, #111827); display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .tabla-titulo__hint { font-size: 0.72rem; font-weight: 500; color: var(--text-muted, #6b7280); }
+  .tabla-scroll { max-height: 360px; overflow-y: auto; }
+  .tabla-detalle { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .tabla-scroll table thead th {
+    position: sticky; top: 0;
+    background: var(--card-bg, #fff);
+    z-index: 2;
+  }
+  .tabla-detalle th, .tabla-detalle td { padding: 0.5rem 0.6rem; text-align: left; border-bottom: 1px solid var(--border, #e5e7eb); }
+  .tabla-detalle th { font-weight: 600; color: var(--text-muted, #6b7280); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .tabla-detalle td.num, .tabla-detalle th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tabla-detalle td.is-up { color: #16a34a; font-weight: 600; }
+  .tabla-detalle td.is-down { color: #dc2626; font-weight: 600; }
+  
+  .tabla-sortable thead th[data-sort-key] { cursor: pointer; user-select: none; transition: color 0.15s ease; }
+  .tabla-sortable thead th[data-sort-key]:hover { color: var(--text, #111827); }
+  .tabla-sortable thead th[data-sort-dir="asc"],
+  .tabla-sortable thead th[data-sort-dir="desc"] { color: #1d4ed8; }
+  .sort-arrow { display: inline-block; margin-left: 0.25rem; font-size: 0.65rem; opacity: 0.85; }
+
+  /* Delimitadores visuales entre candidatos */
+  .tabla-detalle th.border-left,
+  .tabla-detalle td.border-left {
+    border-left: 1px solid var(--border, #e5e7eb);
+  }
+  .header-group {
+    text-align: center;
+    border-bottom: 2px solid var(--border, #e5e7eb) !important;
+  }
+  .header-group--de {
+    color: #2563eb !important;
+  }
+  .header-group--cep {
+    color: #dc2626 !important;
+  }
+
+  .explicacion-block {
+    background: rgba(37, 99, 235, 0.04);
+    border: 1px solid rgba(37, 99, 235, 0.15);
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    margin-top: 1.25rem;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--text-muted, #4b5563);
+  }
+  .explicacion-titulo {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text, #111827);
+    margin: 0 0 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .explicacion-titulo svg {
+    color: #2563eb;
+    flex-shrink: 0;
+  }
+  .explicacion-seccion {
+    margin-top: 0.75rem;
+  }
+  .explicacion-seccion strong {
+    color: var(--text, #111827);
+  }
+  .explicacion-lista {
+    margin: 0.35rem 0 0.5rem;
+    padding-left: 1.25rem;
+  }
+  .explicacion-lista li {
+    margin-bottom: 0.3rem;
+  }
+
+  @media (max-width: 900px) {
+    .tendencia-resumen--2 { grid-template-columns: 1fr; }
+  }
+</style>

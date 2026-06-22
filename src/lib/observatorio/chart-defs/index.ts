@@ -69,11 +69,20 @@ import {
   pres2022_2vDeltaPetroDepto,
   pres2022_2vConsolidacionAntiPetro,
   pres2022_2vMapaVariacionCandidato,
+  pres2026_2vComposicionVotos,
+  pres2026_2vVotosCandidato,
+  pres2026_2vMapaDeptoGanador,
+  pres2026_2vMovimientoNacional,
+  pres2026_2vDeltaValidosDepto,
+  pres2026_2vDeltaGanadorDepto,
+  pres2026_2vConsolidacionBloque,
+  pres2026_2vMapaVariacionCandidato,
   pres2026MapaVariacionTendencia,
   pres2026_2vPronosticoComposicion,
   pres2026_2vPronosticoMargenDepto,
   pres2026_2vPronosticoMapaGanador,
   pres2026_2vPronosticoMontecarlo,
+  pres2026_2vDiferenciaVariacion,
 } from "./elecciones-presidenciales";
 import type { ChartDef } from "./types";
 
@@ -134,11 +143,20 @@ const BASE_DEFS = {
   [pres2022_2vDeltaPetroDepto.id]: pres2022_2vDeltaPetroDepto,
   [pres2022_2vConsolidacionAntiPetro.id]: pres2022_2vConsolidacionAntiPetro,
   [pres2022_2vMapaVariacionCandidato.id]: pres2022_2vMapaVariacionCandidato,
+  [pres2026_2vComposicionVotos.id]: pres2026_2vComposicionVotos,
+  [pres2026_2vVotosCandidato.id]: pres2026_2vVotosCandidato,
+  [pres2026_2vMapaDeptoGanador.id]: pres2026_2vMapaDeptoGanador,
+  [pres2026_2vMovimientoNacional.id]: pres2026_2vMovimientoNacional,
+  [pres2026_2vDeltaValidosDepto.id]: pres2026_2vDeltaValidosDepto,
+  [pres2026_2vDeltaGanadorDepto.id]: pres2026_2vDeltaGanadorDepto,
+  [pres2026_2vConsolidacionBloque.id]: pres2026_2vConsolidacionBloque,
+  [pres2026_2vMapaVariacionCandidato.id]: pres2026_2vMapaVariacionCandidato,
   [pres2026MapaVariacionTendencia.id]: pres2026MapaVariacionTendencia,
   [pres2026_2vPronosticoComposicion.id]: pres2026_2vPronosticoComposicion,
   [pres2026_2vPronosticoMargenDepto.id]: pres2026_2vPronosticoMargenDepto,
   [pres2026_2vPronosticoMapaGanador.id]: pres2026_2vPronosticoMapaGanador,
   [pres2026_2vPronosticoMontecarlo.id]: pres2026_2vPronosticoMontecarlo,
+  [pres2026_2vDiferenciaVariacion.id]: pres2026_2vDiferenciaVariacion,
 } as const satisfies Record<string, ChartDef>;
 
 // Sets comparativos (Colombia vs rival): generados por factory, ids únicos por
