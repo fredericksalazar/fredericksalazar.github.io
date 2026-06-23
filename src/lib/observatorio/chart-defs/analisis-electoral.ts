@@ -528,3 +528,125 @@ export const pres2026_2vRetrocesoIzquierda: ChartDef = {
     };
   },
 };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 6. El voto en el exterior — diáspora vs electorado doméstico (2026 2V)
+// ─────────────────────────────────────────────────────────────────────────────
+export const pres2026_2vVotoExterior: ChartDef = {
+  id: "pres-2026-2v-voto-exterior",
+  titulo: "El peso del voto en el exterior (consulados)",
+  pregunta: "¿Cómo votó la diáspora frente al electorado dentro del país?",
+  fuenteTexto: "Registraduría Nacional del Estado Civil (preconteo)",
+  datasets: ["pres-2026-2v"],
+  height: 300,
+  ariaLabel: "Barras apiladas al 100% comparando el reparto de votos entre De la Espriella y Cepeda dentro de Colombia, en el exterior y en el total nacional",
+  build({ "pres-2026-2v": e }) {
+    if (!e) return { traces: [], layout: baseLayout() };
+
+    const ABE = "abelardo_de_la_espriella";
+    const CEP = "ivan_cepeda";
+    const fmt = (n: number) => new Intl.NumberFormat("es-CO").format(Math.round(n));
+
+    // El desglose departamental no incluye el exterior; lo reconstruimos como
+    // (nacional − suma departamental). Ver [[pres-datasets-exterior-gap]].
+    const sA = e.agregados.departamentos.reduce((s, d) => s + (d.votos_por_candidato[ABE] ?? 0), 0);
+    const sC = e.agregados.departamentos.reduce((s, d) => s + (d.votos_por_candidato[CEP] ?? 0), 0);
+    const nA = e.resultados.find(r => r.id === ABE)?.votos ?? 0;
+    const nC = e.resultados.find(r => r.id === CEP)?.votos ?? 0;
+    const eA = nA - sA, eC = nC - sC;
+
+    const grupos = [
+      { label: "Dentro de Colombia", a: sA, c: sC },
+      { label: "Exterior (consulados)", a: eA, c: eC },
+      { label: "Total nacional", a: nA, c: nC },
+    ];
+
+    const cats = grupos.map(g => g.label);
+    const shA = grupos.map(g => (g.a / (g.a + g.c)) * 100);
+    const shC = grupos.map(g => (g.c / (g.a + g.c)) * 100);
+
+    return {
+      traces: [
+        {
+          y: cats, x: shA, type: "bar", orientation: "h",
+          name: "Abelardo de la Espriella", marker: { color: ABELARDO_COLOR },
+          text: shA.map(v => `${v.toFixed(1)}%`), textposition: "inside", insidetextanchor: "middle",
+          hovertext: grupos.map(g => `<b>${g.label}</b><br>De la Espriella: ${((g.a / (g.a + g.c)) * 100).toFixed(1)}% (${fmt(g.a)} votos)`),
+          hoverinfo: "text",
+        },
+        {
+          y: cats, x: shC, type: "bar", orientation: "h",
+          name: "Iván Cepeda", marker: { color: CEPEDA_COLOR },
+          text: shC.map(v => `${v.toFixed(1)}%`), textposition: "inside", insidetextanchor: "middle",
+          hovertext: grupos.map(g => `<b>${g.label}</b><br>Cepeda: ${((g.c / (g.a + g.c)) * 100).toFixed(1)}% (${fmt(g.c)} votos)`),
+          hoverinfo: "text",
+        },
+      ],
+      layout: baseLayout({
+        barmode: "stack",
+        xaxis: { ticksuffix: "%", range: [0, 100], showgrid: false, zeroline: false },
+        yaxis: { type: "category", automargin: true, autorange: "reversed" },
+        showlegend: true,
+        legend: { orientation: "h", y: -0.3 },
+        margin: { l: 10, r: 16, t: 10, b: 40 },
+      }),
+    };
+  },
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 7. Las dos Colombias — distribución del margen por departamento (2026 2V)
+// ─────────────────────────────────────────────────────────────────────────────
+export const pres2026_2vPolarizacionTerritorial: ChartDef = {
+  id: "pres-2026-2v-polarizacion-territorial",
+  titulo: "Las dos Colombias: distribución del margen por departamento",
+  pregunta: "¿Fue un país dividido por la mitad o dos bloques territoriales que se cancelan?",
+  fuenteTexto: "Registraduría Nacional del Estado Civil (preconteo)",
+  datasets: ["pres-2026-2v"],
+  height: 380,
+  ariaLabel: "Histograma de la distribución del margen de victoria por departamento, separando los ganados por Cepeda de los ganados por De la Espriella",
+  build({ "pres-2026-2v": e }) {
+    if (!e) return { traces: [], layout: baseLayout() };
+
+    const ABE = "abelardo_de_la_espriella";
+    const CEP = "ivan_cepeda";
+
+    // Margen con signo: positivo = De la Espriella, negativo = Cepeda (en pp).
+    const margins = e.agregados.departamentos.map(d => {
+      const a = d.votos_por_candidato[ABE] ?? 0;
+      const c = d.votos_por_candidato[CEP] ?? 0;
+      return (a - c) / (d.total_validos || 1) * 100;
+    });
+    const cepWon = margins.filter(m => m < 0);
+    const abeWon = margins.filter(m => m >= 0);
+
+    const xbins = { start: -70, end: 60, size: 10 };
+
+    return {
+      traces: [
+        {
+          type: "histogram", x: cepWon, name: "Ganó Cepeda",
+          marker: { color: CEPEDA_COLOR, line: { color: "white", width: 1 } },
+          xbins, hovertemplate: "Margen %{x} pp<br>%{y} departamentos<extra>Cepeda</extra>",
+        },
+        {
+          type: "histogram", x: abeWon, name: "Ganó De la Espriella",
+          marker: { color: ABELARDO_COLOR, line: { color: "white", width: 1 } },
+          xbins, hovertemplate: "Margen %{x} pp<br>%{y} departamentos<extra>De la Espriella</extra>",
+        },
+      ],
+      layout: baseLayout({
+        barmode: "overlay",
+        bargap: 0.04,
+        xaxis: {
+          title: "Margen del ganador en el departamento (pp) — ◄ Cepeda · De la Espriella ►",
+          zeroline: true, zerolinecolor: COLORS.border, zerolinewidth: 2,
+        },
+        yaxis: { title: "N.º de departamentos", dtick: 1 },
+        showlegend: true,
+        legend: { orientation: "h", y: -0.28 },
+        margin: { l: 50, r: 20, t: 16, b: 70 },
+      }),
+    };
+  },
+};

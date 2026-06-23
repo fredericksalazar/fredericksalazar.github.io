@@ -90,6 +90,8 @@ import {
   pres2026_2vVotoNoPositivo,
   pres2026_2vAporteNetoMargen,
   pres2026_2vRetrocesoIzquierda,
+  pres2026_2vVotoExterior,
+  pres2026_2vPolarizacionTerritorial,
 } from "./analisis-electoral";
 import type { ChartDef } from "./types";
 
@@ -166,6 +168,8 @@ const BASE_DEFS = {
   [pres2026_2vDiferenciaVariacion.id]: pres2026_2vDiferenciaVariacion,
   [presComparativoDesplazamientoIdeologico.id]: presComparativoDesplazamientoIdeologico,
   [pres2026_2vRetrocesoIzquierda.id]: pres2026_2vRetrocesoIzquierda,
+  [pres2026_2vVotoExterior.id]: pres2026_2vVotoExterior,
+  [pres2026_2vPolarizacionTerritorial.id]: pres2026_2vPolarizacionTerritorial,
   [pres2026_2vAporteNetoMargen.id]: pres2026_2vAporteNetoMargen,
   [pres2026_2vTransferenciaEndosos.id]: pres2026_2vTransferenciaEndosos,
   [pres2026_2vVotoNoPositivo.id]: pres2026_2vVotoNoPositivo,
