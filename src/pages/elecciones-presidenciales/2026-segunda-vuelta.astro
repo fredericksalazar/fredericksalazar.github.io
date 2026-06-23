@@ -459,6 +459,51 @@ const jsonLd = {
       </div>
     </IndicadorPanel>
 
+    <IndicadorPanel
+      numero="10"
+      eyebrow="Evolución Histórica (2022 vs 2026)"
+      titulo="Desplazamiento ideológico por departamento"
+      lead="Mide la variación en la participación (pp) obtenida por las tres principales tendencias políticas (derecha, centro, izquierda) en la 1ª vuelta de 2026 frente a la de 2022. Permite detectar qué regiones se derechizaron o izquierdizaron."
+    >
+      <Chart slot="visual" id="pres-comparativo-desplazamiento-ideologico" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="11"
+      eyebrow="Procedencia del Caudal"
+      titulo="Origen estimado del caudal en segunda vuelta"
+      lead="Estimación nacional del origen de los votos obtenidos por cada candidato en el balotaje, desagregando su base de primera vuelta, los endosos estimados de otras fuerzas eliminadas del mismo bloque, los votos captados del centro y la movilización de nuevos electores."
+    >
+      <Chart slot="visual" id="pres-2026-2v-transferencia-endosos" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="12"
+      eyebrow="Desafectación y Castigo"
+      titulo="Evolución de la abstención, nulos y no marcados"
+      lead="Mapea la evolución de la desafectación electoral comparando el porcentaje de abstencionistas, votos nulos y tarjetas no marcadas sobre el censo electoral entre la 1ª y 2ª vuelta presidenciales de 2026."
+    >
+      <Chart slot="visual" id="pres-2026-2v-voto-no-positivo" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="13"
+      eyebrow="Realineamiento (2022 → 2026)"
+      titulo="Realineamiento territorial: quién ganó terreno desde 2022"
+      lead="En 2022 la izquierda ganó la presidencia (Petro, 2ª vuelta); en 2026 la perdió. Este mapa muestra qué bloque ganó terreno en cada departamento entre ambos balotajes, midiendo el cambio de la cuota de la izquierda sobre los votos válidos (Petro 2022 vs Cepeda 2026); en una elección de dos, la derecha es su complemento exacto. En azul, donde avanzó la derecha; en rojo, donde avanzó la izquierda. La derecha ganó terreno en la Costa Caribe (Atlántico +9,0 pp, Sucre, La Guajira), el Pacífico (Nariño, Cauca) y Bogotá (+6,7 pp); la izquierda solo creció en los Llanos y la Amazonía de baja población (Vichada, Guainía, Arauca), insuficiente para sostener su coalición de 2022."
+    >
+      <Chart slot="visual" id="pres-2026-2v-retroceso-izquierda" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="14"
+      eyebrow="Síntesis Territorial"
+      titulo="Dónde se ganó la elección"
+      lead="Descomposición del margen nacional (De la Espriella +250.820 votos) en el aporte neto de cada territorio, ordenado del más favorable a De la Espriella (arriba, azul) al más favorable a Cepeda (abajo, rojo). Cada barra suma o resta votos a la ventaja hasta llegar al margen final. Dato clave: dentro del país el margen neto fue de apenas +73.011 votos — fue el voto en el exterior (+177.809 netos) el que más que duplicó la ventaja. Antioquia, por sí sola, aporta más que todo el margen doméstico; el Pacífico, el Caribe y Bogotá lo recortan sin alcanzar a revertirlo."
+    >
+      <Chart slot="visual" id="pres-2026-2v-aporte-neto-margen" embedded={true} />
+    </IndicadorPanel>
+
     <DashboardFooter
       fuentes={[
         { nombre: "Registraduría Nacional del Estado Civil", url: "https://resultados.registraduria.gov.co/v2/resultados/0/00", indicador: "Preconteo segunda vuelta" },
@@ -716,6 +761,48 @@ const jsonLd = {
   }
   .explicacion-lista li {
     margin-bottom: 0.3rem;
+  }
+
+  /* Estilos específicos para selectores de mapas dinámicos en Plotly */
+  :global(.tendencia-selector-container) {
+    margin-bottom: 1.25rem;
+    display: flex;
+    justify-content: center;
+  }
+  :global(.tendencia-tabs) {
+    display: inline-flex;
+    background: var(--bg-muted, #f1f5f9);
+    padding: 0.25rem;
+    border-radius: 8px;
+    border: 1px solid var(--border, #cbd5e1);
+  }
+  :global(.tendencia-tab) {
+    border: none;
+    background: transparent;
+    padding: 0.45rem 1.25rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted, #64748b);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  :global(.tendencia-tab.active) {
+    background: var(--card-bg, #ffffff);
+    color: var(--color-accent, #2563eb);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  :global(.tendencia-map-footer) {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--bg-muted, #f8fafc);
+    border-radius: 8px;
+    border-left: 3px solid var(--color-accent, #2563eb);
+  }
+  :global(.tendencia-map-info) {
+    font-size: 0.78rem;
+    color: var(--text-muted, #64748b);
+    line-height: 1.4;
   }
 
   @media (max-width: 900px) {
