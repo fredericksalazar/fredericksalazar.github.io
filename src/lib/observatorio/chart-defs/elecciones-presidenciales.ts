@@ -155,7 +155,7 @@ async function buildMapaDepto(e: PresEleccionData, candidatos: PresCandidatosDat
       marker: { line: { width: 0.5, color: "white" } },
     }],
     layout: baseLayout({
-      mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.0 }, zoom: 4.2 },
+      mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.3 }, zoom: 4.55 },
       margin: { l: 0, r: 0, t: 0, b: 0 },
       xaxis: { visible: false },
       yaxis: { visible: false },
@@ -695,7 +695,7 @@ export const pres2022_2vMapaVariacionCandidato: ChartDef = {
         marker: { line: { width: 0.6, color: "rgba(15, 23, 42, 0.15)" } },
       }],
       layout: baseLayout({
-        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.0 }, zoom: 4.2 },
+        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.3 }, zoom: 4.55 },
         margin: { l: 0, r: 0, t: 0, b: 0 },
         xaxis: { visible: false },
         yaxis: { visible: false },
@@ -1107,7 +1107,7 @@ export const pres2026_2vMapaVariacionCandidato: ChartDef = {
         marker: { line: { width: 0.6, color: "rgba(15, 23, 42, 0.15)" } },
       }],
       layout: baseLayout({
-        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.0 }, zoom: 4.2 },
+        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.3 }, zoom: 4.55 },
         margin: { l: 0, r: 0, t: 0, b: 0 },
         xaxis: { visible: false },
         yaxis: { visible: false },
@@ -1150,6 +1150,286 @@ if (typeof document !== "undefined") {
     });
   });
 }
+
+export const pres2026_2vMapaMunicipio: ChartDef = {
+  id: "pres-2026-2v-mapa-municipio",
+  titulo: "Mapa por municipio — ganador y fuerza de cada candidato",
+  pregunta: "¿Quién ganó cada municipio en el balotaje?",
+  fuenteTexto: "Registraduría · GeoJSON municipios (DANE MGN 2018)",
+  datasets: ["pres-2026-2v-municipios"],
+  height: 880,
+  ariaLabel: "Mapa coroplético de Colombia a nivel municipal con selector: ganador por municipio, porcentaje de De la Espriella y porcentaje de Cepeda en el balotaje 2026",
+  async build({ "pres-2026-2v-municipios": data }) {
+    if (!data) return { traces: [], layout: baseLayout() };
+
+    const geojson = await fetch("/geo/colombia-municipios.geo.json").then(r => r.json()).catch(() => null);
+    if (!geojson || !geojson.features) return { traces: [], layout: baseLayout() };
+
+    const byCod = new Map(data.municipios.map(m => [m.cod_mpio, m]));
+    const fmt = (n: number) => new Intl.NumberFormat("es-CO").format(n);
+    const pct = (n: number | null) => (n == null ? "—" : `${(n * 100).toFixed(1)}%`);
+
+    const candNames: Record<string, string> = {
+      abelardo_de_la_espriella: "Abelardo de la Espriella",
+      ivan_cepeda: "Iván Cepeda",
+    };
+
+    const blueRamp: [number, string][] = [
+      [0, "#eff6ff"], [0.2, "#bfdbfe"], [0.4, "#60a5fa"],
+      [0.6, "#3b82f6"], [0.8, "#1d4ed8"], [1, "#1e3a8a"],
+    ];
+    const redRamp: [number, string][] = [
+      [0, "#fef2f2"], [0.2, "#fecaca"], [0.4, "#f87171"],
+      [0.6, "#ef4444"], [0.8, "#dc2626"], [1, "#7f1d1d"],
+    ];
+
+    const modes = [
+      { id: "ganador", label: "Ganador", kind: "ganador" as const },
+      { id: "margen", label: "Margen", kind: "margen" as const },
+      { id: "abelardo", label: "De la Espriella", kind: "share" as const, field: "share_abelardo" as const, ramp: blueRamp, colorbarTitle: "% De la Espriella" },
+      { id: "cepeda", label: "Cepeda", kind: "share" as const, field: "share_cepeda" as const, ramp: redRamp, colorbarTitle: "% Cepeda" },
+    ];
+
+    type ModeData = {
+      locations: string[]; z: number[]; text: string[];
+      colorscale: [number, string][]; zmin: number; zmax: number;
+      showscale: boolean; colorbar: Record<string, unknown>;
+    };
+    const computed: Record<string, ModeData> = {};
+
+    for (const mode of modes) {
+      const locations: string[] = [];
+      const z: number[] = [];
+      const text: string[] = [];
+      for (const feat of geojson.features) {
+        const cod = String(feat.properties.MPIO_CCNCT);
+        const m = byCod.get(cod);
+        if (!m) continue;
+        locations.push(cod);
+        const hoverBase =
+          `<b>${m.nombre_mpio}</b> · ${m.nombre_depto}<br>` +
+          `De la Espriella: ${fmt(m.votos_abelardo)} (${pct(m.share_abelardo)})<br>` +
+          `Cepeda: ${fmt(m.votos_cepeda)} (${pct(m.share_cepeda)})`;
+        if (mode.kind === "ganador") {
+          z.push(m.ganador_id === "abelardo_de_la_espriella" ? 0 : 1);
+          text.push(`${hoverBase}<br>Ganador: <b>${candNames[m.ganador_id] ?? m.ganador_id}</b>`);
+        } else if (mode.kind === "margen") {
+          const mg = m.margen_pp ?? 0;
+          z.push(mg);
+          const lead = mg >= 0 ? "De la Espriella" : "Cepeda";
+          text.push(`${hoverBase}<br>Margen: <b>${lead} +${(Math.abs(mg) * 100).toFixed(1)} pp</b>`);
+        } else {
+          z.push(m[mode.field] ?? 0);
+          text.push(hoverBase);
+        }
+      }
+
+      if (mode.kind === "ganador") {
+        computed[mode.id] = {
+          locations, z, text,
+          colorscale: [[0, DE_COLOR], [0.4999, DE_COLOR], [0.5, CEP_COLOR], [1, CEP_COLOR]],
+          zmin: 0, zmax: 1, showscale: false, colorbar: {},
+        };
+      } else if (mode.kind === "margen") {
+        // Clamp simétrico: los pocos municipios con margen ~100% no deben lavar el resto.
+        const M = Math.min(Math.max(...z.map((v) => Math.abs(v))), 0.8) || 0.5;
+        computed[mode.id] = {
+          locations, z, text,
+          // Divergente: rojo (Cepeda) ← blanco (empate) → azul (De la Espriella).
+          colorscale: [[0, "#7f1d1d"], [0.25, "#ef4444"], [0.5, "#f8fafc"], [0.75, "#3b82f6"], [1, "#1e3a8a"]],
+          zmin: -M, zmax: M, showscale: true,
+          colorbar: { title: { text: "Margen (pp)" }, tickformat: "+.0%", thickness: 12, len: 0.6 },
+        };
+      } else {
+        const vals = z.filter((v) => Number.isFinite(v));
+        computed[mode.id] = {
+          locations, z, text,
+          colorscale: mode.ramp,
+          zmin: Math.min(...vals),
+          zmax: Math.max(...vals),
+          showscale: true,
+          colorbar: { title: { text: mode.colorbarTitle }, tickformat: ".0%", thickness: 12, len: 0.6 },
+        };
+      }
+    }
+
+    const def = computed["ganador"];
+    const ganaAbel = data.resumen_nacional.municipios_abelardo;
+    const ganaCep = data.resumen_nacional.municipios_cepeda;
+
+    const headerHtml = `
+      <div class="tendencia-selector-container">
+        <div class="tendencia-tabs">
+          ${modes.map((m, i) =>
+            `<button class="tendencia-tab${i === 0 ? " active" : ""}" data-munview="${m.id}">${m.label}</button>`
+          ).join("")}
+        </div>
+      </div>
+      <script id="data-mun-2026-2v" type="application/json">${JSON.stringify(computed)}</script>
+    `;
+
+    const footerHtml = `
+      <div class="tendencia-map-footer">
+        <span class="tendencia-map-info">* «Ganador»: color del candidato con más votos en cada municipio (azul = De la Espriella, ganó ${fmt(ganaAbel)} municipios; rojo = Cepeda, ${fmt(ganaCep)}). «Margen»: ventaja del ganador en puntos (azul = De la Espriella, rojo = Cepeda; blanco = empate). «De la Espriella» y «Cepeda»: % de votos válidos del candidato por municipio (más oscuro = mayor porcentaje). ${fmt(data.municipios.length)} municipios; el voto consular (exterior) y algunas áreas no municipalizadas de la Amazonía no aparecen en el mapa.</span>
+      </div>
+    `;
+
+    return {
+      traces: [{
+        type: "choroplethmapbox",
+        geojson,
+        locations: def.locations,
+        z: def.z,
+        featureidkey: "properties.MPIO_CCNCT",
+        colorscale: def.colorscale,
+        zmin: def.zmin,
+        zmax: def.zmax,
+        showscale: def.showscale,
+        text: def.text,
+        hoverinfo: "text",
+        colorbar: def.colorbar,
+        marker: { line: { width: 0.2, color: "rgba(15, 23, 42, 0.18)" } },
+      }],
+      layout: baseLayout({
+        mapbox: { style: "white-bg", center: { lat: 4.6, lon: -73.7 }, zoom: 4.9 },
+        margin: { l: 0, r: 0, t: 0, b: 0 },
+        xaxis: { visible: false },
+        yaxis: { visible: false },
+      }),
+      headerHtml,
+      footerHtml,
+    };
+  },
+};
+
+// Delegación global para los tabs del mapa municipal 2026 2V (ganador / candidato).
+if (typeof document !== "undefined") {
+  document.addEventListener("click", (ev) => {
+    const btn = (ev.target as HTMLElement | null)?.closest?.(
+      ".tendencia-tab[data-munview]"
+    ) as HTMLButtonElement | null;
+    if (!btn) return;
+    const root = btn.closest<HTMLElement>("[data-chart-root]");
+    if (!root) return;
+    const target = root.querySelector<HTMLElement>("#chart-pres-2026-2v-mapa-municipio");
+    if (!target) return;
+    const script = root.querySelector("#data-mun-2026-2v");
+    if (!script || !(window as any).Plotly) return;
+    let data: Record<string, any>;
+    try { data = JSON.parse(script.textContent || "{}"); } catch { return; }
+    const view = btn.dataset.munview!;
+    const d = data[view];
+    if (!d) return;
+    root.querySelectorAll(".tendencia-tab[data-munview]").forEach((t) => t.classList.remove("active"));
+    btn.classList.add("active");
+    (window as any).Plotly.restyle(target, {
+      z: [d.z],
+      text: [d.text],
+      colorscale: [d.colorscale],
+      zmin: [d.zmin],
+      zmax: [d.zmax],
+      showscale: [d.showscale],
+      colorbar: [d.colorbar],
+    });
+  });
+}
+
+// ───────────── Análisis municipal 2026 2V (deep-dive) ─────────────
+
+export const pres2026_2vDistribucionMargenes: ChartDef = {
+  id: "pres-2026-2v-distribucion-margenes",
+  titulo: "Las dos Colombias: distribución del margen municipal",
+  pregunta: "¿Cuántos municipios fueron reñidos y cuántos aplastantes?",
+  fuenteTexto: "Registraduría (preconteo) · cálculo propio",
+  datasets: ["pres-2026-2v-municipios"],
+  height: 460,
+  ariaLabel: "Histograma del margen de victoria por municipio en puntos porcentuales, coloreado por candidato ganador",
+  build({ "pres-2026-2v-municipios": data }) {
+    if (!data) return { traces: [], layout: baseLayout() };
+    const muns = data.municipios.filter((m) => m.margen_pp != null);
+    const step = 5;
+    const edges: number[] = [];
+    for (let e = -100; e < 100; e += step) edges.push(e);
+    const counts = edges.map(() => 0);
+    for (const m of muns) {
+      const v = (m.margen_pp as number) * 100;
+      let idx = Math.floor((v + 100) / step);
+      if (idx < 0) idx = 0;
+      if (idx >= counts.length) idx = counts.length - 1;
+      counts[idx]++;
+    }
+    const centers = edges.map((e) => e + step / 2);
+    const colors = centers.map((c) => (c >= 0 ? DE_COLOR : CEP_COLOR));
+    const cep = muns.filter((m) => (m.margen_pp as number) < 0).length;
+    const de = muns.length - cep;
+    const reñidos = muns.filter((m) => Math.abs(m.margen_pp as number) < 0.05).length;
+    const aplastantes = muns.filter((m) => Math.abs(m.margen_pp as number) >= 0.3).length;
+    return {
+      traces: [{
+        type: "bar", x: centers, y: counts,
+        marker: { color: colors },
+        hovertemplate: "Margen %{x:+.0f} pp<br>%{y} municipios<extra></extra>",
+      }],
+      layout: baseLayout({
+        bargap: 0.03,
+        xaxis: { title: "Margen de victoria (pp) · negativo = Cepeda, positivo = De la Espriella", zeroline: true, zerolinecolor: COLORS.textMuted, zerolinewidth: 1.5, ticksuffix: " pp", automargin: true },
+        yaxis: { title: "Número de municipios", gridcolor: "rgba(208, 215, 220, 0.4)", automargin: true },
+        margin: { l: 60, r: 20, t: 16, b: 64 },
+      }),
+      pregunta: `De ${muns.length} municipios, De la Espriella ganó ${de} y Cepeda ${cep}. Solo ${reñidos} se definieron por menos de 5 pp y ${aplastantes} por más de 30 pp: pocos empates y muchos extremos — dos bloques territoriales contundentes.`,
+    };
+  },
+};
+
+export const pres2026_2vMapaDesafeccion: ChartDef = {
+  id: "pres-2026-2v-mapa-desafeccion",
+  titulo: "Mapa de desafección: voto en blanco, nulo y no marcado",
+  pregunta: "¿Dónde fue mayor el voto sin candidato?",
+  fuenteTexto: "Registraduría · GeoJSON municipios (DANE MGN 2018)",
+  datasets: ["pres-2026-2v-municipios"],
+  height: 880,
+  ariaLabel: "Mapa coroplético municipal del porcentaje de votos en blanco, nulos y tarjetones no marcados sobre el total sufragado",
+  async build({ "pres-2026-2v-municipios": data }) {
+    if (!data) return { traces: [], layout: baseLayout() };
+    const geojson = await fetch("/geo/colombia-municipios.geo.json").then((r) => r.json()).catch(() => null);
+    if (!geojson || !geojson.features) return { traces: [], layout: baseLayout() };
+    const byCod = new Map(data.municipios.map((m) => [m.cod_mpio, m]));
+    const nf = new Intl.NumberFormat("es-CO");
+    const locations: string[] = [];
+    const z: number[] = [];
+    const text: string[] = [];
+    for (const feat of geojson.features) {
+      const cod = String(feat.properties.MPIO_CCNCT);
+      const m = byCod.get(cod);
+      if (!m || m.share_no_positivo == null) continue;
+      locations.push(cod);
+      z.push((m.share_no_positivo as number) * 100);
+      text.push(
+        `<b>${m.nombre_mpio}</b> · ${m.nombre_depto}<br>` +
+        `Blanco: ${nf.format(m.votos_blanco)}<br>Nulos: ${nf.format(m.votos_nulos)}<br>No marcados: ${nf.format(m.votos_no_marcados)}<br>` +
+        `= <b>${((m.share_no_positivo as number) * 100).toFixed(1)}%</b> del total sufragado`
+      );
+    }
+    return {
+      traces: [{
+        type: "choroplethmapbox", geojson, locations, z,
+        featureidkey: "properties.MPIO_CCNCT",
+        colorscale: [[0, "#f5f3ff"], [0.25, "#ddd6fe"], [0.5, "#a78bfa"], [0.75, "#7c3aed"], [1, "#4c1d95"]],
+        zmin: 0, zmax: Math.max(...z),
+        showscale: true, text, hoverinfo: "text",
+        colorbar: { title: { text: "% no positivo" }, ticksuffix: "%", thickness: 12, len: 0.6 },
+        marker: { line: { width: 0.2, color: "rgba(15, 23, 42, 0.18)" } },
+      }],
+      layout: baseLayout({
+        mapbox: { style: "white-bg", center: { lat: 4.6, lon: -73.7 }, zoom: 4.9 },
+        margin: { l: 0, r: 0, t: 0, b: 0 },
+        xaxis: { visible: false },
+        yaxis: { visible: false },
+      }),
+      footerHtml: `<div class="tendencia-map-footer"><span class="tendencia-map-info">* Voto «no positivo» = (blanco + nulos + tarjetones no marcados) / total sufragado. Mide desafección o castigo electoral; los picos suelen coincidir con municipios de baja competencia o afectados por el conflicto armado.</span></div>`,
+    };
+  },
+};
 
 export const pres2026MapaVariacionTendencia: ChartDef = {
   id: "pres-2026-mapa-variacion-tendencia",
@@ -1306,7 +1586,7 @@ export const pres2026MapaVariacionTendencia: ChartDef = {
         marker: { line: { width: 0.6, color: "rgba(15, 23, 42, 0.15)" } },
       }],
       layout: baseLayout({
-        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.0 }, zoom: 4.2 },
+        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.3 }, zoom: 4.55 },
         margin: { l: 0, r: 0, t: 0, b: 0 },
         xaxis: { visible: false },
         yaxis: { visible: false },
@@ -1466,7 +1746,7 @@ export const pres2026_2vPronosticoMapaGanador: ChartDef = {
         marker: { line: { width: 0.5, color: "white" } },
       }],
       layout: baseLayout({
-        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.0 }, zoom: 4.2 },
+        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.3 }, zoom: 4.55 },
         margin: { l: 0, r: 0, t: 0, b: 0 },
         xaxis: { visible: false },
         yaxis: { visible: false },
@@ -1633,7 +1913,7 @@ export const pres2026_2vDiferenciaVariacion: ChartDef = {
         marker: { line: { width: 0.6, color: "rgba(15, 23, 42, 0.15)" } },
       }],
       layout: baseLayout({
-        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.0 }, zoom: 4.2 },
+        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.3 }, zoom: 4.55 },
         margin: { l: 0, r: 0, t: 0, b: 0 },
         xaxis: { visible: false },
         yaxis: { visible: false },

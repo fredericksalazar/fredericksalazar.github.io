@@ -244,12 +244,6 @@ const jsonLd = {
   <PlotlyLoader bundle="full" />
 
   <main class="observatorio-container">
-    <p class="preconteo-aviso">
-      Cifras de <strong>preconteo de la Registraduría</strong> (≈99,99 % de mesas), de carácter
-      informativo y no vinculante; el escrutinio definitivo de las comisiones escrutadoras
-      puede ajustarlas. Norte de Santander aún no tenía desglose publicado en la fuente y se
-      estimó por residual contra el total nacional.
-    </p>
 
     <section class="kpi-row" aria-label="Indicadores generales 2026 2ª vuelta">
       {kpis.map((k) => (
@@ -281,7 +275,7 @@ const jsonLd = {
     </IndicadorPanel>
 
     <IndicadorPanel numero="4" eyebrow="Geografía comparada" titulo="El mapa que cambió — ganador por departamento, 1ª vs 2ª vuelta" lead="A la izquierda, quién ganó cada departamento en la 1ª vuelta; a la derecha, en el balotaje. Comparar los dos mapas muestra qué territorios se mantuvieron y cuáles cambiaron de bloque entre las dos vueltas (azul = De la Espriella, rojo = Cepeda).">
-      <div slot="visual" class="mapas-duo">
+      <div slot="visual" class="mapas-duo mapa-xl">
         <Chart id="pres-2026-mapa-depto-ganador" embedded={true} />
         <Chart id="pres-2026-2v-mapa-depto-ganador" embedded={true} />
       </div>
@@ -289,7 +283,7 @@ const jsonLd = {
 
     <IndicadorPanel numero="5" eyebrow="Geografía" titulo="Mapa por departamento — Ganador y variación por candidato" lead="Selecciona una vista: «Ganador» muestra el candidato que ganó cada departamento; «De la Espriella» y «Cepeda» muestran la variación de votos de ese candidato entre 1ª y 2ª vuelta (más oscuro = mayor crecimiento).">
       <div slot="visual">
-        <Chart id="pres-2026-2v-mapa-variacion-candidato" embedded={true} />
+        <div class="mapa-xl"><Chart id="pres-2026-2v-mapa-variacion-candidato" embedded={true} /></div>
 
         <div class="tendencia-resumen--2">
           {resumenCandidatos.map((r) => (
@@ -366,18 +360,17 @@ const jsonLd = {
       <Chart slot="visual" id="pres-2026-2v-delta-validos-depto" embedded={true} />
     </IndicadorPanel>
 
-    <IndicadorPanel numero="7" eyebrow="Origen de la victoria" titulo="Δ votos De la Espriella por departamento (2V − 1V)" lead="Qué departamentos le pusieron a De la Espriella los votos adicionales para ganar. Antioquia, la región Andina conservadora (Santander, Boyacá, los Santanderes) y los consulados concentran buena parte de su crecimiento decisivo.">
-      <Chart slot="visual" id="pres-2026-2v-delta-ganador-depto" embedded={true} />
+    <IndicadorPanel numero="7" eyebrow="Geografía municipal" titulo="El balotaje municipio a municipio" lead="El mismo resultado, a escala municipal. La pestaña «Ganador» pinta cada municipio con preconteo del color del candidato más votado (azul = De la Espriella, rojo = Cepeda); «Margen» muestra por cuánto ganó (más intenso = más holgado); «De la Espriella» y «Cepeda» muestran el porcentaje de votos válidos de cada candidato (más oscuro = mayor apoyo). Pasa el cursor sobre un municipio para ver el detalle.">
+      <div slot="visual" class="mapa-xl"><Chart id="pres-2026-2v-mapa-municipio" embedded={true} /></div>
     </IndicadorPanel>
 
-    <IndicadorPanel numero="8" eyebrow="Distribución del voto" titulo="Porcentaje de votos por candidato y departamento" lead="Distribución porcentual de los votos válidos en el balotaje para cada departamento. Muestra la correlación de fuerzas territoriales entre Abelardo de la Espriella (azul) e Iván Cepeda (rojo), ordenado por porcentaje de votación por Cepeda.">
-      <Chart slot="visual" id="pres-2026-2v-consolidacion-bloque" embedded={true} />
+    <IndicadorPanel numero="8" eyebrow="Desafección electoral" titulo="Dónde el voto fue de castigo: blanco, nulo y no marcado" lead="Mapa del voto «no positivo» —blanco, nulo y tarjetones no marcados— como porcentaje del total sufragado en cada municipio. Es un termómetro de la desafección o el castigo: a diferencia del mapa de ganador, aquí no compiten candidatos sino el rechazo a todos. Los picos tienden a concentrarse en municipios de baja competencia o afectados por el conflicto armado.">
+      <div slot="visual" class="mapa-xl"><Chart id="pres-2026-2v-mapa-desafeccion" embedded={true} /></div>
     </IndicadorPanel>
 
     <IndicadorPanel numero="9" eyebrow="Diferencia de crecimiento" titulo="Diferencia de variación de apoyo por departamento" lead="Comparación entre la variación de participación sobre los votos válidos (pp) de Cepeda y De la Espriella por departamento. Muestra quién ganó más influencia o tracción territorial entre la 1ª y 2ª vuelta (azul = mayor crecimiento de De la Espriella, rojo = mayor crecimiento de Cepeda).">
       <div slot="visual">
         <Chart id="pres-2026-2v-diferencia-variacion" embedded={true} />
-
 
         <div class="explicacion-block">
           <h4 class="explicacion-titulo">
@@ -465,7 +458,7 @@ const jsonLd = {
       titulo="Desplazamiento ideológico por departamento"
       lead="Mide la variación en la participación (pp) obtenida por las tres principales tendencias políticas (derecha, centro, izquierda) en la 1ª vuelta de 2026 frente a la de 2022. Permite detectar qué regiones se derechizaron o izquierdizaron."
     >
-      <Chart slot="visual" id="pres-comparativo-desplazamiento-ideologico" embedded={true} />
+      <div slot="visual" class="mapa-xl"><Chart id="pres-comparativo-desplazamiento-ideologico" embedded={true} /></div>
     </IndicadorPanel>
 
     <IndicadorPanel
@@ -479,24 +472,15 @@ const jsonLd = {
 
     <IndicadorPanel
       numero="12"
-      eyebrow="Desafectación y Castigo"
-      titulo="Evolución de la abstención, nulos y no marcados"
-      lead="Mapea la evolución de la desafectación electoral comparando el porcentaje de abstencionistas, votos nulos y tarjetas no marcadas sobre el censo electoral entre la 1ª y 2ª vuelta presidenciales de 2026."
-    >
-      <Chart slot="visual" id="pres-2026-2v-voto-no-positivo" embedded={true} />
-    </IndicadorPanel>
-
-    <IndicadorPanel
-      numero="13"
       eyebrow="Realineamiento (2022 → 2026)"
       titulo="Realineamiento territorial: quién ganó terreno desde 2022"
       lead="En 2022 la izquierda ganó la presidencia (Petro, 2ª vuelta); en 2026 la perdió. Este mapa muestra qué bloque ganó terreno en cada departamento entre ambos balotajes, midiendo el cambio de la cuota de la izquierda sobre los votos válidos (Petro 2022 vs Cepeda 2026); en una elección de dos, la derecha es su complemento exacto. En azul, donde avanzó la derecha; en rojo, donde avanzó la izquierda. La derecha ganó terreno en la Costa Caribe (Atlántico +9,0 pp, Sucre, La Guajira), el Pacífico (Nariño, Cauca) y Bogotá (+6,7 pp); la izquierda solo creció en los Llanos y la Amazonía de baja población (Vichada, Guainía, Arauca), insuficiente para sostener su coalición de 2022."
     >
-      <Chart slot="visual" id="pres-2026-2v-retroceso-izquierda" embedded={true} />
+      <div slot="visual" class="mapa-xl"><Chart id="pres-2026-2v-retroceso-izquierda" embedded={true} /></div>
     </IndicadorPanel>
 
     <IndicadorPanel
-      numero="14"
+      numero="13"
       eyebrow="Síntesis Territorial"
       titulo="Dónde se ganó la elección"
       lead="Descomposición del margen nacional (De la Espriella +250.820 votos) en el aporte neto de cada territorio, ordenado del más favorable a De la Espriella (arriba, azul) al más favorable a Cepeda (abajo, rojo). Cada barra suma o resta votos a la ventaja hasta llegar al margen final. Dato clave: dentro del país el margen neto fue de apenas +73.011 votos — fue el voto en el exterior (+177.809 netos) el que más que duplicó la ventaja. Antioquia, por sí sola, aporta más que todo el margen doméstico; el Pacífico, el Caribe y Bogotá lo recortan sin alcanzar a revertirlo."
@@ -505,21 +489,12 @@ const jsonLd = {
     </IndicadorPanel>
 
     <IndicadorPanel
-      numero="15"
+      numero="14"
       eyebrow="El factor decisivo"
       titulo="El voto en el exterior inclinó la balanza"
       lead="Dentro de Colombia el balotaje fue un empate técnico: De la Espriella 50,1 % vs Cepeda 49,9 % (margen de apenas 0,29 pp). En el exterior, en cambio, la diáspora votó 64,7 % vs 35,3 % por De la Espriella — una diferencia de 29 puntos. Con solo el 2,4 % de los votos, el voto consular aportó el 71 % del margen nacional final: dentro del país casi empatan, fuera de él se definió la elección."
     >
       <Chart slot="visual" id="pres-2026-2v-voto-exterior" embedded={true} />
-    </IndicadorPanel>
-
-    <IndicadorPanel
-      numero="16"
-      eyebrow="El mapa de la polarización"
-      titulo="Las dos Colombias"
-      lead="El resultado nacional fue estrechísimo (0,96 pp), pero eso no significa un país dividido por la mitad: territorio por territorio, las definiciones fueron contundentes. 25 de 33 departamentos se decidieron por más de 15 puntos y solo 2 fueron verdaderamente reñidos (margen < 5 pp). Son dos bloques territoriales consolidados —el Pacífico y la Amazonía con Cepeda (Chocó −64, Vaupés −63), la región andina conservadora con De la Espriella (Norte de Santander +55, Casanare +40)— de tamaño casi idéntico, que se cancelan en el agregado."
-    >
-      <Chart slot="visual" id="pres-2026-2v-polarizacion-territorial" embedded={true} />
     </IndicadorPanel>
 
     <DashboardFooter
@@ -592,6 +567,10 @@ const jsonLd = {
 
   .mapas-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; align-items: start; }
   @media (max-width: 860px) { .mapas-duo { grid-template-columns: 1fr; } }
+
+  /* Mapas a sangre: anulan el padding lateral del panel para ganar ancho. */
+  .mapa-xl { margin-left: -2.25rem; margin-right: -2.25rem; }
+  @media (max-width: 768px) { .mapa-xl { margin-left: -1.25rem; margin-right: -1.25rem; } }
 
   .preconteo-aviso {
     background: rgba(234, 179, 8, 0.08);

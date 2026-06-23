@@ -1,0 +1,204 @@
+{
+  "elec": "1",
+  "amb": "01004",
+  "tope": "1",
+  "numact": "10",
+  "numdep": "14",
+  "iscircus": "0",
+  "mdhm": "06211710",
+  "shc": "0",
+  "totales": {
+    "act": {
+      "metota": "48",
+      "mesesc": "48",
+      "pmesesc": "100%",
+      "meserr": "0",
+      "centota": "15398",
+      "carg": "0",
+      "cargElectos": "0",
+      "cargEmpatados": "0",
+      "cargtota": "0",
+      "votant": "8879",
+      "pvotant": "57,66%",
+      "absten": "6519",
+      "pabsten": "42,33%",
+      "votnul": "59",
+      "pvotnul": "0,66%",
+      "votnma": "46",
+      "pvotnma": "0,51%",
+      "votblan": "151",
+      "pvotblan": "1,72%",
+      "votval": "8774",
+      "pvotval": "98,81%"
+    }
+  },
+  "camaras": [
+    {
+      "cam": "0",
+      "cir": "0",
+      "carg": "0",
+      "cargElectos": "0",
+      "cargEmpatados": "0",
+      "cargtota": "",
+      "totales": {
+        "act": {
+          "votant": "8879",
+          "pvotant": "57,66%",
+          "votnul": "59",
+          "pvotnul": "0,66%",
+          "votnma": "46",
+          "pvotnma": "0,51%",
+          "votbla": "151",
+          "pvotbla": "1,72%",
+          "votcan": "8623",
+          "pvotcan": "98,27%",
+          "votval": "8774",
+          "pvotval": "98,81%",
+          "pvotcam": "0%"
+        }
+      },
+      "partotabla": [
+        {
+          "act": {
+            "codpar": "2",
+            "cam": "0",
+            "vot": "1407",
+            "pvot": "16,03%",
+            "carg": "0",
+            "cargElectos": "0",
+            "cargEmpatados": "0",
+            "cantotabla": [
+              {
+                "amb": "01004",
+                "codcan": "1",
+                "sorteo": "1",
+                "cedula": "79262397",
+                "nomcan": "IVÁN",
+                "apecan": "CEPEDA CASTRO",
+                "nomcan2": "AIDA MARINA",
+                "apecan2": "QUILCUE VIVAS",
+                "vot": "1407",
+                "pvot": "16,03%",
+                "carg": "0",
+                "pref": "1",
+                "empate": "0"
+              }
+            ]
+          }
+        },
+        {
+          "act": {
+            "codpar": "3",
+            "cam": "0",
+            "vot": "7216",
+            "pvot": "82,24%",
+            "carg": "0",
+            "cargElectos": "0",
+            "cargEmpatados": "0",
+            "cantotabla": [
+              {
+                "amb": "01004",
+                "codcan": "2",
+                "sorteo": "2",
+                "cedula": "11004242",
+                "nomcan": "ABELARDO",
+                "apecan": "DE LA ESPRIELLA",
+                "nomcan2": "JOSÉ MANUEL",
+                "apecan2": "RESTREPO ABONDANO",
+                "vot": "7216",
+                "pvot": "82,24%",
+                "carg": "0",
+                "pref": "1",
+                "empate": "0"
+              }
+            ]
+          }
+        }
+      ],
+      "mapagan": []
+    }
+  ],
+  "historico": [
+    {
+      "numact": "9",
+      "numdep": "13",
+      "mdhm": "06211705",
+      "mesesc": "47",
+      "mesfalt": "1",
+      "pvotant": ""
+    },
+    {
+      "numact": "8",
+      "numdep": "12",
+      "mdhm": "06211700",
+      "mesesc": "35",
+      "mesfalt": "13",
+      "pvotant": ""
+    },
+    {
+      "numact": "7",
+      "numdep": "11",
+      "mdhm": "06211655",
+      "mesesc": "23",
+      "mesfalt": "25",
+      "pvotant": ""
+    },
+    {
+      "numact": "6",
+      "numdep": "10",
+      "mdhm": "06211650",
+      "mesesc": "12",
+      "mesfalt": "36",
+      "pvotant": ""
+    },
+    {
+      "numact": "5",
+      "numdep": "9",
+      "mdhm": "06211645",
+      "mesesc": "6",
+      "mesfalt": "42",
+      "pvotant": ""
+    },
+    {
+      "numact": "4",
+      "numdep": "8",
+      "mdhm": "06211640",
+      "mesesc": "5",
+      "mesfalt": "43",
+      "pvotant": ""
+    },
+    {
+      "numact": "3",
+      "numdep": "7",
+      "mdhm": "06211635",
+      "mesesc": "3",
+      "mesfalt": "45",
+      "pvotant": ""
+    },
+    {
+      "numact": "2",
+      "numdep": "5",
+      "mdhm": "06211625",
+      "mesesc": "2",
+      "mesfalt": "46",
+      "pvotant": ""
+    },
+    {
+      "numact": "1",
+      "numdep": "3",
+      "mdhm": "06211615",
+      "mesesc": "1",
+      "mesfalt": "47",
+      "pvotant": ""
+    },
+    {
+      "numact": "0",
+      "numdep": "0",
+      "mdhm": "06211600",
+      "mesesc": "0",
+      "mesfalt": "48",
+      "pvotant": ""
+    }
+  ],
+  "dept": "01"
+}

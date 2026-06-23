@@ -126,7 +126,7 @@ export const presComparativoDesplazamientoIdeologico: ChartDef = {
         marker: { line: { width: 0.6, color: "rgba(15, 23, 42, 0.15)" } },
       }],
       layout: baseLayout({
-        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.0 }, zoom: 4.2 },
+        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.3 }, zoom: 4.55 },
         margin: { l: 0, r: 0, t: 0, b: 0 },
         xaxis: { visible: false },
         yaxis: { visible: false },
@@ -515,7 +515,7 @@ export const pres2026_2vRetrocesoIzquierda: ChartDef = {
         marker: { line: { width: 0.6, color: "rgba(15, 23, 42, 0.15)" } },
       }],
       layout: baseLayout({
-        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.0 }, zoom: 4.2 },
+        mapbox: { style: "white-bg", center: { lat: 4.5, lon: -73.3 }, zoom: 4.55 },
         margin: { l: 0, r: 0, t: 0, b: 0 },
         xaxis: { visible: false },
         yaxis: { visible: false },

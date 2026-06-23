@@ -10,6 +10,7 @@ import type {
   SalariosCargosData,
   PresEleccionData,
   PresCandidatosData,
+  Pres2026MunicipiosData,
   ComparativoData,
 } from "./types";
 import type { Presidente } from "./presidentes";
@@ -71,6 +72,7 @@ export const loadPres2026_2v = () => load<PresEleccionData>("data_pres_2026_2v")
 export const loadPres2022_1v = () => load<PresEleccionData>("data_pres_2022_1v");
 export const loadPres2022_2v = () => load<PresEleccionData>("data_pres_2022_2v");
 export const loadPresCandidatos = () => load<PresCandidatosData>("data_pres_candidatos");
+export const loadPres2026_2vMunicipios = () => load<Pres2026MunicipiosData>("data_pres_2026_2v_municipios");
 
 export const loadComparativoColUzb = () => load<ComparativoData>("data_comparativo_col_uzb");
 export const loadComparativoColCog = () => load<ComparativoData>("data_comparativo_col_cog");
@@ -78,6 +80,7 @@ export const loadComparativoColCog = () => load<ComparativoData>("data_comparati
 export type DatasetName = "inflacion" | "pib" | "comercio" | "empleo" | "externo" | "demografia"
   | "salario-minimo" | "ingresos" | "salarios-cargos"
   | "pres-2026-1v" | "pres-2026-2v" | "pres-2022-1v" | "pres-2022-2v" | "pres-candidatos"
+  | "pres-2026-2v-municipios"
   | "comparativo-col-uzb" | "comparativo-col-cog";
 
 export interface LoadedDatasets {
@@ -95,6 +98,7 @@ export interface LoadedDatasets {
   "pres-2022-1v"?: PresEleccionData;
   "pres-2022-2v"?: PresEleccionData;
   "pres-candidatos"?: PresCandidatosData;
+  "pres-2026-2v-municipios"?: Pres2026MunicipiosData;
   "comparativo-col-uzb"?: ComparativoData;
   "comparativo-col-cog"?: ComparativoData;
 }
@@ -114,6 +118,7 @@ const ASC_LOADERS = {
   "pres-2022-1v": loadPres2022_1v,
   "pres-2022-2v": loadPres2022_2v,
   "pres-candidatos": loadPresCandidatos,
+  "pres-2026-2v-municipios": loadPres2026_2vMunicipios,
   "comparativo-col-uzb": loadComparativoColUzb,
   "comparativo-col-cog": loadComparativoColCog,
 } as const;

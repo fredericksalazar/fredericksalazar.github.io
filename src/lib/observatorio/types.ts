@@ -516,6 +516,43 @@ export interface PresCandidatosData {
   };
 }
 
+// ──────────────── RESULTADOS MUNICIPALES 2026 2ª VUELTA ────────────────
+// Preconteo por municipio del balotaje. El `cod_mpio` es DIVIPOLA DANE (5
+// dígitos) para unir con `public/geo/colombia-municipios.geo.json` por
+// `properties.MPIO_CCNCT`. Generado por pipeline/elecciones/build_municipios_2v.py.
+
+export interface MunicipioResultado {
+  cod_mpio: string;
+  nombre_mpio: string;
+  cod_depto: string;
+  nombre_depto: string;
+  votos_abelardo: number;
+  votos_cepeda: number;
+  votos_blanco: number;
+  votos_nulos: number;
+  votos_no_marcados: number;
+  total_validos: number;
+  total_sufragado: number;
+  ganador_id: string;
+  share_abelardo: number | null;
+  share_cepeda: number | null;
+  margen_pp: number | null;
+  share_no_positivo: number | null;
+}
+
+export interface Pres2026MunicipiosData {
+  metadata: ObservatorioMetadata & { nota?: string };
+  eleccion: { anio: number; vuelta: 1 | 2; fecha: string };
+  resumen_nacional: {
+    votos_abelardo: number;
+    votos_cepeda: number;
+    municipios_abelardo: number;
+    municipios_cepeda: number;
+    voto_exterior: { votos_abelardo: number; votos_cepeda: number; votos_blanco: number };
+  };
+  municipios: MunicipioResultado[];
+}
+
 // ──────────────────── COMPARATIVO COLOMBIA vs UZBEKISTÁN ────────────────────
 // Dataset para el artículo de blog comparativo (Banco Mundial WDI). No es un
 // dashboard del Observatorio, pero reutiliza su infraestructura de gráficos.
