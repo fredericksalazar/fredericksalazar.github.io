@@ -131,7 +131,7 @@ const INDICADORES_CMP: IndicadorCmp[] = [
 interface Oponente {
   /** Clave corta para ids/datasets (uzb, cog, ...). */
   key: string;
-  datasetName: "comparativo-col-uzb" | "comparativo-col-cog";
+  datasetName: "comparativo-col-uzb" | "comparativo-col-cog" | "comparativo-col-prt";
   /** Nombre visible del oponente en leyenda/hover. */
   label: string;
   /** Color de la serie del oponente (distinto del azul de Colombia). */
@@ -203,4 +203,9 @@ export const comparativoUzb = makeComparativoSet({
 /** Set Colombia vs RD Congo (ids `cmp-cog-*`). */
 export const comparativoCog = makeComparativoSet({
   key: "cog", datasetName: "comparativo-col-cog", label: "RD Congo", color: "#d97706",
+});
+
+/** Set Colombia vs Portugal (ids `cmp-prt-*`). */
+export const comparativoPrt = makeComparativoSet({
+  key: "prt", datasetName: "comparativo-col-prt", label: "Portugal", color: "#dc2626",
 });

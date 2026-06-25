@@ -23,7 +23,7 @@ MUTED = "#636c76"
 BG = "#ffffff"
 
 # key del dataset → slug del archivo de portada
-PORTADAS = {"uzb": "uzbekistan", "cog": "rd-congo"}
+PORTADAS = {"uzb": "uzbekistan", "cog": "rd-congo", "prt": "portugal"}
 
 
 def gana_co(i: dict) -> bool:

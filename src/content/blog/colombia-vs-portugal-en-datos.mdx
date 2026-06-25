@@ -1,0 +1,89 @@
+---
+titulo: "Colombia vs Portugal: el partido de datos sin anestesia"
+tituloSeo: "Colombia vs Portugal en datos (Banco Mundial)"
+fecha: 2026-06-25
+descripcion: "Colombia vs Portugal más allá del Mundial: PIB, desigualdad, empleo y esperanza de vida con datos del Banco Mundial. Esta vez el marcador no engaña."
+etiquetas: ["Colombia", "Portugal", "Mundial", "Economía", "Datos", "Banco Mundial"]
+autor: "Frederick Salazar"
+imagen: "/images/blog/colombia-vs-portugal-cover.png"
+draft: false
+tipo: "analisis"
+destacado: true
+resumen: "Colombia se mide ante Portugal. Jugamos el otro partido —el de los datos del Banco Mundial— y esta vez el marcador no engaña: muestra la brecha tal cual, sin endulzarla."
+---
+
+import MarcadorEconomico from "../../components/blog/MarcadorEconomico.astro";
+import Chart from "../../components/observatorio/Chart.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+
+**Colombia se enfrenta a Portugal** por el Mundial. Y como ya es costumbre en este blog, mientras rueda el balón yo juego el otro partido: el de los **datos del Banco Mundial**, país contra país.
+
+En el cruce anterior —contra RD Congo— el marcador *engañaba*: el rival ganaba indicadores, pero casi todos eran síntomas de subdesarrollo disfrazados de buenas noticias. Aquí pasa lo contrario. Armé el tablero igual que siempre —cada país "anota" donde lidera— y quedó así:
+
+<MarcadorEconomico opponent="prt" />
+
+<PlotlyLoader />
+
+**Portugal gana 7 a 2.** Y esta vez el marcador no miente: lo dice tal cual. Los dos puntos de Colombia son de **tamaño**, no de nivel de vida. Vamos sin anestesia.
+
+## El abismo de la riqueza
+
+Empecemos por lo más duro. Un portugués produce, en promedio, **US$ 29.292 al año**; un colombiano, **US$ 7.919**. Portugal es casi **cuatro veces más rico por habitante**. No es un matiz de coyuntura: la línea de Portugal va por encima de la de Colombia durante toda la serie, y la distancia se ensancha desde los años ochenta.
+
+<Chart id="cmp-prt-pib-percapita" embedded={true} />
+
+¿Y por qué entonces Colombia "gana" el PIB total? Porque tiene **cinco veces más habitantes**. La economía colombiana es más grande en agregado (**US$ 419 mil millones** frente a **US$ 313 mil millones**) simplemente porque hay muchísima más gente sumando. Es una victoria de escala, no de prosperidad: el único "gol" de Colombia en riqueza es, en realidad, una consecuencia de su población.
+
+<Chart id="cmp-prt-pib-total" embedded={true} />
+
+## Escala contra nivel de vida
+
+Ahí está el segundo punto de Colombia: con **53 millones de habitantes** quintuplica a los **10,7 millones** de Portugal. Es un país joven y grande frente a uno pequeño y que ya casi no crece.
+
+<Chart id="cmp-prt-poblacion" embedded={true} />
+
+Pero conviene ser honestos con lo que mide cada cosa: **tener más gente y una economía más grande en total no es lo mismo que vivir mejor**. Los dos indicadores que Colombia lidera son justamente los que no dependen de qué tan desarrollado es un país, sino de cuánta gente vive en él. Es el espejismo del agregado.
+
+## Vivir más y mejor
+
+El indicador que mejor resume el bienestar de una población es cuánto vive su gente. Un portugués vive en promedio **82,4 años**; un colombiano, **77,9**. Colombia ha recortado distancia —se recuperó con fuerza tras la caída de la pandemia—, pero la brecha de **casi cuatro años y medio** sigue ahí, y refleja décadas de diferencia en sanidad pública, nutrición y prevención.
+
+<Chart id="cmp-prt-esperanza-vida" embedded={true} />
+
+## La desigualdad que sí es real
+
+Contra RD Congo argumenté que su menor desigualdad era una "igualdad en la pobreza" y no contaba como mérito. Con Portugal **no aplica esa excusa**: es un país rico *y* mucho más igualitario. Su coeficiente de Gini ronda **34**; el de Colombia, **54,6** —uno de los más altos del mundo—. Portugal demuestra que se puede ser próspero sin que la riqueza se concentre como lo hace en Colombia. Esta es, sin filtro, una de las brechas más incómodas del tablero.
+
+<Chart id="cmp-prt-gini" embedded={true} />
+
+La foto del empleo apunta en la misma dirección. El desempleo de Portugal (**6,2%**) es más bajo que el de Colombia (**8,3%**), y conviene recordar que ambos son tasas de economías formales medidas con la misma vara —aquí sí son comparables—, a diferencia del caso congoleño donde el "pleno empleo" era informalidad de subsistencia.
+
+<Chart id="cmp-prt-desempleo" embedded={true} />
+
+## Precios más estables
+
+Portugal también convive con una inflación más baja y predecible: **2,4%** frente al **6,6%** de Colombia en el último dato. La estabilidad de precios portuguesa se apoya en pertenecer al euro y en un banco central supranacional; Colombia, con moneda propia, ha tenido que lidiar con episodios inflacionarios más marcados.
+
+<Chart id="cmp-prt-inflacion" embedded={true} />
+
+## Una economía abierta e integrada
+
+Portugal comercia el equivalente a casi **el 90% de su PIB**; Colombia, apenas el **37%**. Pero —y esta es la diferencia con el Congo— la apertura portuguesa no se explica por exportar materias primas en bruto, sino por estar **enchufada a las cadenas de valor europeas**: componentes, manufactura, turismo y servicios dentro del mercado único.
+
+<Chart id="cmp-prt-apertura" embedded={true} />
+
+La inversión extranjera directa cuenta una historia coherente: Portugal capta más IED como porcentaje de su economía (**4,3%** frente al **3,3%** de Colombia), atraída por su estabilidad institucional y su pertenencia a la Unión Europea.
+
+<Chart id="cmp-prt-ied" embedded={true} />
+
+## El veredicto
+
+En el tablero frío, **Portugal gana 7–2**. Y esta vez no hay trampa que desmontar: el marcador describe bien la realidad. Portugal es más rico por habitante, vive más, reparte mejor, tiene menos desempleo, precios más estables y una economía más integrada al mundo. Los dos puntos de Colombia —población y PIB total— miden tamaño, no bienestar.
+
+Pero hay un detalle que vale la pena subrayar, no para consolar sino para dimensionar: **Portugal no es un gigante**. Son 10 millones de personas en un país que, hace medio siglo, era de los más pobres de Europa occidental. Lo que cambió no fue un golpe de suerte, sino décadas de instituciones, integración y políticas sostenidas tras entrar a la entonces Comunidad Europea en 1986. La brecha con Colombia es enorme, sí, pero es **estructural y construida**, no un destino. Ese es el punto sin anestesia: la distancia se explica, y por lo tanto, en parte, se puede acortar.
+
+## Metodología y fuentes
+
+Todas las cifras provienen del **Banco Mundial — World Development Indicators**, la misma base que alimenta el [Observatorio de Datos de Colombia](/observatorio/). Para cada indicador se usó el **último año con dato disponible en ambos países** (entre 2023 y 2025 según la serie), indicado en cada fila del marcador. La **deuda externa** se omite en este cruce: el Banco Mundial sólo publica ese indicador (% del INB) para países de ingreso bajo y medio, de modo que para Portugal —economía de ingreso alto— no existe una serie equivalente y comparable. Los gráficos son interactivos: pasa el cursor (o toca) para ver el valor exacto de cada año.
+
+Análisis independiente, con fines informativos y educativos. ¡Y que gane el mejor en la cancha! 🇨🇴🇵🇹

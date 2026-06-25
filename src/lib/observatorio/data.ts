@@ -65,6 +65,7 @@ export const getPresCandidatos = (): PresCandidatosData => presCandidatos;
 const comparativos: Record<string, ComparativoData> = {
   uzb: readPublicJSON<ComparativoData>("data_comparativo_col_uzb"),
   cog: readPublicJSON<ComparativoData>("data_comparativo_col_cog"),
+  prt: readPublicJSON<ComparativoData>("data_comparativo_col_prt"),
 };
 /** Dataset comparativo Colombia vs oponente, por clave ("uzb", "cog", ...). */
 export const getComparativo = (key: string): ComparativoData => comparativos[key];
