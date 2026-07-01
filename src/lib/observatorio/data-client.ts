@@ -77,12 +77,13 @@ export const loadPres2026_2vMunicipios = () => load<Pres2026MunicipiosData>("dat
 export const loadComparativoColUzb = () => load<ComparativoData>("data_comparativo_col_uzb");
 export const loadComparativoColCog = () => load<ComparativoData>("data_comparativo_col_cog");
 export const loadComparativoColPrt = () => load<ComparativoData>("data_comparativo_col_prt");
+export const loadComparativoColGha = () => load<ComparativoData>("data_comparativo_col_gha");
 
 export type DatasetName = "inflacion" | "pib" | "comercio" | "empleo" | "externo" | "demografia"
   | "salario-minimo" | "ingresos" | "salarios-cargos"
   | "pres-2026-1v" | "pres-2026-2v" | "pres-2022-1v" | "pres-2022-2v" | "pres-candidatos"
   | "pres-2026-2v-municipios"
-  | "comparativo-col-uzb" | "comparativo-col-cog" | "comparativo-col-prt";
+  | "comparativo-col-uzb" | "comparativo-col-cog" | "comparativo-col-prt" | "comparativo-col-gha";
 
 export interface LoadedDatasets {
   inflacion?: ObservatorioData;
@@ -103,6 +104,7 @@ export interface LoadedDatasets {
   "comparativo-col-uzb"?: ComparativoData;
   "comparativo-col-cog"?: ComparativoData;
   "comparativo-col-prt"?: ComparativoData;
+  "comparativo-col-gha"?: ComparativoData;
 }
 
 const ASC_LOADERS = {
@@ -124,6 +126,7 @@ const ASC_LOADERS = {
   "comparativo-col-uzb": loadComparativoColUzb,
   "comparativo-col-cog": loadComparativoColCog,
   "comparativo-col-prt": loadComparativoColPrt,
+  "comparativo-col-gha": loadComparativoColGha,
 } as const;
 
 export async function loadDatasets(

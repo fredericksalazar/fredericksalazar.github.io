@@ -27,7 +27,7 @@ import {
   participacionImportaciones,
   productosTradicionales,
 } from "./comercio";
-import { comparativoUzb, comparativoCog, comparativoPrt } from "./comparativo";
+import { comparativoUzb, comparativoCog, comparativoPrt, comparativoGha } from "./comparativo";
 import {
   inflacionHistorica,
   pibHistorico,
@@ -183,7 +183,7 @@ const BASE_DEFS = {
 
 // Sets comparativos (Colombia vs rival): generados por factory, ids únicos por
 // construcción (clave de rival × indicador). Se fusionan en el registro de lookup.
-const COMPARATIVO_DEFS: ChartDef[] = [...comparativoUzb, ...comparativoCog, ...comparativoPrt];
+const COMPARATIVO_DEFS: ChartDef[] = [...comparativoUzb, ...comparativoCog, ...comparativoPrt, ...comparativoGha];
 
 const CHART_DEFS: Record<string, ChartDef> = {
   ...BASE_DEFS,

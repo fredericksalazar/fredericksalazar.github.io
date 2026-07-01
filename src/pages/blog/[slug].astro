@@ -88,7 +88,14 @@ if (post.data.resumen) articleSchema.abstract = post.data.resumen;
   title={post.data.tituloSeo ?? post.data.titulo}
   description={post.data.descripcion}
   image={post.data.imagen}
+  imageAlt={post.data.titulo}
   type="article"
+  keywords={post.data.etiquetas.join(', ')}
+  publishedTime={post.data.fecha.toISOString()}
+  modifiedTime={post.data.fecha.toISOString()}
+  articleAuthor={post.data.autor}
+  articleSection={post.data.etiquetas[0] ?? tipoLabel}
+  articleTags={post.data.etiquetas}
   breadcrumbs={trail(sectionCrumb.blog, { name: post.data.titulo, url: PAGE_URL })}
 >
   <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />

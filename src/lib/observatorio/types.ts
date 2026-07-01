@@ -585,4 +585,45 @@ export interface ComparativoData {
   };
   indicadores: Record<string, ComparativoIndicador>;
   series: Record<string, ComparativoSeriePunto[]>;
+  /**
+   * Datos futbolísticos editoriales (no vienen del Banco Mundial): se cargan a
+   * mano por país porque la fuente es FIFA/Transfermarkt/historial de Mundiales,
+   * no una API fetcheable en build. Opcional: sólo lo tienen los rivales de
+   * Mundial que incluyen esta sección en su artículo.
+   */
+  futbol?: ComparativoFutbol;
+}
+
+export interface ComparativoFutbolRecordMundial {
+  jugados: number;
+  ganados: number;
+  empatados: number;
+  perdidos: number;
+}
+
+export interface ComparativoFutbolEnfrentamiento {
+  fecha: string;
+  competencia: string;
+  resultado: string;
+}
+
+export interface ComparativoFutbol {
+  ranking_fifa: {
+    fecha: string;
+    colombia: { puesto: number; puntos: number };
+    oponente: { puesto: number; puntos: number };
+  };
+  mundiales: {
+    colombia: ComparativoFutbolRecordMundial;
+    oponente: ComparativoFutbolRecordMundial;
+  };
+  /** Enfrentamientos directos históricos; vacío si nunca se han enfrentado. */
+  historial: ComparativoFutbolEnfrentamiento[];
+  valor_plantilla: {
+    fecha: string;
+    moneda: string;
+    colombia: { valor_millones: number; puesto_mundial: number };
+    oponente: { valor_millones: number; puesto_mundial: number };
+  };
+  fuente: { nombre: string; url: string }[];
 }

@@ -1,0 +1,106 @@
+---
+titulo: "Colombia vs Ghana: el otro partido de octavos, jugado con datos"
+tituloSeo: "Colombia vs Ghana en datos (Banco Mundial, FIFA, Transfermarkt)"
+fecha: 2026-07-01
+descripcion: "Colombia vs Ghana en octavos de final: comparamos PIB, empleo, desigualdad y esperanza de vida (Banco Mundial), más ranking FIFA y valor de plantilla."
+etiquetas: ["Colombia", "Ghana", "Mundial", "Octavos de Final", "Economía", "Datos", "Banco Mundial", "FIFA"]
+autor: "Frederick Salazar"
+imagen: "/images/blog/colombia-vs-ghana-cover.png"
+draft: false
+tipo: "analisis"
+destacado: true
+resumen: "Colombia y Ghana se cruzan por primera vez en la historia, y en octavos de final. Antes del pitazo, jugamos el otro partido: el de los datos del Banco Mundial, la FIFA y Transfermarkt."
+---
+
+import MarcadorFutbol from "../../components/blog/MarcadorFutbol.astro";
+import MarcadorEconomico from "../../components/blog/MarcadorEconomico.astro";
+import Chart from "../../components/observatorio/Chart.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+
+**Colombia se mide con Ghana** en octavos de final. Y no es un cruce cualquiera: nunca antes se habían enfrentado, ni en Mundial ni en amistoso. Mientras se estrena el historial en la cancha, en este blog sigo con lo mío: cada partido del Mundial es la excusa para jugar otro, el de los **datos**, país contra país.
+
+Esta vez el ejercicio viene con una novedad: además del marcador económico de siempre (Banco Mundial), sumo un **marcador futbolístico** —ranking FIFA, récord histórico en Mundiales y valor de plantilla según Transfermarkt—. Empecemos por ahí.
+
+## El otro marcador: fútbol
+
+<MarcadorFutbol opponent="gha" />
+
+Colombia llega como favorita en el papel: **11ª en el ranking FIFA** frente al **puesto 65** de Ghana, y una plantilla que vale **30% más** en el mercado (US$/€ 302 M frente a 234 M). Pero el papel no juega, y el historial mundialista de Ghana pesa más de lo que sugiere su ranking actual: los Black Stars llegaron a **cuartos de final en 2010** —la mejor actuación de un país africano en la historia del torneo, superada solo por Marruecos en 2022— y en este mismo Mundial ya sorprendieron ganándole a Panamá y empatando con Inglaterra. Es la selección africana que mejor sabe competir contra rivales de más jerarquía sobre el papel. Ahí está el partido.
+
+Si se traduce el historial a puntos —el mismo sistema de 3 por victoria y 1 por empate que usa la FIFA desde 1994—, la distancia se estrecha: Colombia tiene un **rendimiento histórico del 50,0%** de los puntos posibles en Mundiales; Ghana, **45,2%**. Cinco puntos porcentuales, no las cincuenta y cuatro posiciones que separan a ambos en el ranking FIFA actual.
+
+## El marcador económico
+
+<MarcadorEconomico opponent="gha" />
+
+<PlotlyLoader />
+
+**Colombia gana 6 a 4.** A diferencia del cruce con RD Congo —donde el marcador "engañaba"— aquí el resultado es más parecido al de Portugal: Colombia lidera en lo que más importa (ingreso, esperanza de vida, precios), pero Ghana se lleva puntos genuinos en desigualdad y apertura comercial. Vamos indicador por indicador.
+
+## La brecha de ingreso
+
+Un colombiano produce en promedio **US$ 8.562 al año**; un ghanés, **US$ 3.257**. Colombia es **2,6 veces más rica por habitante**, una distancia que se ha ampliado en la última década mientras la economía ghanesa atravesaba episodios de crisis de deuda e inflación.
+
+<Chart id="cmp-gha-pib-percapita" embedded={true} />
+
+Y a diferencia de otros cruces de esta serie, aquí Colombia no gana el PIB total solo por tamaño: también gana por nivel de ingreso. Con **US$ 457 mil millones** frente a los **US$ 114 mil millones** de Ghana, la economía colombiana cuadruplica a la ghanesa en conjunto.
+
+<Chart id="cmp-gha-pib-total" embedded={true} />
+
+## Más gente, más mercado
+
+Colombia también es el país más poblado del cruce: **53,4 millones** de habitantes frente a los **35,1 millones** de Ghana. Es una ventaja de escala que se suma a la de ingreso —algo que no pasaba, por ejemplo, contra Portugal, donde la población era el único punto colombiano—.
+
+<Chart id="cmp-gha-poblacion" embedded={true} />
+
+## Vivir más años
+
+El indicador que mejor resume el bienestar de una población es cuánto vive su gente, y aquí la brecha es la más grande de toda la serie hasta ahora: un colombiano vive en promedio **77,9 años**; un ghanés, **65,7 años**. Son **más de 12 años de diferencia**, reflejo de décadas de distancia en acceso a salud, nutrición y mortalidad infantil.
+
+<Chart id="cmp-gha-esperanza-vida" embedded={true} />
+
+## Precios: Colombia más estable
+
+La inflación colombiana (**5,1%**) es menos de la mitad de la ghanesa (**14,2%**). Ghana viene de un default de su deuda soberana en 2022 y de un programa de ajuste con el FMI que aún se refleja en precios altos, aunque en descenso frente a los picos de esos años.
+
+<Chart id="cmp-gha-inflacion" embedded={true} />
+
+## El punto de Ghana que no es lo que parece
+
+Aquí viene el matiz. La tasa de desempleo **oficial** de Ghana es de apenas **3,0%**, muy por debajo del **8,3%** de Colombia. Pero, igual que pasó con RD Congo, conviene no leer esto como que a Ghana "le va mejor" en el mercado laboral: gran parte de su fuerza laboral trabaja en **agricultura de subsistencia e informalidad**, actividades que las encuestas registran como "empleo" aunque no impliquen ni estabilidad ni protección social. La tasa colombiana, más alta, mide en cambio el desempleo de una economía con un sector formal mucho más grande y una encuesta de fuerza laboral más exigente en la definición de empleo.
+
+<Chart id="cmp-gha-desempleo" embedded={true} />
+
+## Desigualdad: aquí Ghana sí gana con mérito
+
+A diferencia del desempleo, la desigualdad **sí es un punto real** para Ghana. Su coeficiente de Gini es **43,5**, frente al **51,7** de Colombia —uno de los países más desiguales del mundo—. No es una "igualdad en la pobreza" disfrazada: Ghana reparte mejor su ingreso, aunque ese ingreso sea menor.
+
+<Chart id="cmp-gha-gini" embedded={true} />
+
+## Una economía más abierta, pero por materias primas
+
+Ghana comercia el equivalente a **69% de su PIB**; Colombia, apenas **36%**. A diferencia de la apertura portuguesa —integrada en cadenas de valor europeas—, la ghanesa se explica en buena parte por sus exportaciones de **oro, cacao y petróleo**: una apertura de materia prima, más parecida en su lógica al caso de RD Congo que al de una economía diversificada.
+
+<Chart id="cmp-gha-apertura" embedded={true} />
+
+La inversión extranjera directa favorece a Colombia (**3,3%** del PIB frente a **2,1%** de Ghana), pese a que ambos países compiten por atraer capital minero y energético.
+
+<Chart id="cmp-gha-ied" embedded={true} />
+
+## Deuda externa: un empate técnico con trampa
+
+La deuda externa de Ghana (**46,9%** del PIB) es apenas un poco menor que la de Colombia (**49,2%**), pero el dato esconde el contexto más duro del cruce: Ghana **entró en default** de su deuda soberana en diciembre de 2022 y tuvo que reestructurarla bajo un programa del FMI. El nivel de deuda es parecido; la capacidad reciente de pagarla, no.
+
+<Chart id="cmp-gha-deuda-externa" embedded={true} />
+
+## El veredicto
+
+En el marcador económico, **Colombia gana 6-4**, y a diferencia del cruce con RD Congo, aquí sí gana con argumentos: más ingreso, más años de vida, precios más estables y más inversión extranjera. Los puntos de Ghana —desigualdad y apertura comercial— son reales, pero el "empleo" ghanés es el espejismo de siempre: informalidad disfrazada de pleno empleo.
+
+En la cancha, sin embargo, el papel dice menos de lo que parece: Ghana llegó a cuartos de final en 2010, ya venció a Panamá y empató con Inglaterra en este Mundial, y llega a este cruce —el primero de la historia entre ambas selecciones— con nada que perder.
+
+## Metodología y fuentes
+
+Los indicadores económicos provienen del **Banco Mundial — World Development Indicators**, la misma base que alimenta el [Observatorio de Datos de Colombia](/observatorio/), usando para cada uno el **último año con dato disponible en ambos países** (indicado en cada fila del marcador). Los datos futbolísticos —ranking FIFA, récord en Mundiales y valor de plantilla— se tomaron de [FIFA](https://inside.fifa.com/fifa-world-ranking/men), el historial de Copas del Mundo por selección y [Transfermarkt](https://www.transfermarkt.co.za/colombia/kader/verein/3816), con corte a finales de junio de 2026; ambos aparecen citados dentro del marcador futbolístico. Los gráficos son interactivos: pasa el cursor (o toca) para ver el valor exacto de cada año.
+
+Análisis independiente, con fines informativos y educativos. ¡Y que gane el mejor en la cancha! 🇨🇴🇬🇭

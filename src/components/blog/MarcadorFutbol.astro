@@ -1,0 +1,243 @@
+---
+/**
+ * MarcadorFutbol.astro
+ * "Marcador" futbolístico Colombia vs <oponente>: ranking FIFA, récord en
+ * Mundiales, enfrentamientos directos y valor de plantilla. Build-time desde
+ * getComparativo(opponent).futbol → HTML inicial (SEO). Datos editoriales
+ * (FIFA, Transfermarkt, historial de Mundiales), no del Banco Mundial.
+ */
+import { getComparativo } from "../../lib/observatorio/data";
+
+interface Props {
+  opponent?: string;
+}
+const { opponent = "gha" } = Astro.props;
+
+const data = getComparativo(opponent);
+const op = data.metadata.oponente;
+const f = data.futbol;
+
+const nf = (v: number, dec = 0) =>
+  new Intl.NumberFormat("es-CO", { minimumFractionDigits: dec, maximumFractionDigits: dec }).format(v);
+
+const maxPuntos = f ? Math.max(f.ranking_fifa.colombia.puntos, f.ranking_fifa.oponente.puntos) : 1;
+const maxValor = f ? Math.max(f.valor_plantilla.colombia.valor_millones, f.valor_plantilla.oponente.valor_millones) : 1;
+
+/**
+ * Rendimiento en Mundiales: puntos obtenidos sobre puntos posibles, con el
+ * sistema de 3-1-0 que la FIFA usa desde 1994 (mismo criterio de la propia
+ * Copa del Mundo). No es un dato editorial más: se deriva de G/E/P para no
+ * duplicar la fuente.
+ */
+function rendimiento(r: { jugados: number; ganados: number; empatados: number }): number {
+  if (r.jugados === 0) return 0;
+  const puntos = r.ganados * 3 + r.empatados;
+  return (puntos / (r.jugados * 3)) * 100;
+}
+---
+
+{f && (
+  <aside class="futbol" aria-label={`Marcador futbolístico Colombia vs ${op.nombre}`} style={`--op-color: ${op.color}`}>
+    <p class="futbol__caption">
+      El otro marcador: ranking FIFA, récord en Mundiales y valor de plantilla.
+      Corte al {f.ranking_fifa.fecha}.
+    </p>
+
+    <div class="futbol__row">
+      <h3 class="futbol__label">Ranking FIFA</h3>
+      <div class="futbol__bars">
+        <div class="futbol__bar-line">
+          <span class="futbol__bar-name futbol__bar-name--co">Colombia</span>
+          <div class="futbol__bar-track">
+            <div class="futbol__bar futbol__bar--co" style={`width:${(f.ranking_fifa.colombia.puntos / maxPuntos) * 100}%`}></div>
+          </div>
+          <span class="futbol__bar-val">#{f.ranking_fifa.colombia.puesto} · {nf(f.ranking_fifa.colombia.puntos, 2)} pts</span>
+        </div>
+        <div class="futbol__bar-line">
+          <span class="futbol__bar-name futbol__bar-name--op">{op.nombre}</span>
+          <div class="futbol__bar-track">
+            <div class="futbol__bar futbol__bar--op" style={`width:${(f.ranking_fifa.oponente.puntos / maxPuntos) * 100}%`}></div>
+          </div>
+          <span class="futbol__bar-val">#{f.ranking_fifa.oponente.puesto} · {nf(f.ranking_fifa.oponente.puntos, 2)} pts</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="futbol__row">
+      <h3 class="futbol__label">Récord histórico en Mundiales</h3>
+      <table class="futbol__table">
+        <thead>
+          <tr>
+            <th scope="col">Selección</th>
+            <th scope="col">PJ</th>
+            <th scope="col">G</th>
+            <th scope="col">E</th>
+            <th scope="col">P</th>
+            <th scope="col">Rendimiento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" class="futbol__col--co">Colombia</th>
+            <td>{f.mundiales.colombia.jugados}</td>
+            <td>{f.mundiales.colombia.ganados}</td>
+            <td>{f.mundiales.colombia.empatados}</td>
+            <td>{f.mundiales.colombia.perdidos}</td>
+            <td class="futbol__col--co futbol__rendimiento">{nf(rendimiento(f.mundiales.colombia), 1)} %</td>
+          </tr>
+          <tr>
+            <th scope="row" class="futbol__col--op">{op.nombre}</th>
+            <td>{f.mundiales.oponente.jugados}</td>
+            <td>{f.mundiales.oponente.ganados}</td>
+            <td>{f.mundiales.oponente.empatados}</td>
+            <td>{f.mundiales.oponente.perdidos}</td>
+            <td class="futbol__col--op futbol__rendimiento">{nf(rendimiento(f.mundiales.oponente), 1)} %</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="futbol__nota">
+        Rendimiento = puntos obtenidos / puntos posibles, con 3 por victoria y 1 por empate
+        (el sistema que usa la propia FIFA desde 1994).
+      </p>
+    </div>
+
+    <div class="futbol__row">
+      <h3 class="futbol__label">Enfrentamientos directos</h3>
+      {f.historial.length === 0 ? (
+        <p class="futbol__empty">Colombia y {op.nombre} nunca se han enfrentado en un partido oficial: este cruce es el primero de la historia entre ambas selecciones.</p>
+      ) : (
+        <table class="futbol__table futbol__table--historial">
+          <thead>
+            <tr>
+              <th scope="col">Fecha</th>
+              <th scope="col">Competencia</th>
+              <th scope="col">Resultado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {f.historial.map((h) => (
+              <tr>
+                <td>{h.fecha}</td>
+                <td>{h.competencia}</td>
+                <td>{h.resultado}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+
+    <div class="futbol__row">
+      <h3 class="futbol__label">Valor de la plantilla (Transfermarkt)</h3>
+      <div class="futbol__bars">
+        <div class="futbol__bar-line">
+          <span class="futbol__bar-name futbol__bar-name--co">Colombia</span>
+          <div class="futbol__bar-track">
+            <div class="futbol__bar futbol__bar--co" style={`width:${(f.valor_plantilla.colombia.valor_millones / maxValor) * 100}%`}></div>
+          </div>
+          <span class="futbol__bar-val">€ {nf(f.valor_plantilla.colombia.valor_millones, 2)} M · puesto {f.valor_plantilla.colombia.puesto_mundial}/48</span>
+        </div>
+        <div class="futbol__bar-line">
+          <span class="futbol__bar-name futbol__bar-name--op">{op.nombre}</span>
+          <div class="futbol__bar-track">
+            <div class="futbol__bar futbol__bar--op" style={`width:${(f.valor_plantilla.oponente.valor_millones / maxValor) * 100}%`}></div>
+          </div>
+          <span class="futbol__bar-val">€ {nf(f.valor_plantilla.oponente.valor_millones, 2)} M · puesto {f.valor_plantilla.oponente.puesto_mundial}/48</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="futbol__fuentes">
+      Fuentes: {f.fuente.map((s, i) => (
+        <>
+          <a href={s.url} target="_blank" rel="noopener noreferrer">{s.nombre}</a>{i < f.fuente.length - 1 ? " · " : ""}
+        </>
+      ))}
+    </p>
+  </aside>
+)}
+
+<style>
+  .futbol {
+    border: 1px solid var(--color-border, #d0d7de);
+    border-radius: 16px;
+    background: var(--color-sidebar, #fff);
+    padding: 1.5rem;
+    margin: 2rem 0;
+  }
+  .futbol__caption {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--color-text-muted, #636c76);
+    margin: 0 0 1.5rem;
+    line-height: 1.45;
+  }
+  .futbol__row { margin-bottom: 1.75rem; }
+  .futbol__row:last-of-type { margin-bottom: 1rem; }
+  .futbol__label {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #1f2328);
+    margin: 0 0 0.75rem;
+  }
+  .futbol__bars { display: flex; flex-direction: column; gap: 0.6rem; }
+  .futbol__bar-line { display: flex; align-items: center; gap: 0.6rem; }
+  .futbol__bar-name { flex: 0 0 6rem; font-size: 0.85rem; font-weight: 600; }
+  .futbol__bar-name--co { color: #2563eb; }
+  .futbol__bar-name--op { color: var(--op-color, #16a34a); }
+  .futbol__bar-track {
+    flex: 1;
+    height: 0.9rem;
+    background: rgba(148, 163, 184, 0.18);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .futbol__bar { height: 100%; border-radius: 999px; }
+  .futbol__bar--co { background: #2563eb; }
+  .futbol__bar--op { background: var(--op-color, #16a34a); }
+  .futbol__bar-val {
+    flex: 0 0 auto;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary, #424a53);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .futbol__table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .futbol__table th, .futbol__table td {
+    padding: 0.5rem 0.5rem;
+    border-top: 1px solid var(--color-border, #d0d7de);
+    text-align: center;
+  }
+  .futbol__table thead th { border-top: none; color: var(--color-text-muted, #636c76); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .futbol__table tbody th[scope="row"] { text-align: left; font-weight: 600; }
+  .futbol__table--historial td { text-align: left; }
+  .futbol__col--co { color: #2563eb; }
+  .futbol__col--op { color: var(--op-color, #16a34a); }
+  .futbol__empty {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary, #424a53);
+    font-style: italic;
+    margin: 0;
+  }
+  .futbol__fuentes {
+    font-size: 0.72rem;
+    color: var(--color-text-muted, #636c76);
+    text-align: center;
+    margin: 1rem 0 0;
+    line-height: 1.6;
+  }
+  .futbol__fuentes a { color: inherit; }
+  .futbol__rendimiento { font-weight: 800; font-variant-numeric: tabular-nums; }
+  .futbol__nota {
+    font-size: 0.75rem;
+    color: var(--color-text-muted, #636c76);
+    margin: 0.5rem 0 0;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 560px) {
+    .futbol { padding: 1.1rem; }
+    .futbol__bar-name { flex-basis: 4.5rem; font-size: 0.78rem; }
+    .futbol__bar-val { font-size: 0.72rem; }
+  }
+</style>
