@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-06-25T15:38:45+00:00",
+    "ultima_actualizacion": "2026-07-01T14:12:41+00:00",
     "fuentes": {
       "banrep_trm": {
         "nombre": "Banco de la Republica — TRM",
@@ -29,18 +29,18 @@
     },
     "cobertura": {
       "primer_periodo": "1960-12",
-      "ultimo_periodo": "2026-06",
-      "total_registros": 325,
+      "ultimo_periodo": "2026-07",
+      "total_registros": 326,
       "granularidad": "mensual"
     }
   },
   "indicadores": {
     "trm": {
       "actual": {
-        "periodo": "2026-06",
-        "valor": 3512.86,
+        "periodo": "2026-07",
+        "valor": 3440.83,
         "variacion": "bajo",
-        "delta": -201.16
+        "delta": -60.15
       },
       "unidad": "COP/USD"
     },
@@ -83,9 +83,27 @@
   },
   "serie": [
     {
+      "periodo": "2026-07",
+      "trm": 3440.83,
+      "trm_delta": -60.15,
+      "trm_variacion": "bajo",
+      "reservas_netas": null,
+      "reservas_netas_delta": null,
+      "reservas_netas_variacion": null,
+      "cuenta_corriente": null,
+      "cuenta_corriente_delta": null,
+      "cuenta_corriente_variacion": null,
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null,
+      "deuda_externa": null,
+      "deuda_externa_delta": null,
+      "deuda_externa_variacion": null
+    },
+    {
       "periodo": "2026-06",
-      "trm": 3512.86,
-      "trm_delta": -201.16,
+      "trm": 3500.98,
+      "trm_delta": -213.04,
       "trm_variacion": "bajo",
       "reservas_netas": null,
       "reservas_netas_delta": null,
@@ -5958,7 +5976,7 @@
       "2023": 4327.55,
       "2024": 4071.18,
       "2025": 4053.02,
-      "2026": 3656.77
+      "2026": 3624.22
     },
     "reservas_netas": {
       "1960": 0.17,
