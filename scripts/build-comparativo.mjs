@@ -32,6 +32,7 @@ const RIVALES = {
   cog: { iso3: "COD", nombre: "RD Congo", bandera: "🇨🇩", color: "#d97706" },
   prt: { iso3: "PRT", nombre: "Portugal", bandera: "🇵🇹", color: "#dc2626" },
   gha: { iso3: "GHA", nombre: "Ghana", bandera: "🇬🇭", color: "#ce1126" },
+  che: { iso3: "CHE", nombre: "Suiza", bandera: "🇨🇭", color: "#d52b1e" },
 };
 
 /**

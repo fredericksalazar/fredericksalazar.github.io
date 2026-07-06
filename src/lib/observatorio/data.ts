@@ -67,6 +67,7 @@ const comparativos: Record<string, ComparativoData> = {
   cog: readPublicJSON<ComparativoData>("data_comparativo_col_cog"),
   prt: readPublicJSON<ComparativoData>("data_comparativo_col_prt"),
   gha: readPublicJSON<ComparativoData>("data_comparativo_col_gha"),
+  che: readPublicJSON<ComparativoData>("data_comparativo_col_che"),
 };
 /** Dataset comparativo Colombia vs oponente, por clave ("uzb", "cog", ...). */
 export const getComparativo = (key: string): ComparativoData => comparativos[key];

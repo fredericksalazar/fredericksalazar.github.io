@@ -1,0 +1,104 @@
+---
+titulo: "Colombia vs Suiza: octavos de Mundial, jugados con datos"
+tituloSeo: "Colombia vs Suiza en datos (Banco Mundial, FIFA, Transfermarkt)"
+fecha: 2026-07-06
+descripcion: "Colombia vs Suiza en octavos del Mundial: comparamos PIB, desigualdad, empleo y esperanza de vida (Banco Mundial), más ranking FIFA y valor de plantilla."
+etiquetas: ["Colombia", "Suiza", "Mundial", "Octavos de Final", "Economía", "Datos", "Banco Mundial", "FIFA"]
+autor: "Frederick Salazar"
+imagen: "/images/blog/colombia-vs-suiza-cover.png"
+draft: false
+tipo: "analisis"
+destacado: true
+resumen: "Colombia y Suiza vuelven a verse las caras, ahora en octavos del Mundial 2026. Antes del pitazo jugamos el otro partido: el de los datos del Banco Mundial, la FIFA y Transfermarkt."
+---
+
+import MarcadorFutbol from "../../components/blog/MarcadorFutbol.astro";
+import MarcadorEconomico from "../../components/blog/MarcadorEconomico.astro";
+import Chart from "../../components/observatorio/Chart.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+
+**Colombia se enfrenta a Suiza** en los octavos de final del Mundial 2026, el martes 7 de julio en Vancouver. Y a diferencia del cruce anterior contra Ghana, este no es un estreno: Colombia y Suiza ya se han visto las caras cuatro veces, incluida una en un Mundial. Como es costumbre en este blog, mientras rueda el balón yo juego el otro partido: el de los **datos**, país contra país.
+
+Igual que en el cruce pasado, arranco por el **marcador futbolístico** —ranking FIFA, récord en Mundiales, historial directo y valor de plantilla según Transfermarkt— y después voy al **marcador económico** del Banco Mundial.
+
+## El otro marcador: fútbol
+
+<MarcadorFutbol opponent="che" />
+
+Aquí hay una pelea de verdad, y con matices en ambas direcciones. Colombia está **más arriba en el ranking FIFA** (11ª contra 16ª) y su **rendimiento histórico en Mundiales es mejor** (52,0% de los puntos posibles frente al 44,4% de Suiza), pese a que los suizos han disputado casi el doble de partidos mundialistas. Y en el único antecedente que importa de verdad —el Mundial de Estados Unidos 1994— **Colombia ganó 2 a 0**. En el balance de los cuatro enfrentamientos, la Tricolor manda: dos victorias, un empate y una sola derrota.
+
+Pero Suiza tiene su propio argumento, y es de peso: su **plantilla vale más** (€332,5 millones contra €302,35 millones de Colombia), lo que la ubica un puesto por encima en el escalafón de valor de mercado del Mundial. Traducido: Colombia llega con mejor ranking y mejor memoria mundialista; Suiza, con un plantel algo más cotizado. El papel, otra vez, apenas insinúa el partido.
+
+## El marcador económico
+
+<MarcadorEconomico opponent="che" />
+
+<PlotlyLoader />
+
+**Suiza gana 7 a 2.** Y como pasó con Portugal, el marcador no engaña: lo dice tal cual. Suiza es, sencillamente, uno de los países más ricos del planeta, y los dos únicos puntos de Colombia son de **tamaño**, no de nivel de vida. Vamos sin anestesia.
+
+## Un abismo, no una brecha
+
+Empecemos por lo más brutal. Un suizo produce, en promedio, **US$ 114.769 al año**; un colombiano, **US$ 8.562**. Suiza es **más de trece veces más rica por habitante**. No es una diferencia de coyuntura ni de ciclo: es uno de los mayores abismos de ingreso que se pueden encontrar entre dos selecciones de un mismo Mundial.
+
+<Chart id="cmp-che-pib-percapita" embedded={true} />
+
+En el agregado, Suiza también gana, y con holgura: su economía supera el **billón de dólares** (US$ 1,04 billones) frente a los **US$ 457 mil millones** de Colombia. Con apenas 9 millones de habitantes, Suiza produce más del doble que Colombia entera. Ese es el verdadero golpe: no es solo que sean más ricos por persona, es que su economía total —siendo un país pequeño— también es mucho más grande.
+
+<Chart id="cmp-che-pib-total" embedded={true} />
+
+## El único terreno de Colombia: la escala
+
+Aquí está el primer punto colombiano, y es el de siempre: población. Con **53,4 millones de habitantes**, Colombia casi **sextuplica** a los **9,1 millones** de Suiza. Es un país joven y grande frente a uno pequeño, envejecido y próspero.
+
+<Chart id="cmp-che-poblacion" embedded={true} />
+
+Pero conviene ser honestos con lo que mide cada cosa: **tener más gente no es vivir mejor**. Es el único indicador donde Colombia lidera sin asterisco, y mide cantidad, no calidad de vida.
+
+## Vivir más años
+
+Un suizo vive en promedio **84,4 años**; un colombiano, **77,9**. La brecha —**casi seis años y medio**— resume décadas de diferencia en sanidad, nutrición, seguridad y prevención. Colombia ha mejorado con el tiempo, pero la distancia con la esperanza de vida suiza, de las más altas del mundo, sigue siendo enorme.
+
+<Chart id="cmp-che-esperanza-vida" embedded={true} />
+
+## Precios de otra galaxia
+
+La estabilidad suiza es casi caricaturesca: su inflación fue de **0,15%** en el último dato, prácticamente cero, frente al **5,1%** de Colombia. El franco suizo es una de las monedas refugio del mundo, y el país lleva décadas conviviendo con una inflación mínima y predecible. Colombia, con moneda propia y más expuesta a los vaivenes externos, juega en otra liga de precios.
+
+<Chart id="cmp-che-inflacion" embedded={true} />
+
+El desempleo cuenta una historia parecida: **4,9%** en Suiza frente al **8,3%** de Colombia. Y aquí no hay truco de informalidad como en el caso de Ghana o RD Congo: ambas son economías que miden el empleo con la misma vara, así que la comparación es limpia. Suiza simplemente tiene un mercado laboral más sólido.
+
+<Chart id="cmp-che-desempleo" embedded={true} />
+
+## La desigualdad que sí duele
+
+Suiza no solo es más rica: **reparte muchísimo mejor**. Su coeficiente de Gini ronda **33,8**; el de Colombia, **54,8** —uno de los más altos del mundo—. Es la misma lección que dejó Portugal: se puede ser próspero *y* equitativo. La riqueza suiza no se concentra como la colombiana. Esta es, sin filtro, la brecha más incómoda del tablero.
+
+<Chart id="cmp-che-gini" embedded={true} />
+
+## Una economía abierta e integrada
+
+Suiza comercia el equivalente a casi **el 147% de su PIB**; Colombia, apenas el **35%**. Y no es apertura de materia prima como la de Ghana: Suiza mueve farmacéuticos, relojería, maquinaria de precisión y servicios financieros, plenamente enchufada a las cadenas de valor europeas y globales pese a no pertenecer a la Unión Europea.
+
+<Chart id="cmp-che-apertura" embedded={true} />
+
+## El segundo punto de Colombia (con letra pequeña)
+
+El otro indicador que Colombia "gana" es la inversión extranjera directa: **3,3%** del PIB frente a un llamativo **−11,2%** de Suiza. Pero conviene no cantar victoria: ese número negativo no significa que Suiza espante capital, sino todo lo contrario. Como centro financiero global, Suiza registra flujos de inversión gigantescos y muy volátiles —con años de fuertes salidas netas por reorganizaciones de multinacionales y sociedades holding— que hacen que el dato oscile de forma extrema. El marcador le da el punto a Colombia por la regla fría, pero es un "gol" con asterisco: mide volatilidad contable, no debilidad suiza.
+
+<Chart id="cmp-che-ied" embedded={true} />
+
+## El veredicto
+
+En el tablero económico, **Suiza gana 7–2**, y no hay trampa que desmontar: es más rica por habitante, tiene una economía total más grande, vive más, reparte mejor, tiene menos desempleo, precios casi inmóviles y una economía ultra-integrada al mundo. Los dos puntos de Colombia —población y una IED distorsionada por la volatilidad suiza— no miden bienestar.
+
+Pero el fútbol, por fortuna, no se juega en las planillas del Banco Mundial. Y ahí el tablero se invierte: Colombia llega **mejor rankeada, con mejor rendimiento histórico en Mundiales y habiendo ganado el único duelo mundialista** entre ambos, aquel 2–0 de 1994. Suiza es un rival ordenado, sólido y con un plantel algo más caro, pero no es un gigante inalcanzable. La brecha económica es abismal y estructural; la deportiva, en cambio, es de las que se deciden en noventa minutos.
+
+## Metodología y fuentes
+
+Todas las cifras económicas provienen del **Banco Mundial — World Development Indicators**, la misma base que alimenta el [Observatorio de Datos de Colombia](/observatorio/). Para cada indicador se usó el **último año con dato disponible en ambos países**, indicado en cada fila del marcador. La **deuda externa** se omite en este cruce: el Banco Mundial solo publica ese indicador (% del INB) para países de ingreso bajo y medio, de modo que para Suiza —economía de ingreso alto— no existe una serie comparable, igual que ocurrió con Portugal.
+
+Los datos futbolísticos —ranking FIFA, récord en Mundiales, historial directo y valor de plantilla— se tomaron de [FIFA](https://inside.fifa.com/fifa-world-ranking/men), los registros históricos de Copas del Mundo y [Transfermarkt](https://www.transfermarkt.us/switzerland/startseite/verein/3384), con corte a comienzos de julio de 2026; todos aparecen citados dentro del marcador futbolístico. Los gráficos son interactivos: pasa el cursor (o toca) para ver el valor exacto de cada año.
+
+Análisis independiente, con fines informativos y educativos. ¡Y que gane el mejor en la cancha! 🇨🇴🇨🇭
