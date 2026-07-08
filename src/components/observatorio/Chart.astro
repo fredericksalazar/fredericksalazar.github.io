@@ -39,6 +39,35 @@ const chartElementId = `chart-${def.id}`;
 </style>
 
 <style is:global>
+  /* Toggle Línea ↔ Barras (segmented control en header de chart) */
+  .chart-toggle {
+    display: inline-flex;
+    gap: 0.15rem;
+    background: #f1f5f9;
+    padding: 0.2rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    flex-shrink: 0;
+  }
+  .chart-toggle__btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  }
+  .chart-toggle__btn:hover { color: #0f172a; }
+  .chart-toggle__btn.is-active {
+    background: white;
+    color: #0f172a;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  }
+
   /* Estilos compartidos para extras inyectados por chart-defs */
   .freno-callout {
     display: flex; flex-wrap: wrap; gap: 1rem;

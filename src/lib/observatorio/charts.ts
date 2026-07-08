@@ -109,3 +109,84 @@ export const extractSerie = <T extends PeriodoRow>(
     return typeof v === "number" ? v : null;
   }),
 });
+
+export interface LineBarToggleOpts {
+  x: string[];
+  y: (number | null)[];
+  name: string;
+  color: string;
+  /** Relleno bajo la línea (modo línea). Default azul tenue. */
+  fillcolor?: string;
+  hovertemplate: string;
+  /** Forma de la línea (usa "hv" para escalones tipo tasa de política). */
+  lineShape?: "linear" | "hv";
+  /** Sufijo de las etiquetas de mín/máx/promedio. Default "%". */
+  suffix?: string;
+  decimals?: number;
+  /** Shapes propios del chart (bandas, metas) que se fusionan con las líneas de referencia. */
+  baseShapes?: unknown[];
+  baseAnnotations?: unknown[];
+  layoutOverrides?: Record<string, unknown>;
+}
+
+/**
+ * Construye un chart con líneas de referencia (mín/máx/promedio) y un toggle
+ * Línea ↔ Barras en el header. Devuelve `{ traces, layout, headerHtml, onMount }`
+ * listo para retornar desde `build()` de un ChartDef. El toggle re-renderiza
+ * con `Plotly.react` reutilizando el mismo layout (las referencias persisten).
+ */
+export function lineBarToggle(opts: LineBarToggleOpts) {
+  const suffix = opts.suffix ?? "%";
+  const refs = minMaxAvgLines(opts.y, { suffix, decimals: opts.decimals ?? 1 });
+  const shapes = [...(opts.baseShapes ?? []), ...refs.shapes];
+  const annotations = [...(opts.baseAnnotations ?? []), ...refs.annotations];
+
+  const lineTrace = {
+    name: opts.name,
+    x: opts.x,
+    y: opts.y,
+    type: "scatter",
+    mode: "lines",
+    line: { color: opts.color, width: 2.2, shape: opts.lineShape ?? "linear" },
+    fill: "tozeroy",
+    fillcolor: opts.fillcolor ?? "rgba(37, 99, 235, 0.06)",
+    hovertemplate: opts.hovertemplate,
+  };
+  const barTrace = {
+    name: opts.name,
+    x: opts.x,
+    y: opts.y,
+    type: "bar",
+    marker: { color: opts.color },
+    hovertemplate: opts.hovertemplate,
+  };
+
+  const layout = baseLayout({ ...(opts.layoutOverrides ?? {}), shapes, annotations });
+
+  const headerHtml = `
+    <div class="chart-toggle" role="group" aria-label="Tipo de gráfico">
+      <button type="button" class="chart-toggle__btn is-active" data-chart-type="line" aria-pressed="true">Línea</button>
+      <button type="button" class="chart-toggle__btn" data-chart-type="bar" aria-pressed="false">Barras</button>
+    </div>`;
+
+  const onMount = (target: HTMLElement) => {
+    const root = target.closest<HTMLElement>("[data-chart-root]");
+    const group = root?.querySelector<HTMLElement>(".chart-toggle");
+    if (!group || group.dataset.bound === "true") return;
+    group.dataset.bound = "true";
+    const btns = Array.from(group.querySelectorAll<HTMLButtonElement>(".chart-toggle__btn"));
+    group.addEventListener("click", (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(".chart-toggle__btn");
+      if (!btn || !window.Plotly) return;
+      const isBar = btn.dataset.chartType === "bar";
+      for (const b of btns) {
+        const active = b === btn;
+        b.classList.toggle("is-active", active);
+        b.setAttribute("aria-pressed", active ? "true" : "false");
+      }
+      window.Plotly.react(target, [isBar ? barTrace : lineTrace], layout);
+    });
+  };
+
+  return { traces: [lineTrace], layout, headerHtml, onMount };
+}

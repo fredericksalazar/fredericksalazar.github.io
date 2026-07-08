@@ -1,4 +1,4 @@
-import { COLORS, baseLayout, extractSerie, periodoToISODate } from "../charts";
+import { COLORS, baseLayout, extractSerie, periodoToISODate, lineBarToggle } from "../charts";
 import { frenoAceleradorMinMax, inflacionAnualPromedio } from "../derivations";
 import type { ChartDef } from "./types";
 
@@ -18,33 +18,25 @@ export const inflacionAnual: ChartDef = {
     const { x, y } = extractSerie(inflacion!.serie, "inflacion_anual");
     const xMin = x[0];
     const xMax = x[x.length - 1];
-    return {
-      traces: [
-        {
-          name: "Inflación anual",
-          x, y,
-          mode: "lines",
-          line: { color: COLORS.inflacion, width: 2.2 },
-          fill: "tozeroy",
-          fillcolor: "rgba(220, 38, 38, 0.06)",
-          hovertemplate: "<b>%{x|%b %Y}</b><br>Inflación anual: %{y:.2f}%<extra></extra>",
-        },
+    return lineBarToggle({
+      x, y,
+      name: "Inflación anual",
+      color: COLORS.inflacion,
+      fillcolor: "rgba(220, 38, 38, 0.06)",
+      hovertemplate: "<b>%{x|%b %Y}</b><br>Inflación anual: %{y:.2f}%<extra></extra>",
+      baseShapes: [
+        { type: "rect", xref: "x", yref: "y", x0: xMin, x1: xMax, y0: 2, y1: 4,
+          fillcolor: COLORS.metaBanda, line: { width: 0 }, layer: "below" },
+        { type: "line", xref: "x", yref: "y", x0: xMin, x1: xMax, y0: 3, y1: 3,
+          line: { color: COLORS.metaLinea, width: 1, dash: "dot" }, layer: "below" },
       ],
-      layout: baseLayout({
-        shapes: [
-          { type: "rect", xref: "x", yref: "y", x0: xMin, x1: xMax, y0: 2, y1: 4,
-            fillcolor: COLORS.metaBanda, line: { width: 0 }, layer: "below" },
-          { type: "line", xref: "x", yref: "y", x0: xMin, x1: xMax, y0: 3, y1: 3,
-            line: { color: COLORS.metaLinea, width: 1, dash: "dot" }, layer: "below" },
-        ],
-        annotations: [
-          { x: xMax, y: 3, xref: "x", yref: "y", text: "Meta BanRep · 3%",
-            showarrow: false, font: { size: 10, color: "#16a34a" },
-            bgcolor: "rgba(255,255,255,0.85)", borderpad: 3,
-            xanchor: "right", yanchor: "bottom" },
-        ],
-      }),
-    };
+      baseAnnotations: [
+        { x: xMax, y: 3, xref: "x", yref: "y", text: "Meta BanRep · 3%",
+          showarrow: false, font: { size: 10, color: "#16a34a" },
+          bgcolor: "rgba(255,255,255,0.85)", borderpad: 3,
+          xanchor: "right", yanchor: "bottom" },
+      ],
+    });
   },
 };
 
@@ -58,15 +50,14 @@ export const tasaInteres: ChartDef = {
   ariaLabel: "Evolución mensual de la tasa de intervención del Banco de la República desde 2004",
   build({ inflacion }) {
     const { x, y } = extractSerie(inflacion!.serie, "tasa_interes");
-    return {
-      traces: [{
-        name: "Tasa BanRep", x, y, mode: "lines",
-        line: { color: COLORS.tasa, width: 2.2, shape: "hv" },
-        fill: "tozeroy", fillcolor: "rgba(37, 99, 235, 0.06)",
-        hovertemplate: "<b>%{x|%b %Y}</b><br>Tasa BanRep: %{y:.2f}%<extra></extra>",
-      }],
-      layout: baseLayout(),
-    };
+    return lineBarToggle({
+      x, y,
+      name: "Tasa BanRep",
+      color: COLORS.tasa,
+      fillcolor: "rgba(37, 99, 235, 0.06)",
+      lineShape: "hv",
+      hovertemplate: "<b>%{x|%b %Y}</b><br>Tasa BanRep: %{y:.2f}%<extra></extra>",
+    });
   },
 };
 
