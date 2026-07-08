@@ -10,6 +10,13 @@ permissions:
   pages: write
   id-token: write
 
+# Evita que dos deployments corran a la vez (p. ej. dos pushes seguidos o
+# push + workflow_dispatch): el segundo espera al primero en vez de chocar
+# contra el backend de Pages y fallar con "Deployment failed, try again later".
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
