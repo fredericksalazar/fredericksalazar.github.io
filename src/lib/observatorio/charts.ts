@@ -63,7 +63,14 @@ export const periodoToISODate = (periodo: string): string => `${periodo}-01`;
  */
 export const minMaxAvgLines = (
   y: (number | null)[],
-  opts: { suffix?: string; decimals?: number } = {},
+  opts: {
+    suffix?: string;
+    decimals?: number;
+    /** Muestra u oculta el texto del promedio (la línea punteada siempre se dibuja). */
+    avgLabel?: boolean;
+    /** Lado del texto del promedio. Default "right". Usa "left" para dejar libre el tramo reciente. */
+    avgAnchor?: "left" | "right";
+  } = {},
 ): { shapes: unknown[]; annotations: unknown[] } => {
   const vals = y.filter((v): v is number => typeof v === "number");
   if (vals.length === 0) return { shapes: [], annotations: [] };
@@ -74,10 +81,11 @@ export const minMaxAvgLines = (
   const min = Math.min(...vals);
   const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
 
+  const showAvgLabel = opts.avgLabel ?? true;
   const refs = [
-    { value: max, label: "Máx", color: "#dc2626", anchor: "left" as const },
-    { value: avg, label: "Promedio", color: "#64748b", anchor: "right" as const },
-    { value: min, label: "Mín", color: "#16a34a", anchor: "left" as const },
+    { value: max, label: "Máx", color: "#dc2626", anchor: "left" as const, labeled: true },
+    { value: avg, label: "Promedio", color: "#64748b", anchor: opts.avgAnchor ?? "right", labeled: showAvgLabel },
+    { value: min, label: "Mín", color: "#16a34a", anchor: "left" as const, labeled: true },
   ];
 
   const shapes = refs.map((r) => ({
@@ -86,7 +94,7 @@ export const minMaxAvgLines = (
   }));
 
   const fmt = (n: number) => n.toLocaleString("es-CO", { minimumFractionDigits: dec, maximumFractionDigits: dec });
-  const annotations = refs.map((r) => ({
+  const annotations = refs.filter((r) => r.labeled).map((r) => ({
     xref: "paper", yref: "y",
     x: r.anchor === "right" ? 1 : 0, xanchor: r.anchor === "right" ? "right" : "left",
     y: r.value, yanchor: "bottom",
@@ -137,7 +145,7 @@ export interface LineBarToggleOpts {
  */
 export function lineBarToggle(opts: LineBarToggleOpts) {
   const suffix = opts.suffix ?? "%";
-  const refs = minMaxAvgLines(opts.y, { suffix, decimals: opts.decimals ?? 1 });
+  const refs = minMaxAvgLines(opts.y, { suffix, decimals: opts.decimals ?? 1, avgAnchor: "left" });
   const shapes = [...(opts.baseShapes ?? []), ...refs.shapes];
   const annotations = [...(opts.baseAnnotations ?? []), ...refs.annotations];
 
