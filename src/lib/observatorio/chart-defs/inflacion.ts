@@ -1,5 +1,11 @@
-import { COLORS, baseLayout, extractSerie, periodoToISODate, lineBarToggle } from "../charts";
-import { frenoAceleradorMinMax, inflacionAnualPromedio } from "../derivations";
+import { COLORS, baseLayout, extractSerie, periodoToISODate, lineBarToggle, minMaxAvgLines } from "../charts";
+import {
+  frenoAceleradorMinMax,
+  inflacionAnualPromedio,
+  perfilEstacionalInflacion,
+  mesOf,
+  MESES_ES,
+} from "../derivations";
 import type { ChartDef } from "./types";
 
 const FUENTE_DANE = "DANE — Índice de Precios al Consumidor";
@@ -37,6 +43,104 @@ export const inflacionAnual: ChartDef = {
           xanchor: "right", yanchor: "bottom" },
       ],
     });
+  },
+};
+
+export const inflacionMensual: ChartDef = {
+  id: "inflacion-mensual",
+  titulo: "Inflación mensual",
+  // Estática para que exista el nodo que `build()` reemplaza con la versión
+  // calculada (solo visible cuando el chart no va `embedded`).
+  pregunta: "¿A qué velocidad suben los precios dentro de cada mes?",
+  fuenteTexto: FUENTE_DANE,
+  datasets: ["inflacion"],
+  height: 380,
+  ariaLabel:
+    "Variación mensual del IPC de Colombia desde 2004, con líneas de referencia de máximo, promedio y mínimo, y opción de verla como línea o como barras",
+  build({ inflacion }) {
+    const serie = inflacion!.serie.filter((r) => typeof r.inflacion_mensual === "number");
+    const perfil = perfilEstacionalInflacion(serie);
+
+    const x = serie.map((r) => periodoToISODate(r.periodo));
+    const y = serie.map((r) => r.inflacion_mensual as number);
+
+    // Los meses de deflación se distinguen por color, tanto en los puntos de la
+    // línea como en las barras.
+    const colores = y.map((v) => (v < 0 ? COLORS.deflacion : COLORS.inflacion));
+
+    const ultimo = serie[serie.length - 1];
+    const valorUltimo = ultimo.inflacion_mensual as number;
+    const mediaUltimo = perfil[mesOf(ultimo.periodo)];
+    const mesUltimo = MESES_ES[mesOf(ultimo.periodo) - 1];
+    const anioUltimo = ultimo.periodo.slice(0, 4);
+    const comparativo =
+      valorUltimo > mediaUltimo ? "por encima de" : valorUltimo < mediaUltimo ? "por debajo de" : "igual a";
+
+    const pregunta =
+      `Cuánto subieron los precios dentro de cada mes, no en los últimos doce. ` +
+      `En ${mesUltimo} de ${anioUltimo} fue ${valorUltimo.toFixed(2)}%, ${comparativo} ` +
+      `el promedio histórico de un ${mesUltimo} (${mediaUltimo.toFixed(2)}%): ` +
+      `enero y febrero concentran la indexación anual de tarifas.`;
+
+    const hovertemplate = "<b>%{x|%b %Y}</b><br>Inflación del mes: <b>%{y:.2f}%</b><extra></extra>";
+
+    const lineTrace = {
+      name: "Inflación del mes",
+      type: "scatter",
+      mode: "lines+markers",
+      x,
+      y,
+      line: { color: COLORS.inflacion, width: 1.6 },
+      marker: { color: colores, size: 4 },
+      hovertemplate,
+    };
+    const barTrace = {
+      name: "Inflación del mes",
+      type: "bar",
+      x,
+      y,
+      marker: { color: colores, opacity: 0.85 },
+      hovertemplate,
+    };
+
+    // Máximo, promedio y mínimo de toda la serie. Las etiquetas van a la
+    // izquierda para no tapar los meses más recientes.
+    const refs = minMaxAvgLines(y, { suffix: "%", decimals: 2, avgAnchor: "left" });
+
+    const layout = baseLayout({
+      margin: { l: 48, r: 24, t: 16, b: 40 },
+      showlegend: false,
+      hovermode: "x",
+      bargap: 0.15,
+      yaxis: {
+        showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)",
+        zeroline: true, zerolinecolor: "rgba(100, 100, 100, 0.45)", zerolinewidth: 1,
+        tickfont: { size: 11, color: COLORS.textMuted },
+        ticksuffix: "%", automargin: true,
+      },
+      shapes: refs.shapes,
+      annotations: refs.annotations,
+    });
+
+    const headerHtml = `
+      <label class="pres-toggle" data-mensual-toggle>
+        <span class="pres-toggle__label">Ver en barras</span>
+        <input type="checkbox" class="pres-toggle__input mensual-toggle__input" />
+        <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
+      </label>`;
+
+    const onMount = (target: HTMLElement) => {
+      const root = target.closest<HTMLElement>("[data-chart-root]");
+      const input = root?.querySelector<HTMLInputElement>(".mensual-toggle__input");
+      if (!input || input.dataset.bound === "true") return;
+      input.dataset.bound = "true";
+      input.addEventListener("change", () => {
+        if (!window.Plotly) return;
+        window.Plotly.react(target, [input.checked ? barTrace : lineTrace], layout);
+      });
+    };
+
+    return { pregunta, traces: [lineTrace], layout, headerHtml, onMount };
   },
 };
 

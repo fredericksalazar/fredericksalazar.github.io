@@ -24,6 +24,32 @@ export function recordByYear<T extends { periodo: string }>(
 export const empleoAnualDiciembre = (serie: EmpleoSerieFila[]): EmpleoSerieFila[] =>
   serie.filter((r) => r.periodo.endsWith("-12"));
 
+export const mesOf = (periodo: string): number => parseInt(periodo.slice(5, 7), 10);
+
+export const MESES_ES = [
+  "enero", "febrero", "marzo", "abril", "mayo", "junio",
+  "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
+] as const;
+
+/**
+ * Media histórica de la inflación mensual para cada mes calendario (1–12).
+ * La serie tiene una estacionalidad fuerte —enero y febrero concentran la
+ * indexación anual de tarifas—, así que sin esta referencia una variación
+ * mensual no se puede leer como alta o baja.
+ */
+export function perfilEstacionalInflacion(serie: SerieFila[]): Record<number, number> {
+  const buckets: Record<number, number[]> = {};
+  for (const r of serie) {
+    if (typeof r.inflacion_mensual !== "number") continue;
+    (buckets[mesOf(r.periodo)] ??= []).push(r.inflacion_mensual);
+  }
+  const out: Record<number, number> = {};
+  for (const [mes, vals] of Object.entries(buckets)) {
+    out[Number(mes)] = vals.reduce((s, v) => s + v, 0) / vals.length;
+  }
+  return out;
+}
+
 export interface InflacionAnualRow {
   periodo: string;
   inflacion: number;

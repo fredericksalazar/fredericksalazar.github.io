@@ -3,6 +3,8 @@ interface PeriodoRow { periodo: string; }
 export const COLORS = {
   brand: "#2563eb",
   inflacion: "#dc2626",
+  /** Meses con variación negativa del IPC (deflación). */
+  deflacion: "#16a34a",
   inflacionLinea: "#7c3aed",
   tasa: "#2563eb",
   externo: "#ea580c",

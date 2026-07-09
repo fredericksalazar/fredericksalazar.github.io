@@ -1,5 +1,6 @@
 import {
   inflacionAnual,
+  inflacionMensual,
   tasaInteres,
   spread,
   frenoAcelerador,
@@ -101,6 +102,7 @@ import type { ChartDef } from "./types";
 // Charts del Observatorio: registro explícito → TypeScript detecta ids duplicados.
 const BASE_DEFS = {
   [inflacionAnual.id]: inflacionAnual,
+  [inflacionMensual.id]: inflacionMensual,
   [tasaInteres.id]: tasaInteres,
   [spread.id]: spread,
   [frenoAcelerador.id]: frenoAcelerador,

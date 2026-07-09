@@ -20,6 +20,7 @@ const obs = getObservatorio();
 const ultimoPeriodo = formatPeriodo(obs.metadata.cobertura.ultimo_periodo);
 
 const inflacionActual = obs.indicadores.inflacion_anual.actual.valor ?? 0;
+const inflacionMensualActual = obs.indicadores.inflacion_mensual.actual.valor ?? 0;
 const tasaActual = obs.indicadores.tasa_interes.actual.valor ?? 0;
 const spreadActual = obs.indicadores.spread.actual.valor ?? 0;
 const distanciaMeta = (inflacionActual - 3).toFixed(2);
@@ -160,6 +161,31 @@ const jsonLd = {
 
     <IndicadorPanel
       numero="03"
+      eyebrow="Ritmo mensual"
+      titulo="Inflación mensual y su patrón estacional"
+      lead="La variación mensual dice a qué velocidad suben los precios hoy; la anual, cuánto se acumuló en doce meses."
+      fuente={fuenteInflacion}
+    >
+      <Fragment slot="text">
+        <p>
+          La <strong>inflación mensual</strong> compara los precios de un mes con los del mes anterior. En
+          {ultimoPeriodo} fue <strong>{inflacionMensualActual}%</strong>. Pero ese número no se lee solo: los
+          precios en Colombia siguen un calendario. <strong>Enero y febrero</strong> concentran la indexación
+          anual de salario mínimo, arriendos, matrículas y transporte; agosto y octubre son los meses más
+          planos, y los puntos verdes marcan los meses en que los precios cayeron.
+        </p>
+        <p>
+          Ese calendario explica algo que confunde: la inflación anual puede <strong>subir</strong> aunque la
+          mensual <strong>baje</strong>. La anual es una ventana móvil de doce meses; cada mes entra un dato
+          nuevo y sale el de hace un año. Si el que entra es más caro que el que sale, el acumulado sube por
+          más que los precios se estén moderando.
+        </p>
+      </Fragment>
+      <Chart slot="visual" id="inflacion-mensual" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="04"
       eyebrow="Política monetaria"
       titulo="Tasa de intervención del Banco de la República"
       lead="La tasa BanRep es el pedal del freno y el acelerador de la economía: define el costo del crédito en todo el país."
@@ -180,7 +206,7 @@ const jsonLd = {
     </IndicadorPanel>
 
     <IndicadorPanel
-      numero="04"
+      numero="05"
       eyebrow="Postura del Banco"
       titulo="¿La política monetaria está frenando o acelerando?"
       lead="Lo que importa no es la tasa nominal sino la tasa real: tasa de interés menos inflación. Ahí se ve si el Banco pisa el freno o el acelerador."
@@ -202,7 +228,7 @@ const jsonLd = {
     </IndicadorPanel>
 
     <IndicadorPanel
-      numero="05"
+      numero="06"
       eyebrow="El número clave"
       titulo="El spread: la diferencia que mueve tu bolsillo"
       lead={`Spread real de hoy: ${spreadActual} puntos porcentuales. Es la resta tasa − inflación y resume si ahorrar rinde y si endeudarse duele.`}

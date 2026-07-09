@@ -4,7 +4,11 @@ export interface ChartBuildResult {
   traces: unknown[];
   layout: Record<string, unknown>;
   config?: Record<string, unknown>;
-  /** Texto a inyectar en `[data-chart-pregunta-target]` si el chart calcula pregunta dinámica. */
+  /**
+   * Pregunta calculada en runtime: reemplaza el texto de `.chart-card__question`.
+   * Requiere que el def traiga `pregunta` estática (si no, el nodo no existe) y
+   * que el chart no se use en modo `embedded`, donde el contenedor no la pinta.
+   */
   pregunta?: string;
   /** HTML a inyectar en `[data-chart-header-slot]`. */
   headerHtml?: string;
