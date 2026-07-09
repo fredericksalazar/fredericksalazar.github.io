@@ -64,29 +64,56 @@ export const tasaInteres: ChartDef = {
 export const spread: ChartDef = {
   id: "spread",
   titulo: "¿Qué tan 'caro' está el dinero en Colombia?",
-  pregunta: "Diferencial entre Tasa del Banco de la República e Inflación. Barras rojas = freno (tasa > inflación), barras verdes = acelerador.",
+  pregunta: "Diferencial entre Tasa del Banco de la República e Inflación. Barras rojas = freno (tasa > inflación), barras verdes = acelerador. Activa el botón para superponer la inflación y ver el freno frente al nivel de precios.",
   fuenteTexto: FUENTE_CALC,
   datasets: ["inflacion"],
   height: 500,
-  ariaLabel: "Diferencial entre la tasa de intervención y la inflación anual, en puntos porcentuales",
+  ariaLabel: "Diferencial entre la tasa de intervención y la inflación anual, en puntos porcentuales, con opción de superponer la línea de inflación anual",
   build({ inflacion }) {
     const data = inflacion!.serie.filter((r) => r.inflacion_anual !== null && r.tasa_interes !== null);
     const x = data.map((r) => periodoToISODate(r.periodo));
     const sp = data.map((r) => (r.tasa_interes as number) - (r.inflacion_anual as number));
+    const infl = data.map((r) => r.inflacion_anual as number);
     const barColors = sp.map((v) =>
       v > 0 ? "rgba(214, 39, 40, 0.8)" : v < 0 ? "rgba(0, 160, 80, 0.8)" : "rgba(150, 150, 150, 0.6)");
-    return {
-      traces: [{
-        type: "bar", x, y: sp, marker: { color: barColors }, name: "Diferencial",
-        hovertemplate: "<b>%{x|%b %Y}</b><br>Diferencial: %{y:.2f} pp<extra></extra>",
-      }],
-      layout: baseLayout({
-        margin: { l: 48, r: 24, t: 16, b: 40 }, showlegend: false, barmode: "overlay",
-        shapes: [{ type: "line", x0: x[0], x1: x[x.length - 1], y0: 0, y1: 0,
-          line: { color: "#1f2328", width: 2, dash: "solid" } }],
-        hovermode: "x",
-      }),
+
+    const barTrace = {
+      type: "bar", x, y: sp, marker: { color: barColors }, name: "Diferencial",
+      hovertemplate: "<b>%{x|%b %Y}</b><br>Diferencial: %{y:.2f} pp<extra></extra>",
     };
+    const inflTrace = {
+      type: "scatter", mode: "lines", x, y: infl, name: "Inflación anual",
+      line: { color: COLORS.inflacionLinea, width: 2.4 },
+      hovertemplate: "<b>%{x|%b %Y}</b><br>Inflación anual: %{y:.2f}%<extra></extra>",
+    };
+
+    // Mismo gráfico base en ambos estados; el botón sólo agrega/quita la línea.
+    const layout = baseLayout({
+      margin: { l: 48, r: 24, t: 16, b: 40 }, showlegend: false, barmode: "overlay",
+      shapes: [{ type: "line", x0: x[0], x1: x[x.length - 1], y0: 0, y1: 0,
+        line: { color: "#1f2328", width: 2, dash: "solid" } }],
+      hovermode: "x",
+    });
+
+    const headerHtml = `
+      <label class="pres-toggle" data-infl-toggle>
+        <span class="pres-toggle__label">Mostrar inflación</span>
+        <input type="checkbox" class="pres-toggle__input infl-toggle__input" />
+        <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
+      </label>`;
+
+    const onMount = (target: HTMLElement) => {
+      const root = target.closest<HTMLElement>("[data-chart-root]");
+      const input = root?.querySelector<HTMLInputElement>(".infl-toggle__input");
+      if (!input || input.dataset.bound === "true") return;
+      input.dataset.bound = "true";
+      input.addEventListener("change", () => {
+        if (!window.Plotly) return;
+        window.Plotly.react(target, input.checked ? [barTrace, inflTrace] : [barTrace], layout);
+      });
+    };
+
+    return { traces: [barTrace], layout, headerHtml, onMount };
   },
 };
 

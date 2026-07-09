@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "build": "astro build && node scripts/check-internal-links.mjs",
     "preview": "astro preview",
+    "indexnow": "node scripts/indexnow-submit.mjs",
     "astro": "astro"
   },
   "dependencies": {

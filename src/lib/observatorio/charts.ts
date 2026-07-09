@@ -3,6 +3,7 @@ interface PeriodoRow { periodo: string; }
 export const COLORS = {
   brand: "#2563eb",
   inflacion: "#dc2626",
+  inflacionLinea: "#7c3aed",
   tasa: "#2563eb",
   externo: "#ea580c",
   freno: "rgba(220, 38, 38, 0.18)",

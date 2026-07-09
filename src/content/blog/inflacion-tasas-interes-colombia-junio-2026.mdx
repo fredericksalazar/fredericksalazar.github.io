@@ -14,8 +14,17 @@ resumen: "En junio de 2026 la inflación anual de Colombia llegó a 6,14%, su ni
 
 import Chart from "../../components/observatorio/Chart.astro";
 import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+import FaqSchema from "../../components/blog/FaqSchema.astro";
 
 <PlotlyLoader />
+
+<FaqSchema items={[
+  { q: "¿Cuánto fue la inflación en Colombia en junio de 2026?", a: "La inflación anual en Colombia en junio de 2026 fue de 6,14%, según el DANE. Frente a mayo (5,84%) subió 0,30 puntos. La variación mensual del mes fue de 0,39%." },
+  { q: "¿Cuál es la tasa de interés del Banco de la República en junio de 2026?", a: "La tasa de intervención de política monetaria del Banco de la República se ubicó en 12,0% en junio de 2026, tras un aumento de 0,75 puntos frente a mayo." },
+  { q: "¿Por qué sube la inflación anual si los precios subieron menos en el mes?", a: "Por el efecto base. La inflación anual mide el acumulado de doce meses. En junio de 2025 los precios subieron solo 0,10%; al reemplazar ese dato bajo por el 0,39% de junio de 2026, el acumulado anual aumenta aunque el mes reciente haya sido más moderado." },
+  { q: "¿Cuál es la meta de inflación del Banco de la República?", a: "La meta es del 3% anual, con un rango de tolerancia de ±1 punto porcentual (entre 2% y 4%). Con 6,14%, la inflación está más del doble por encima del centro de la meta." },
+  { q: "¿Qué significa que la tasa real (spread) esté en 5,86 puntos?", a: "Significa que la tasa del Banco de la República supera a la inflación en 5,86 puntos porcentuales. Es una tasa real positiva alta: la política monetaria funciona como freno, encarece el crédito y premia el ahorro. Es el nivel de freno más intenso desde 2004." },
+]} />
 
 La **inflación en Colombia volvió a subir en junio de 2026**. El dato anual llegó a **6,14%**, frente al 5,84% de mayo, y confirma un giro que ya venía asomándose: la larga bajada de precios que vivió el país durante 2024 y buena parte de 2025 se detuvo y empezó a revertirse. Al mismo tiempo, el **Banco de la República subió su tasa de intervención al 12%**, el nivel más alto en más de un año.
 

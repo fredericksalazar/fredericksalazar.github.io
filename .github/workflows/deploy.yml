@@ -38,3 +38,13 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # Notifica a Bing/Yandex (IndexNow) que el sitio se actualizó. Se ejecuta
+      # tras el deploy y lee el sitemap ya publicado (sin dist/, el script hace
+      # fetch del sitemap en vivo). `continue-on-error` evita que un fallo del
+      # ping marque el deploy como fallido.
+      - name: Checkout (para el script de IndexNow)
+        uses: actions/checkout@v4
+      - name: Ping IndexNow (Bing/Yandex)
+        continue-on-error: true
+        run: node scripts/indexnow-submit.mjs

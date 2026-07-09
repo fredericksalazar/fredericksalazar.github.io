@@ -1,0 +1,35 @@
+---
+/**
+ * FaqSchema.astro
+ * Emite JSON-LD FAQPage (schema.org) a partir de una lista de preguntas y
+ * respuestas. Habilita rich results de FAQ (especialmente en Bing) y refuerza
+ * la comprensión semántica del artículo por parte de los buscadores.
+ *
+ * Las preguntas/respuestas DEBEN coincidir con el texto visible del artículo
+ * (regla de Google: nada de FAQ oculto que no esté en la página).
+ *
+ * Uso en un .mdx:
+ *   import FaqSchema from "../../components/blog/FaqSchema.astro";
+ *   <FaqSchema items={[{ q: "¿...?", a: "..." }]} />
+ */
+interface FaqItem {
+  q: string;
+  a: string;
+}
+interface Props {
+  items: FaqItem[];
+}
+const { items } = Astro.props;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: items.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />

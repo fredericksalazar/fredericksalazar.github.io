@@ -11,7 +11,7 @@ import GlosarioGrid from "../../components/observatorio/GlosarioGrid.astro";
 import Chart from "../../components/observatorio/Chart.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
 import { getObservatorio } from "../../lib/observatorio/data";
-import { absUrls } from "../../lib/urls";
+import { absUrls, urls } from "../../lib/urls";
 import { trail, sectionCrumb } from "../../lib/seo";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
 import { FUENTE_CALCULO_PROPIO, FUENTE_HISTORICA_BM } from "../../lib/observatorio/fuentes";
@@ -218,6 +218,11 @@ const jsonLd = {
           <li>Barras altas → política <strong>restrictiva</strong> (Banco frenando).</li>
           <li>Barras bajas o negativas → política <strong>expansiva</strong> (Banco acelerando).</li>
         </ul>
+        <p>
+          Lee el análisis del último dato en el blog:
+          <a href={urls.blogPost("inflacion-tasas-interes-colombia-junio-2026")}>
+            Inflación en Colombia junio 2026: sube a 6,14% y el BanRep responde con tasas al 12%</a>.
+        </p>
       </Fragment>
       <Chart slot="visual" id="spread" embedded={true} />
     </IndicadorPanel>
