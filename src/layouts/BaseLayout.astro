@@ -101,6 +101,25 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
         gtag('event', el.getAttribute('data-ga-event'), params);
       });
     </script>
+    <!-- ── Estado del sidebar: se aplica antes del primer paint para evitar
+         un flash del sidebar abierto cuando el usuario lo dejó plegado. ── -->
+    <script is:inline>
+      (() => {
+        const applySidebarState = () => {
+          let collapsed = false;
+          try {
+            collapsed = localStorage.getItem('sidebar-collapsed') === '1';
+          } catch {}
+          document.documentElement.toggleAttribute('data-sidebar-collapsed', collapsed);
+        };
+        applySidebarState();
+        if (!window.__sidebarStateBound) {
+          window.__sidebarStateBound = true;
+          // ClientRouter reemplaza los atributos de <html> en cada navegación.
+          document.addEventListener('astro:after-swap', applySidebarState);
+        }
+      })();
+    </script>
     <!-- ── View Transitions: navegación fluida con MPA estático ── -->
     <ClientRouter />
   </head>
@@ -109,6 +128,20 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
     <div class="layout">
       <!-- ── Sidebar fijo ─────────────────────────────────────────── -->
       <Sidebar />
+
+      <!-- ── Toggle del sidebar (anclado al borde) ────────────────── -->
+      <button
+        id="sidebar-toggle"
+        type="button"
+        class="sidebar-toggle"
+        aria-controls="site-sidebar"
+        aria-expanded="true"
+        aria-label="Ocultar menú lateral"
+        title="Ocultar menú lateral"
+      >
+        <svg class="sidebar-toggle__icon sidebar-toggle__icon--close" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="m16 15-3-3 3-3"/></svg>
+        <svg class="sidebar-toggle__icon sidebar-toggle__icon--open" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="m14 9 3 3-3 3"/></svg>
+      </button>
 
       <!-- ── Contenido principal ──────────────────────────────────── -->
       <main id="main-content" class="layout__main" transition:animate="fade">
@@ -124,6 +157,44 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
     <Footer />
 
     {!isInformePage && <InformePopup />}
+
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const isCollapsed = () => root.hasAttribute('data-sidebar-collapsed');
+
+        // Refleja el estado en el botón: el mismo control cambia de significado,
+        // así que la etiqueta accesible y el tooltip cambian con él.
+        const syncToggle = () => {
+          const btn = document.getElementById('sidebar-toggle');
+          if (!btn) return;
+          const collapsed = isCollapsed();
+          const label = collapsed ? 'Mostrar menú lateral' : 'Ocultar menú lateral';
+          btn.setAttribute('aria-expanded', String(!collapsed));
+          btn.setAttribute('aria-label', label);
+          btn.setAttribute('title', label);
+        };
+
+        if (!window.__sidebarToggleBound) {
+          window.__sidebarToggleBound = true;
+
+          document.addEventListener('click', (e) => {
+            const btn = e.target.closest && e.target.closest('#sidebar-toggle');
+            if (!btn) return;
+            const collapsed = !isCollapsed();
+            root.toggleAttribute('data-sidebar-collapsed', collapsed);
+            try {
+              localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '0');
+            } catch {}
+            syncToggle();
+          });
+
+          document.addEventListener('astro:page-load', syncToggle);
+        }
+
+        syncToggle();
+      })();
+    </script>
   </body>
 </html>
 
@@ -148,7 +219,12 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
     --color-tag-border: #d0d7de;
     --color-tag-text:   #424a53;
 
-    --sidebar-width: 240px;
+    /* Ancho físico del sidebar (constante) vs. el hueco que reserva el
+       contenido (0 cuando está plegado). Separarlos permite animar el
+       desplazamiento sin deformar el propio sidebar. */
+    --sidebar-size: 240px;
+    --sidebar-width: var(--sidebar-size);
+    --sidebar-toggle-left: calc(var(--sidebar-size) - 16px);
     --content-max-width: 90%;
 
     --font-sans: 'Google Sans Flex', 'Google Sans', system-ui, -apple-system, sans-serif;
@@ -190,6 +266,72 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
     margin-left: var(--sidebar-width);
     min-height: 100dvh;
     overflow-x: clip;
+    transition: margin-left 0.25s ease;
+  }
+
+  /* ── Sidebar plegable ───────────────────────────────────────────────────── */
+  :root[data-sidebar-collapsed] {
+    --sidebar-width: 0px;
+    --sidebar-toggle-left: 0.75rem;
+  }
+
+  .sidebar {
+    transition: transform 0.25s ease, visibility 0.25s;
+  }
+
+  :root[data-sidebar-collapsed] .sidebar {
+    transform: translateX(-100%);
+    /* Saca los enlaces del orden de tabulación mientras está oculto. */
+    visibility: hidden;
+  }
+
+  .sidebar-toggle {
+    position: fixed;
+    top: 1.5rem;
+    left: var(--sidebar-toggle-left);
+    z-index: 101;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    background: var(--color-sidebar);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    transition: left 0.25s ease, background-color 0.15s ease,
+      color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .sidebar-toggle:hover {
+    background: var(--color-hover);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .sidebar-toggle:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .sidebar-toggle__icon--open,
+  :root[data-sidebar-collapsed] .sidebar-toggle__icon--close {
+    display: none;
+  }
+
+  :root[data-sidebar-collapsed] .sidebar-toggle__icon--open {
+    display: block;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .layout__main,
+    .sidebar,
+    .sidebar-toggle {
+      transition: none;
+    }
   }
 
   .layout__content {
@@ -215,6 +357,15 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
     }
     .layout__content {
       padding: 1.5rem 1.25rem;
+    }
+    /* En móvil el sidebar es una barra superior con la navegación completa:
+       ocultarla dejaría al usuario sin menú, así que el toggle no aplica. */
+    .sidebar-toggle {
+      display: none;
+    }
+    :root[data-sidebar-collapsed] .sidebar {
+      transform: none;
+      visibility: visible;
     }
   }
 

@@ -79,7 +79,7 @@ function isActive(href: string): boolean {
 }
 ---
 
-<aside class="sidebar" aria-label="Navegación principal">
+<aside id="site-sidebar" class="sidebar" aria-label="Navegación principal">
   <!-- ── Perfil ─────────────────────────────────────────────────────────── -->
   <div class="sidebar__profile">
     <div class="sidebar__avatar-wrapper">
@@ -147,15 +147,11 @@ function isActive(href: string): boolean {
 </aside>
 
 <style>
-  :root {
-    --sidebar-width: 240px;
-  }
-
   .sidebar {
     position: fixed;
     top: 0;
     left: 0;
-    width: var(--sidebar-width);
+    width: var(--sidebar-size);
     height: 100dvh;
     background-color: var(--color-sidebar);
     border-right: 1px solid var(--color-border);
