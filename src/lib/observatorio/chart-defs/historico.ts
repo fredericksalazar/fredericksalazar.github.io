@@ -138,8 +138,8 @@ async function buildHistorico(
 export const inflacionHistorica: ChartDef = {
   id: "inflacion-historica",
   titulo: "Inflación histórica de Colombia",
-  pregunta: "Inflación anual desde 1960 según datos del Banco Mundial. Coloreada por presidente que gobernó la mayor parte del año.",
-  fuenteTexto: "Banco Mundial — World Development Indicators · Presidentes: Registraduría Nacional",
+  pregunta: "Inflación anual promedio desde 1960 según datos del Banco Mundial. Coloreada por presidente que gobernó la mayor parte del año.",
+  fuenteTexto: "Banco Mundial — World Development Indicators (último año: cálculo propio con IPC del DANE) · Presidentes: Registraduría Nacional",
   datasets: ["inflacion"],
   height: 420,
   ariaLabel: "Inflación anual histórica de Colombia desde 1960 con color por presidente",

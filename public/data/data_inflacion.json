@@ -16,7 +16,9 @@
     "definiciones": {
       "spread": "tasa_interes − inflacion_anual (tasa de interés real ex-post, en puntos porcentuales)",
       "variacion": "subio | bajo | igual respecto al mes inmediatamente anterior",
-      "epsilon_variacion": 0.001
+      "epsilon_variacion": 0.001,
+      "historico": "Inflación anual promedio (variación del IPC promedio del año frente al del año anterior), equivalente al indicador FP.CPI.TOTL.ZG del Banco Mundial. No es la inflación de cierre a diciembre.",
+      "historico_2025": "5.14 — cálculo propio a partir de la serie mensual del DANE, mientras el Banco Mundial publica el dato definitivo. La inflación de cierre (diciembre 2025) fue 5.10."
     },
     "cobertura": {
       "primer_periodo": "2004-01",
@@ -4179,6 +4181,7 @@
     "2021": 3.5,
     "2022": 10.18,
     "2023": 11.74,
-    "2024": 6.61
+    "2024": 6.61,
+    "2025": 5.14
   }
 }
