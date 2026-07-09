@@ -1,0 +1,114 @@
+---
+titulo: "Inflación en Colombia junio 2026: sube a 6,14% y el BanRep responde con tasas al 12%"
+tituloSeo: "Inflación en Colombia junio 2026: 6,14% y tasa BanRep al 12%"
+fecha: 2026-07-09
+descripcion: "La inflación en Colombia subió a 6,14% anual en junio de 2026 y el Banco de la República elevó su tasa al 12%. Análisis con gráficos y comparativas."
+etiquetas: ["Inflación", "Colombia", "Economía", "Banco de la República", "Tasas de Interés", "Observatorio de Datos"]
+autor: "Frederick Salazar"
+imagen: "/images/blog/inflacion-tasas-colombia-junio-2026-cover.png"
+draft: false
+tipo: "analisis"
+destacado: true
+resumen: "En junio de 2026 la inflación anual de Colombia llegó a 6,14%, su nivel más alto en meses, mientras el Banco de la República subió la tasa de intervención al 12%. La desinflación de 2025 se dio vuelta y hoy el freno monetario es el más intenso del ciclo."
+---
+
+import Chart from "../../components/observatorio/Chart.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+
+<PlotlyLoader />
+
+La **inflación en Colombia volvió a subir en junio de 2026**. El dato anual llegó a **6,14%**, frente al 5,84% de mayo, y confirma un giro que ya venía asomándose: la larga bajada de precios que vivió el país durante 2024 y buena parte de 2025 se detuvo y empezó a revertirse. Al mismo tiempo, el **Banco de la República subió su tasa de intervención al 12%**, el nivel más alto en más de un año.
+
+En este informe del [Observatorio de Datos de Colombia](/observatorio/) leemos los números de junio en lenguaje sencillo: qué cambió frente al mes anterior, cómo se ve la foto contra junio del año pasado y qué significa todo esto para el bolsillo de las familias. Todos los gráficos son **interactivos**: pasa el cursor (o toca en el móvil) para ver el valor exacto de cada punto.
+
+## Los números de junio de 2026
+
+Cuatro cifras resumen el mes:
+
+- **Inflación anual: 6,14%** — subió 0,30 puntos frente al 5,84% de mayo.
+- **Inflación mensual: 0,39%** — los precios subieron menos que en mayo (0,47%).
+- **Tasa de intervención del BanRep: 12,0%** — un salto de 0,75 puntos en el mes.
+- **Tasa real (spread): 5,86 puntos** — la diferencia entre la tasa y la inflación, la más alta del ciclo actual.
+
+La lectura rápida: la inflación anual sigue subiendo y ya duplica con creces la **meta del 3%** del Banco de la República. La entidad, lejos de bajar tipos, aprieta el freno.
+
+## La desinflación se dio vuelta
+
+Durante 2024 y 2025 Colombia vivió una desinflación clara: los precios subían cada vez menos y el indicador anual bajó de forma sostenida. El **piso fue en junio de 2025, con 4,83%**. Desde ese mínimo, la inflación anual no ha parado de trepar mes a mes hasta el 6,14% actual.
+
+<Chart id="inflacion-anual" embedded={true} />
+
+En el gráfico se ve la banda verde: es la **meta del Banco de la República (3% ±1)**, es decir, el rango donde la entidad quiere que vivan los precios. Colombia lleva años por encima de ese techo, pero lo relevante de 2026 es la **dirección**: veníamos bajando hacia la meta y ahora volvemos a alejarnos de ella. Si te interesa la mirada de largo plazo, en este [análisis histórico de la inflación y las tasas del BanRep](/blog/visualizacion-inflacion-vs-tasas-interes-colombia/) revisamos la serie desde 1960 y el freno monetario que arrastra el país desde 2024.
+
+### ¿Por qué sube la inflación anual si el mes fue más suave?
+
+Aquí hay un detalle que confunde a mucha gente y vale la pena explicar. En junio los precios subieron **0,39%**, *menos* que el 0,47% de mayo. Entonces, ¿por qué la inflación **anual** subió?
+
+La inflación anual mide lo que subieron los precios en los **últimos doce meses**. Cada mes que pasa, ese conteo "suelta" el mes más viejo y "suma" el más nuevo. En junio de 2025 los precios apenas habían subido **0,10%**, un dato muy bajo. Al reemplazar ese 0,10% por el 0,39% de este junio, el acumulado de doce meses sube, aunque el mes en sí haya sido tranquilo. Los economistas lo llaman **efecto base**: no es que junio fuera malo, es que el mes que salió de la cuenta era muy bueno.
+
+## La respuesta del Banco de la República: tasas al 12%
+
+Frente a una inflación que se resiste a ceder y que además repunta, el Banco de la República ha hecho lo contrario a lo que muchos esperaban a comienzos de año: **subir la tasa de intervención**. Empezó 2026 en 9,25% y en junio la llevó al **12,0%**, un endurecimiento de 2,75 puntos en seis meses.
+
+<Chart id="tasa-interes" embedded={true} />
+
+La tasa de intervención es el precio del dinero: cuando sube, se encarecen los créditos de consumo, las tarjetas, los préstamos de vivienda y la financiación de las empresas. Es la herramienta principal del banco central para enfriar la demanda y contener los precios. Subirla es una señal de que la autoridad monetaria ve la inflación como una amenaza seria y prefiere pecar de dura.
+
+## Junio 2026 frente a junio 2025: la foto del año
+
+Comparar contra el mismo mes del año anterior ayuda a ver la tendencia sin el ruido de los altibajos estacionales. La diferencia de doce meses es contundente:
+
+| Indicador | Junio 2025 | Mayo 2026 | Junio 2026 |
+|---|---|---|---|
+| Inflación anual | 4,83% | 5,84% | **6,14%** |
+| Inflación mensual | 0,10% | 0,47% | **0,39%** |
+| Tasa BanRep | 9,25% | 11,25% | **12,0%** |
+| Tasa real (spread) | 4,42 pp | 5,41 pp | **5,86 pp** |
+
+En un año, la inflación anual subió **1,31 puntos** (de 4,83% a 6,14%) y la tasa del Banco de la República subió **2,75 puntos** (de 9,25% a 12,0%). Es decir, el banco no solo acompañó el repunte de precios: se movió mucho más rápido que la propia inflación. Ese adelanto es justamente lo que dispara la tasa real.
+
+## El freno monetario más intenso del ciclo
+
+Cuando la tasa del banco central está **por encima** de la inflación, la política monetaria actúa como un **freno**: enfría el consumo y premia el ahorro. Cuando está por debajo, funciona como **acelerador**. La distancia entre ambas —la tasa real o *spread*— mide qué tan fuerte se pisa ese freno.
+
+<Chart id="spread" embedded={true} />
+
+En junio de 2026 el spread llegó a **5,86 puntos**, el **nivel más alto de toda la serie desde 2004**: nunca en más de 20 años el dinero había estado tan caro en Colombia en términos reales. En el gráfico, las barras rojas marcan los meses de freno (tasa por encima de la inflación) y las verdes los de acelerador. Hoy estamos en pleno territorio rojo, y la última barra es la más alta del histórico: el Banco de la República mantiene el pie firme sobre el freno para evitar que el repunte de precios se consolide.
+
+## Qué significa para tu bolsillo
+
+Traducido a la vida diaria, este combo de inflación al alza y tasas altas tiene efectos concretos:
+
+- **El crédito está caro.** Tarjetas, créditos de libre inversión y de vivienda reflejan tasas más altas. No es el mejor momento para endeudarse.
+- **El ahorro rinde.** Los CDT y productos de renta fija ofrecen tasas atractivas que, por ahora, le ganan a la inflación.
+- **Los precios siguen subiendo, aunque más despacio.** Un 0,39% mensual no es dramático, pero doce meses seguidos así erosionan el poder de compra.
+- **Cautela en las compras grandes.** Con crédito caro y precios inestables, las decisiones de gran monto piden más análisis.
+
+## Conclusión
+
+Junio de 2026 marca un cambio de fase para la economía colombiana. La desinflación que ilusionó durante 2025 tocó fondo en junio de ese año y desde entonces la inflación volvió a subir hasta el **6,14%** actual. El Banco de la República respondió sin titubeos: llevó su tasa al **12%** y sostiene el **freno monetario más intenso del ciclo**. La apuesta es clara —contener los precios aunque cueste crecimiento— y los próximos meses dirán si funciona.
+
+Puedes explorar estos y otros indicadores, siempre actualizados, en el [dashboard de inflación y tasas del Observatorio](/observatorio/).
+
+## Preguntas frecuentes
+
+### ¿Cuánto fue la inflación en Colombia en junio de 2026?
+La inflación anual en Colombia en junio de 2026 fue de **6,14%**, según el DANE. Frente a mayo (5,84%) subió 0,30 puntos. La variación mensual del mes fue de **0,39%**.
+
+### ¿Cuál es la tasa de interés del Banco de la República en junio de 2026?
+La tasa de intervención de política monetaria del Banco de la República se ubicó en **12,0%** en junio de 2026, tras un aumento de 0,75 puntos frente a mayo.
+
+### ¿Por qué sube la inflación anual si los precios subieron menos en el mes?
+Por el **efecto base**. La inflación anual mide el acumulado de doce meses. En junio de 2025 los precios subieron solo 0,10%; al reemplazar ese dato bajo por el 0,39% de junio de 2026, el acumulado anual aumenta aunque el mes reciente haya sido más moderado.
+
+### ¿Cuál es la meta de inflación del Banco de la República?
+La meta es del **3% anual**, con un rango de tolerancia de ±1 punto porcentual (entre 2% y 4%). Con 6,14%, la inflación está más del doble por encima del centro de la meta.
+
+### ¿Qué significa que la tasa real (spread) esté en 5,86 puntos?
+Significa que la tasa del Banco de la República supera a la inflación en 5,86 puntos porcentuales. Es una **tasa real positiva alta**: la política monetaria funciona como freno, encarece el crédito y premia el ahorro. Es el nivel de freno más intenso desde 2004, cuando arranca la serie.
+
+## Fuentes y metodología
+
+Los datos provienen de fuentes públicas y verificables: la **inflación (IPC)** del [DANE](https://www.dane.gov.co/index.php/estadisticas-por-tema/precios-y-costos/indice-de-precios-al-consumidor-ipc) y la **tasa de intervención** del [Banco de la República](https://www.banrep.gov.co/es/estadisticas/tasas-de-interes-de-politica-monetaria). La tasa real (spread) es un cálculo propio: tasa de intervención menos inflación anual. Todas las series y gráficos se actualizan automáticamente en el [Observatorio de Datos de Colombia](/observatorio/).
+
+Este es un análisis técnico, educativo e independiente, sin afiliación política. Su objetivo es aportar evidencia y contexto para entender mejor la economía del país.
