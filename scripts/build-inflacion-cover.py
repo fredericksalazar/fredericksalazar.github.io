@@ -3,8 +3,12 @@
 Reproduce la "card 5" del dashboard del Observatorio — el diferencial entre la
 tasa del BanRep y la inflación (barras rojas = freno, verdes = acelerador) — y le
 superpone un titular llamativo. Lee public/data/data_inflacion.json para mantener
-las cifras sincronizadas con el dato más reciente del pipeline.
-Salida: public/images/blog/inflacion-tasas-colombia-junio-2026-cover.png
+las cifras sincronizadas con el dato más reciente del pipeline. El nombre de la
+portada se deriva del período (mes-año), de modo que cada informe mensual
+conserva su propia imagen sin sobreescribir la anterior.
+Salida: public/images/blog/inflacion-tasas-colombia-<mes>-<anio>-cover.png
+
+Cada mes ajusta TITULAR / SUBTITULO al gancho veraz del dato del momento.
 
 Uso: python3 scripts/build-inflacion-cover.py
 """
@@ -34,6 +38,12 @@ MESES = {
     "09": "septiembre", "10": "octubre", "11": "noviembre", "12": "diciembre",
 }
 
+# Gancho veraz del mes en curso (ajústalo según el dato). Agosto 2026: la
+# inflación repunta a su máximo del año y la tasa real sigue en máximos de dos
+# décadas, aunque el pico exacto del freno fue julio.
+TITULAR = "La inflación no da tregua en Colombia"
+SUBTITULO = "Agosto marcó 6,25%, el nivel más alto del año, con la tasa real en máximos de dos décadas"
+
 
 def periodo_to_date(p: str) -> date:
     y, m = p.split("-")
@@ -61,9 +71,9 @@ def construir() -> None:
     # ── Titular clickbait (banda superior) ────────────────────────────────
     fig.text(0.055, 0.935, "OBSERVATORIO DE DATOS DE COLOMBIA",
              color=AZUL, fontsize=13, fontweight="bold", family="DejaVu Sans")
-    fig.text(0.055, 0.845, "El dinero nunca había estado tan caro",
+    fig.text(0.055, 0.845, TITULAR,
              color=INK, fontsize=33, fontweight="bold", family="DejaVu Sans")
-    fig.text(0.055, 0.765, "El freno del Banco de la República a la economía tocó su nivel más alto en 22 años",
+    fig.text(0.055, 0.765, SUBTITULO,
              color=MUTED, fontsize=15.5, family="DejaVu Sans")
 
     # ── Gráfico del diferencial (card 5) ──────────────────────────────────
@@ -97,7 +107,7 @@ def construir() -> None:
     fig.text(0.945, 0.045, "fredericksalazar.github.io",
              color=MUTED, fontsize=12, ha="right", family="DejaVu Sans")
 
-    out = Path("public/images/blog/inflacion-tasas-colombia-junio-2026-cover.png")
+    out = Path(f"public/images/blog/inflacion-tasas-colombia-{MESES[mes]}-{anio}-cover.png")
     out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, facecolor=BG)
     plt.close(fig)
@@ -107,7 +117,7 @@ def construir() -> None:
     Image.open(out).convert("RGB").save(out, "PNG", optimize=True)
 
     mode = Image.open(out).mode
-    print(f"OK -> {out}  ({out.stat().st_size // 1024} KB, {mode})  spread {spread} pp (max serie)")
+    print(f"OK -> {out}  ({out.stat().st_size // 1024} KB, {mode})  {etiqueta}: spread {spread} pp")
 
 
 if __name__ == "__main__":
