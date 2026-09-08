@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-09-05T15:45:34+00:00",
+    "ultima_actualizacion": "2026-09-08T14:26:53+00:00",
     "fuentes": {
       "inflacion": {
         "nombre": "DANE — Departamento Administrativo Nacional de Estadística",
@@ -20,49 +20,64 @@
     },
     "cobertura": {
       "primer_periodo": "2004-01",
-      "ultimo_periodo": "2026-07",
-      "total_registros": 271
+      "ultimo_periodo": "2026-08",
+      "total_registros": 272
     }
   },
   "indicadores": {
     "inflacion_anual": {
       "actual": {
-        "periodo": "2026-07",
-        "valor": 6.02,
-        "variacion": "bajo",
-        "delta": -0.12
+        "periodo": "2026-08",
+        "valor": 6.25,
+        "variacion": "subio",
+        "delta": 0.23
       },
       "unidad": "%"
     },
     "inflacion_mensual": {
       "actual": {
-        "periodo": "2026-07",
-        "valor": 0.17,
-        "variacion": "bajo",
-        "delta": -0.22
+        "periodo": "2026-08",
+        "valor": 0.39,
+        "variacion": "subio",
+        "delta": 0.22
       },
       "unidad": "%"
     },
     "tasa_interes": {
       "actual": {
-        "periodo": "2026-07",
+        "periodo": "2026-08",
         "valor": 12.0,
-        "variacion": "subio",
-        "delta": 0.75
+        "variacion": "igual",
+        "delta": 0.0
       },
       "unidad": "%"
     },
     "spread": {
       "actual": {
-        "periodo": "2026-07",
-        "valor": 5.98,
-        "variacion": "subio",
-        "delta": 0.87
+        "periodo": "2026-08",
+        "valor": 5.75,
+        "variacion": "bajo",
+        "delta": -0.23
       },
       "unidad": "pp"
     }
   },
   "serie": [
+    {
+      "periodo": "2026-08",
+      "inflacion_anual": 6.25,
+      "inflacion_anual_delta": 0.23,
+      "inflacion_anual_variacion": "subio",
+      "inflacion_mensual": 0.39,
+      "inflacion_mensual_delta": 0.22,
+      "inflacion_mensual_variacion": "subio",
+      "tasa_interes": 12.0,
+      "tasa_interes_delta": 0.0,
+      "tasa_interes_variacion": "igual",
+      "spread": 5.75,
+      "spread_delta": -0.23,
+      "spread_variacion": "bajo"
+    },
     {
       "periodo": "2026-07",
       "inflacion_anual": 6.02,
