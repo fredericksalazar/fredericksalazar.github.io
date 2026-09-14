@@ -13,30 +13,30 @@
       "primer_anio": 1960,
       "ultimo_anio": 2025
     },
-    "ultima_actualizacion": "2026-06-18",
+    "ultima_actualizacion": "2026-09-14",
     "nota": "Cada indicador usa el último año con dato disponible en ambos países; el año se indica en cada fila. Placeholders del CSV (0 y -100) tratados como nulos."
   },
   "indicadores": {
     "pib_percapita": {
-      "anio": 2024,
-      "colombia": 7919.21,
-      "oponente": 649.38,
+      "anio": 2025,
+      "colombia": 8561.62,
+      "oponente": 806.78,
       "unidad": "USD",
       "label": "PIB per cápita",
       "mejor": "mayor"
     },
     "pib_total": {
-      "anio": 2024,
-      "colombia": 418818,
-      "oponente": 70962,
+      "anio": 2025,
+      "colombia": 457410,
+      "oponente": 91031,
       "unidad": "millones USD",
       "label": "PIB total",
       "mejor": "mayor"
     },
     "poblacion": {
-      "anio": 2024,
-      "colombia": 52886363,
-      "oponente": 109276265,
+      "anio": 2025,
+      "colombia": 53425635,
+      "oponente": 112832473,
       "unidad": "habitantes",
       "label": "Población",
       "mejor": "mayor"
@@ -59,7 +59,7 @@
     },
     "gini": {
       "anio": 2020,
-      "colombia": 53.5,
+      "colombia": 54.4,
       "oponente": 44.7,
       "unidad": "índice 0–100",
       "label": "Desigualdad (Gini)",
@@ -74,25 +74,25 @@
       "mejor": "mayor"
     },
     "apertura": {
-      "anio": 2024,
-      "colombia": 37.03,
-      "oponente": 100.55,
+      "anio": 2025,
+      "colombia": 35.36,
+      "oponente": 87.34,
       "unidad": "% del PIB",
       "label": "Apertura comercial",
       "mejor": "mayor"
     },
     "deuda_externa": {
       "anio": 2024,
-      "colombia": 48.17,
-      "oponente": 17.59,
+      "colombia": 47.98,
+      "oponente": 16.49,
       "unidad": "% del PIB",
       "label": "Deuda externa",
       "mejor": "menor"
     },
     "ied": {
-      "anio": 2024,
-      "colombia": 3.27,
-      "oponente": 4.11,
+      "anio": 2025,
+      "colombia": 2.53,
+      "oponente": 2.05,
       "unidad": "% del PIB",
       "label": "Inversión extranjera directa",
       "mejor": "mayor"
@@ -417,13 +417,18 @@
       },
       {
         "anio": 2023,
-        "colombia": 7000.84,
+        "colombia": 7012.49,
         "oponente": 660.21
       },
       {
         "anio": 2024,
-        "colombia": 7919.21,
-        "oponente": 649.38
+        "colombia": 7951.09,
+        "oponente": 692.89
+      },
+      {
+        "anio": 2025,
+        "colombia": 8561.62,
+        "oponente": 806.78
       }
     ],
     "pib_total": [
@@ -744,13 +749,18 @@
       },
       {
         "anio": 2023,
-        "colombia": 366292,
+        "colombia": 366902,
         "oponente": 69844
       },
       {
         "anio": 2024,
-        "colombia": 418818,
-        "oponente": 70962
+        "colombia": 420504,
+        "oponente": 75716
+      },
+      {
+        "anio": 2025,
+        "colombia": 457410,
+        "oponente": 91031
       }
     ],
     "poblacion": [
@@ -1078,6 +1088,11 @@
         "anio": 2024,
         "colombia": 52886363,
         "oponente": 109276265
+      },
+      {
+        "anio": 2025,
+        "colombia": 53425635,
+        "oponente": 112832473
       }
     ],
     "inflacion": [
@@ -1405,6 +1420,11 @@
         "anio": 2024,
         "colombia": 6.61,
         "oponente": null
+      },
+      {
+        "anio": 2025,
+        "colombia": 5.14,
+        "oponente": null
       }
     ],
     "desempleo": [
@@ -1652,67 +1672,67 @@
       },
       {
         "anio": 2008,
-        "colombia": 55.3,
+        "colombia": 55.0,
         "oponente": null
       },
       {
         "anio": 2009,
-        "colombia": 54.3,
+        "colombia": 54.1,
         "oponente": null
       },
       {
         "anio": 2010,
-        "colombia": 54.6,
+        "colombia": 54.4,
         "oponente": null
       },
       {
         "anio": 2011,
-        "colombia": 53.5,
+        "colombia": 53.3,
         "oponente": null
       },
       {
         "anio": 2012,
-        "colombia": 52.6,
+        "colombia": 53.6,
         "oponente": 42.1
       },
       {
         "anio": 2013,
-        "colombia": 52.6,
+        "colombia": 53.5,
         "oponente": null
       },
       {
         "anio": 2014,
-        "colombia": 52.5,
+        "colombia": 53.6,
         "oponente": null
       },
       {
         "anio": 2015,
-        "colombia": 51.0,
+        "colombia": 52.0,
         "oponente": null
       },
       {
         "anio": 2016,
-        "colombia": 50.6,
+        "colombia": 51.7,
         "oponente": null
       },
       {
         "anio": 2017,
-        "colombia": 49.7,
+        "colombia": 50.9,
         "oponente": null
       },
       {
         "anio": 2018,
-        "colombia": 50.4,
+        "colombia": 51.6,
         "oponente": null
       },
       {
         "anio": 2019,
-        "colombia": 51.3,
+        "colombia": 52.5,
         "oponente": null
       },
       {
         "anio": 2020,
-        "colombia": 53.5,
+        "colombia": 54.4,
         "oponente": 44.7
       },
       {
@@ -1727,7 +1747,12 @@
       },
       {
         "anio": 2023,
-        "colombia": 53.9,
+        "colombia": 54.6,
+        "oponente": null
+      },
+      {
+        "anio": 2024,
+        "colombia": 54.4,
         "oponente": null
       }
     ],
@@ -2366,13 +2391,18 @@
       },
       {
         "anio": 2023,
-        "colombia": 40.39,
+        "colombia": 40.14,
         "oponente": 86.74
       },
       {
         "anio": 2024,
-        "colombia": 37.03,
-        "oponente": 100.55
+        "colombia": 36.32,
+        "oponente": 94.25
+      },
+      {
+        "anio": 2025,
+        "colombia": 35.36,
+        "oponente": 87.34
       }
     ],
     "deuda_externa": [
@@ -2643,13 +2673,13 @@
       },
       {
         "anio": 2023,
-        "colombia": 53.55,
+        "colombia": 53.47,
         "oponente": 17.19
       },
       {
         "anio": 2024,
-        "colombia": 48.17,
-        "oponente": 17.59
+        "colombia": 47.98,
+        "oponente": 16.49
       }
     ],
     "ied": [
@@ -2925,8 +2955,13 @@
       },
       {
         "anio": 2024,
-        "colombia": 3.27,
-        "oponente": 4.11
+        "colombia": 3.25,
+        "oponente": 3.85
+      },
+      {
+        "anio": 2025,
+        "colombia": 2.53,
+        "oponente": 2.05
       }
     ]
   }

@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-05-11T20:20:39+00:00",
+    "ultima_actualizacion": "2026-09-14T14:58:25+00:00",
     "fuentes": {
       "comercio": {
         "nombre": "Banco Mundial — World Development Indicators",
@@ -21,90 +21,108 @@
     },
     "cobertura": {
       "primer_periodo": "1960-12",
-      "ultimo_periodo": "2024-12",
-      "total_registros": 65,
+      "ultimo_periodo": "2025-12",
+      "total_registros": 66,
       "granularidad": "anual"
     }
   },
   "indicadores": {
     "exportaciones": {
       "actual": {
-        "periodo": "2024-12",
-        "valor": 16.1,
+        "periodo": "2025-12",
+        "valor": 14.98,
         "variacion": "bajo",
-        "delta": -1.73
+        "delta": -1.1
       },
       "unidad": "% PIB"
     },
     "importaciones": {
       "actual": {
-        "periodo": "2024-12",
-        "valor": 20.93,
-        "variacion": "bajo",
-        "delta": -1.63
+        "periodo": "2025-12",
+        "valor": 20.38,
+        "variacion": "subio",
+        "delta": 0.14
       },
       "unidad": "% PIB"
     },
     "balanza_comercial": {
       "actual": {
-        "periodo": "2024-12",
-        "valor": -1.64,
-        "variacion": "subio",
-        "delta": 0.62
+        "periodo": "2025-12",
+        "valor": -2.38,
+        "variacion": "bajo",
+        "delta": -0.71
       },
       "unidad": "% PIB"
     },
     "apertura": {
       "actual": {
-        "periodo": "2024-12",
-        "valor": 37.03,
+        "periodo": "2025-12",
+        "valor": 35.36,
         "variacion": "bajo",
-        "delta": -3.36
+        "delta": -0.96
       },
       "unidad": "% PIB"
     },
     "ied": {
       "actual": {
-        "periodo": "2024-12",
-        "valor": 3.27,
+        "periodo": "2025-12",
+        "valor": 2.53,
         "variacion": "bajo",
-        "delta": -1.31
+        "delta": -0.72
       },
       "unidad": "% PIB"
     }
   },
   "serie": [
     {
+      "periodo": "2025-12",
+      "exportaciones": 14.98,
+      "exportaciones_delta": -1.1,
+      "exportaciones_variacion": "bajo",
+      "importaciones": 20.38,
+      "importaciones_delta": 0.14,
+      "importaciones_variacion": "subio",
+      "balanza_comercial": -2.38,
+      "balanza_comercial_delta": -0.71,
+      "balanza_comercial_variacion": "bajo",
+      "apertura": 35.36,
+      "apertura_delta": -0.96,
+      "apertura_variacion": "bajo",
+      "ied": 2.53,
+      "ied_delta": -0.72,
+      "ied_variacion": "bajo"
+    },
+    {
       "periodo": "2024-12",
-      "exportaciones": 16.1,
+      "exportaciones": 16.08,
       "exportaciones_delta": -1.73,
       "exportaciones_variacion": "bajo",
-      "importaciones": 20.93,
-      "importaciones_delta": -1.63,
+      "importaciones": 20.24,
+      "importaciones_delta": -2.09,
       "importaciones_variacion": "bajo",
-      "balanza_comercial": -1.64,
-      "balanza_comercial_delta": 0.62,
+      "balanza_comercial": -1.67,
+      "balanza_comercial_delta": 0.6,
       "balanza_comercial_variacion": "subio",
-      "apertura": 37.03,
-      "apertura_delta": -3.36,
+      "apertura": 36.32,
+      "apertura_delta": -3.82,
       "apertura_variacion": "bajo",
-      "ied": 3.27,
-      "ied_delta": -1.31,
+      "ied": 3.25,
+      "ied_delta": -1.33,
       "ied_variacion": "bajo"
     },
     {
       "periodo": "2023-12",
-      "exportaciones": 17.83,
-      "exportaciones_delta": -2.56,
+      "exportaciones": 17.81,
+      "exportaciones_delta": -2.58,
       "exportaciones_variacion": "bajo",
-      "importaciones": 22.56,
-      "importaciones_delta": -5.33,
+      "importaciones": 22.33,
+      "importaciones_delta": -5.56,
       "importaciones_variacion": "bajo",
-      "balanza_comercial": -2.26,
+      "balanza_comercial": -2.27,
       "balanza_comercial_delta": 3.77,
       "balanza_comercial_variacion": "subio",
-      "apertura": 40.39,
-      "apertura_delta": -7.89,
+      "apertura": 40.14,
+      "apertura_delta": -8.14,
       "apertura_variacion": "bajo",
       "ied": 4.58,
       "ied_delta": -0.39,
@@ -118,8 +136,8 @@
       "importaciones": 27.89,
       "importaciones_delta": 4.03,
       "importaciones_variacion": "subio",
-      "balanza_comercial": -6.03,
-      "balanza_comercial_delta": -0.39,
+      "balanza_comercial": -6.04,
+      "balanza_comercial_delta": -0.4,
       "balanza_comercial_variacion": "bajo",
       "apertura": 48.28,
       "apertura_delta": 8.22,
@@ -1309,8 +1327,9 @@
     "2020": 13.52,
     "2021": 16.2,
     "2022": 20.39,
-    "2023": 17.83,
-    "2024": 16.1
+    "2023": 17.81,
+    "2024": 16.08,
+    "2025": 14.98
   },
   "matriz_exportaciones": {
     "1995": {
@@ -1531,11 +1550,11 @@
       "otros": 4643688.9
     },
     "2026": {
-      "total": 13809461.53,
-      "agropecuarios": 3980876.63,
-      "combustibles": 5097786.48,
-      "manufacturas": 2412981.9,
-      "otros": 2317816.51
+      "total": 32489164.26,
+      "agropecuarios": 8664675.97,
+      "combustibles": 13142015.3,
+      "manufacturas": 6098479.44,
+      "otros": 4583993.51
     }
   },
   "matriz_importaciones": {
@@ -1757,11 +1776,11 @@
       "otros": 128585.43
     },
     "2026": {
-      "total": 11644374.71,
-      "agropecuarios": 1664834.92,
-      "combustibles": 1045406.52,
-      "manufacturas": 8924707.66,
-      "otros": 9425.6
+      "total": 38075769.73,
+      "agropecuarios": 5452756.95,
+      "combustibles": 3981061.01,
+      "manufacturas": 28594662.0,
+      "otros": 47289.74
     }
   },
   "productos_tradicionales": {
@@ -2038,12 +2057,12 @@
       "total_tradicionales": 23647196.06
     },
     "2026": {
-      "cafe": 1395852.45,
-      "carbon": 1223749.6,
-      "petroleo": 3438038.16,
-      "ferroniquel": 46130.44,
+      "cafe": 2841541.3,
+      "carbon": 2895988.96,
+      "petroleo": 9002044.27,
+      "ferroniquel": 156443.53,
       "no_tradicionales": null,
-      "total_tradicionales": 6103770.66
+      "total_tradicionales": 14896018.06
     }
   }
 }

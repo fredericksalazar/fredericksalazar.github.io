@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-05-11T21:15:22+00:00",
+    "ultima_actualizacion": "2026-09-14T14:58:23+00:00",
     "fuentes": {
       "pib": {
         "nombre": "Banco Mundial — World Development Indicators",
@@ -22,107 +22,128 @@
     },
     "cobertura": {
       "primer_periodo": "1960-12",
-      "ultimo_periodo": "2024-12",
-      "total_registros": 65
+      "ultimo_periodo": "2025-12",
+      "total_registros": 66
     }
   },
   "indicadores": {
     "pib_total": {
       "actual": {
-        "periodo": "2024-12",
-        "valor": 418.82,
+        "periodo": "2025-12",
+        "valor": 457.41,
         "variacion": "subio",
-        "delta": 52.53
+        "delta": 36.91
       },
       "unidad": "miles de millones USD"
     },
     "crecimiento_pib": {
       "actual": {
-        "periodo": "2024-12",
-        "valor": 1.6,
+        "periodo": "2025-12",
+        "valor": 2.64,
         "variacion": "subio",
-        "delta": 0.89
+        "delta": 1.15
       },
       "unidad": "%"
     },
     "pib_percapita": {
       "actual": {
-        "periodo": "2024-12",
-        "valor": 7919.21,
+        "periodo": "2025-12",
+        "valor": 8561.62,
         "variacion": "subio",
-        "delta": 918.37
+        "delta": 610.53
       },
       "unidad": "USD"
     },
     "poblacion": {
       "actual": {
-        "periodo": "2024-12",
-        "valor": 52886363.0,
+        "periodo": "2025-12",
+        "valor": 53425635.0,
         "variacion": "subio",
-        "delta": 565211.0
+        "delta": 539272.0
       },
       "unidad": "personas"
     },
     "deuda_publica": {
       "actual": {
-        "periodo": "2024-12",
-        "valor": 71.48,
-        "variacion": "subio",
-        "delta": 0.15
+        "periodo": "2025-12",
+        "valor": 0.0,
+        "variacion": "bajo",
+        "delta": -71.2
       },
       "unidad": "% PIB"
     },
     "gini": {
       "actual": {
-        "periodo": "2024-12",
+        "periodo": "2025-12",
         "valor": 0.0,
         "variacion": "bajo",
-        "delta": -53.9
+        "delta": -54.4
       },
       "unidad": "pts"
     }
   },
   "serie": [
     {
-      "periodo": "2024-12",
-      "pib_total": 418.82,
-      "pib_total_delta": 52.53,
+      "periodo": "2025-12",
+      "pib_total": 457.41,
+      "pib_total_delta": 36.91,
       "pib_total_variacion": "subio",
-      "crecimiento_pib": 1.6,
-      "crecimiento_pib_delta": 0.89,
+      "crecimiento_pib": 2.64,
+      "crecimiento_pib_delta": 1.15,
       "crecimiento_pib_variacion": "subio",
-      "pib_percapita": 7919.21,
-      "pib_percapita_delta": 918.37,
+      "pib_percapita": 8561.62,
+      "pib_percapita_delta": 610.53,
+      "pib_percapita_variacion": "subio",
+      "poblacion": 53425635.0,
+      "poblacion_delta": 539272.0,
+      "poblacion_variacion": "subio",
+      "deuda_publica": 0.0,
+      "deuda_publica_delta": -71.2,
+      "deuda_publica_variacion": "bajo",
+      "gini": 0.0,
+      "gini_delta": -54.4,
+      "gini_variacion": "bajo"
+    },
+    {
+      "periodo": "2024-12",
+      "pib_total": 420.5,
+      "pib_total_delta": 53.6,
+      "pib_total_variacion": "subio",
+      "crecimiento_pib": 1.49,
+      "crecimiento_pib_delta": 0.65,
+      "crecimiento_pib_variacion": "subio",
+      "pib_percapita": 7951.09,
+      "pib_percapita_delta": 938.6,
       "pib_percapita_variacion": "subio",
       "poblacion": 52886363.0,
       "poblacion_delta": 565211.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 71.48,
-      "deuda_publica_delta": 0.15,
-      "deuda_publica_variacion": "subio",
-      "gini": 0.0,
-      "gini_delta": -53.9,
+      "deuda_publica": 71.2,
+      "deuda_publica_delta": -0.01,
+      "deuda_publica_variacion": "bajo",
+      "gini": 54.4,
+      "gini_delta": -0.2,
       "gini_variacion": "bajo"
     },
     {
       "periodo": "2023-12",
-      "pib_total": 366.29,
-      "pib_total_delta": 20.66,
+      "pib_total": 366.9,
+      "pib_total_delta": 21.27,
       "pib_total_variacion": "subio",
-      "crecimiento_pib": 0.71,
-      "crecimiento_pib_delta": -6.62,
+      "crecimiento_pib": 0.84,
+      "crecimiento_pib_delta": -6.49,
       "crecimiento_pib_variacion": "bajo",
-      "pib_percapita": 7000.84,
-      "pib_percapita_delta": 320.39,
+      "pib_percapita": 7012.49,
+      "pib_percapita_delta": 332.04,
       "pib_percapita_variacion": "subio",
       "poblacion": 52321152.0,
       "poblacion_delta": 583208.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 71.33,
-      "deuda_publica_delta": 1.07,
+      "deuda_publica": 71.21,
+      "deuda_publica_delta": 0.95,
       "deuda_publica_variacion": "subio",
-      "gini": 53.9,
-      "gini_delta": -0.9,
+      "gini": 54.6,
+      "gini_delta": -0.2,
       "gini_variacion": "bajo"
     },
     {
@@ -164,7 +185,7 @@
       "deuda_publica_delta": -10.73,
       "deuda_publica_variacion": "bajo",
       "gini": 55.1,
-      "gini_delta": 1.6,
+      "gini_delta": 0.7,
       "gini_variacion": "subio"
     },
     {
@@ -184,8 +205,8 @@
       "deuda_publica": 91.16,
       "deuda_publica_delta": 18.46,
       "deuda_publica_variacion": "subio",
-      "gini": 53.5,
-      "gini_delta": 2.2,
+      "gini": 54.4,
+      "gini_delta": 1.9,
       "gini_variacion": "subio"
     },
     {
@@ -205,7 +226,7 @@
       "deuda_publica": 72.7,
       "deuda_publica_delta": 1.05,
       "deuda_publica_variacion": "subio",
-      "gini": 51.3,
+      "gini": 52.5,
       "gini_delta": 0.9,
       "gini_variacion": "subio"
     },
@@ -226,7 +247,7 @@
       "deuda_publica": 71.65,
       "deuda_publica_delta": 4.92,
       "deuda_publica_variacion": "subio",
-      "gini": 50.4,
+      "gini": 51.6,
       "gini_delta": 0.7,
       "gini_variacion": "subio"
     },
@@ -247,8 +268,8 @@
       "deuda_publica": 66.73,
       "deuda_publica_delta": -0.18,
       "deuda_publica_variacion": "bajo",
-      "gini": 49.7,
-      "gini_delta": -0.9,
+      "gini": 50.9,
+      "gini_delta": -0.8,
       "gini_variacion": "bajo"
     },
     {
@@ -268,8 +289,8 @@
       "deuda_publica": 66.91,
       "deuda_publica_delta": 13.63,
       "deuda_publica_variacion": "subio",
-      "gini": 50.6,
-      "gini_delta": -0.4,
+      "gini": 51.7,
+      "gini_delta": -0.3,
       "gini_variacion": "bajo"
     },
     {
@@ -289,8 +310,8 @@
       "deuda_publica": 53.28,
       "deuda_publica_delta": 5.3,
       "deuda_publica_variacion": "subio",
-      "gini": 51.0,
-      "gini_delta": -1.5,
+      "gini": 52.0,
+      "gini_delta": -1.6,
       "gini_variacion": "bajo"
     },
     {
@@ -310,9 +331,9 @@
       "deuda_publica": 47.98,
       "deuda_publica_delta": -19.12,
       "deuda_publica_variacion": "bajo",
-      "gini": 52.5,
-      "gini_delta": -0.1,
-      "gini_variacion": "bajo"
+      "gini": 53.6,
+      "gini_delta": 0.1,
+      "gini_variacion": "subio"
     },
     {
       "periodo": "2013-12",
@@ -331,9 +352,9 @@
       "deuda_publica": 67.1,
       "deuda_publica_delta": 1.87,
       "deuda_publica_variacion": "subio",
-      "gini": 52.6,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "gini": 53.5,
+      "gini_delta": -0.1,
+      "gini_variacion": "bajo"
     },
     {
       "periodo": "2012-12",
@@ -352,9 +373,9 @@
       "deuda_publica": 65.23,
       "deuda_publica_delta": 2.37,
       "deuda_publica_variacion": "subio",
-      "gini": 52.6,
-      "gini_delta": -0.9,
-      "gini_variacion": "bajo"
+      "gini": 53.6,
+      "gini_delta": 0.3,
+      "gini_variacion": "subio"
     },
     {
       "periodo": "2011-12",
@@ -373,7 +394,7 @@
       "deuda_publica": 62.86,
       "deuda_publica_delta": -9.59,
       "deuda_publica_variacion": "bajo",
-      "gini": 53.5,
+      "gini": 53.3,
       "gini_delta": -1.1,
       "gini_variacion": "bajo"
     },
@@ -394,7 +415,7 @@
       "deuda_publica": 72.45,
       "deuda_publica_delta": 3.45,
       "deuda_publica_variacion": "subio",
-      "gini": 54.6,
+      "gini": 54.4,
       "gini_delta": 0.3,
       "gini_variacion": "subio"
     },
@@ -415,8 +436,8 @@
       "deuda_publica": 69.0,
       "deuda_publica_delta": 3.75,
       "deuda_publica_variacion": "subio",
-      "gini": 54.3,
-      "gini_delta": -1.0,
+      "gini": 54.1,
+      "gini_delta": -0.9,
       "gini_variacion": "bajo"
     },
     {
@@ -436,8 +457,8 @@
       "deuda_publica": 65.25,
       "deuda_publica_delta": 65.25,
       "deuda_publica_variacion": "subio",
-      "gini": 55.3,
-      "gini_delta": 55.3,
+      "gini": 55.0,
+      "gini_delta": 55.0,
       "gini_variacion": "subio"
     },
     {
@@ -1513,7 +1534,8 @@
     "2020": 270.35,
     "2021": 318.52,
     "2022": 345.63,
-    "2023": 366.29,
-    "2024": 418.82
+    "2023": 366.9,
+    "2024": 420.5,
+    "2025": 457.41
   }
 }

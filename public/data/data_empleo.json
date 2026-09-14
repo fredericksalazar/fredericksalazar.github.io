@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-05-09T23:16:50+00:00",
+    "ultima_actualizacion": "2026-09-14T14:58:36+00:00",
     "fuentes": {
       "empleo": {
         "nombre": "DANE — Departamento Administrativo Nacional de Estadística",
@@ -19,8 +19,8 @@
     },
     "cobertura": {
       "primer_periodo": "1991-12",
-      "ultimo_periodo": "2026-03",
-      "total_registros": 308,
+      "ultimo_periodo": "2026-07",
+      "total_registros": 312,
       "granularidad": "mensual"
     },
     "notas": "Datos mensuales provenientes de la GEIH (DANE). Datos anuales históricos del Banco Mundial (OMS/OIT). El pipeline intenta DANE primero; si no está disponible degrada a solo Banco Mundial."
@@ -28,43 +28,43 @@
   "indicadores": {
     "tasa_desempleo": {
       "actual": {
-        "periodo": "2026-03",
-        "valor": 8.2,
+        "periodo": "2026-07",
+        "valor": 9.23,
         "variacion": "bajo",
-        "delta": -0.93
+        "delta": -1.1
       },
       "unidad": "%"
     },
     "tgp": {
       "actual": {
-        "periodo": "2026-03",
-        "valor": 65.01,
+        "periodo": "2026-07",
+        "valor": 64.71,
         "variacion": "subio",
-        "delta": 1.1
+        "delta": 0.04
       },
       "unidad": "%"
     },
     "to": {
       "actual": {
-        "periodo": "2026-03",
-        "valor": 59.68,
+        "periodo": "2026-07",
+        "valor": 58.74,
         "variacion": "subio",
-        "delta": 1.61
+        "delta": 0.75
       },
       "unidad": "%"
     },
     "subempleo": {
       "actual": {
-        "periodo": "2026-03",
-        "valor": 6.99,
+        "periodo": "2026-07",
+        "valor": 7.08,
         "variacion": "bajo",
-        "delta": -1.15
+        "delta": -0.13
       },
       "unidad": "%"
     },
     "informalidad": {
       "actual": {
-        "periodo": "2026-03",
+        "periodo": "2026-07",
         "valor": null,
         "variacion": null,
         "delta": null
@@ -73,6 +73,78 @@
     }
   },
   "serie": [
+    {
+      "periodo": "2026-07",
+      "tasa_desempleo": 9.23,
+      "tasa_desempleo_delta": -1.1,
+      "tasa_desempleo_variacion": "bajo",
+      "tgp": 64.71,
+      "tgp_delta": 0.04,
+      "tgp_variacion": "subio",
+      "to": 58.74,
+      "to_delta": 0.75,
+      "to_variacion": "subio",
+      "subempleo": 7.08,
+      "subempleo_delta": -0.13,
+      "subempleo_variacion": "bajo",
+      "informalidad": null,
+      "informalidad_delta": null,
+      "informalidad_variacion": null
+    },
+    {
+      "periodo": "2026-06",
+      "tasa_desempleo": 10.86,
+      "tasa_desempleo_delta": -0.78,
+      "tasa_desempleo_variacion": "bajo",
+      "tgp": 63.6,
+      "tgp_delta": -0.52,
+      "tgp_variacion": "bajo",
+      "to": 56.69,
+      "to_delta": 0.03,
+      "to_variacion": "subio",
+      "subempleo": 7.08,
+      "subempleo_delta": -0.61,
+      "subempleo_variacion": "bajo",
+      "informalidad": null,
+      "informalidad_delta": null,
+      "informalidad_variacion": null
+    },
+    {
+      "periodo": "2026-05",
+      "tasa_desempleo": 7.98,
+      "tasa_desempleo_delta": -1.15,
+      "tasa_desempleo_variacion": "bajo",
+      "tgp": 64.32,
+      "tgp_delta": -0.05,
+      "tgp_variacion": "bajo",
+      "to": 59.19,
+      "to_delta": 0.69,
+      "to_variacion": "subio",
+      "subempleo": 6.35,
+      "subempleo_delta": -0.62,
+      "subempleo_variacion": "bajo",
+      "informalidad": null,
+      "informalidad_delta": null,
+      "informalidad_variacion": null
+    },
+    {
+      "periodo": "2026-04",
+      "tasa_desempleo": 7.02,
+      "tasa_desempleo_delta": -1.15,
+      "tasa_desempleo_variacion": "bajo",
+      "tgp": 64.72,
+      "tgp_delta": 0.99,
+      "tgp_variacion": "subio",
+      "to": 60.17,
+      "to_delta": 1.64,
+      "to_variacion": "subio",
+      "subempleo": 7.43,
+      "subempleo_delta": -0.05,
+      "subempleo_variacion": "bajo",
+      "informalidad": null,
+      "informalidad_delta": null,
+      "informalidad_variacion": null
+    },
     {
       "periodo": "2026-03",
       "tasa_desempleo": 8.2,

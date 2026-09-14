@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-09-08T14:26:53+00:00",
+    "ultima_actualizacion": "2026-09-14T14:57:00+00:00",
     "fuentes": {
       "inflacion": {
         "nombre": "DANE — Departamento Administrativo Nacional de Estadística",
@@ -4209,6 +4209,7 @@
     "2021": 3.5,
     "2022": 10.18,
     "2023": 11.74,
-    "2024": 6.61
+    "2024": 6.61,
+    "2025": 5.14
   }
 }

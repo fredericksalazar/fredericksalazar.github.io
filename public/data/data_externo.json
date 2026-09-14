@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-09-08T14:27:04+00:00",
+    "ultima_actualizacion": "2026-09-14T14:57:11+00:00",
     "fuentes": {
       "banrep_trm": {
         "nombre": "Banco de la Republica — TRM",
@@ -38,45 +38,45 @@
     "trm": {
       "actual": {
         "periodo": "2026-09",
-        "valor": 3148.02,
-        "variacion": "subio",
-        "delta": 17.15
+        "valor": 3122.71,
+        "variacion": "bajo",
+        "delta": -8.16
       },
       "unidad": "COP/USD"
     },
     "reservas_netas": {
       "actual": {
-        "periodo": "2024-12",
-        "valor": 61.9,
+        "periodo": "2025-12",
+        "valor": 65.81,
         "variacion": "subio",
-        "delta": 2.86
+        "delta": 3.91
       },
       "unidad": "mil M USD"
     },
     "cuenta_corriente": {
       "actual": {
-        "periodo": "2024-12",
-        "valor": -1.64,
-        "variacion": "subio",
-        "delta": 0.62
+        "periodo": "2025-12",
+        "valor": -2.38,
+        "variacion": "bajo",
+        "delta": -0.71
       },
       "unidad": "% PIB"
     },
     "ied": {
       "actual": {
-        "periodo": "2024-12",
-        "valor": 3.27,
+        "periodo": "2025-12",
+        "valor": 2.53,
         "variacion": "bajo",
-        "delta": -1.31
+        "delta": -0.72
       },
       "unidad": "% PIB"
     },
     "deuda_externa": {
       "actual": {
-        "periodo": "2024-12",
-        "valor": 48.17,
+        "periodo": "2025-12",
+        "valor": 0.0,
         "variacion": "bajo",
-        "delta": -5.38
+        "delta": -47.98
       },
       "unidad": "% PIB"
     }
@@ -84,9 +84,9 @@
   "serie": [
     {
       "periodo": "2026-09",
-      "trm": 3148.02,
-      "trm_delta": 17.15,
-      "trm_variacion": "subio",
+      "trm": 3122.71,
+      "trm_delta": -8.16,
+      "trm_variacion": "bajo",
       "reservas_netas": null,
       "reservas_netas_delta": null,
       "reservas_netas_variacion": null,
@@ -249,18 +249,18 @@
       "trm": 3791.47,
       "trm_delta": 5.29,
       "trm_variacion": "subio",
-      "reservas_netas": null,
-      "reservas_netas_delta": null,
-      "reservas_netas_variacion": null,
-      "cuenta_corriente": null,
-      "cuenta_corriente_delta": null,
-      "cuenta_corriente_variacion": null,
-      "ied": null,
-      "ied_delta": null,
-      "ied_variacion": null,
-      "deuda_externa": null,
-      "deuda_externa_delta": null,
-      "deuda_externa_variacion": null
+      "reservas_netas": 65.81,
+      "reservas_netas_delta": 3.91,
+      "reservas_netas_variacion": "subio",
+      "cuenta_corriente": -2.38,
+      "cuenta_corriente_delta": -0.71,
+      "cuenta_corriente_variacion": "bajo",
+      "ied": 2.53,
+      "ied_delta": -0.72,
+      "ied_variacion": "bajo",
+      "deuda_externa": 0.0,
+      "deuda_externa_delta": -47.98,
+      "deuda_externa_variacion": "bajo"
     },
     {
       "periodo": "2025-11",
@@ -468,14 +468,14 @@
       "reservas_netas": 61.9,
       "reservas_netas_delta": 2.86,
       "reservas_netas_variacion": "subio",
-      "cuenta_corriente": -1.64,
-      "cuenta_corriente_delta": 0.62,
+      "cuenta_corriente": -1.67,
+      "cuenta_corriente_delta": 0.6,
       "cuenta_corriente_variacion": "subio",
-      "ied": 3.27,
-      "ied_delta": -1.31,
+      "ied": 3.25,
+      "ied_delta": -1.33,
       "ied_variacion": "bajo",
-      "deuda_externa": 48.17,
-      "deuda_externa_delta": -5.38,
+      "deuda_externa": 47.98,
+      "deuda_externa_delta": -5.49,
       "deuda_externa_variacion": "bajo"
     },
     {
@@ -684,14 +684,14 @@
       "reservas_netas": 59.04,
       "reservas_netas_delta": 2.34,
       "reservas_netas_variacion": "subio",
-      "cuenta_corriente": -2.26,
+      "cuenta_corriente": -2.27,
       "cuenta_corriente_delta": 3.77,
       "cuenta_corriente_variacion": "subio",
       "ied": 4.58,
       "ied_delta": -0.39,
       "ied_variacion": "bajo",
-      "deuda_externa": 53.55,
-      "deuda_externa_delta": 0.17,
+      "deuda_externa": 53.47,
+      "deuda_externa_delta": 0.09,
       "deuda_externa_variacion": "subio"
     },
     {
@@ -900,8 +900,8 @@
       "reservas_netas": 56.7,
       "reservas_netas_delta": -1.32,
       "reservas_netas_variacion": "bajo",
-      "cuenta_corriente": -6.03,
-      "cuenta_corriente_delta": -0.39,
+      "cuenta_corriente": -6.04,
+      "cuenta_corriente_delta": -0.4,
       "cuenta_corriente_variacion": "bajo",
       "ied": 4.97,
       "ied_delta": 1.97,
@@ -6012,7 +6012,7 @@
       "2023": 4327.55,
       "2024": 4071.18,
       "2025": 4053.02,
-      "2026": 3497.4
+      "2026": 3494.58
     },
     "reservas_netas": {
       "1960": 0.17,
@@ -6079,7 +6079,8 @@
       "2021": 58.02,
       "2022": 56.7,
       "2023": 59.04,
-      "2024": 61.9
+      "2024": 61.9,
+      "2025": 65.81
     },
     "cuenta_corriente": {
       "1960": 0.0,
@@ -6144,9 +6145,10 @@
       "2019": -4.58,
       "2020": -3.43,
       "2021": -5.64,
-      "2022": -6.03,
-      "2023": -2.26,
-      "2024": -1.64
+      "2022": -6.04,
+      "2023": -2.27,
+      "2024": -1.67,
+      "2025": -2.38
     },
     "ied": {
       "1960": 0.0,
@@ -6213,7 +6215,8 @@
       "2021": 3.0,
       "2022": 4.97,
       "2023": 4.58,
-      "2024": 3.27
+      "2024": 3.25,
+      "2025": 2.53
     },
     "deuda_externa": {
       "1960": 0.0,
@@ -6279,8 +6282,9 @@
       "2020": 57.65,
       "2021": 54.08,
       "2022": 53.38,
-      "2023": 53.55,
-      "2024": 48.17
+      "2023": 53.47,
+      "2024": 47.98,
+      "2025": 0.0
     }
   }
 }
