@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-09-14T14:57:11+00:00",
+    "ultima_actualizacion": "2026-09-15T17:27:30+00:00",
     "fuentes": {
       "banrep_trm": {
         "nombre": "Banco de la Republica — TRM",
@@ -38,9 +38,9 @@
     "trm": {
       "actual": {
         "periodo": "2026-09",
-        "valor": 3122.71,
+        "valor": 3121.82,
         "variacion": "bajo",
-        "delta": -8.16
+        "delta": -9.05
       },
       "unidad": "COP/USD"
     },
@@ -84,8 +84,8 @@
   "serie": [
     {
       "periodo": "2026-09",
-      "trm": 3122.71,
-      "trm_delta": -8.16,
+      "trm": 3121.82,
+      "trm_delta": -9.05,
       "trm_variacion": "bajo",
       "reservas_netas": null,
       "reservas_netas_delta": null,
@@ -6012,7 +6012,7 @@
       "2023": 4327.55,
       "2024": 4071.18,
       "2025": 4053.02,
-      "2026": 3494.58
+      "2026": 3494.48
     },
     "reservas_netas": {
       "1960": 0.17,
