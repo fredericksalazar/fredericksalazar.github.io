@@ -1,6 +1,7 @@
 """Orquestador del pipeline de ingesta del Observatorio Económico Colombia.
 
-Encadena: BanRep → DANE → consolidación → export CSV + JSON.
+Encadena: BanRep → DANE → consolidación → export CSV + JSON, y luego
+regenera data_externo.json y data_empleo.json (DANE GEIH).
 
 Uso:
     python -m ingestion.main
@@ -11,6 +12,7 @@ Uso:
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import sys
 from pathlib import Path
@@ -22,6 +24,10 @@ from ingestion.processing.export import (
     JSON_FILENAME,
     actualizar_historico_csv,
     generar_observatorio_json,
+)
+from ingestion.processing.export_empleo import (
+    generar_empleo_json,
+    JSON_FILENAME as EMPLEO_JSON,
 )
 from ingestion.processing.export_externo import (
     generar_externo_json,
@@ -108,7 +114,46 @@ def run(args: argparse.Namespace) -> int:
     generar_externo_json(externo_path)
     logger.info("JSON externo: %s", externo_path.relative_to(REPO_ROOT))
 
+    logger.info("Exportando data_empleo.json (DANE GEIH)...")
+    _exportar_empleo(args.web_data_dir / EMPLEO_JSON)
+
     return 0
+
+
+def _cobertura(path: Path) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))["metadata"]["cobertura"]
+
+
+def _exportar_empleo(path: Path) -> None:
+    """Regenera data_empleo.json sin dejar que una caída de DANE lo degrade.
+
+    generar_empleo_json() absorbe los errores de DANE y cae a la serie anual de
+    World Bank. Se genera en un temporal (mismo directorio: el exportador deriva
+    la raíz del repo del path) y solo se reemplaza el JSON publicado si el nuevo
+    sigue siendo mensual y no retrocede de periodo. Un fallo aquí no tumba la
+    corrida de IPC/BanRep.
+    """
+    tmp_path = path.with_name(path.name + ".tmp")
+    try:
+        generar_empleo_json(tmp_path)
+        nueva = _cobertura(tmp_path)
+        if path.exists():
+            actual = _cobertura(path)
+            if nueva["granularidad"] != "mensual" or nueva["ultimo_periodo"] < actual["ultimo_periodo"]:
+                logger.warning(
+                    "Empleo: export degradado (%s, %s) vs publicado (%s, %s); "
+                    "se conserva el JSON actual",
+                    nueva["granularidad"], nueva["ultimo_periodo"],
+                    actual["granularidad"], actual["ultimo_periodo"],
+                )
+                return
+        tmp_path.replace(path)
+        logger.info("JSON empleo: %s (último periodo %s)",
+                    path.relative_to(REPO_ROOT), nueva["ultimo_periodo"])
+    except Exception:
+        logger.exception("Empleo: falló la exportación; se conserva el JSON actual")
+    finally:
+        tmp_path.unlink(missing_ok=True)
 
 
 def main(argv: list[str] | None = None) -> int:
