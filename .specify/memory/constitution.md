@@ -1,28 +1,3 @@
-<!--
-SYNC IMPACT REPORT (temporal: revisar y borrar antes del commit)
-- Cambio de versión: plantilla sin ratificar → 1.0.0 (ratificación inicial)
-- Principios definidos (antes eran marcadores de plantilla):
-  [PRINCIPLE_1_NAME] → I. Valor de producto
-  [PRINCIPLE_2_NAME] → II. Integridad de datos y del autor
-  [PRINCIPLE_3_NAME] → III. Reutilización ante todo
-  [PRINCIPLE_4_NAME] → IV. Consistencia visual
-  [PRINCIPLE_5_NAME] → V. Estático, indexable y accesible
-  (nuevo)            → VI. Trabajo con IA según AI Fluency
-- Secciones agregadas: Restricciones técnicas; Flujo de desarrollo y quality gates
-  (incluye la lista de verificación "Constitution Check"); Gobernanza completa.
-- Secciones eliminadas: ninguna.
-- Plantillas revisadas:
-  ✅ .specify/templates/plan-template.md: su sección "Constitution Check" lee las
-     compuertas de este archivo; compatible sin cambios.
-  ✅ .specify/templates/spec-template.md: compatible; el requisito de declarar
-     objetivo/pilar/KPI se aplica desde el principio I.
-  ✅ .specify/templates/tasks-template.md: compatible; la definición de terminado
-     se aplica desde el principio VI.
-  ⚠ Pendiente opcional: personalizar spec-template.md con campos fijos de
-     objetivo/pilar/KPI y módulos afectados (no requerido para cumplir).
-- TODOs diferidos: ninguno.
--->
-
 # Constitución de fredericksalazar.github.io
 
 Sitio de marca personal de Frederick Salazar que integra CV digital, proyectos, el
@@ -173,7 +148,7 @@ responsabilidad y la última palabra no se delegan.
 Cada plan DEBE responder sí a todo:
 
 | # | Compuerta | Principio |
-|---|---|---|
+| --- | --- | --- |
 | G1 | ¿La spec declara objetivo, pilar y KPI de `PRODUCT.md`? | I |
 | G2 | ¿Todo dato nuevo viene de un pipeline y muestra fuente y fecha? ¿Nada inventado? | II |
 | G3 | ¿Se reutilizó lo existente (componentes, `ChartDef`, fábricas) en vez de duplicar? | III |
