@@ -192,8 +192,10 @@ def _parse_anexo(content: bytes) -> pd.DataFrame:
     year_row = rows[year_row_idx]
     month_row = rows[month_row_idx]
 
-    # Construir periodos (YYYY-MM) para cada columna de datos
-    periodos: list[str] = []
+    # Construir periodos (YYYY-MM) con la columna Excel real de cada uno. Se
+    # guarda la columna porque hay columnas que no son mes (la vacía final), y
+    # asumir posiciones contiguas corre toda la serie que viene después.
+    periodos: list[tuple[int, str]] = []
     current_year: int | None = None
     for col in range(1, len(year_row)):
         year_cell = year_row[col]
@@ -205,11 +207,12 @@ def _parse_anexo(content: bytes) -> pd.DataFrame:
                 pass
         if current_year is None or month_cell is None:
             continue
-        month_str = str(month_cell).strip().lower()
+        # DANE marca con '*' los meses mar-jul 2020 (encuesta telefónica).
+        month_str = str(month_cell).strip().rstrip("*").strip().lower()
         if month_str not in _MESES_ABREV_MAP:
             continue
         month = _MESES_ABREV_MAP[month_str]
-        periodos.append(f"{current_year:04d}-{month:02d}")
+        periodos.append((col, f"{current_year:04d}-{month:02d}"))
 
     if not periodos:
         logger.warning("No se pudieron extraer periodos del anexo GEIH")
@@ -240,8 +243,7 @@ def _parse_anexo(content: bytes) -> pd.DataFrame:
 
     # Extraer valores: para cada periodo, leer el valor en la columna correspondiente
     records: list[dict] = []
-    for col_idx, periodo in enumerate(periodos):
-        excel_col = col_idx + 1  # columna 0 es concepto
+    for excel_col, periodo in periodos:
         rec: dict = {"periodo": periodo, "informalidad": None}
         for key, row_idx in concept_map.items():
             cell = rows[row_idx][excel_col] if excel_col < len(rows[row_idx]) else None
