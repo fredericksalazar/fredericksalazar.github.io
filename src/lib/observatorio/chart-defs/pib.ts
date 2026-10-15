@@ -56,6 +56,7 @@ export const poblacionPib: ChartDef = {
   datasets: ["pib"],
   height: 360,
   ariaLabel: "Población y PIB per cápita de Colombia",
+  vistas: ["linea", "barras"],
   build({ pib }) {
     const { x: x1, y: y1 } = extractSerie(pib!.serie, "poblacion");
     const { x: x2, y: y2 } = extractSerie(pib!.serie, "pib_percapita");
@@ -85,6 +86,7 @@ export const deudaPublica: ChartDef = {
   datasets: ["pib"],
   height: 420,
   ariaLabel: "Evolución de la deuda pública de Colombia como porcentaje del PIB, con bandas de sostenibilidad fiscal",
+  vistas: ["linea", "barras"],
   build({ pib }) {
     const data = pib!.serie.filter((r) => typeof r.deuda_publica === "number" && r.deuda_publica > 0);
     const x = data.map((r) => periodoToISODate(r.periodo));
@@ -138,6 +140,7 @@ export const pibComercio: ChartDef = {
   datasets: ["pib", "comercio"],
   height: 440,
   ariaLabel: "PIB total y exportaciones como porcentaje del PIB, 1960-2024",
+  vistas: ["linea", "barras"],
   build({ pib, comercio }) {
     const { x, pib: pibArr, exp } = comercioPorPibJoin(pib!.serie, comercio!.serie);
     return {

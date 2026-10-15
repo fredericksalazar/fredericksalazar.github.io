@@ -1,4 +1,4 @@
-import { COLORS, baseLayout, extractSerie, minMaxAvgLines } from "../charts";
+import { COLORS, baseLayout, extractSerie, lineasReferencia } from "../charts";
 import type { ChartDef } from "./types";
 
 const FUENTE_GEIH = "DANE — Gran Encuesta Integrada de Hogares (GEIH)";
@@ -11,10 +11,11 @@ export const desempleo: ChartDef = {
   datasets: ["empleo"],
   height: 340,
   ariaLabel: "Evolución de la tasa de desempleo en Colombia",
+  vistas: ["linea", "barras"],
   build({ empleo }) {
     const filtered = empleo!.serie.filter((r) => r.periodo >= "2000-01");
     const { x, y } = extractSerie(filtered, "tasa_desempleo");
-    const { shapes, annotations } = minMaxAvgLines(y, { suffix: "%" });
+    const { shapes, annotations } = lineasReferencia(y, { sufijo: "%" });
     return {
       traces: [{
         name: "Tasa de desempleo", x, y, mode: "lines",
@@ -35,6 +36,7 @@ export const subempleo: ChartDef = {
   datasets: ["empleo"],
   height: 340,
   ariaLabel: "Tasa de subempleo mensual en Colombia",
+  vistas: ["linea", "barras"],
   build({ empleo }) {
     const filtered = empleo!.serie.filter((r) => r.periodo >= "2000-01");
     const { x, y } = extractSerie(filtered, "subempleo");
@@ -58,6 +60,7 @@ export const tgpToDual: ChartDef = {
   datasets: ["empleo"],
   height: 340,
   ariaLabel: "Tasa Global de Participación y Tasa de Ocupación mensuales",
+  vistas: ["linea", "barras"],
   build({ empleo }) {
     const filtered = empleo!.serie.filter((r) => r.periodo >= "2000-01");
     const tgp = extractSerie(filtered, "tgp");

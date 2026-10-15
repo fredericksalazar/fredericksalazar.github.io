@@ -1,4 +1,4 @@
-import { COLORS, baseLayout, periodoToISODate } from "../charts";
+import { COLORS, baseLayout, periodoToISODate, lineasReferencia } from "../charts";
 import { trmInflacionJoin } from "../derivations";
 import {
   getPresidentesClient,
@@ -7,6 +7,7 @@ import {
   type Presidente,
 } from "../presidentes-client";
 import type { ChartDef } from "./types";
+import { bindColorPresidente, presLeyendaHtml, presToggleHtml } from "./color-presidente";
 import type { ExternoData, ExternoSerieFila } from "../types";
 
 /**
@@ -35,93 +36,8 @@ const FUENTE_BANREP_TRM = "Banco de la Republica — TRM (promedio mensual)";
 const FUENTE_BANCO_MUNDIAL = "Banco Mundial — WDI";
 const FUENTE_BANREP_BALANZA = "Banco de la Republica (TRM) — DANE (IPC)";
 
-const REF_LINE_COLOR = "#94a3b8";
-const REF_MEAN_COLOR = "#475569";
-
-/**
- * Genera shapes + annotations para 3 lineas de referencia (min, max, media)
- * que se superponen al chart como guias horizontales.
- */
-function makeMinMaxMeanRefs(y: number[], formatValue: (v: number) => string): {
-  shapes: Record<string, unknown>[];
-  annotations: Record<string, unknown>[];
-} {
-  if (y.length === 0) return { shapes: [], annotations: [] };
-  const min = Math.min(...y);
-  const max = Math.max(...y);
-  const mean = y.reduce((s, v) => s + v, 0) / y.length;
-  const labelBg = "rgba(255,255,255,0.85)";
-  return {
-    shapes: [
-      { type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: min, y1: min,
-        line: { color: REF_LINE_COLOR, width: 1, dash: "dot" }, layer: "above" },
-      { type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: max, y1: max,
-        line: { color: REF_LINE_COLOR, width: 1, dash: "dot" }, layer: "above" },
-      { type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: mean, y1: mean,
-        line: { color: REF_MEAN_COLOR, width: 1.5, dash: "dash" }, layer: "above" },
-    ],
-    annotations: [
-      { xref: "paper", yref: "y", x: 0, xanchor: "left", y: max, yanchor: "bottom",
-        text: `Máx: ${formatValue(max)}`, showarrow: false,
-        font: { size: 10, color: REF_LINE_COLOR }, bgcolor: labelBg, borderpad: 2 },
-      { xref: "paper", yref: "y", x: 0, xanchor: "left", y: min, yanchor: "top",
-        text: `Mín: ${formatValue(min)}`, showarrow: false,
-        font: { size: 10, color: REF_LINE_COLOR }, bgcolor: labelBg, borderpad: 2 },
-      { xref: "paper", yref: "y", x: 1, xanchor: "right", y: mean, yanchor: "bottom",
-        text: `Media: ${formatValue(mean)}`, showarrow: false,
-        font: { size: 10, color: REF_MEAN_COLOR }, bgcolor: labelBg, borderpad: 2 },
-    ],
-  };
-}
-
-// ──────────────────────────────────────────────────────────────────────
-// Helpers compartidos para charts con doble toggle (linea ↔ barras ± presidente)
-// ──────────────────────────────────────────────────────────────────────
-
-/** HTML de los dos toggles (linea↔barras + presidente). `prefix` evita colisiones. */
-function makeTogglesHtml(prefix: string): string {
-  return `
-    <div class="trm-toggles">
-      <label class="pres-toggle" data-${prefix}-bars-toggle>
-        <span class="pres-toggle__label">Mostrar como barras</span>
-        <input type="checkbox" class="pres-toggle__input" />
-        <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
-      </label>
-      <label class="pres-toggle" data-${prefix}-presidente-toggle style="display: none;">
-        <span class="pres-toggle__label">Color por presidente</span>
-        <input type="checkbox" class="pres-toggle__input" />
-        <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
-      </label>
-    </div>
-  `;
-}
-
-/** HTML para chart que es SOLO barras (azul por defecto, con toggle de presidente). */
-function makePresOnlyToggleHtml(prefix: string): string {
-  return `
-    <div class="trm-toggles">
-      <label class="pres-toggle" data-${prefix}-presidente-toggle>
-        <span class="pres-toggle__label">Color por presidente</span>
-        <input type="checkbox" class="pres-toggle__input" />
-        <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
-      </label>
-    </div>
-  `;
-}
-
-function makeLegendHtml(prefix: string, presidentes: Presidente[]): string {
-  return `
-    <div class="pres-legend" data-${prefix}-presidente-legend data-visible="false" aria-label="Presidentes representados en el grafico">
-      ${presidentes.map((p) => `
-        <span class="pres-chip">
-          <span class="pres-chip__dot" style="background:${p.color}"></span>
-          <span class="pres-chip__name">${p.nombre}</span>
-          <span class="pres-chip__period">${new Date(p.inicio).getFullYear()}–${new Date(p.fin).getFullYear()}</span>
-        </span>
-      `).join("")}
-    </div>
-  `;
-}
+/** Formato de la TRM en pesos colombianos (p. ej. "$4.123"). */
+const formatoPesos = (v: number) => `$${Math.round(v).toLocaleString("es-CO")}`;
 
 interface TogglableData {
   x: string[];
@@ -153,87 +69,6 @@ async function prepareTogglableData(
   return { x, y, colorsByPresident, customdata, leyenda };
 }
 
-/** Vincula los dos toggles al state machine usando Plotly.react. */
-function bindTogglableChart(opts: {
-  target: HTMLElement;
-  prefix: string;
-  lineTrace: () => Record<string, unknown>;
-  barTrace: (withPresident: boolean) => Record<string, unknown>;
-  layout: Record<string, unknown>;
-}): void {
-  const { target, prefix, lineTrace, barTrace, layout } = opts;
-  const root = target.closest<HTMLElement>("[data-chart-root]");
-  if (!root) return;
-
-  const barsToggle = root.querySelector<HTMLElement>(`[data-${prefix}-bars-toggle]`);
-  const presToggle = root.querySelector<HTMLElement>(`[data-${prefix}-presidente-toggle]`);
-  const legend = root.querySelector<HTMLElement>(`[data-${prefix}-presidente-legend]`);
-  if (!barsToggle || !presToggle) return;
-
-  const barsInput = barsToggle.querySelector<HTMLInputElement>(".pres-toggle__input");
-  const presInput = presToggle.querySelector<HTMLInputElement>(".pres-toggle__input");
-  if (!barsInput || !presInput) return;
-
-  // Evitar binding duplicado si el chart re-monta sobre el mismo nodo
-  const boundKey = `${prefix}ToggleBound`;
-  if (root.dataset[boundKey] === "true") return;
-  root.dataset[boundKey] = "true";
-
-  let isBars = false;
-  let isPresidentes = false;
-
-  const apply = () => {
-    presToggle.style.display = isBars ? "" : "none";
-    if (legend) legend.setAttribute("data-visible", (isBars && isPresidentes) ? "true" : "false");
-    const nextTrace = isBars ? barTrace(isPresidentes) : lineTrace();
-    if (window.Plotly) {
-      window.Plotly.react(target, [nextTrace], layout);
-    }
-  };
-
-  barsInput.addEventListener("change", () => {
-    isBars = barsInput.checked;
-    if (!isBars) {
-      isPresidentes = false;
-      presInput.checked = false;
-    }
-    apply();
-  });
-  presInput.addEventListener("change", () => {
-    isPresidentes = presInput.checked;
-    apply();
-  });
-}
-
-/** Vincula un toggle UNICO de presidente sobre un chart de barras. */
-function bindPresOnlyChart(opts: {
-  target: HTMLElement;
-  prefix: string;
-  barTrace: (withPresident: boolean) => Record<string, unknown>;
-  layout: Record<string, unknown>;
-}): void {
-  const { target, prefix, barTrace, layout } = opts;
-  const root = target.closest<HTMLElement>("[data-chart-root]");
-  if (!root) return;
-
-  const presToggle = root.querySelector<HTMLElement>(`[data-${prefix}-presidente-toggle]`);
-  const legend = root.querySelector<HTMLElement>(`[data-${prefix}-presidente-legend]`);
-  const presInput = presToggle?.querySelector<HTMLInputElement>(".pres-toggle__input");
-  if (!presInput) return;
-
-  const boundKey = `${prefix}ToggleBound`;
-  if (root.dataset[boundKey] === "true") return;
-  root.dataset[boundKey] = "true";
-
-  presInput.addEventListener("change", () => {
-    const checked = presInput.checked;
-    if (legend) legend.setAttribute("data-visible", checked ? "true" : "false");
-    if (window.Plotly) {
-      window.Plotly.react(target, [barTrace(checked)], layout);
-    }
-  });
-}
-
 // ──────────────────────────────────────────────────────────────────────
 // TRM (mensual)
 // ──────────────────────────────────────────────────────────────────────
@@ -246,10 +81,11 @@ export const trmHistorica: ChartDef = {
   datasets: ["externo"],
   height: 340,
   ariaLabel: "Evolucion mensual de la TRM USD/COP",
+  vistas: ["linea", "barras"],
   async build({ externo }) {
     const { x, y, colorsByPresident, customdata, leyenda } = await prepareTogglableData(externo!, "trm");
 
-    const refs = makeMinMaxMeanRefs(y, (v) => `$${Math.round(v).toLocaleString("es-CO")}`);
+    const refs = lineasReferencia(y, { formato: formatoPesos });
 
     const layout = baseLayout({
       yaxis: {
@@ -260,32 +96,25 @@ export const trmHistorica: ChartDef = {
       annotations: refs.annotations,
     });
 
-    const lineTrace = () => ({
+    // Una sola traza: en vista de barras, aVista toma `marker.color` por punto
+    // (colores por presidente) o el color de la línea.
+    const traza = (conPresidente: boolean) => ({
       name: "TRM", x, y, mode: "lines+markers",
       line: { color: COLORS.brand, width: 2.2 },
-      marker: { size: 4, color: COLORS.brand, line: { color: "white", width: 1 } },
+      marker: { size: 4, color: conPresidente ? colorsByPresident : COLORS.brand, line: { color: "white", width: 1 } },
       fill: "tozeroy", fillcolor: "rgba(37, 99, 235, 0.06)",
-      hovertemplate: "<b>%{x|%b %Y}</b><br>TRM: $%{y:,.0f} COP/USD<extra></extra>",
-    });
-
-    const barTrace = (withPresident: boolean) => ({
-      type: "bar", x, y,
-      marker: {
-        color: withPresident ? colorsByPresident : COLORS.brand,
-        line: { color: "rgba(0,0,0,0.08)", width: 0.5 },
-      },
-      customdata: withPresident ? customdata : undefined,
-      hovertemplate: withPresident
+      customdata: conPresidente ? customdata : undefined,
+      hovertemplate: conPresidente
         ? "<b>%{x|%b %Y}</b><br>TRM: <b>$%{y:,.0f}</b><br>Presidente: %{customdata[0]}<br><span style='color:#94a3b8'>%{customdata[1]}</span><extra></extra>"
         : "<b>%{x|%b %Y}</b><br>TRM: <b>$%{y:,.0f} COP/USD</b><extra></extra>",
     });
 
     return {
-      traces: [lineTrace()],
+      traces: [traza(false)],
       layout,
-      headerHtml: makeTogglesHtml("trm"),
-      footerHtml: makeLegendHtml("trm", leyenda),
-      onMount: (target) => bindTogglableChart({ target, prefix: "trm", lineTrace, barTrace, layout }),
+      headerHtml: presToggleHtml("trm", true),
+      footerHtml: presLeyendaHtml("trm", leyenda),
+      onMount: (target, ctx) => bindColorPresidente({ target, ctx, prefix: "trm", traza, soloEnBarras: true }),
     };
   },
 };
@@ -327,9 +156,9 @@ export const reservasInternacionales: ChartDef = {
     return {
       traces: [barTrace(false)],
       layout,
-      headerHtml: makePresOnlyToggleHtml("res"),
-      footerHtml: makeLegendHtml("res", leyenda),
-      onMount: (target) => bindPresOnlyChart({ target, prefix: "res", barTrace, layout }),
+      headerHtml: presToggleHtml("res"),
+      footerHtml: presLeyendaHtml("res", leyenda),
+      onMount: (target, ctx) => bindColorPresidente({ target, ctx, prefix: "res", traza: barTrace }),
     };
   },
 };
@@ -376,12 +205,13 @@ export const deudaExternaPib: ChartDef = {
   datasets: ["externo"],
   height: 340,
   ariaLabel: "Evolucion de la deuda externa total de Colombia como porcentaje del PIB",
+  vistas: ["linea", "barras"],
   build({ externo }) {
     // Filtrar ceros (placeholders del CSV en anios sin dato real).
     const data = externo!.serie.filter((r) => typeof r.deuda_externa === "number" && r.deuda_externa > 0);
     const x = data.map((r) => periodoToISODate(r.periodo));
     const y = data.map((r) => r.deuda_externa as number);
-    const refs = makeMinMaxMeanRefs(y, (v) => `${v.toFixed(1)}%`);
+    const refs = lineasReferencia(y, { sufijo: "%", decimales: 1 });
     return {
       traces: [{
         name: "Deuda externa", x, y, mode: "lines+markers",
@@ -408,6 +238,7 @@ export const passThroughTrmInflacion: ChartDef = {
   datasets: ["externo", "inflacion"],
   height: 420,
   ariaLabel: "Evolucion comparada de la TRM mensual y la inflacion anual",
+  vistas: ["linea", "barras"],
   build({ externo, inflacion }) {
     const { x, trm, inflacion: infl } = trmInflacionJoin(externo!, inflacion!);
     return {

@@ -1,4 +1,4 @@
-import { COLORS, baseLayout, extractSerie, minMaxAvgLines } from "../charts";
+import { COLORS, baseLayout, extractSerie, lineasReferencia } from "../charts";
 import type { ChartDef } from "./types";
 
 const FUENTE_BM = "Banco Mundial — World Development Indicators";
@@ -39,9 +39,10 @@ export const apertura: ChartDef = {
   datasets: ["comercio"],
   height: 340,
   ariaLabel: "Grado de apertura comercial de Colombia",
+  vistas: ["linea", "barras"],
   build({ comercio }) {
     const { x, y } = extractSerie(comercio!.serie, "apertura");
-    const { shapes, annotations } = minMaxAvgLines(y, { suffix: "%" });
+    const { shapes, annotations } = lineasReferencia(y, { sufijo: "%" });
     return {
       traces: [{
         name: "Apertura comercial", x, y, mode: "lines+markers+text",
@@ -173,6 +174,7 @@ export const productosTradicionales: ChartDef = {
   datasets: ["comercio"],
   height: 400,
   ariaLabel: "Evolución de las exportaciones tradicionales de Colombia",
+  vistas: ["linea", "barras"],
   build({ comercio }) {
     const productos = comercio!.productos_tradicionales;
     const years = Object.keys(productos).sort();

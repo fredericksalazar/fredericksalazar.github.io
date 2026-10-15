@@ -13,7 +13,7 @@
 >
 > Las marcas **⚑ DECIDIR** son valores que el autor aún debe fijar.
 >
-> Versión 0.1.0 · Borrador · 2026-10-14
+> Versión 0.2.0 · Borrador · 2026-10-14 (feature 001: vistas y líneas de referencia únicas)
 
 ---
 
@@ -341,12 +341,30 @@ botón "Reintentar"). Los maneja el componente; ningún gráfico los reimplement
 ### 6.2 Toggle línea ↔ barras
 
 **Todo gráfico de línea** incluye el control segmentado "Línea | Barras" en la
-cabecera, a la derecha. Se implementa con `lineBarToggle()` de
-`src/lib/observatorio/charts.ts`, que ya agrega las líneas de referencia y
-gestiona el cambio con `Plotly.react`. No se escribe otro toggle.
+cabecera, a la derecha. Hay **una sola implementación**:
+
+- La receta lo **declara** con `vistas: ["linea", "barras"]` en su `ChartDef`
+  (activación explícita). No escribe HTML del control ni trazas de barras.
+- `Chart.astro` dibuja el control, guarda la vista de cada gráfico (inicial:
+  "Línea") y convierte las trazas con `aVista()` de `charts.ts`: las series de
+  línea pasan a barras con su mismo color, las áreas auxiliares se ocultan, las
+  barras existentes no cambian y, si quedan varias series, se agrupan lado a
+  lado (también en doble eje). Los períodos sin dato quedan como huecos.
+- Si la receta tiene controles propios (p. ej. "Mostrar inflación", "Color por
+  presidente"), redibuja **solo** con `ctx.render(trazas)` dentro de
+  `onMount(target, ctx)`, para respetar la vista elegida. Las recetas nunca
+  llaman a `Plotly.react` ni a `Plotly.restyle`. El interruptor "Color por
+  presidente" es único: `chart-defs/color-presidente.ts`.
+- Para una serie temporal simple, la traza estándar es `trazaLinea()` de
+  `charts.ts`.
 
 Estilo del control: fondo `#f1f5f9`, borde `#e2e8f0`, radio 8 px; botones de
-`0.75rem` peso 600 en gris; el activo en blanco con sombra suave.
+`0.75rem` peso 600 en gris; el activo en blanco con sombra suave; foco visible
+con contorno azul de 2 px; `aria-pressed` refleja la vista activa.
+
+**Excepción conocida:** los comparativos "Colombia vs rival" del blog aún no
+tienen el control ni las etiquetas a la izquierda (fuera del alcance de la
+feature 001, decisión del autor).
 
 ### 6.3 Color en gráficos
 
@@ -383,7 +401,8 @@ Más de 6 series no se resuelven con un séptimo color: se agrupan en "Otros"
 | Tasa de interés | `#2563eb` |
 | Sector externo / TRM | `#ea580c` |
 | Freno (spread restrictivo) | `rgba(220, 38, 38, 0.18)` |
-| Banda de meta | `rgba(34, 197, 94, 0.08)` con línea `rgba(34, 197, 94, 0.5)` |
+| Banda de meta (2–4 %) | `rgba(34, 197, 94, 0.08)` (`COLORS.metaBanda`) |
+| Meta BanRep (3 %) | `#16a34a`, línea **punteada**; constante única `META_BANREP` |
 | Ideología: izquierda / centro / derecha | `#dc2626` / `#16a34a` / `#2563eb` |
 | Clases sociales: pobreza / vulnerable / media / alta | `#ef4444` / `#f97316` / `#22c55e` / `#3b82f6` |
 
@@ -411,8 +430,19 @@ suelto dentro de un `ChartDef`.
   `10px`, color de su línea, fondo blanco al 90 %, borde `#cbd5e1` de 1 px.
 - Colores de referencia: **Máx** `#dc2626`, **Promedio** `#64748b`, **Mín**
   `#16a34a`; línea discontinua de 1.5 px.
-- Se generan con `minMaxAvgLines()` de `charts.ts`; no se escriben a mano.
+- **Meta BanRep:** verde `#16a34a`, línea **punteada** (se distingue del Mín por el
+  trazo y la etiqueta, nunca solo por el color). Se usa siempre la constante
+  `META_BANREP` de `charts.ts`; ninguna receta redefine la meta.
+- **Etiquetas cercanas:** si dos referencias quedan a menos del 6 % del rango
+  visible del eje Y, se combinan en una sola etiqueta
+  (`Promedio · 6,1% · Meta BanRep · 3%`) en tinta de texto `#475569`. Si la
+  receta fija `yaxis.range`, lo pasa como `rangoY`.
+- Se generan **solo** con `lineasReferencia(valores, opciones)` de `charts.ts`
+  (máximo, mínimo y promedio activables, `extra`, `formato`, `sufijo`,
+  `decimales`, `rangoY`); no se escriben a mano.
 - Números en formato es-CO (coma decimal) con `toLocaleString("es-CO")`.
+- Las anotaciones de **eventos** con flecha (p. ej. "Pandemia", "COVID") no son
+  líneas de referencia: señalan un punto de la serie y conservan su posición.
 
 ### 6.5 Ejes, fondo y tooltip
 
@@ -500,7 +530,7 @@ Antes de crear algo, se usa lo que existe.
 | **UI-05** | El Observatorio, sus subpáginas y las calculadoras usan `<MapaColombia />` como visual del hero. Elecciones no lleva visual. |
 | **UI-06** | La navegación de un dominio va en un menú horizontal sticky bajo el hero, con el patrón de la sección 5.3. |
 | **UI-07** | Todo gráfico se muestra en card: `IndicadorPanel` en dashboards o chart-card en el resto. |
-| **UI-08** | Todo gráfico de línea tiene el toggle Línea ↔ Barras (`lineBarToggle`). |
+| **UI-08** | Todo gráfico de línea tiene el toggle Línea ↔ Barras, declarado con `vistas: ["linea", "barras"]` en su `ChartDef`. |
 | **UI-09** | Color por defecto azul de marca; varias series con la paleta categórica en orden fijo; el agente pregunta el color al autor antes de crear un gráfico. |
 | **UI-10** | Las etiquetas de líneas de referencia (promedio, máximo, mínimo, meta) van a la izquierda del gráfico. |
 | **UI-11** | Antes de crear un componente se revisa el catálogo de la sección 8; uno nuevo requiere spec y se agrega al catálogo. |

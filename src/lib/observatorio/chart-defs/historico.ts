@@ -1,4 +1,4 @@
-import { COLORS, baseLayout } from "../charts";
+import { COLORS, baseLayout, lineasReferencia, META_BANREP } from "../charts";
 import { recordByYear } from "../derivations";
 import {
   getPresidentesClient,
@@ -8,6 +8,7 @@ import {
   type Presidente,
 } from "../presidentes-client";
 import type { ChartDef, ChartBuildResult } from "./types";
+import { bindColorPresidente, presLeyendaHtml, presToggleHtml } from "./color-presidente";
 
 const COLOR_BASE = COLORS.brand;
 
@@ -80,36 +81,16 @@ async function buildHistorico(
       "<span style='color:#94a3b8'>%{customdata[1]}</span><extra></extra>",
   }];
 
-  const shapes: unknown[] = [];
-  const annotations: unknown[] = [];
-
-  if (opts.promedioOptions?.showLine) {
-    const promedio = Math.round((valores.reduce((a, b) => a + b, 0) / valores.length) * 100) / 100;
-    shapes.push({
-      type: "line", xref: "paper", x0: 0, x1: 1, yref: "y", y0: promedio, y1: promedio,
-      line: { color: "#64748b", width: 1.5, dash: "dash" }, layer: "above",
-    });
-    annotations.push({
-      xref: "paper", yref: "y", x: 1, xanchor: "right", y: promedio, yanchor: "bottom",
-      text: `Promedio histórico · ${promedio.toFixed(2)}%`,
-      showarrow: false,
-      font: { size: 10, color: "#475569", family: "system-ui, sans-serif" },
-      bgcolor: "rgba(255,255,255,0.9)", bordercolor: "#cbd5e1", borderwidth: 1, borderpad: 3,
-    });
-  }
-
-  if (opts.metaBanrep) {
-    shapes.push({
-      type: "line", xref: "paper", x0: 0, x1: 1, yref: "y", y0: 3, y1: 3,
-      line: { color: "#dc2626", width: 2.5, dash: "dash" }, layer: "above",
-    });
-    annotations.push({
-      xref: "paper", yref: "y", x: 0, xanchor: "left", y: 3, yanchor: "bottom",
-      text: "<b>Meta BanRep · 3%</b>", showarrow: false,
-      font: { size: 10, color: "#ffffff", family: "system-ui, sans-serif" },
-      bgcolor: "#dc2626", bordercolor: "#b91c1c", borderwidth: 1, borderpad: 4,
-    });
-  }
+  // Referencias con el generador único (UI-10): promedio histórico y meta BanRep.
+  const { shapes, annotations } = lineasReferencia(valores, {
+    maximo: false,
+    minimo: false,
+    promedio: opts.promedioOptions?.showLine ?? false,
+    etiquetaPromedio: "Promedio histórico",
+    sufijo: opts.yaxisTickSuffix ?? "%",
+    decimales: 2,
+    extra: opts.metaBanrep ? [META_BANREP] : [],
+  });
 
   const layout = baseLayout({
     margin: { l: 48, r: 24, t: 16, b: 40 },
@@ -221,6 +202,7 @@ export const salarioMinimoVariacion: ChartDef = {
   datasets: ["salario-minimo"],
   height: 420,
   ariaLabel: "Variación porcentual anual del salario mínimo en Colombia desde 1985",
+  vistas: ["linea", "barras"],
   async build({ "salario-minimo": smlv }) {
     const presidentes = await getPresidentesClient();
 
@@ -241,20 +223,22 @@ export const salarioMinimoVariacion: ChartDef = {
       return [p?.nombre ?? "Sin datos", p?.partido ?? "—"];
     });
 
-    const traces = [{
+    // Una sola traza: en vista de barras, aVista toma `marker.color` por punto
+    // (colores por presidente) o el color de la línea.
+    const traza = (conPresidente: boolean) => ({
       type: "scatter",
       mode: "lines+markers",
       x: sortedYears,
       y: sortedValores,
       line: { color: COLOR_BASE, width: 2 },
-      marker: { color: COLOR_BASE, size: 6 },
+      marker: { color: conPresidente ? colorsPorPresidente : COLOR_BASE, size: 6 },
       customdata,
       name: "Variación",
       hovertemplate:
         `<b>%{x}</b><br>Variación: <b>%{y:.2f}%</b><br>` +
         "Presidente: %{customdata[0]}<br>" +
         "<span style='color:#94a3b8'>%{customdata[1]}</span><extra></extra>",
-    }];
+    });
 
     const layout = baseLayout({
       margin: { l: 48, r: 24, t: 16, b: 40 },
@@ -272,86 +256,12 @@ export const salarioMinimoVariacion: ChartDef = {
 
     const leyenda = presidentesEnLeyenda(sortedYears, presidentes);
 
-    const headerHtml = `
-      <div class="trm-toggles">
-        <label class="pres-toggle" data-type-toggle>
-          <span class="pres-toggle__label">Ver como barras</span>
-          <input type="checkbox" class="pres-toggle__input type-toggle__input" />
-          <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
-        </label>
-        <label class="pres-toggle" data-pres-toggle data-bound="true" style="display: none;">
-          <span class="pres-toggle__label">Color por presidente</span>
-          <input type="checkbox" class="pres-toggle__input pres-toggle__input-var" />
-          <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
-        </label>
-      </div>
-    `;
-
-    const footerHtml = renderLegend(leyenda, false);
-
     return {
-      traces,
+      traces: [traza(false)],
       layout,
-      headerHtml,
-      footerHtml,
-      onMount: (target) => {
-        target.dataset.colorsByPresident = JSON.stringify(colorsPorPresidente);
-        target.dataset.colorBase = COLOR_BASE;
-
-        const root = target.closest("[data-chart-root]");
-        if (!root) return;
-
-        const typeInput = root.querySelector<HTMLInputElement>(".type-toggle__input");
-        const presContainer = root.querySelector<HTMLElement>("[data-pres-toggle]");
-        const presInput = root.querySelector<HTMLInputElement>(".pres-toggle__input-var");
-        const legend = root.querySelector<HTMLElement>("[data-pres-legend]");
-
-        if (!typeInput || !presContainer || !presInput) return;
-
-        const updateChart = () => {
-          if (!window.Plotly) return;
-
-          const isBar = typeInput.checked;
-          const isPresColor = presInput.checked;
-
-          if (isBar) {
-            presContainer.style.display = "inline-flex";
-
-            if (isPresColor) {
-              legend?.setAttribute("data-visible", "true");
-              window.Plotly.restyle(target, {
-                type: ["bar"],
-                "marker.color": [colorsPorPresidente],
-                "line.color": ["rgba(0,0,0,0.08)"],
-                "line.width": [0.5],
-              });
-            } else {
-              legend?.setAttribute("data-visible", "false");
-              window.Plotly.restyle(target, {
-                type: ["bar"],
-                "marker.color": [colorsPorPresidente.map(() => COLOR_BASE)],
-                "line.color": ["rgba(0,0,0,0.08)"],
-                "line.width": [0.5],
-              });
-            }
-          } else {
-            presContainer.style.display = "none";
-            legend?.setAttribute("data-visible", "false");
-
-            window.Plotly.restyle(target, {
-              type: ["scatter"],
-              mode: ["lines+markers"],
-              "line.color": [COLOR_BASE],
-              "line.width": [2],
-              "marker.color": [COLOR_BASE],
-              "marker.size": [6],
-            });
-          }
-        };
-
-        typeInput.addEventListener("change", updateChart);
-        presInput.addEventListener("change", updateChart);
-      },
+      headerHtml: presToggleHtml("smv", true),
+      footerHtml: presLeyendaHtml("smv", leyenda),
+      onMount: (target, ctx) => bindColorPresidente({ target, ctx, prefix: "smv", traza, soloEnBarras: true }),
     };
   },
 };

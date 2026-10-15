@@ -1,4 +1,4 @@
-import { COLORS, baseLayout, extractSerie, periodoToISODate, lineBarToggle, minMaxAvgLines } from "../charts";
+import { COLORS, baseLayout, extractSerie, periodoToISODate, lineasReferencia, trazaLinea, META_BANREP } from "../charts";
 import {
   frenoAceleradorMinMax,
   inflacionAnualPromedio,
@@ -6,7 +6,7 @@ import {
   mesOf,
   MESES_ES,
 } from "../derivations";
-import type { ChartDef } from "./types";
+import type { ChartBuildResult, ChartDef } from "./types";
 
 const FUENTE_DANE = "DANE — Índice de Precios al Consumidor";
 const FUENTE_BANREP = "Banco de la República — Tasa de intervención";
@@ -20,29 +20,28 @@ export const inflacionAnual: ChartDef = {
   datasets: ["inflacion"],
   height: 340,
   ariaLabel: "Evolución mensual de la inflación anual de Colombia desde 2004",
+  vistas: ["linea", "barras"],
   build({ inflacion }) {
     const { x, y } = extractSerie(inflacion!.serie, "inflacion_anual");
-    const xMin = x[0];
-    const xMax = x[x.length - 1];
-    return lineBarToggle({
-      x, y,
-      name: "Inflación anual",
-      color: COLORS.inflacion,
-      fillcolor: "rgba(220, 38, 38, 0.06)",
-      hovertemplate: "<b>%{x|%b %Y}</b><br>Inflación anual: %{y:.2f}%<extra></extra>",
-      baseShapes: [
-        { type: "rect", xref: "x", yref: "y", x0: xMin, x1: xMax, y0: 2, y1: 4,
-          fillcolor: COLORS.metaBanda, line: { width: 0 }, layer: "below" },
-        { type: "line", xref: "x", yref: "y", x0: xMin, x1: xMax, y0: 3, y1: 3,
-          line: { color: COLORS.metaLinea, width: 1, dash: "dot" }, layer: "below" },
-      ],
-      baseAnnotations: [
-        { x: xMax, y: 3, xref: "x", yref: "y", text: "Meta BanRep · 3%",
-          showarrow: false, font: { size: 10, color: "#16a34a" },
-          bgcolor: "rgba(255,255,255,0.85)", borderpad: 3,
-          xanchor: "right", yanchor: "bottom" },
-      ],
-    });
+    const refs = lineasReferencia(y, { sufijo: "%", extra: [META_BANREP] });
+    return {
+      traces: [trazaLinea({
+        x, y,
+        name: "Inflación anual",
+        color: COLORS.inflacion,
+        fillcolor: "rgba(220, 38, 38, 0.06)",
+        hovertemplate: "<b>%{x|%b %Y}</b><br>Inflación anual: %{y:.2f}%<extra></extra>",
+      })],
+      layout: baseLayout({
+        // Banda de meta 2–4 %; la línea y la etiqueta de la meta las pone META_BANREP.
+        shapes: [
+          { type: "rect", xref: "x", yref: "y", x0: x[0], x1: x[x.length - 1], y0: 2, y1: 4,
+            fillcolor: COLORS.metaBanda, line: { width: 0 }, layer: "below" },
+          ...refs.shapes,
+        ],
+        annotations: refs.annotations,
+      }),
+    };
   },
 };
 
@@ -57,6 +56,7 @@ export const inflacionMensual: ChartDef = {
   height: 380,
   ariaLabel:
     "Variación mensual del IPC de Colombia desde 2004, con líneas de referencia de máximo, promedio y mínimo, y opción de verla como línea o como barras",
+  vistas: ["linea", "barras"],
   build({ inflacion }) {
     const serie = inflacion!.serie.filter((r) => typeof r.inflacion_mensual === "number");
     const perfil = perfilEstacionalInflacion(serie);
@@ -82,8 +82,7 @@ export const inflacionMensual: ChartDef = {
       `el promedio histórico de un ${mesUltimo} (${mediaUltimo.toFixed(2)}%): ` +
       `enero y febrero concentran la indexación anual de tarifas.`;
 
-    const hovertemplate = "<b>%{x|%b %Y}</b><br>Inflación del mes: <b>%{y:.2f}%</b><extra></extra>";
-
+    // En vista de barras, aVista usa el color por punto de los marcadores.
     const lineTrace = {
       name: "Inflación del mes",
       type: "scatter",
@@ -92,20 +91,11 @@ export const inflacionMensual: ChartDef = {
       y,
       line: { color: COLORS.inflacion, width: 1.6 },
       marker: { color: colores, size: 4 },
-      hovertemplate,
-    };
-    const barTrace = {
-      name: "Inflación del mes",
-      type: "bar",
-      x,
-      y,
-      marker: { color: colores, opacity: 0.85 },
-      hovertemplate,
+      hovertemplate: "<b>%{x|%b %Y}</b><br>Inflación del mes: <b>%{y:.2f}%</b><extra></extra>",
     };
 
-    // Máximo, promedio y mínimo de toda la serie. Las etiquetas van a la
-    // izquierda para no tapar los meses más recientes.
-    const refs = minMaxAvgLines(y, { suffix: "%", decimals: 2, avgAnchor: "left" });
+    // Máximo, promedio y mínimo de toda la serie (etiquetas a la izquierda, UI-10).
+    const refs = lineasReferencia(y, { sufijo: "%", decimales: 2 });
 
     const layout = baseLayout({
       margin: { l: 48, r: 24, t: 16, b: 40 },
@@ -122,25 +112,7 @@ export const inflacionMensual: ChartDef = {
       annotations: refs.annotations,
     });
 
-    const headerHtml = `
-      <label class="pres-toggle" data-mensual-toggle>
-        <span class="pres-toggle__label">Ver en barras</span>
-        <input type="checkbox" class="pres-toggle__input mensual-toggle__input" />
-        <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
-      </label>`;
-
-    const onMount = (target: HTMLElement) => {
-      const root = target.closest<HTMLElement>("[data-chart-root]");
-      const input = root?.querySelector<HTMLInputElement>(".mensual-toggle__input");
-      if (!input || input.dataset.bound === "true") return;
-      input.dataset.bound = "true";
-      input.addEventListener("change", () => {
-        if (!window.Plotly) return;
-        window.Plotly.react(target, [input.checked ? barTrace : lineTrace], layout);
-      });
-    };
-
-    return { pregunta, traces: [lineTrace], layout, headerHtml, onMount };
+    return { pregunta, traces: [lineTrace], layout };
   },
 };
 
@@ -152,16 +124,20 @@ export const tasaInteres: ChartDef = {
   datasets: ["inflacion"],
   height: 340,
   ariaLabel: "Evolución mensual de la tasa de intervención del Banco de la República desde 2004",
+  vistas: ["linea", "barras"],
   build({ inflacion }) {
     const { x, y } = extractSerie(inflacion!.serie, "tasa_interes");
-    return lineBarToggle({
-      x, y,
-      name: "Tasa BanRep",
-      color: COLORS.tasa,
-      fillcolor: "rgba(37, 99, 235, 0.06)",
-      lineShape: "hv",
-      hovertemplate: "<b>%{x|%b %Y}</b><br>Tasa BanRep: %{y:.2f}%<extra></extra>",
-    });
+    const refs = lineasReferencia(y, { sufijo: "%" });
+    return {
+      traces: [trazaLinea({
+        x, y,
+        name: "Tasa BanRep",
+        color: COLORS.tasa,
+        lineShape: "hv",
+        hovertemplate: "<b>%{x|%b %Y}</b><br>Tasa BanRep: %{y:.2f}%<extra></extra>",
+      })],
+      layout: baseLayout({ shapes: refs.shapes, annotations: refs.annotations }),
+    };
   },
 };
 
@@ -173,6 +149,7 @@ export const spread: ChartDef = {
   datasets: ["inflacion"],
   height: 500,
   ariaLabel: "Diferencial entre la tasa de intervención y la inflación anual, en puntos porcentuales, con opción de superponer la línea de inflación anual",
+  vistas: ["linea", "barras"],
   build({ inflacion }) {
     const data = inflacion!.serie.filter((r) => r.inflacion_anual !== null && r.tasa_interes !== null);
     const x = data.map((r) => periodoToISODate(r.periodo));
@@ -206,14 +183,14 @@ export const spread: ChartDef = {
         <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
       </label>`;
 
-    const onMount = (target: HTMLElement) => {
+    // El interruptor redibuja con ctx.render, que respeta la vista Línea | Barras elegida.
+    const onMount: ChartBuildResult["onMount"] = (target, ctx) => {
       const root = target.closest<HTMLElement>("[data-chart-root]");
       const input = root?.querySelector<HTMLInputElement>(".infl-toggle__input");
       if (!input || input.dataset.bound === "true") return;
       input.dataset.bound = "true";
       input.addEventListener("change", () => {
-        if (!window.Plotly) return;
-        window.Plotly.react(target, input.checked ? [barTrace, inflTrace] : [barTrace], layout);
+        ctx.render(input.checked ? [barTrace, inflTrace] : [barTrace]);
       });
     };
 
@@ -229,6 +206,7 @@ export const frenoAcelerador: ChartDef = {
   datasets: ["inflacion"],
   height: 460,
   ariaLabel: "Evolución comparada de la inflación anual y la tasa de intervención BanRep, con áreas coloreadas indicando freno o acelerador monetario",
+  vistas: ["linea", "barras"],
   build({ inflacion }) {
     const serieAsc = inflacion!.serie;
     const { x, inflacion: infl, tasa, tasaRestrictiva, tasaExpansiva } = frenoAceleradorMinMax(serieAsc);
@@ -276,6 +254,7 @@ export const pibInflacion: ChartDef = {
   datasets: ["pib", "inflacion"],
   height: 420,
   ariaLabel: "Crecimiento del PIB anual e inflación anual desde 2004",
+  vistas: ["linea", "barras"],
   build({ pib, inflacion }) {
     const inflAnual = inflacionAnualPromedio(inflacion!.serie);
     const inflPorAnio: Record<string, number> = {};
@@ -290,6 +269,7 @@ export const pibInflacion: ChartDef = {
     const infl = data.map((r) => inflPorAnio[r.periodo.slice(0, 4)]);
     const xMin = x[0];
     const xMax = x[x.length - 1];
+    const meta = lineasReferencia([], { extra: [META_BANREP], sufijo: "%" });
 
     return {
       traces: [
@@ -311,11 +291,11 @@ export const pibInflacion: ChartDef = {
           tickfont: { size: 11, color: "#636c76" }, ticksuffix: "%", automargin: true,
         },
         shapes: [
-          { type: "rect", xref: "x", yref: "y", x0: xMin, x1: xMax, y0: 2, y1: 4, fillcolor: "rgba(34,197,94,0.08)", line: { width: 0 }, layer: "below" },
-          { type: "line", xref: "x", yref: "y", x0: xMin, x1: xMax, y0: 3, y1: 3, line: { color: "rgba(34,197,94,0.5)", width: 1, dash: "dot" } },
+          { type: "rect", xref: "x", yref: "y", x0: xMin, x1: xMax, y0: 2, y1: 4, fillcolor: COLORS.metaBanda, line: { width: 0 }, layer: "below" },
+          ...meta.shapes,
         ],
         annotations: [
-          { x: xMax, y: 3, xref: "x", yref: "y", text: "Meta BanRep 3% ±1", showarrow: false, font: { size: 10, color: "#16a34a" }, xanchor: "right", bgcolor: "rgba(255,255,255,0.85)", borderpad: 3 },
+          ...meta.annotations,
           { x: "2022-12-01", y: 13.1, xref: "x", yref: "y", text: "Sobrecalentamiento<br>post-COVID", showarrow: true, arrowhead: 2, arrowcolor: "#dc2626", ax: -50, ay: -10, font: { size: 10, color: "#dc2626" } },
         ],
       }),

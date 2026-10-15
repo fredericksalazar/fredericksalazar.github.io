@@ -1,4 +1,4 @@
-import { COLORS, baseLayout, extractSerie, periodoToISODate, minMaxAvgLines } from "../charts";
+import { COLORS, baseLayout, extractSerie, periodoToISODate, lineasReferencia } from "../charts";
 import type { ChartDef } from "./types";
 
 const FUENTE_BM = "Banco Mundial — WDI";
@@ -17,9 +17,10 @@ export const poblacionCrecimiento: ChartDef = {
   datasets: ["demografia"],
   height: 340,
   ariaLabel: "Tasa de crecimiento poblacional anual de Colombia desde 1961",
+  vistas: ["linea", "barras"],
   build({ demografia }) {
     const { x, y } = extractSerie(demografia!.serie, "crecimiento_poblacion");
-    const { shapes, annotations } = minMaxAvgLines(y, { suffix: "%" });
+    const { shapes, annotations } = lineasReferencia(y, { sufijo: "%" });
     return {
       traces: [{
         name: "Crecimiento poblacional", x, y, mode: "lines+markers",
@@ -48,6 +49,7 @@ export const esperanzaVida: ChartDef = {
   datasets: ["demografia"],
   height: 360,
   ariaLabel: "Esperanza de vida al nacer de mujeres y hombres en Colombia",
+  vistas: ["linea", "barras"],
   build({ demografia }) {
     const { x: xm, y: ym } = extractSerie(demografia!.serie, "esperanza_vida_mujeres");
     const { y: yh } = extractSerie(demografia!.serie, "esperanza_vida_hombres");
@@ -103,6 +105,7 @@ export const giniEvolucion: ChartDef = {
   datasets: ["demografia"],
   height: 400,
   ariaLabel: "Evolución del coeficiente de Gini de Colombia con bandas de interpretación",
+  vistas: ["linea", "barras"],
   build({ demografia }) {
     const data = demografia!.serie.filter((r) => typeof r.gini === "number");
     const x = data.map((r) => periodoToISODate(r.periodo));
@@ -113,7 +116,9 @@ export const giniEvolucion: ChartDef = {
       fillcolor: color, line: { width: 0 }, layer: "below",
     });
 
-    const ref = minMaxAvgLines(y);
+    // Eje de rango fijo: la cercanía entre etiquetas se mide sobre ese rango visible.
+    const rangoY: [number, number] = [40, 62];
+    const ref = lineasReferencia(y, { rangoY });
 
     return {
       traces: [{
@@ -127,7 +132,7 @@ export const giniEvolucion: ChartDef = {
         yaxis: {
           showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
           tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true,
-          range: [40, 62],
+          range: rangoY,
         },
         shapes: [
           banda(40, 45, "rgba(34,197,94,0.10)"),

@@ -39,6 +39,15 @@ const chartElementId = `chart-${def.id}`;
 </style>
 
 <style is:global>
+  /* Controles de cabecera: los propios de la receta + el control de vistas, a la derecha */
+  .chart-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem 1rem;
+  }
+
   /* Toggle Línea ↔ Barras (segmented control en header de chart) */
   .chart-toggle {
     display: inline-flex;
@@ -62,6 +71,7 @@ const chartElementId = `chart-${def.id}`;
     transition: color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
   }
   .chart-toggle__btn:hover { color: #0f172a; }
+  .chart-toggle__btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
   .chart-toggle__btn.is-active {
     background: white;
     color: #0f172a;
@@ -239,8 +249,74 @@ const chartElementId = `chart-${def.id}`;
 
 <script>
   import { getChartDef } from "../../lib/observatorio/chart-defs";
+  import type { ChartContext, Vista } from "../../lib/observatorio/chart-defs/types";
   import { loadDatasets } from "../../lib/observatorio/data-client";
   import { registerChart, mountPlotly } from "../../lib/observatorio/plotly-mount";
+  import { aVista } from "../../lib/observatorio/charts";
+
+  const ETIQUETAS_VISTA: Record<Vista, string> = { linea: "Línea", barras: "Barras" };
+
+  /** Control segmentado Línea | Barras (UI-08). Único en todo el sitio. */
+  function controlVistasHtml(vistas: readonly Vista[], activa: Vista): string {
+    const botones = vistas.map((v) => {
+      const on = v === activa;
+      return `<button type="button" class="chart-toggle__btn${on ? " is-active" : ""}" data-vista="${v}" aria-pressed="${on}">${ETIQUETAS_VISTA[v]}</button>`;
+    }).join("");
+    return `<div class="chart-toggle" role="group" aria-label="Tipo de gráfico" data-vistas-control>${botones}</div>`;
+  }
+
+  /**
+   * Estado de vista de un gráfico y contexto para su receta. Toda redibujada
+   * pasa por aquí, así la vista elegida por el visitante y los controles propios
+   * de la receta nunca se pisan entre sí.
+   */
+  function crearContexto(
+    target: HTMLElement,
+    trazas: unknown[],
+    layout: Record<string, unknown>,
+    vistaInicial: Vista,
+  ): ChartContext & { cambiarVista(v: Vista): void } {
+    let vista = vistaInicial;
+    let trazasActuales = trazas;
+    let layoutActual = layout;
+    const suscriptores: ((v: Vista) => void)[] = [];
+    const dibujar = () => {
+      if (!window.Plotly) return;
+      const v = aVista(trazasActuales, vista, layoutActual);
+      window.Plotly.react(target, v.trazas, v.layout);
+    };
+    return {
+      vista: () => vista,
+      render(nuevas, nuevoLayout) {
+        trazasActuales = nuevas;
+        if (nuevoLayout) layoutActual = nuevoLayout;
+        dibujar();
+      },
+      alCambiarVista(fn) { suscriptores.push(fn); },
+      cambiarVista(v) {
+        if (v === vista) return;
+        vista = v;
+        dibujar();
+        suscriptores.forEach((fn) => fn(v));
+      },
+    };
+  }
+
+  function bindControlVistas(control: HTMLElement, ctx: { cambiarVista(v: Vista): void }) {
+    if (control.dataset.bound === "true") return;
+    control.dataset.bound = "true";
+    const botones = Array.from(control.querySelectorAll<HTMLButtonElement>("[data-vista]"));
+    control.addEventListener("click", (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("[data-vista]");
+      if (!btn) return;
+      for (const b of botones) {
+        const on = b === btn;
+        b.classList.toggle("is-active", on);
+        b.setAttribute("aria-pressed", String(on));
+      }
+      ctx.cambiarVista(btn.dataset.vista as Vista);
+    });
+  }
 
   function bindPresidenteToggle(host: HTMLElement, target: HTMLElement) {
     const toggle = host.querySelector<HTMLElement>("[data-pres-toggle]");
@@ -284,7 +360,15 @@ const chartElementId = `chart-${def.id}`;
         if (signal.aborted) return;
         const result = await def.build(data);
         if (signal.aborted) return;
-        if (headerSlot && result.headerHtml) headerSlot.innerHTML = result.headerHtml;
+        const vistas = def.vistas ?? [];
+        const conVistas = vistas.includes("barras");
+        if (headerSlot && conVistas) {
+          // Se reconstruye completa en cada ejecución (p. ej. "Reintentar") para no duplicar el control.
+          headerSlot.innerHTML =
+            `<div class="chart-controls">${result.headerHtml ?? ""}${controlVistasHtml(vistas, vistas[0])}</div>`;
+        } else if (headerSlot && result.headerHtml) {
+          headerSlot.innerHTML = result.headerHtml;
+        }
         if (footerSlot && result.footerHtml) footerSlot.innerHTML = result.footerHtml;
         if (result.pregunta && root) {
           const preg = root.querySelector<HTMLElement>(".chart-card__question");
@@ -293,7 +377,10 @@ const chartElementId = `chart-${def.id}`;
         await mountPlotly(elementId, { traces: result.traces, layout: result.layout, config: result.config });
         const target = document.getElementById(elementId);
         if (target) {
-          result.onMount?.(target);
+          const ctx = crearContexto(target, result.traces, result.layout, vistas[0] ?? "linea");
+          const control = headerSlot?.querySelector<HTMLElement>("[data-vistas-control]");
+          if (control) bindControlVistas(control, ctx);
+          result.onMount?.(target, ctx);
           if (headerSlot?.querySelector("[data-pres-toggle]")) {
             bindPresidenteToggle(root!, target);
           }
