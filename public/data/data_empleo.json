@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-10-14T14:49:11+00:00",
+    "ultima_actualizacion": "2026-10-15T17:34:56+00:00",
     "fuentes": {
       "empleo": {
         "nombre": "DANE — Departamento Administrativo Nacional de Estadística",
@@ -20,7 +20,7 @@
     "cobertura": {
       "primer_periodo": "1991-12",
       "ultimo_periodo": "2026-08",
-      "total_registros": 313,
+      "total_registros": 318,
       "granularidad": "mensual"
     },
     "notas": "Datos mensuales provenientes de la GEIH (DANE). Datos anuales históricos del Banco Mundial (OMS/OIT). El pipeline intenta DANE primero; si no está disponible degrada a solo Banco Mundial."
@@ -29,36 +29,36 @@
     "tasa_desempleo": {
       "actual": {
         "periodo": "2026-08",
-        "valor": 8.79,
-        "variacion": "bajo",
-        "delta": -0.83
+        "valor": 9.36,
+        "variacion": "subio",
+        "delta": 0.76
       },
       "unidad": "%"
     },
     "tgp": {
       "actual": {
         "periodo": "2026-08",
-        "valor": 65.02,
-        "variacion": "subio",
-        "delta": 0.29
+        "valor": 63.29,
+        "variacion": "bajo",
+        "delta": -0.65
       },
       "unidad": "%"
     },
     "to": {
       "actual": {
         "periodo": "2026-08",
-        "valor": 59.31,
-        "variacion": "subio",
-        "delta": 0.81
+        "valor": 57.36,
+        "variacion": "bajo",
+        "delta": -1.08
       },
       "unidad": "%"
     },
     "subempleo": {
       "actual": {
         "periodo": "2026-08",
-        "valor": 6.18,
+        "valor": 6.87,
         "variacion": "bajo",
-        "delta": -1.12
+        "delta": -0.68
       },
       "unidad": "%"
     },
@@ -75,6 +75,96 @@
   "serie": [
     {
       "periodo": "2026-08",
+      "tasa_desempleo": 9.36,
+      "tasa_desempleo_delta": 0.76,
+      "tasa_desempleo_variacion": "subio",
+      "tgp": 63.29,
+      "tgp_delta": -0.65,
+      "tgp_variacion": "bajo",
+      "to": 57.36,
+      "to_delta": -1.08,
+      "to_variacion": "bajo",
+      "subempleo": 6.87,
+      "subempleo_delta": -0.68,
+      "subempleo_variacion": "bajo",
+      "informalidad": null,
+      "informalidad_delta": null,
+      "informalidad_variacion": null
+    },
+    {
+      "periodo": "2026-07",
+      "tasa_desempleo": 8.1,
+      "tasa_desempleo_delta": -0.74,
+      "tasa_desempleo_variacion": "bajo",
+      "tgp": 64.77,
+      "tgp_delta": 0.15,
+      "tgp_variacion": "subio",
+      "to": 59.52,
+      "to_delta": 0.62,
+      "to_variacion": "subio",
+      "subempleo": 6.71,
+      "subempleo_delta": -0.96,
+      "subempleo_variacion": "bajo",
+      "informalidad": null,
+      "informalidad_delta": null,
+      "informalidad_variacion": null
+    },
+    {
+      "periodo": "2026-06",
+      "tasa_desempleo": 8.03,
+      "tasa_desempleo_delta": -0.52,
+      "tasa_desempleo_variacion": "bajo",
+      "tgp": 64.54,
+      "tgp_delta": 0.65,
+      "tgp_variacion": "subio",
+      "to": 59.36,
+      "to_delta": 0.93,
+      "to_variacion": "subio",
+      "subempleo": 7.06,
+      "subempleo_delta": -0.61,
+      "subempleo_variacion": "bajo",
+      "informalidad": null,
+      "informalidad_delta": null,
+      "informalidad_variacion": null
+    },
+    {
+      "periodo": "2026-05",
+      "tasa_desempleo": 8.02,
+      "tasa_desempleo_delta": -1.02,
+      "tasa_desempleo_variacion": "bajo",
+      "tgp": 64.94,
+      "tgp_delta": 0.97,
+      "tgp_variacion": "subio",
+      "to": 59.73,
+      "to_delta": 1.54,
+      "to_variacion": "subio",
+      "subempleo": 7.27,
+      "subempleo_delta": -0.2,
+      "subempleo_variacion": "bajo",
+      "informalidad": null,
+      "informalidad_delta": null,
+      "informalidad_variacion": null
+    },
+    {
+      "periodo": "2026-04",
+      "tasa_desempleo": 8.78,
+      "tasa_desempleo_delta": 0.0,
+      "tasa_desempleo_variacion": "igual",
+      "tgp": 64.74,
+      "tgp_delta": 1.02,
+      "tgp_variacion": "subio",
+      "to": 59.06,
+      "to_delta": 0.93,
+      "to_variacion": "subio",
+      "subempleo": 7.16,
+      "subempleo_delta": -0.11,
+      "subempleo_variacion": "bajo",
+      "informalidad": null,
+      "informalidad_delta": null,
+      "informalidad_variacion": null
+    },
+    {
+      "periodo": "2026-03",
       "tasa_desempleo": 8.79,
       "tasa_desempleo_delta": -0.83,
       "tasa_desempleo_variacion": "bajo",
@@ -92,7 +182,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2026-07",
+      "periodo": "2026-02",
       "tasa_desempleo": 9.23,
       "tasa_desempleo_delta": -1.1,
       "tasa_desempleo_variacion": "bajo",
@@ -110,7 +200,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2026-06",
+      "periodo": "2026-01",
       "tasa_desempleo": 10.86,
       "tasa_desempleo_delta": -0.78,
       "tasa_desempleo_variacion": "bajo",
@@ -128,7 +218,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2026-05",
+      "periodo": "2025-12",
       "tasa_desempleo": 7.98,
       "tasa_desempleo_delta": -1.15,
       "tasa_desempleo_variacion": "bajo",
@@ -146,7 +236,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2026-04",
+      "periodo": "2025-11",
       "tasa_desempleo": 7.02,
       "tasa_desempleo_delta": -1.15,
       "tasa_desempleo_variacion": "bajo",
@@ -164,7 +254,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2026-03",
+      "periodo": "2025-10",
       "tasa_desempleo": 8.2,
       "tasa_desempleo_delta": -0.93,
       "tasa_desempleo_variacion": "bajo",
@@ -182,7 +272,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2026-02",
+      "periodo": "2025-09",
       "tasa_desempleo": 8.17,
       "tasa_desempleo_delta": -0.96,
       "tasa_desempleo_variacion": "bajo",
@@ -200,7 +290,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2026-01",
+      "periodo": "2025-08",
       "tasa_desempleo": 8.6,
       "tasa_desempleo_delta": -1.06,
       "tasa_desempleo_variacion": "bajo",
@@ -218,7 +308,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2025-12",
+      "periodo": "2025-07",
       "tasa_desempleo": 8.84,
       "tasa_desempleo_delta": -1.08,
       "tasa_desempleo_variacion": "bajo",
@@ -236,7 +326,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2025-11",
+      "periodo": "2025-06",
       "tasa_desempleo": 8.55,
       "tasa_desempleo_delta": -1.72,
       "tasa_desempleo_variacion": "bajo",
@@ -254,7 +344,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2025-10",
+      "periodo": "2025-05",
       "tasa_desempleo": 9.04,
       "tasa_desempleo_delta": -1.27,
       "tasa_desempleo_variacion": "bajo",
@@ -272,7 +362,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2025-09",
+      "periodo": "2025-04",
       "tasa_desempleo": 8.78,
       "tasa_desempleo_delta": -1.87,
       "tasa_desempleo_variacion": "bajo",
@@ -290,7 +380,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2025-08",
+      "periodo": "2025-03",
       "tasa_desempleo": 9.62,
       "tasa_desempleo_delta": -1.67,
       "tasa_desempleo_variacion": "bajo",
@@ -308,7 +398,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2025-07",
+      "periodo": "2025-02",
       "tasa_desempleo": 10.33,
       "tasa_desempleo_delta": -1.34,
       "tasa_desempleo_variacion": "bajo",
@@ -326,7 +416,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2025-06",
+      "periodo": "2025-01",
       "tasa_desempleo": 11.64,
       "tasa_desempleo_delta": -1.02,
       "tasa_desempleo_variacion": "bajo",
@@ -344,7 +434,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2025-05",
+      "periodo": "2024-12",
       "tasa_desempleo": 9.13,
       "tasa_desempleo_delta": -0.88,
       "tasa_desempleo_variacion": "bajo",
@@ -362,7 +452,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2025-04",
+      "periodo": "2024-11",
       "tasa_desempleo": 8.17,
       "tasa_desempleo_delta": -0.84,
       "tasa_desempleo_variacion": "bajo",
@@ -380,7 +470,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2025-03",
+      "periodo": "2024-10",
       "tasa_desempleo": 9.13,
       "tasa_desempleo_delta": -0.1,
       "tasa_desempleo_variacion": "bajo",
@@ -398,7 +488,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2025-02",
+      "periodo": "2024-09",
       "tasa_desempleo": 9.13,
       "tasa_desempleo_delta": -0.12,
       "tasa_desempleo_variacion": "bajo",
@@ -416,7 +506,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2025-01",
+      "periodo": "2024-08",
       "tasa_desempleo": 9.66,
       "tasa_desempleo_delta": 0.38,
       "tasa_desempleo_variacion": "subio",
@@ -434,7 +524,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2024-12",
+      "periodo": "2024-07",
       "tasa_desempleo": 9.92,
       "tasa_desempleo_delta": 0.35,
       "tasa_desempleo_variacion": "subio",
@@ -452,7 +542,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2024-11",
+      "periodo": "2024-06",
       "tasa_desempleo": 10.27,
       "tasa_desempleo_delta": 0.93,
       "tasa_desempleo_variacion": "subio",
@@ -470,7 +560,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2024-10",
+      "periodo": "2024-05",
       "tasa_desempleo": 10.31,
       "tasa_desempleo_delta": -0.17,
       "tasa_desempleo_variacion": "bajo",
@@ -488,7 +578,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2024-09",
+      "periodo": "2024-04",
       "tasa_desempleo": 10.65,
       "tasa_desempleo_delta": -0.07,
       "tasa_desempleo_variacion": "bajo",
@@ -506,7 +596,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2024-08",
+      "periodo": "2024-03",
       "tasa_desempleo": 11.29,
       "tasa_desempleo_delta": 1.26,
       "tasa_desempleo_variacion": "subio",
@@ -524,7 +614,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2024-07",
+      "periodo": "2024-02",
       "tasa_desempleo": 11.67,
       "tasa_desempleo_delta": 0.32,
       "tasa_desempleo_variacion": "subio",
@@ -542,7 +632,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2024-06",
+      "periodo": "2024-01",
       "tasa_desempleo": 12.66,
       "tasa_desempleo_delta": -1.04,
       "tasa_desempleo_variacion": "bajo",
@@ -560,7 +650,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2024-05",
+      "periodo": "2023-12",
       "tasa_desempleo": 10.01,
       "tasa_desempleo_delta": -0.26,
       "tasa_desempleo_variacion": "bajo",
@@ -578,7 +668,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2024-04",
+      "periodo": "2023-11",
       "tasa_desempleo": 9.01,
       "tasa_desempleo_delta": -0.49,
       "tasa_desempleo_variacion": "bajo",
@@ -596,7 +686,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2024-03",
+      "periodo": "2023-10",
       "tasa_desempleo": 9.23,
       "tasa_desempleo_delta": -0.49,
       "tasa_desempleo_variacion": "bajo",
@@ -614,7 +704,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2024-02",
+      "periodo": "2023-09",
       "tasa_desempleo": 9.25,
       "tasa_desempleo_delta": -1.5,
       "tasa_desempleo_variacion": "bajo",
@@ -632,7 +722,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2024-01",
+      "periodo": "2023-08",
       "tasa_desempleo": 9.28,
       "tasa_desempleo_delta": -1.35,
       "tasa_desempleo_variacion": "bajo",
@@ -650,7 +740,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2023-12",
+      "periodo": "2023-07",
       "tasa_desempleo": 9.57,
       "tasa_desempleo_delta": -1.42,
       "tasa_desempleo_variacion": "bajo",
@@ -668,7 +758,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2023-11",
+      "periodo": "2023-06",
       "tasa_desempleo": 9.34,
       "tasa_desempleo_delta": -1.92,
       "tasa_desempleo_variacion": "bajo",
@@ -686,7 +776,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2023-10",
+      "periodo": "2023-05",
       "tasa_desempleo": 10.48,
       "tasa_desempleo_delta": -0.17,
       "tasa_desempleo_variacion": "bajo",
@@ -704,7 +794,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2023-09",
+      "periodo": "2023-04",
       "tasa_desempleo": 10.72,
       "tasa_desempleo_delta": -0.45,
       "tasa_desempleo_variacion": "bajo",
@@ -722,7 +812,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2023-08",
+      "periodo": "2023-03",
       "tasa_desempleo": 10.03,
       "tasa_desempleo_delta": -2.09,
       "tasa_desempleo_variacion": "bajo",
@@ -740,7 +830,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2023-07",
+      "periodo": "2023-02",
       "tasa_desempleo": 11.35,
       "tasa_desempleo_delta": -1.56,
       "tasa_desempleo_variacion": "bajo",
@@ -758,7 +848,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2023-06",
+      "periodo": "2023-01",
       "tasa_desempleo": 13.7,
       "tasa_desempleo_delta": -0.95,
       "tasa_desempleo_variacion": "bajo",
@@ -776,7 +866,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2023-05",
+      "periodo": "2022-12",
       "tasa_desempleo": 10.27,
       "tasa_desempleo_delta": -0.83,
       "tasa_desempleo_variacion": "bajo",
@@ -794,7 +884,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2023-04",
+      "periodo": "2022-11",
       "tasa_desempleo": 9.5,
       "tasa_desempleo_delta": -2.03,
       "tasa_desempleo_variacion": "bajo",
@@ -812,7 +902,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2023-03",
+      "periodo": "2022-10",
       "tasa_desempleo": 9.72,
       "tasa_desempleo_delta": -2.28,
       "tasa_desempleo_variacion": "bajo",
@@ -830,7 +920,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2023-02",
+      "periodo": "2022-09",
       "tasa_desempleo": 10.75,
       "tasa_desempleo_delta": -1.21,
       "tasa_desempleo_variacion": "bajo",
@@ -848,7 +938,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2023-01",
+      "periodo": "2022-08",
       "tasa_desempleo": 10.63,
       "tasa_desempleo_delta": -2.23,
       "tasa_desempleo_variacion": "bajo",
@@ -866,7 +956,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2022-12",
+      "periodo": "2022-07",
       "tasa_desempleo": 10.99,
       "tasa_desempleo_delta": -2.07,
       "tasa_desempleo_variacion": "bajo",
@@ -884,7 +974,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2022-11",
+      "periodo": "2022-06",
       "tasa_desempleo": 11.26,
       "tasa_desempleo_delta": -3.39,
       "tasa_desempleo_variacion": "bajo",
@@ -902,7 +992,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2022-10",
+      "periodo": "2022-05",
       "tasa_desempleo": 10.65,
       "tasa_desempleo_delta": -4.55,
       "tasa_desempleo_variacion": "bajo",
@@ -920,7 +1010,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2022-09",
+      "periodo": "2022-04",
       "tasa_desempleo": 11.17,
       "tasa_desempleo_delta": -4.32,
       "tasa_desempleo_variacion": "bajo",
@@ -938,7 +1028,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2022-08",
+      "periodo": "2022-03",
       "tasa_desempleo": 12.12,
       "tasa_desempleo_delta": -2.61,
       "tasa_desempleo_variacion": "bajo",
@@ -956,7 +1046,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2022-07",
+      "periodo": "2022-02",
       "tasa_desempleo": 12.91,
       "tasa_desempleo_delta": -2.68,
       "tasa_desempleo_variacion": "bajo",
@@ -974,7 +1064,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2022-06",
+      "periodo": "2022-01",
       "tasa_desempleo": 14.65,
       "tasa_desempleo_delta": -2.91,
       "tasa_desempleo_variacion": "bajo",
@@ -992,7 +1082,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2022-05",
+      "periodo": "2021-12",
       "tasa_desempleo": 11.1,
       "tasa_desempleo_delta": -2.81,
       "tasa_desempleo_variacion": "bajo",
@@ -1010,7 +1100,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2022-04",
+      "periodo": "2021-11",
       "tasa_desempleo": 11.53,
       "tasa_desempleo_delta": -2.38,
       "tasa_desempleo_variacion": "bajo",
@@ -1028,7 +1118,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2022-03",
+      "periodo": "2021-10",
       "tasa_desempleo": 12.0,
       "tasa_desempleo_delta": -3.28,
       "tasa_desempleo_variacion": "bajo",
@@ -1046,7 +1136,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2022-02",
+      "periodo": "2021-09",
       "tasa_desempleo": 11.96,
       "tasa_desempleo_delta": -4.33,
       "tasa_desempleo_variacion": "bajo",
@@ -1064,7 +1154,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2022-01",
+      "periodo": "2021-08",
       "tasa_desempleo": 12.86,
       "tasa_desempleo_delta": -4.58,
       "tasa_desempleo_variacion": "bajo",
@@ -1082,7 +1172,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2021-12",
+      "periodo": "2021-07",
       "tasa_desempleo": 13.06,
       "tasa_desempleo_delta": -7.85,
       "tasa_desempleo_variacion": "bajo",
@@ -1100,7 +1190,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2021-11",
+      "periodo": "2021-06",
       "tasa_desempleo": 14.65,
       "tasa_desempleo_delta": -5.71,
       "tasa_desempleo_variacion": "bajo",
@@ -1118,7 +1208,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2021-10",
+      "periodo": "2021-05",
       "tasa_desempleo": 15.2,
       "tasa_desempleo_delta": -6.77,
       "tasa_desempleo_variacion": "bajo",
@@ -1136,7 +1226,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2021-09",
+      "periodo": "2021-04",
       "tasa_desempleo": 15.49,
       "tasa_desempleo_delta": -5.0,
       "tasa_desempleo_variacion": "bajo",
@@ -1154,7 +1244,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2021-08",
+      "periodo": "2021-03",
       "tasa_desempleo": 14.73,
       "tasa_desempleo_delta": 1.55,
       "tasa_desempleo_variacion": "subio",
@@ -1172,7 +1262,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2021-07",
+      "periodo": "2021-02",
       "tasa_desempleo": 15.59,
       "tasa_desempleo_delta": 2.78,
       "tasa_desempleo_variacion": "subio",
@@ -1190,7 +1280,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2021-06",
+      "periodo": "2021-01",
       "tasa_desempleo": 17.56,
       "tasa_desempleo_delta": 4.1,
       "tasa_desempleo_variacion": "subio",
@@ -1208,7 +1298,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2021-05",
+      "periodo": "2020-12",
       "tasa_desempleo": 13.91,
       "tasa_desempleo_delta": 3.96,
       "tasa_desempleo_variacion": "subio",
@@ -1226,7 +1316,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2021-04",
+      "periodo": "2020-11",
       "tasa_desempleo": 13.91,
       "tasa_desempleo_delta": 4.29,
       "tasa_desempleo_variacion": "subio",
@@ -1244,7 +1334,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2021-03",
+      "periodo": "2020-10",
       "tasa_desempleo": 15.28,
       "tasa_desempleo_delta": 5.16,
       "tasa_desempleo_variacion": "subio",
@@ -1262,7 +1352,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2021-02",
+      "periodo": "2020-09",
       "tasa_desempleo": 16.29,
       "tasa_desempleo_delta": 5.49,
       "tasa_desempleo_variacion": "subio",
@@ -1280,7 +1370,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2021-01",
+      "periodo": "2020-08",
       "tasa_desempleo": 17.44,
       "tasa_desempleo_delta": 6.24,
       "tasa_desempleo_variacion": "subio",
@@ -1298,7 +1388,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2020-12",
+      "periodo": "2020-07",
       "tasa_desempleo": 20.91,
       "tasa_desempleo_delta": 9.63,
       "tasa_desempleo_variacion": "subio",
@@ -1316,7 +1406,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2020-11",
+      "periodo": "2020-06",
       "tasa_desempleo": 20.36,
       "tasa_desempleo_delta": 10.64,
       "tasa_desempleo_variacion": "subio",
@@ -1334,7 +1424,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2020-10",
+      "periodo": "2020-05",
       "tasa_desempleo": 21.97,
       "tasa_desempleo_delta": 11.02,
       "tasa_desempleo_variacion": "subio",
@@ -1352,7 +1442,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2020-09",
+      "periodo": "2020-04",
       "tasa_desempleo": 20.49,
       "tasa_desempleo_delta": 9.83,
       "tasa_desempleo_variacion": "subio",
@@ -1370,7 +1460,7 @@
       "informalidad_variacion": null
     },
     {
-      "periodo": "2020-08",
+      "periodo": "2020-03",
       "tasa_desempleo": 13.18,
       "tasa_desempleo_delta": 2.0,
       "tasa_desempleo_variacion": "subio",
