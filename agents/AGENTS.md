@@ -74,3 +74,9 @@ llaman así:
 5. Si cambiaste algo descrito en `agents/`, actualiza ese documento.
 6. Informa al autor qué cambió, qué verificaste y qué quedó pendiente, sin
    maquillar los fallos.
+
+## 6. Skills
+
+Las skills del proyecto (Spec Kit y propias) están en `.claude/skills/<nombre>/SKILL.md`.
+Cuando el autor pida una skill por su nombre (p. ej. "speckit-plan"), lee ese
+archivo y sigue sus instrucciones, sin importar qué agente seas.
