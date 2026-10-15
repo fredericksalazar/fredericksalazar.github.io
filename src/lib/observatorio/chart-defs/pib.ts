@@ -1,4 +1,4 @@
-import { COLORS, baseLayout, extractSerie, periodoToISODate } from "../charts";
+import { COLORS, baseLayout, extractSerie, lineasReferencia, periodoToISODate } from "../charts";
 import { comercioPorPibJoin } from "../derivations";
 import type { ChartDef } from "./types";
 
@@ -96,6 +96,7 @@ export const deudaPublica: ChartDef = {
       type: "rect", xref: "paper", yref: "y", x0: 0, x1: 1, y0, y1,
       fillcolor: color, line: { width: 0 }, layer: "below",
     });
+    const ref = lineasReferencia(y, { sufijo: "%", decimales: 1, rangoY: [0, 100] });
 
     return {
       traces: [{
@@ -112,6 +113,7 @@ export const deudaPublica: ChartDef = {
           banda(0, 40, "rgba(34,197,94,0.10)"),
           banda(40, 60, "rgba(234,179,8,0.10)"),
           banda(60, 100, "rgba(220,38,38,0.10)"),
+          ...ref.shapes,
         ],
         annotations: [{
           x: "2020-12-01", y: 91.16, xref: "x", yref: "y",
@@ -120,7 +122,7 @@ export const deudaPublica: ChartDef = {
           font: { size: 11, color: "#dc2626" },
           bgcolor: "rgba(255,255,255,0.85)", bordercolor: "rgba(220,38,38,0.4)",
           borderwidth: 1, borderpad: 4,
-        }],
+        }, ...ref.annotations],
       }),
       footerHtml: `
         <div class="banda-leyenda">

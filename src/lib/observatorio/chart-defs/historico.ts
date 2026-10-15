@@ -5,7 +5,6 @@ import {
   colorsForYears,
   presidentesEnLeyenda,
   presidenteForYear,
-  type Presidente,
 } from "../presidentes-client";
 import type { ChartDef, ChartBuildResult } from "./types";
 import { bindColorPresidente, presLeyendaHtml, presToggleHtml } from "./color-presidente";
@@ -20,34 +19,11 @@ interface HistoricoOptions {
   /** Si es true, el hover agrupa miles (`%{y:,.0f}`) — para valores COP grandes. */
   hoverThousands?: boolean;
   yaxisTickSuffix?: string;
-  promedioOptions?: { showLine: boolean };
+  /** Líneas estadísticas de la serie (Máx, Mín, Prom). Default: ninguna. */
+  referencias?: { maximo?: boolean; minimo?: boolean; promedio?: boolean };
   metaBanrep?: boolean;
-  /** Estado inicial del toggle "color por presidente". Default: true (encendido). */
-  defaultOn?: boolean;
   /** Si es false, no se renderiza el toggle ni la leyenda: barras de un solo color. Default: true. */
   presidenteToggle?: boolean;
-}
-
-function renderLegend(presidentes: Presidente[], visible: boolean): string {
-  return `
-    <div class="pres-legend" data-pres-legend data-visible="${visible ? "true" : "false"}" aria-label="Presidentes representados en el gráfico">
-      ${presidentes.map((p) => `
-        <span class="pres-chip">
-          <span class="pres-chip__dot" style="background:${p.color}"></span>
-          <span class="pres-chip__name">${p.nombre}</span>
-          <span class="pres-chip__period">${new Date(p.inicio).getFullYear()}–${new Date(p.fin).getFullYear()}</span>
-        </span>
-      `).join("")}
-    </div>`;
-}
-
-function renderToggle(defaultOn: boolean): string {
-  return `
-    <label class="pres-toggle" data-pres-toggle>
-      <span class="pres-toggle__label">Color por presidente</span>
-      <input type="checkbox" class="pres-toggle__input" ${defaultOn ? "checked" : ""} />
-      <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
-    </label>`;
 }
 
 async function buildHistorico(
@@ -55,15 +31,10 @@ async function buildHistorico(
   opts: HistoricoOptions,
 ): Promise<ChartBuildResult> {
   const presidentes = await getPresidentesClient();
-  const defaultOn = opts.defaultOn ?? true;
   const showToggle = opts.presidenteToggle ?? true;
   const years = Object.keys(opts.historico).sort();
   const valores = years.map((y) => opts.historico[y]);
   const colorsPorPresidente = colorsForYears(years, presidentes, COLOR_BASE);
-  // Color inicial del trace: por presidente solo si el toggle existe y arranca encendido.
-  const initialColor = showToggle && defaultOn
-    ? colorsPorPresidente
-    : colorsPorPresidente.map(() => COLOR_BASE);
   const customdata = years.map((y) => {
     const p = presidenteForYear(parseInt(y, 10), presidentes);
     return [p?.nombre ?? "Sin datos", p?.partido ?? "—"];
@@ -71,22 +42,25 @@ async function buildHistorico(
 
   const dec = opts.hoverDecimals ?? 2;
   const yFormat = opts.hoverThousands ? ",.0f" : `.${dec}f`;
-  const traces = [{
+  // Arranca siempre en el color por defecto: el visitante decide si colorear por presidente.
+  const traza = (conPresidente: boolean) => ({
     type: "bar", x: years, y: valores,
-    marker: { color: initialColor, line: { color: "rgba(0,0,0,0.08)", width: 0.5 } },
+    marker: {
+      color: conPresidente ? colorsPorPresidente : COLOR_BASE,
+      line: { color: "rgba(0,0,0,0.08)", width: 0.5 },
+    },
     customdata, name: opts.name,
     hovertemplate:
       `<b>%{x}</b><br>${opts.name}: <b>%{y:${yFormat}}${opts.hoverSuffix}</b><br>` +
       "Presidente: %{customdata[0]}<br>" +
       "<span style='color:#94a3b8'>%{customdata[1]}</span><extra></extra>",
-  }];
+  });
 
-  // Referencias con el generador único (UI-10): promedio histórico y meta BanRep.
+  // Referencias con el generador único (UI-10): Máx, Mín, Prom y meta BanRep.
   const { shapes, annotations } = lineasReferencia(valores, {
-    maximo: false,
-    minimo: false,
-    promedio: opts.promedioOptions?.showLine ?? false,
-    etiquetaPromedio: "Promedio histórico",
+    maximo: opts.referencias?.maximo ?? false,
+    minimo: opts.referencias?.minimo ?? false,
+    promedio: opts.referencias?.promedio ?? false,
     sufijo: opts.yaxisTickSuffix ?? "%",
     decimales: 2,
     extra: opts.metaBanrep ? [META_BANREP] : [],
@@ -104,32 +78,30 @@ async function buildHistorico(
     ...(annotations.length ? { annotations } : {}),
   });
 
+  if (!showToggle) return { traces: [traza(false)], layout };
   const leyenda = presidentesEnLeyenda(years, presidentes);
   return {
-    traces, layout,
-    ...(showToggle ? { headerHtml: renderToggle(defaultOn) } : {}),
-    ...(showToggle ? { footerHtml: renderLegend(leyenda, defaultOn) } : {}),
-    onMount: (target) => {
-      target.dataset.colorsByPresident = JSON.stringify(colorsPorPresidente);
-      target.dataset.colorBase = COLOR_BASE;
-    },
+    traces: [traza(false)], layout,
+    headerHtml: presToggleHtml(chartId),
+    footerHtml: presLeyendaHtml(chartId, leyenda),
+    onMount: (target, ctx) => bindColorPresidente({ target, ctx, prefix: chartId, traza }),
   };
 }
 
 export const inflacionHistorica: ChartDef = {
   id: "inflacion-historica",
   titulo: "Inflación histórica de Colombia",
-  pregunta: "Inflación anual promedio desde 1960 según datos del Banco Mundial. Coloreada por presidente que gobernó la mayor parte del año.",
+  pregunta: "Inflación anual promedio desde 1960 según datos del Banco Mundial. Activa «Color por presidente» para ver quién gobernó la mayor parte de cada año.",
   fuenteTexto: "Banco Mundial — World Development Indicators (último año: cálculo propio con IPC del DANE) · Presidentes: Registraduría Nacional",
   datasets: ["inflacion"],
   height: 420,
-  ariaLabel: "Inflación anual histórica de Colombia desde 1960 con color por presidente",
+  ariaLabel: "Inflación anual histórica de Colombia desde 1960 con opción de color por presidente",
   build({ inflacion }) {
     return buildHistorico("inflacion-historica", {
       historico: inflacion!.historico,
       name: "Inflación",
       hoverSuffix: "%",
-      promedioOptions: { showLine: true },
+      referencias: { maximo: true, minimo: true, promedio: true },
       metaBanrep: true,
     });
   },
@@ -138,11 +110,11 @@ export const inflacionHistorica: ChartDef = {
 export const pibHistorico: ChartDef = {
   id: "pib-historico",
   titulo: "PIB histórico de Colombia",
-  pregunta: "Producto Interno Bruto en miles de millones de USD desde 1960. Coloreado por presidente.",
+  pregunta: "Producto Interno Bruto en miles de millones de USD desde 1960. Activa «Color por presidente» para ver quién gobernaba cada año.",
   fuenteTexto: "Banco Mundial — WDI · Presidentes: Registraduría Nacional",
   datasets: ["pib"],
   height: 420,
-  ariaLabel: "PIB histórico de Colombia con color por presidente",
+  ariaLabel: "PIB histórico de Colombia con opción de color por presidente",
   build({ pib }) {
     return buildHistorico("pib-historico", {
       historico: pib!.historico,
@@ -150,7 +122,6 @@ export const pibHistorico: ChartDef = {
       hoverSuffix: " mil M USD",
       hoverDecimals: 1,
       yaxisTickSuffix: "",
-      defaultOn: false,
     });
   },
 };
@@ -158,18 +129,17 @@ export const pibHistorico: ChartDef = {
 export const desempleoHistorico: ChartDef = {
   id: "desempleo-historico",
   titulo: "Desempleo histórico de Colombia",
-  pregunta: "Tasa de desempleo anual desde 1991 según Banco Mundial (OIT). Coloreada por presidente que gobernó la mayor parte del año.",
+  pregunta: "Tasa de desempleo anual desde 1991 según Banco Mundial (OIT). Activa «Color por presidente» para ver quién gobernó la mayor parte de cada año.",
   fuenteTexto: "Banco Mundial — World Development Indicators · Presidentes: Registraduría Nacional",
   datasets: ["empleo"],
   height: 420,
-  ariaLabel: "Tasa de desempleo histórica de Colombia desde 1991 con color por presidente",
+  ariaLabel: "Tasa de desempleo histórica de Colombia desde 1991 con opción de color por presidente",
   build({ empleo }) {
     return buildHistorico("desempleo-historico", {
       historico: empleo!.historico,
       name: "Desempleo",
       hoverSuffix: "%",
-      promedioOptions: { showLine: true },
-      defaultOn: false,
+      referencias: { maximo: true, minimo: true, promedio: true },
     });
   },
 };
@@ -177,11 +147,11 @@ export const desempleoHistorico: ChartDef = {
 export const salarioMinimoHistorico: ChartDef = {
   id: "salario-minimo-historico",
   titulo: "Salario mínimo histórico de Colombia",
-  pregunta: "Salario mínimo mensual legal vigente (SMMLV) en pesos corrientes desde 1984, año en que se unificó para todos los sectores. Coloreado por presidente que lo decretó.",
+  pregunta: "Salario mínimo mensual legal vigente (SMMLV) en pesos corrientes desde 1984, año en que se unificó para todos los sectores. Activa «Color por presidente» para ver quién lo decretó.",
   fuenteTexto: "Ministerio del Trabajo — decretos anuales · Presidentes: Registraduría Nacional",
   datasets: ["salario-minimo"],
   height: 420,
-  ariaLabel: "Salario mínimo mensual de Colombia desde 1984 en pesos corrientes, con color por presidente",
+  ariaLabel: "Salario mínimo mensual de Colombia desde 1984 en pesos corrientes, con opción de color por presidente",
   build({ "salario-minimo": smlv }) {
     return buildHistorico("salario-minimo-historico", {
       historico: smlv!.historico,
@@ -189,7 +159,6 @@ export const salarioMinimoHistorico: ChartDef = {
       hoverSuffix: " COP",
       hoverThousands: true,
       yaxisTickSuffix: "",
-      defaultOn: false,
     });
   },
 };
@@ -197,7 +166,7 @@ export const salarioMinimoHistorico: ChartDef = {
 export const salarioMinimoVariacion: ChartDef = {
   id: "salario-minimo-variacion",
   titulo: "Variación porcentual del salario mínimo",
-  pregunta: "Incremento porcentual decretado cada año frente al anterior. Se muestra como línea por defecto; activa barras para ver el color por presidente.",
+  pregunta: "Incremento porcentual decretado cada año frente al anterior. Se muestra como línea por defecto; activa «Ver en barras» y luego «Color por presidente» para ver quién lo decretó.",
   fuenteTexto: "Ministerio del Trabajo — decretos anuales · Presidentes: Registraduría Nacional",
   datasets: ["salario-minimo"],
   height: 420,
@@ -269,11 +238,11 @@ export const salarioMinimoVariacion: ChartDef = {
 export const poblacionHistorica: ChartDef = {
   id: "poblacion-historica",
   titulo: "Población histórica de Colombia",
-  pregunta: "Población total anual desde 1960. Coloreada por presidente que gobernó la mayor parte del año.",
+  pregunta: "Población total anual desde 1960.",
   fuenteTexto: "Banco Mundial — World Development Indicators · Presidentes: Registraduría Nacional",
   datasets: ["demografia"],
   height: 420,
-  ariaLabel: "Población total histórica de Colombia desde 1960 con color por presidente",
+  ariaLabel: "Población total histórica de Colombia desde 1960",
   build({ demografia }) {
     return buildHistorico("poblacion-historica", {
       historico: demografia!.historico,
@@ -289,17 +258,17 @@ export const poblacionHistorica: ChartDef = {
 export const importacionesHistorica: ChartDef = {
   id: "comercio-impo",
   titulo: "Importaciones (% del PIB)",
-  pregunta: "Importaciones como % del PIB desde 1960. Coloreadas por presidente que gobernó la mayor parte del año.",
+  pregunta: "Importaciones como % del PIB desde 1960. Activa «Color por presidente» para ver quién gobernó la mayor parte de cada año.",
   fuenteTexto: "Banco Mundial — World Development Indicators · Presidentes: Registraduría Nacional",
   datasets: ["comercio"],
   height: 420,
-  ariaLabel: "Importaciones de Colombia como porcentaje del PIB desde 1960, con color por presidente",
+  ariaLabel: "Importaciones de Colombia como porcentaje del PIB desde 1960, con opción de color por presidente",
   build({ comercio }) {
     return buildHistorico("comercio-impo", {
       historico: recordByYear(comercio!.serie, (r) => r.importaciones ?? null),
       name: "Importaciones",
       hoverSuffix: "% PIB",
-      defaultOn: false,
+      referencias: { maximo: true, minimo: true, promedio: true },
     });
   },
 };
@@ -307,11 +276,11 @@ export const importacionesHistorica: ChartDef = {
 export const pibPerCapitaHistorico: ChartDef = {
   id: "pib-percapita",
   titulo: "PIB per cápita",
-  pregunta: "PIB por habitante en USD desde 1960. Pasó de $258 en 1960 a $7,919 en 2024. Coloreado por presidente.",
+  pregunta: "PIB por habitante en USD desde 1960. Pasó de $258 en 1960 a $7,919 en 2024. Activa «Color por presidente» para ver quién gobernaba cada año.",
   fuenteTexto: "Banco Mundial — WDI · Presidentes: Registraduría Nacional",
   datasets: ["pib"],
   height: 420,
-  ariaLabel: "PIB per cápita de Colombia desde 1960, con color por presidente",
+  ariaLabel: "PIB per cápita de Colombia desde 1960, con opción de color por presidente",
   build({ pib }) {
     return buildHistorico("pib-percapita", {
       historico: recordByYear(pib!.serie, (r) => r.pib_percapita ?? null),
@@ -319,7 +288,6 @@ export const pibPerCapitaHistorico: ChartDef = {
       hoverSuffix: " USD",
       hoverDecimals: 0,
       yaxisTickSuffix: "",
-      defaultOn: false,
     });
   },
 };
@@ -327,17 +295,17 @@ export const pibPerCapitaHistorico: ChartDef = {
 export const comercioHistorico: ChartDef = {
   id: "comercio-historico",
   titulo: "Comercio exterior histórico",
-  pregunta: "Exportaciones como % del PIB desde 1960. Coloreado por presidente.",
+  pregunta: "Exportaciones como % del PIB desde 1960. Activa «Color por presidente» para ver quién gobernaba cada año.",
   fuenteTexto: "Banco Mundial — World Development Indicators · Presidentes: Registraduría Nacional",
   datasets: ["comercio"],
   height: 420,
-  ariaLabel: "Comercio exterior histórico de Colombia con color por presidente",
+  ariaLabel: "Comercio exterior histórico de Colombia con opción de color por presidente",
   build({ comercio }) {
     return buildHistorico("comercio-historico", {
       historico: comercio!.historico,
       name: "Exportaciones",
       hoverSuffix: "% PIB",
-      defaultOn: false,
+      referencias: { maximo: true, minimo: true, promedio: true },
     });
   },
 };

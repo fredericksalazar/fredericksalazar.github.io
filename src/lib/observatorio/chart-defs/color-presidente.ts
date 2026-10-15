@@ -6,12 +6,12 @@
 import type { Presidente } from "../presidentes-client";
 import type { ChartContext } from "./types";
 
-/** HTML del interruptor. `oculto` = solo se muestra en vista de barras. */
+/** HTML del interruptor; arranca siempre apagado. `oculto` = solo se muestra en vista de barras. */
 export function presToggleHtml(prefix: string, oculto = false): string {
   return `
     <label class="pres-toggle" data-${prefix}-presidente-toggle${oculto ? ' style="display: none;"' : ""}>
       <span class="pres-toggle__label">Color por presidente</span>
-      <input type="checkbox" class="pres-toggle__input" />
+      <input type="checkbox" class="pres-toggle__input" role="switch" aria-label="Color por presidente" />
       <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
     </label>
   `;

@@ -70,7 +70,8 @@ src/lib/observatorio/
     pib.ts               ← Defs del dominio "PIB".
     empleo.ts            ← Defs del dominio "empleo".
     comercio.ts          ← Defs del dominio "comercio".
-    historico.ts         ← Defs con presidente-toggle (charts históricos anuales).
+    historico.ts         ← Barras históricas anuales: `buildHistorico` (interruptor de
+                           color-presidente.ts, apagado al cargar; `referencias` = Máx/Mín/Prom).
 
 src/components/observatorio/
   Chart.astro            ← Componente genérico ÚNICO. Recibe un id de chart-def.
@@ -187,7 +188,7 @@ Si el campo es opcional/aún no disponible en todos los datasets, márcalo `?`.
 | Doble eje | def estilo `poblacionPib` o `pibComercio` |
 | Cross-dataset (join temporal) | def con `datasets: ['x','y']` y helper en `derivations.ts` |
 | Heatmap / barras apiladas con submatriz | def estilo `matrizExportaciones` |
-| Barra histórica anual con color-por-presidente + toggle | def en `chart-defs/historico.ts` |
+| Barra histórica anual con interruptor "Color por presidente" (arranca apagado) | def con `buildHistorico()` en `chart-defs/historico.ts` |
 
 ### 5.4 — Crear el `ChartDef`
 

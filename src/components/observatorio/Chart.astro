@@ -39,43 +39,13 @@ const chartElementId = `chart-${def.id}`;
 </style>
 
 <style is:global>
-  /* Controles de cabecera: los propios de la receta + el control de vistas, a la derecha */
+  /* Controles de cabecera: los propios de la receta + el interruptor "Ver en barras", a la derecha */
   .chart-controls {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;
     gap: 0.75rem 1rem;
-  }
-
-  /* Toggle Línea ↔ Barras (segmented control en header de chart) */
-  .chart-toggle {
-    display: inline-flex;
-    gap: 0.15rem;
-    background: #f1f5f9;
-    padding: 0.2rem;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-    flex-shrink: 0;
-  }
-  .chart-toggle__btn {
-    appearance: none;
-    border: none;
-    background: transparent;
-    padding: 0.3rem 0.7rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #64748b;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
-  }
-  .chart-toggle__btn:hover { color: #0f172a; }
-  .chart-toggle__btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
-  .chart-toggle__btn.is-active {
-    background: white;
-    color: #0f172a;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
   }
 
   /* Estilos compartidos para extras inyectados por chart-defs */
@@ -156,7 +126,6 @@ const chartElementId = `chart-${def.id}`;
   .pres-chip__dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
   .pres-chip__name { font-weight: 600; color: #1e293b; }
   .pres-chip__period { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.65rem; color: #64748b; }
-  @media (max-width: 600px) { .pres-toggle__label { display: none; } }
 
   /* ── Leyenda de candidatos en mapas ── */
   .cand-legend {
@@ -254,15 +223,14 @@ const chartElementId = `chart-${def.id}`;
   import { registerChart, mountPlotly } from "../../lib/observatorio/plotly-mount";
   import { aVista } from "../../lib/observatorio/charts";
 
-  const ETIQUETAS_VISTA: Record<Vista, string> = { linea: "Línea", barras: "Barras" };
-
-  /** Control segmentado Línea | Barras (UI-08). Único en todo el sitio. */
-  function controlVistasHtml(vistas: readonly Vista[], activa: Vista): string {
-    const botones = vistas.map((v) => {
-      const on = v === activa;
-      return `<button type="button" class="chart-toggle__btn${on ? " is-active" : ""}" data-vista="${v}" aria-pressed="${on}">${ETIQUETAS_VISTA[v]}</button>`;
-    }).join("");
-    return `<div class="chart-toggle" role="group" aria-label="Tipo de gráfico" data-vistas-control>${botones}</div>`;
+  /** Interruptor "Ver en barras" (UI-08): apagado = línea, encendido = barras. Único en todo el sitio. */
+  function controlVistasHtml(activa: Vista): string {
+    return `
+      <label class="pres-toggle" data-vistas-control>
+        <span class="pres-toggle__label">Ver en barras</span>
+        <input type="checkbox" class="pres-toggle__input" role="switch" aria-label="Ver en barras"${activa === "barras" ? " checked" : ""} />
+        <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
+      </label>`;
   }
 
   /**
@@ -303,43 +271,10 @@ const chartElementId = `chart-${def.id}`;
   }
 
   function bindControlVistas(control: HTMLElement, ctx: { cambiarVista(v: Vista): void }) {
-    if (control.dataset.bound === "true") return;
-    control.dataset.bound = "true";
-    const botones = Array.from(control.querySelectorAll<HTMLButtonElement>("[data-vista]"));
-    control.addEventListener("click", (e) => {
-      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("[data-vista]");
-      if (!btn) return;
-      for (const b of botones) {
-        const on = b === btn;
-        b.classList.toggle("is-active", on);
-        b.setAttribute("aria-pressed", String(on));
-      }
-      ctx.cambiarVista(btn.dataset.vista as Vista);
-    });
-  }
-
-  function bindPresidenteToggle(host: HTMLElement, target: HTMLElement) {
-    const toggle = host.querySelector<HTMLElement>("[data-pres-toggle]");
-    if (!toggle || toggle.dataset.bound === "true") return;
-    toggle.dataset.bound = "true";
-    const input = toggle.querySelector<HTMLInputElement>(".pres-toggle__input");
-    if (!input) return;
-    const legend = host.querySelector<HTMLElement>("[data-pres-legend]");
-    const colorsRaw = target.dataset.colorsByPresident;
-    const colorBase = target.dataset.colorBase ?? "#2563eb";
-    if (!colorsRaw) return;
-    const colorsByPresident = JSON.parse(colorsRaw) as string[];
-
-    const apply = () => {
-      if (legend) legend.setAttribute("data-visible", input.checked ? "true" : "false");
-      if (!window.Plotly) {
-        window.addEventListener("plotly:loaded", apply, { once: true });
-        return;
-      }
-      const next = input.checked ? colorsByPresident : colorsByPresident.map(() => colorBase);
-      window.Plotly.restyle(target, { "marker.color": [next] });
-    };
-    input.addEventListener("change", apply);
+    const input = control.querySelector<HTMLInputElement>(".pres-toggle__input");
+    if (!input || input.dataset.bound === "true") return;
+    input.dataset.bound = "true";
+    input.addEventListener("change", () => ctx.cambiarVista(input.checked ? "barras" : "linea"));
   }
 
   function initCharts() {
@@ -365,7 +300,7 @@ const chartElementId = `chart-${def.id}`;
         if (headerSlot && conVistas) {
           // Se reconstruye completa en cada ejecución (p. ej. "Reintentar") para no duplicar el control.
           headerSlot.innerHTML =
-            `<div class="chart-controls">${result.headerHtml ?? ""}${controlVistasHtml(vistas, vistas[0])}</div>`;
+            `<div class="chart-controls">${result.headerHtml ?? ""}${controlVistasHtml(vistas[0])}</div>`;
         } else if (headerSlot && result.headerHtml) {
           headerSlot.innerHTML = result.headerHtml;
         }
@@ -381,9 +316,6 @@ const chartElementId = `chart-${def.id}`;
           const control = headerSlot?.querySelector<HTMLElement>("[data-vistas-control]");
           if (control) bindControlVistas(control, ctx);
           result.onMount?.(target, ctx);
-          if (headerSlot?.querySelector("[data-pres-toggle]")) {
-            bindPresidenteToggle(root!, target);
-          }
         }
       });
     });

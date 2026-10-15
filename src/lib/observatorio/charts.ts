@@ -65,7 +65,7 @@ export const periodoToISODate = (periodo: string): string => `${periodo}-01`;
 
 /** Referencia horizontal de contexto (promedio, máximo, mínimo, meta…). */
 export interface ReferenceLine {
-  /** Texto antes del valor: "Máx", "Promedio", "Meta BanRep"… */
+  /** Texto antes del valor: "Máx", "Mín", "Prom", "Meta BanRep"… */
   etiqueta: string;
   valor: number;
   /** Por defecto el de DESIGN-SYSTEM 6.4; obligatorio en referencias semánticas. */
@@ -80,8 +80,6 @@ export interface LineasReferenciaOpts {
   maximo?: boolean;
   minimo?: boolean;
   promedio?: boolean;
-  /** Texto de la referencia de promedio. Default "Promedio". */
-  etiquetaPromedio?: string;
   /** Referencias adicionales (p. ej. `META_BANREP`). */
   extra?: ReferenceLine[];
   /** Formateador del valor. Default: es-CO con `decimales` y `sufijo`. */
@@ -92,8 +90,12 @@ export interface LineasReferenciaOpts {
   rangoY?: [number, number];
 }
 
-/** Colores y trazo estándar de las referencias (DESIGN-SYSTEM 6.4). */
-const REF_COLORS = { maximo: "#dc2626", promedio: "#64748b", minimo: "#16a34a" } as const;
+/**
+ * Máx, Mín y Prom (DESIGN-SYSTEM 6.4): gris neutro para las tres, sin sugerir
+ * que un extremo es bueno o malo; se distinguen por etiqueta y trazo
+ * (máx/mín discontinuas, promedio punteado).
+ */
+const REF_GRIS = "#64748b";
 /** Tinta de texto para etiquetas combinadas (el texto no lleva color de serie). */
 const REF_TEXTO_COMBINADO = "#475569";
 /** Fracción del rango visible por debajo de la cual dos etiquetas se combinan. */
@@ -129,11 +131,9 @@ export function lineasReferencia(
     const max = Math.max(...vals);
     const min = Math.min(...vals);
     const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
-    if (opts.maximo ?? true) refs.push({ etiqueta: "Máx", valor: max, color: REF_COLORS.maximo });
-    if (opts.promedio ?? true) {
-      refs.push({ etiqueta: opts.etiquetaPromedio ?? "Promedio", valor: avg, color: REF_COLORS.promedio });
-    }
-    if (opts.minimo ?? true) refs.push({ etiqueta: "Mín", valor: min, color: REF_COLORS.minimo });
+    if (opts.maximo ?? true) refs.push({ etiqueta: "Máx", valor: max });
+    if (opts.promedio ?? true) refs.push({ etiqueta: "Prom", valor: avg, estilo: "punteada" });
+    if (opts.minimo ?? true) refs.push({ etiqueta: "Mín", valor: min });
   }
   refs.push(...(opts.extra ?? []));
   if (refs.length === 0) return { shapes: [], annotations: [] };
@@ -146,7 +146,7 @@ export function lineasReferencia(
   const formatoBase = opts.formato ?? ((v: number) => formatoDec(v, dec));
   const formatoRef = (r: ReferenceLine) =>
     r.decimales !== undefined ? formatoDec(r.valor, r.decimales) : formatoBase(r.valor);
-  const colorDe = (r: ReferenceLine) => r.color ?? REF_COLORS.promedio;
+  const colorDe = (r: ReferenceLine) => r.color ?? REF_GRIS;
 
   const shapes = refs.map((r) => ({
     type: "line", xref: "paper", x0: 0, x1: 1, yref: "y", y0: r.valor, y1: r.valor,

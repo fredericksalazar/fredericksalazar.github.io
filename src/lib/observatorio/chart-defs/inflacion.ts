@@ -168,22 +168,26 @@ export const spread: ChartDef = {
       hovertemplate: "<b>%{x|%b %Y}</b><br>Inflación anual: %{y:.2f}%<extra></extra>",
     };
 
+    // Máx, Mín y Prom del diferencial (no de la inflación superpuesta).
+    const ref = lineasReferencia(sp, { sufijo: " pp", decimales: 2 });
+
     // Mismo gráfico base en ambos estados; el botón sólo agrega/quita la línea.
     const layout = baseLayout({
       margin: { l: 48, r: 24, t: 16, b: 40 }, showlegend: false, barmode: "overlay",
       shapes: [{ type: "line", x0: x[0], x1: x[x.length - 1], y0: 0, y1: 0,
-        line: { color: "#1f2328", width: 2, dash: "solid" } }],
+        line: { color: "#1f2328", width: 2, dash: "solid" } }, ...ref.shapes],
+      annotations: ref.annotations,
       hovermode: "x",
     });
 
     const headerHtml = `
       <label class="pres-toggle" data-infl-toggle>
         <span class="pres-toggle__label">Mostrar inflación</span>
-        <input type="checkbox" class="pres-toggle__input infl-toggle__input" />
+        <input type="checkbox" class="pres-toggle__input infl-toggle__input" role="switch" aria-label="Mostrar inflación" />
         <span class="pres-toggle__switch" aria-hidden="true"><span class="pres-toggle__knob"></span></span>
       </label>`;
 
-    // El interruptor redibuja con ctx.render, que respeta la vista Línea | Barras elegida.
+    // El interruptor redibuja con ctx.render, que respeta la vista (línea o barras) elegida.
     const onMount: ChartBuildResult["onMount"] = (target, ctx) => {
       const root = target.closest<HTMLElement>("[data-chart-root]");
       const input = root?.querySelector<HTMLInputElement>(".infl-toggle__input");

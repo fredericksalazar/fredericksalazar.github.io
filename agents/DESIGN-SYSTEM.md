@@ -322,11 +322,11 @@ sombra nivel 2.
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│ Título del gráfico                 [Línea | Barras] │  ← controles a la derecha
+│ Título del gráfico             Ver en barras [◯─] │  ← controles a la derecha
 │ Pregunta que responde el gráfico                    │
 │                                                     │
 │  Máx · 12,5 % ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
-│  Promedio · 6,1 % ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
+│  Prom · 6,1 % · · · · · · · · · · · · · · · · · ·   │
 │            ╱╲    ╱╲___                              │
 │  ─────────╱──╲__╱─────╲_____                        │
 │  Mín · 1,2 % ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
@@ -338,10 +338,13 @@ sombra nivel 2.
 Estados: **cargando** (skeleton animado sobre el lienzo) y **error** (mensaje +
 botón "Reintentar"). Los maneja el componente; ningún gráfico los reimplementa.
 
-### 6.2 Toggle línea ↔ barras
+### 6.2 Interruptor "Ver en barras"
 
-**Todo gráfico de línea** incluye el control segmentado "Línea | Barras" en la
-cabecera, a la derecha. Hay **una sola implementación**:
+**Todo gráfico de línea** incluye el interruptor "Ver en barras" en la cabecera,
+a la derecha: apagado = línea (vista inicial), encendido = barras. Usa el mismo
+marcado y estilo que los demás interruptores de cabecera (`.pres-toggle`), con
+`role="switch"` y `aria-label`, y su texto se ve también en móvil (la cabecera
+envuelve si no cabe). Hay **una sola implementación**:
 
 - La receta lo **declara** con `vistas: ["linea", "barras"]` en su `ChartDef`
   (activación explícita). No escribe HTML del control ni trazas de barras.
@@ -354,7 +357,9 @@ cabecera, a la derecha. Hay **una sola implementación**:
   presidente"), redibuja **solo** con `ctx.render(trazas)` dentro de
   `onMount(target, ctx)`, para respetar la vista elegida. Las recetas nunca
   llaman a `Plotly.react` ni a `Plotly.restyle`. El interruptor "Color por
-  presidente" es único: `chart-defs/color-presidente.ts`.
+  presidente" es único: `chart-defs/color-presidente.ts`, y **siempre arranca
+  apagado** (color por defecto, leyenda oculta): colorear por gobierno es una
+  decisión del visitante.
 - Para una serie temporal simple, la traza estándar es `trazaLinea()` de
   `charts.ts`.
 
@@ -426,16 +431,20 @@ suelto dentro de un `ChartDef`.
   (`x: 0`, `xanchor: "left"`): promedio, máximo, mínimo, meta y cualquier otra.
   Así quedan alineadas con el eje Y y no tapan el tramo más reciente de la serie,
   que es el de la derecha.
-- Formato del texto: `Etiqueta · valor` (p. ej. `Promedio · 6,1 %`), tamaño
+- Formato del texto: `Etiqueta · valor` (p. ej. `Prom · 6,1 %`), tamaño
   `10px`, color de su línea, fondo blanco al 90 %, borde `#cbd5e1` de 1 px.
-- Colores de referencia: **Máx** `#dc2626`, **Promedio** `#64748b`, **Mín**
-  `#16a34a`; línea discontinua de 1.5 px.
-- **Meta BanRep:** verde `#16a34a`, línea **punteada** (se distingue del Mín por el
-  trazo y la etiqueta, nunca solo por el color). Se usa siempre la constante
+- Etiquetas fijas en todo el sitio: **Máx**, **Mín** y **Prom** (sin variantes
+  como "Promedio" o "Promedio histórico").
+- Color: gris neutro `#64748b` para las tres, sin sugerir que un extremo es bueno
+  o malo; se distinguen por etiqueta y trazo: **Máx** y **Mín** discontinuas,
+  **Prom** punteada; 1.5 px.
+- **Meta BanRep:** verde `#16a34a`, línea **punteada** (se distingue de Máx y Mín
+  por color y trazo, del Prom por el color, y de todas por la etiqueta, que es la
+  señal principal). Se usa siempre la constante
   `META_BANREP` de `charts.ts`; ninguna receta redefine la meta.
 - **Etiquetas cercanas:** si dos referencias quedan a menos del 6 % del rango
   visible del eje Y, se combinan en una sola etiqueta
-  (`Promedio · 6,1% · Meta BanRep · 3%`) en tinta de texto `#475569`. Si la
+  (`Prom · 6,1% · Meta BanRep · 3%`) en tinta de texto `#475569`. Si la
   receta fija `yaxis.range`, lo pasa como `rangoY`.
 - Se generan **solo** con `lineasReferencia(valores, opciones)` de `charts.ts`
   (máximo, mínimo y promedio activables, `extra`, `formato`, `sufijo`,
@@ -530,7 +539,7 @@ Antes de crear algo, se usa lo que existe.
 | **UI-05** | El Observatorio, sus subpáginas y las calculadoras usan `<MapaColombia />` como visual del hero. Elecciones no lleva visual. |
 | **UI-06** | La navegación de un dominio va en un menú horizontal sticky bajo el hero, con el patrón de la sección 5.3. |
 | **UI-07** | Todo gráfico se muestra en card: `IndicadorPanel` en dashboards o chart-card en el resto. |
-| **UI-08** | Todo gráfico de línea tiene el toggle Línea ↔ Barras, declarado con `vistas: ["linea", "barras"]` en su `ChartDef`. |
+| **UI-08** | Todo gráfico de línea tiene el interruptor "Ver en barras" (apagado = línea), declarado con `vistas: ["linea", "barras"]` en su `ChartDef`. |
 | **UI-09** | Color por defecto azul de marca; varias series con la paleta categórica en orden fijo; el agente pregunta el color al autor antes de crear un gráfico. |
 | **UI-10** | Las etiquetas de líneas de referencia (promedio, máximo, mínimo, meta) van a la izquierda del gráfico. |
 | **UI-11** | Antes de crear un componente se revisa el catálogo de la sección 8; uno nuevo requiere spec y se agrega al catálogo. |

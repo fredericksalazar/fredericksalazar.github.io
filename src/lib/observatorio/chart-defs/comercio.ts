@@ -13,6 +13,7 @@ export const balanzaComercial: ChartDef = {
   ariaLabel: "Balanza comercial de Colombia como porcentaje del PIB",
   build({ comercio }) {
     const { x, y } = extractSerie(comercio!.serie, "balanza_comercial");
+    const ref = lineasReferencia(y, { sufijo: "%", decimales: 2 });
     const barColors = y.map((v) =>
       v !== null ? (v >= 0 ? "#16a34a" : "#dc2626") : "#cbd5e1",
     );
@@ -25,7 +26,8 @@ export const balanzaComercial: ChartDef = {
       layout: baseLayout({
         showlegend: false, margin: { l: 48, r: 24, t: 16, b: 40 }, hovermode: "x",
         shapes: [{ type: "line", xref: "paper", x0: 0, x1: 1, yref: "y", y0: 0, y1: 0,
-          line: { color: "#1f2328", width: 1.5, dash: "solid" } }],
+          line: { color: "#1f2328", width: 1.5, dash: "solid" } }, ...ref.shapes],
+        annotations: ref.annotations,
       }),
     };
   },
