@@ -4,6 +4,7 @@ dist/
 .astro/
 .vscode/
 .claude/
+.agents/
 
 # dependencies
 node_modules/
