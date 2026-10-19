@@ -11,7 +11,7 @@ import Card from "../components/Card.astro";
 
 const title = "Certificaciones de Azure, GCP y Databricks";
 const description =
-  "Credenciales verificadas de Frederick Salazar, Data Engineer en Colombia: Azure Data Engineer, Microsoft Fabric, Google Cloud Generative AI Leader, IA Generativa, Databricks, MongoDB y Meta.";
+  "Credenciales verificadas de Frederick Salazar, Data Engineer en Colombia: Azure Data Engineer, Microsoft Fabric, Google Cloud Generative AI Leader, Anthropic, IA Generativa, Databricks, MongoDB y Meta.";
 
 const empresas = [
   {
@@ -130,6 +130,15 @@ const empresas = [
     logo: "/logos/google.svg",
     certificaciones: [
       {
+        titulo: "AI Fluency: Framework & Foundations",
+        emisor: "Anthropic",
+        ano: "2026",
+        url: "https://verify.skilljar.com/c/8d7c4gsxmzw2",
+        tecnologias: ["Anthropic Claude", "AI Fluency", "IA Generativa"],
+        badge: undefined,
+        logo: "/logos/anthropic.svg",
+      },
+      {
         titulo: "Statistics Foundations",
         emisor: "Meta",
         ano: "2025",
@@ -187,7 +196,7 @@ const totalCertificaciones = empresas.reduce(
       <strong>Google Cloud</strong> y <strong>Databricks Lakehouse</strong> — además de
       fundamentos de inteligencia artificial, estadística aplicada y gestión de
       proyectos. Cada credencial enlaza a su verificación pública oficial en Credly,
-      Coursera o MongoDB Learning. Listado también disponible en
+      Coursera, Skilljar (Anthropic) o MongoDB Learning. Listado también disponible en
       <a href="https://www.linkedin.com/in/fredericksalazar" target="_blank" rel="noopener noreferrer">LinkedIn</a>.
     </p>
   </section>
