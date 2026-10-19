@@ -67,6 +67,9 @@ src/lib/observatorio/
   plotly.d.ts            ← Tipos de window.Plotly.
   presidentes-client.ts  ← Lookup de presidentes por año (runtime).
   fuentes.ts             ← Fallback temporal de fuentes mientras pipeline no las publique.
+  home.ts                ← Home: catálogos (INDICADORES_CLAVE, DOMINIOS, DATASETS_PUBLICADOS),
+                           frescura y publicaciones recientes. Módulo PURO: no importa data.ts,
+                           porque chart-defs/sparkline.ts lo usa y va al bundle del cliente.
   chart-defs/
     types.ts             ← ChartDef y ChartBuildResult.
     index.ts             ← REGISTRY: aquí se registran todos los chart-defs.
@@ -77,25 +80,30 @@ src/lib/observatorio/
     externo.ts           ← Defs del dominio "sector externo / monetario".
     demografia.ts        ← Defs del dominio "demografía".
     comparativo.ts       ← Fábrica makeComparativoSet para comparativos entre países.
+    sparkline.ts         ← Fábrica makeSparkline: mini tendencias `spark-*` de la Home
+                           (excepción UI-07/UI-08 aprobada en la spec 005).
     elecciones.ts        ← Defs de elecciones presidenciales.
     historico.ts         ← Barras históricas anuales: `buildHistorico` (interruptor de
                            color-presidente.ts, apagado al cargar; `referencias` = Máx/Mín/Prom).
 
 src/components/observatorio/
-  Chart.astro            ← Componente genérico ÚNICO. Recibe un id de chart-def.
+  Chart.astro            ← Componente genérico ÚNICO. Recibe un id de chart-def
+                           (`variant="sparkline"` para micrográficas dentro de otra card).
   ChartContainer.astro   ← Shell visual (card + estados loading/error).
   PlotlyLoader.astro     ← Carga del CDN. UNA sola instancia por página.
   KpiRow.astro           ← KPIs (build-time, SEO crítico).
+  IndicadorClaveCard.astro ← Tarjeta de indicador clave de la Home (sin juicios de valor).
   IndicadorCard.astro    ← Card de KPI.
   IndicadorPanel.astro   ← Panel narrativo (texto + gráfico).
   PageHeader.astro       ← Header con eyebrow + lead.
-  DashboardNav.astro     ← Tabs de navegación entre dashboards.
+  DashboardNav.astro     ← Tabs de navegación entre dashboards; lee DOMINIOS de home.ts.
   DashboardFooter.astro  ← Footer común con fuentes + cobertura.
   GlosarioGrid.astro     ← Grid de glosario.
   MapaColombia.astro     ← Visual del hero.
 
 src/pages/observatorio/
-  index.astro            ← Vista general del Observatorio.
+  index.astro            ← Home: 8 indicadores clave, recientes, confianza, autor.
+  inflacion.astro        ← Dashboard "Inflación vs Tasa de interés".
   monetario.astro        ← Dashboard "Política Monetaria e Inflación".
   empleo.astro           ← Dashboard "Empleo".
   comercio.astro         ← Dashboard "Comercio y Sector Externo".
@@ -277,8 +285,8 @@ Si el pipeline emite un JSON completamente nuevo (ej. `data_fiscal.json`):
    siguiendo el patrón existente. Añade `"fiscal"` a la unión `DatasetName` y
    a `ASC_LOADERS`.
 4. Si va en una página nueva, crea `src/pages/observatorio/fiscal.astro` y
-   agrega la entrada en [`DashboardNav.astro`](../../components/observatorio/DashboardNav.astro)
-   (`slug` debe coincidir con el `active=""` que pase la página).
+   agrega la entrada en `DOMINIOS` de [`home.ts`](./home.ts) (alimenta el menú
+   `DashboardNav`; `slug` debe coincidir con el `active=""` que pase la página). Agrega también el JSON a `DATASETS_PUBLICADOS`.
 5. Cualquier chart con esos datos usa `datasets: ["fiscal"]` en su ChartDef.
 
 ---
@@ -352,7 +360,7 @@ Antes de cerrar un cambio en el Observatorio, valida punto por punto:
 - [ ] Editar manualmente un valor del JSON correspondiente se refleja al
       recargar sin recompilar.
 - [ ] Si se tocó `types.ts`, las cuatro páginas siguen compilando.
-- [ ] Si se agregó una página, está en `DashboardNav.astro` y tiene su
+- [ ] Si se agregó una página, está en `DOMINIOS` (`home.ts`) y tiene su
       JSON-LD.
 
 ---

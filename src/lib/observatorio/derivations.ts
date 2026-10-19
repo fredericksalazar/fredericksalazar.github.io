@@ -1,3 +1,4 @@
+import { META_BANREP, RANGO_META_BANREP } from "./charts";
 import type {
   SerieFila,
   PIBSerieFila,
@@ -189,4 +190,94 @@ export function trmInflacionJoin(
     trm: data.map((r) => r.trm),
     inflacion: data.map((r) => mapInfl.get(r.periodo) ?? null),
   };
+}
+
+// ───────────────────── Referencias objetivas (Home) ─────────────────────
+// Describen la posición de un dato frente a una referencia, sin juicios de
+// valor (spec 005, Q2): nunca "mejor"/"peor", solo "por encima"/"por debajo".
+
+type FilaConPeriodo = { periodo: string };
+
+/** Valores no nulos de `campo`, del más reciente al más antiguo. */
+export function valoresNoNulos(
+  serie: readonly FilaConPeriodo[],
+  campo: string,
+): { periodo: string; valor: number }[] {
+  return serie
+    .map((r) => ({ periodo: r.periodo, valor: (r as Record<string, unknown>)[campo] }))
+    .filter((r): r is { periodo: string; valor: number } => typeof r.valor === "number")
+    .sort((a, b) => b.periodo.localeCompare(a.periodo));
+}
+
+/** Promedio de los valores no nulos de los últimos `anios` años, contados desde el dato más reciente. */
+export function promedioVentana(serie: readonly FilaConPeriodo[], campo: string, anios = 20): number | null {
+  const valores = valoresNoNulos(serie, campo);
+  if (valores.length === 0) return null;
+  const ultimo = valores[0].periodo;
+  const desde = `${parseInt(yearOf(ultimo), 10) - anios}${ultimo.slice(4)}`;
+  const ventana = valores.filter((v) => v.periodo > desde);
+  return ventana.reduce((s, v) => s + v.valor, 0) / ventana.length;
+}
+
+/** Valor del mismo periodo un año antes (mismo mes en series mensuales; año anterior en anuales). */
+export function valorHaceUnAno(serie: readonly FilaConPeriodo[], campo: string, periodo: string): number | null {
+  const objetivo = `${parseInt(yearOf(periodo), 10) - 1}${periodo.slice(4)}`;
+  return valoresNoNulos(serie, campo).find((v) => v.periodo === objetivo)?.valor ?? null;
+}
+
+export type TipoReferencia = "meta-oficial" | "promedio-20a" | "hace-un-ano";
+
+export interface ReferenciaCalculada {
+  tipo: TipoReferencia;
+  valorReferencia: number | null;
+  posicion: "arriba" | "en-linea" | "abajo" | "dentro" | null;
+  frase: string;
+}
+
+/** Diferencia relativa por debajo de la cual el dato está "en línea con" su promedio. */
+const UMBRAL_EN_LINEA = 0.05;
+
+const nfPct1 = new Intl.NumberFormat("es-CO", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+/**
+ * Posición de `valor` frente a su referencia objetiva (research R4).
+ * `fmt` formatea un valor en la unidad del indicador para la frase.
+ */
+export function referenciaIndicador(
+  tipo: TipoReferencia,
+  valor: number,
+  periodo: string,
+  serie: readonly FilaConPeriodo[],
+  campo: string,
+  fmt: (v: number) => string,
+): ReferenciaCalculada {
+  if (tipo === "meta-oficial") {
+    const { min, max } = RANGO_META_BANREP;
+    const rango = `rango meta del BanRep (${min}–${max} %)`;
+    if (valor > max) return { tipo, valorReferencia: META_BANREP.valor, posicion: "arriba", frase: `Por encima del ${rango}` };
+    if (valor < min) return { tipo, valorReferencia: META_BANREP.valor, posicion: "abajo", frase: `Por debajo del ${rango}` };
+    return { tipo, valorReferencia: META_BANREP.valor, posicion: "dentro", frase: `Dentro del ${rango}` };
+  }
+
+  if (tipo === "promedio-20a") {
+    const prom = promedioVentana(serie, campo, 20);
+    if (prom === null) return { tipo, valorReferencia: null, posicion: null, frase: "Sin promedio de referencia" };
+    const ref = `su promedio de 20 años (${fmt(prom)})`;
+    const enLinea = Math.abs(valor - prom) < UMBRAL_EN_LINEA * Math.abs(prom);
+    if (enLinea) return { tipo, valorReferencia: prom, posicion: "en-linea", frase: `En línea con ${ref}` };
+    return valor > prom
+      ? { tipo, valorReferencia: prom, posicion: "arriba", frase: `Por encima de ${ref}` }
+      : { tipo, valorReferencia: prom, posicion: "abajo", frase: `Por debajo de ${ref}` };
+  }
+
+  const previo = valorHaceUnAno(serie, campo, periodo);
+  if (previo === null || previo === 0) {
+    return { tipo, valorReferencia: null, posicion: null, frase: "Sin dato de hace un año" };
+  }
+  const pct = (valor / previo - 1) * 100;
+  const ref = `hace un año (${fmt(previo)})`;
+  if (Math.abs(pct) < 0.5) return { tipo, valorReferencia: previo, posicion: "en-linea", frase: `Similar a ${ref}` };
+  return pct > 0
+    ? { tipo, valorReferencia: previo, posicion: "arriba", frase: `${nfPct1.format(pct)} % más alto que ${ref}` }
+    : { tipo, valorReferencia: previo, posicion: "abajo", frase: `${nfPct1.format(Math.abs(pct))} % más bajo que ${ref}` };
 }

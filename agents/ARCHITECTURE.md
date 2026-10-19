@@ -14,7 +14,7 @@
 > **Principio de redacción:** este documento describe lo que **es cierto hoy**.
 > Lo que falta o está mal se registra en la sección 12 *Deuda técnica*, no como regla.
 >
-> Versión 0.2.0 · 2026-10-17
+> Versión 0.3.0 · 2026-10-19
 
 ---
 
@@ -100,7 +100,7 @@ agents/                 Guía para agentes y humanos (agnóstica de proveedor)
 specs/                  Features en curso y cerradas (NNN-nombre/), creadas por Spec Kit
 .claude/                Integración de Claude Code (skills speckit-*). No versionada; se regenera.
 .github/workflows/      deploy.yml
-scripts/                Link-checker, IndexNow, portadas hero, extractor determinista de hechos (extract-inflacion-facts.mjs), optimización de imágenes
+scripts/                Link-checker, IndexNow, portadas hero (base compartida en scripts/lib/cover-hero.mjs), extractor determinista de hechos (extract-inflacion-facts.mjs), optimización de imágenes
 public/data/            CONTRATO: datasets JSON que consume el sitio (sincronizados desde odc-data-pipeline)
 public/geo/             GeoJSON de departamentos y municipios
 public/                 images/ badges/ logos/ informes/ y archivos de verificación
@@ -163,14 +163,25 @@ Cada spec declara qué módulos toca. Entre paréntesis, el pilar de
 - Etiquetas, archivo y borradores son `noindex` y no van al sitemap.
 
 ### 5.4 Observatorio de Datos (P3)
-- **Rutas:** `/observatorio/` (inflación vs tasa), `monetario`, `pib`, `empleo`,
-  `comercio`, `demografia`, `acerca`.
+- **Rutas:** `/observatorio/` (Home: 8 indicadores clave),
+  `inflacion` (inflación vs tasa), `monetario`, `pib`, `empleo`, `comercio`,
+  `demografia`, `acerca`.
 - **Documento del módulo (vinculante):**
   [`src/lib/observatorio/ARCHITECTURE.md`](../src/lib/observatorio/ARCHITECTURE.md)
   (REGLAS 1–19, recetas para agregar indicadores y datasets, checklist de PR).
   Este documento no lo duplica.
 - **Patrón central:** `ChartDef` registrado en `chart-defs/index.ts` + componente
   genérico `Chart.astro`.
+- **Home (spec 005):** catálogos y derivaciones en `lib/observatorio/home.ts`
+  (módulo puro: la página le pasa los datasets de `data.ts`). Sus cifras se
+  generan en build; las mini tendencias `spark-*` son `ChartDef` generados por
+  `makeSparkline` y cargan la serie en cliente. `DOMINIOS` (en `home.ts`) es la
+  fuente única del menú `DashboardNav`. JSON-LD `DataCatalog` con
+  `catalogoSchema()` de `lib/seo.ts`.
+- **Sin `distribution` en JSON-LD (decisión del autor, 2026-10-19):** ningún
+  `Dataset` del sitio declara `DataDownload`; no se promueve la descarga directa
+  de los JSON procesados. Los JSON siguen siendo públicos porque los gráficos los
+  cargan en el navegador.
 
 ### 5.5 Informes (P3)
 - **Rutas:** `/observatorio/informes/` y una página `.astro` por informe

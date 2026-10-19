@@ -1,0 +1,229 @@
+---
+/**
+ * IndicadorClaveCard — tarjeta de un indicador clave en la Home del
+ * Observatorio (spec 005, contrato sección 2).
+ *
+ * Todo el contenido de valor va en el HTML inicial; la sparkline es mejora.
+ * Sin juicios de valor (clarificación Q2): cambio y referencia en gris neutro,
+ * nunca rojo/verde. La tarjeta entera enlaza al dominio (enlace "estirado");
+ * la fuente es un enlace secundario por encima.
+ */
+import Chart from "./Chart.astro";
+import { sparklineId } from "../../lib/observatorio/chart-defs/sparkline";
+import {
+  formatCambio,
+  formatIndicador,
+  formatPeriodoIndicador,
+  type IndicadorClave,
+} from "../../lib/observatorio/home";
+
+interface Props {
+  indicador: IndicadorClave;
+}
+
+const { indicador } = Astro.props;
+const { def, valor, unidad, periodo, delta, variacion, referencia, fuente, periodoComparado, frescura } = indicador;
+
+// "% del PIB" en una columna angosta parte la cifra: "del PIB" pasa junto al periodo.
+const esPctPib = unidad === "% PIB";
+const valorFmt = formatIndicador(valor, esPctPib ? "%" : unidad);
+const periodoFmt = `${esPctPib ? "del PIB · " : ""}${formatPeriodoIndicador(periodo, def.periodicidad)}`;
+const comparadoFmt = periodoComparado ? formatPeriodoIndicador(periodoComparado, def.periodicidad) : null;
+
+const flecha = variacion === "subio" ? "↑" : variacion === "bajo" ? "↓" : variacion === "igual" ? "→" : "";
+let cambio: string | null = null;
+if (variacion && comparadoFmt) {
+  cambio = variacion === "igual" || delta === null || delta === 0
+    ? `Sin cambio frente a ${comparadoFmt}`
+    : `${variacion === "subio" ? "Subió" : "Bajó"} ${formatCambio(delta, unidad)} frente a ${comparadoFmt}`;
+}
+const tituloId = `ind-${def.id}`;
+---
+
+<article class="ind-card" aria-labelledby={tituloId}>
+  <h3 class="ind-card__nombre" id={tituloId}>{def.nombre}</h3>
+  {frescura === "no-reciente" && (
+    <p class="ind-card__aviso">Dato no reciente</p>
+  )}
+
+  <p class="ind-card__valor">
+    <span class="ind-card__numero">{valorFmt}</span>
+    <time class="ind-card__periodo" datetime={periodo}>{periodoFmt}</time>
+  </p>
+
+  {cambio && (
+    <p class="ind-card__cambio">
+      <span class="ind-card__flecha" aria-hidden="true">{flecha}</span>
+      {cambio}
+    </p>
+  )}
+
+  <div class="ind-card__spark">
+    <Chart id={sparklineId(def.id)} variant="sparkline" />
+  </div>
+
+  <p class="ind-card__referencia">{referencia.frase}</p>
+  <p class="ind-card__explicacion">{def.explicacion}</p>
+
+  <footer class="ind-card__pie">
+    {fuente && (
+      <a class="ind-card__fuente" href={fuente.url} target="_blank" rel="noopener">
+        Fuente: {fuente.nombre}
+      </a>
+    )}
+    <a
+      class="ind-card__destino"
+      href={def.href}
+      data-ga-event="home_indicador_click"
+      data-ga-indicador={def.id}
+      data-ga-destino={def.href}
+    >
+      {def.destino} <span aria-hidden="true">→</span>
+    </a>
+  </footer>
+</article>
+
+<style>
+  .ind-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .ind-card:hover,
+  .ind-card:focus-within {
+    border-color: var(--color-accent);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  }
+
+  .ind-card__nombre {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* Aviso de frescura (KPI K6): texto explícito, no solo color. */
+  .ind-card__aviso {
+    align-self: flex-start;
+    margin: 0;
+    padding: 0.125rem 0.5rem;
+    border: 1px solid #d97706;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #b45309;
+  }
+
+  .ind-card__valor {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .ind-card__numero {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ind-card__periodo {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  .ind-card__cambio,
+  .ind-card__referencia {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ind-card__flecha {
+    margin-right: 0.25rem;
+  }
+
+  .ind-card__spark {
+    height: 48px;
+  }
+
+  .ind-card__explicacion {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+  }
+
+  .ind-card__pie {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.72rem;
+  }
+
+  .ind-card__fuente {
+    position: relative;
+    z-index: 1;
+    color: var(--color-text-muted);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .ind-card__fuente:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .ind-card__destino {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  /* Enlace "estirado": toda la tarjeta lleva al dominio; la fuente queda por encima. */
+  .ind-card__destino::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+  }
+
+  .ind-card__destino:focus-visible {
+    outline: none;
+  }
+
+  .ind-card__destino:focus-visible::after {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .ind-card__fuente:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ind-card {
+      transition: none;
+    }
+  }
+</style>

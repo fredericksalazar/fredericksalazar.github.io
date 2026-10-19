@@ -1,4 +1,4 @@
-import { COLORS, baseLayout, extractSerie, periodoToISODate, lineasReferencia, trazaLinea, META_BANREP } from "../charts";
+import { COLORS, baseLayout, extractSerie, periodoToISODate, lineasReferencia, trazaLinea, META_BANREP, RANGO_META_BANREP } from "../charts";
 import {
   frenoAceleradorMinMax,
   inflacionAnualPromedio,
@@ -35,7 +35,7 @@ export const inflacionAnual: ChartDef = {
       layout: baseLayout({
         // Banda de meta 2–4 %; la línea y la etiqueta de la meta las pone META_BANREP.
         shapes: [
-          { type: "rect", xref: "x", yref: "y", x0: x[0], x1: x[x.length - 1], y0: 2, y1: 4,
+          { type: "rect", xref: "x", yref: "y", x0: x[0], x1: x[x.length - 1], y0: RANGO_META_BANREP.min, y1: RANGO_META_BANREP.max,
             fillcolor: COLORS.metaBanda, line: { width: 0 }, layer: "below" },
           ...refs.shapes,
         ],
@@ -295,7 +295,7 @@ export const pibInflacion: ChartDef = {
           tickfont: { size: 11, color: "#636c76" }, ticksuffix: "%", automargin: true,
         },
         shapes: [
-          { type: "rect", xref: "x", yref: "y", x0: xMin, x1: xMax, y0: 2, y1: 4, fillcolor: COLORS.metaBanda, line: { width: 0 }, layer: "below" },
+          { type: "rect", xref: "x", yref: "y", x0: xMin, x1: xMax, y0: RANGO_META_BANREP.min, y1: RANGO_META_BANREP.max, fillcolor: COLORS.metaBanda, line: { width: 0 }, layer: "below" },
           ...meta.shapes,
         ],
         annotations: [

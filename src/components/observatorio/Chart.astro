@@ -5,14 +5,31 @@ import { getChartDef, type ChartId } from "../../lib/observatorio/chart-defs";
 interface Props {
   id: ChartId;
   embedded?: boolean;
+  /**
+   * "sparkline": micrográfica sin card, título ni fuente propios; la card es el
+   * componente que la contiene (excepción UI-07/UI-08 aprobada en la spec 005).
+   */
+  variant?: "card" | "sparkline";
 }
 
-const { id, embedded = false } = Astro.props;
+const { id, embedded = false, variant = "card" } = Astro.props;
 const def = getChartDef(id);
 if (!def) throw new Error(`ChartDef no encontrado: ${id}`);
 const chartElementId = `chart-${def.id}`;
 ---
 
+{variant === "sparkline" ? (
+  <div class="plotly-chart plotly-chart--sparkline" data-chart-host={def.id}>
+    <div
+      id={chartElementId}
+      class="plotly-chart__canvas"
+      style={`height: ${def.height ?? 48}px;`}
+      aria-busy="true"
+      role="img"
+      aria-label={def.ariaLabel ?? def.titulo}
+    ></div>
+  </div>
+) : (
 <ChartContainer
   titulo={def.titulo}
   pregunta={def.pregunta}
@@ -32,6 +49,7 @@ const chartElementId = `chart-${def.id}`;
   </div>
   <div slot="footer-extra" data-chart-footer-slot data-for={def.id}></div>
 </ChartContainer>
+)}
 
 <style>
   .plotly-chart { width: 100%; }

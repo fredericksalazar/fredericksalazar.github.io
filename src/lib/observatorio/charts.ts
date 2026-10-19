@@ -113,6 +113,9 @@ export const META_BANREP: ReferenceLine = {
   decimales: 0,
 };
 
+/** Rango de tolerancia de la meta del BanRep (3 % ± 1 pp). Definición ÚNICA. */
+export const RANGO_META_BANREP = { min: 2, max: 4 } as const;
+
 /**
  * Genera las líneas de referencia de un gráfico: máximo, promedio y mínimo de
  * la serie más las referencias `extra`. Todas las etiquetas van a la IZQUIERDA

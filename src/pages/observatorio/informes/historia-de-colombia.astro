@@ -26,13 +26,6 @@ const jsonLd = {
   license: "https://creativecommons.org/licenses/by/4.0/",
   spatialCoverage: { "@type": "Place", name: "Colombia" },
   isPartOf: { "@type": "CollectionPage", name: "Informes del Observatorio", url: absUrls.observatorioInformes() },
-  distribution: informe.versiones.map((v) => ({
-    "@type": "DataDownload",
-    name: `${informe.titulo} — ${v.version}`,
-    encodingFormat: "application/pdf",
-    contentUrl: absUrls.informePdf(v.archivo),
-    datePublished: v.fecha,
-  })),
 };
 ---
 

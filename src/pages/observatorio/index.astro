@@ -1,279 +1,229 @@
 ---
+/**
+ * Home del Observatorio de Datos de Colombia (spec 005).
+ * Todas las cifras salen de `public/data/*.json` en build (data.ts → home.ts);
+ * las mini tendencias se cargan en cliente (REGLA 2).
+ */
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
 import MapaColombia from "../../components/observatorio/MapaColombia.astro";
 import DashboardNav from "../../components/observatorio/DashboardNav.astro";
+import IndicadorClaveCard from "../../components/observatorio/IndicadorClaveCard.astro";
 import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
-import KpiRow from "../../components/observatorio/KpiRow.astro";
-import PageHeader from "../../components/observatorio/PageHeader.astro";
-import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
-import GlosarioGrid from "../../components/observatorio/GlosarioGrid.astro";
-import Chart from "../../components/observatorio/Chart.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
-import { getObservatorio } from "../../lib/observatorio/data";
-import { absUrls, urls } from "../../lib/urls";
-import { trail, sectionCrumb } from "../../lib/seo";
-import { formatPeriodo } from "../../lib/observatorio/formatters";
-import { FUENTE_CALCULO_PROPIO, FUENTE_HISTORICA_BM } from "../../lib/observatorio/fuentes";
+import Card from "../../components/Card.astro";
+import AuthorBio from "../../components/AuthorBio.astro";
+import { getCollection } from "astro:content";
+import { INFORMES } from "../../lib/observatorio/informes";
+import {
+  getObservatorio,
+  getEmpleo,
+  getPIB,
+  getComercio,
+  getExterno,
+  getDemografia,
+  getSalarioMinimo,
+} from "../../lib/observatorio/data";
+import {
+  DATASETS_PUBLICADOS,
+  GRUPOS,
+  buildIndicadoresClave,
+  publicacionesRecientes,
+  type DatasetObservatorio,
+  type DatasetsHome,
+} from "../../lib/observatorio/home";
+import { yearOf } from "../../lib/observatorio/derivations";
+import { trail, sectionCrumb, catalogoSchema } from "../../lib/seo";
+import { urls, absUrls } from "../../lib/urls";
+import type { Fuente } from "../../lib/observatorio/types";
 
-const obs = getObservatorio();
-const ultimoPeriodo = formatPeriodo(obs.metadata.cobertura.ultimo_periodo);
+const datasets = {
+  inflacion: getObservatorio(),
+  empleo: getEmpleo(),
+  pib: getPIB(),
+  comercio: getComercio(),
+  externo: getExterno(),
+  demografia: getDemografia(),
+  "salario-minimo": getSalarioMinimo(),
+} as unknown as DatasetsHome;
 
-const inflacionActual = obs.indicadores.inflacion_anual.actual.valor ?? 0;
-const inflacionMensualActual = obs.indicadores.inflacion_mensual.actual.valor ?? 0;
-const tasaActual = obs.indicadores.tasa_interes.actual.valor ?? 0;
-const spreadActual = obs.indicadores.spread.actual.valor ?? 0;
-const distanciaMeta = (inflacionActual - 3).toFixed(2);
-const fueraDeMeta = inflacionActual > 4 || inflacionActual < 2;
+const indicadores = buildIndicadoresClave(datasets);
+const recientes = publicacionesRecientes(await getCollection("blog"), INFORMES);
 
-const fuenteInflacion = obs.metadata.fuentes.inflacion;
-const fuenteTasa = obs.metadata.fuentes.tasa_interes;
+const grupos = GRUPOS
+  .map((g) => ({ ...g, items: indicadores.filter((i) => i.def.grupo === g.id) }))
+  .filter((g) => g.items.length > 0);
 
-const fuenteCalculo = obs.metadata.fuentes.calculo_propio ?? FUENTE_CALCULO_PROPIO;
-const fuenteHistorica = FUENTE_HISTORICA_BM;
+// Cifras de contexto del hero, cada una con periodo y fuente (constitución, principio II).
+const todos = Object.values(datasets) as DatasetObservatorio[];
+const pib = getPIB();
+const poblacion = pib.indicadores.poblacion.actual;
+const nfMillones = new Intl.NumberFormat("es-CO", { maximumFractionDigits: 1 });
+const anioMasAntiguo = Math.min(...todos.map((d) => parseInt(yearOf(d.metadata.cobertura.primer_periodo), 10)));
+const anioMasReciente = Math.max(...todos.map((d) => parseInt(yearOf(d.metadata.cobertura.ultimo_periodo), 10)));
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Dataset",
-      name: "Observatorio de Datos de Colombia — Inflación y Tasas de Interés",
-      description:
-        "Serie mensual consolidada de inflación anual (DANE), tasa de intervención del Banco de la República y spread real para Colombia desde 2004.",
-      url: "https://fredericksalazar.github.io/observatorio/",
-      keywords: [
-        "inflación Colombia",
-        "tasa de interés BanRep",
-        "IPC Colombia",
-        "política monetaria",
-        "spread tasa real",
-      ],
-      creator: {
-        "@type": "Person",
-        name: "Frederick Salazar",
-        url: "https://fredericksalazar.github.io/",
-      },
-      isBasedOn: [
-        { "@type": "CreativeWork", name: fuenteInflacion.nombre, url: fuenteInflacion.url },
-        { "@type": "CreativeWork", name: fuenteTasa.nombre, url: fuenteTasa.url },
-      ],
-      temporalCoverage: `${obs.metadata.cobertura.primer_periodo}/${obs.metadata.cobertura.ultimo_periodo}`,
-      dateModified: obs.metadata.ultima_actualizacion,
-      license: "https://creativecommons.org/licenses/by/4.0/",
-      spatialCoverage: { "@type": "Place", name: "Colombia" },
-      distribution: [{ "@type": "DataDownload", encodingFormat: "application/json", contentUrl: "https://fredericksalazar.github.io/data/data_inflacion.json" }],
-    },
-    {
-      "@type": "Article",
-      headline: "Inflación vs Tasas de Interés en Colombia",
-      description:
-        "Explicación sencilla de cómo se mueven la inflación (DANE) y la tasa del Banco de la República, y qué significa el spread real para el bolsillo de los colombianos.",
-      author: { "@type": "Person", name: "Frederick Salazar" },
-      datePublished: "2026-05-08",
-      dateModified: obs.metadata.ultima_actualizacion,
-      about: [
-        { "@type": "Thing", name: "Inflación" },
-        { "@type": "Thing", name: "Tasa de interés" },
-        { "@type": "Thing", name: "Política monetaria" },
-        { "@type": "Place", name: "Colombia" },
-      ],
-      mainEntityOfPage: "https://fredericksalazar.github.io/observatorio/",
-    },
-  ],
-};
+const heroKpis = [
+  ...(poblacion.valor !== null
+    ? [{
+        value: `${nfMillones.format(poblacion.valor / 1_000_000)} M`,
+        label: `Habitantes · ${yearOf(poblacion.periodo)} · ${pib.metadata.fuentes.pib.nombre.split(" — ")[0]}`,
+      }]
+    : []),
+  { value: DATASETS_PUBLICADOS.length, label: "Conjuntos de datos" },
+  { value: `${anioMasAntiguo}–${anioMasReciente}`, label: "Años de historia" },
+];
+
+const ultimaActualizacion = todos
+  .map((d) => d.metadata.ultima_actualizacion)
+  .sort()
+  .at(-1)!;
+// Fuentes oficiales del panel, sin duplicados (sección de confianza y footer).
+const fuentesPanel = [
+  ...new Map(
+    indicadores.filter((i) => i.fuente).map((i) => [i.fuente!.url, i.fuente!] as const),
+  ).values(),
+] as Fuente[];
+const anioVersion = yearOf(ultimaActualizacion);
+const citaSugerida =
+  `Salazar, F. (${anioVersion}). Observatorio de Datos de Colombia [Conjunto de datos]. ${absUrls.observatorio()}`;
+
+const TITULO = "Indicadores económicos de Colombia hoy · Observatorio";
+const DESCRIPCION =
+  "Inflación, tasa BanRep, desempleo, PIB y dólar en Colombia: los indicadores clave del país en un vistazo, con fuente oficial y actualización automática.";
+
+// JSON-LD DataCatalog: un Dataset por JSON publicado (FR-015). La clave del
+// archivo usa "_" y el nombre del dataset en data-client usa "-".
+const jsonLd = catalogoSchema(
+  DATASETS_PUBLICADOS.map((d) => {
+    const data = datasets[d.clave.replace("_", "-") as keyof DatasetsHome]!;
+    return {
+      ...d,
+      ultimaActualizacion: data.metadata.ultima_actualizacion,
+      primerPeriodo: data.metadata.cobertura.primer_periodo,
+      ultimoPeriodo: data.metadata.cobertura.ultimo_periodo,
+      fuentes: Object.values(data.metadata.fuentes).filter((f): f is Fuente => !!f),
+    };
+  }),
+  { nombre: TITULO, descripcion: DESCRIPCION },
+);
 ---
 
 <BaseLayout
-  title="Inflación y Tasas de Interés en Colombia"
-  description="Inflación del DANE, tasa del Banco de la República y spread real en Colombia. Datos mensuales desde 2004 explicados de forma sencilla."
-  image="/images/observatorio.png"
+  title={TITULO}
+  description={DESCRIPCION}
+  image="/images/observatorio-home.png"
   fullWidth={true}
   breadcrumbs={trail(sectionCrumb.observatorio)}
 >
   <Hero
-    badge={{ text: "Datos Públicos · Colombia" }}
-    title="Inflación y tasas de interés en Colombia"
-    subtitle="El Observatorio de Datos de Colombia consolida, procesa y publica los indicadores macroeconómicos que definen el pulso del país: para que cualquier persona lea la economía colombiana como un gerente lee el dashboard de su empresa."
-    tags={["Inflación", "Empleo", "Comercio Exterior", "Sector Fiscal", "Monetario"]}
+    badge={{ text: "Datos públicos · Colombia" }}
+    title="Observatorio de Datos de Colombia"
+    subtitle="Inflación, empleo, crecimiento y dólar en un solo vistazo. Cifras oficiales del DANE, el Banco de la República y el Banco Mundial, actualizadas de forma automática y explicadas para cualquier persona."
+    kpis={heroKpis}
+    tags={["Indicadores clave", "Fuentes oficiales", "Actualización automática"]}
     showPartners={false}
   >
     <MapaColombia slot="visual" />
   </Hero>
-  <DashboardNav active="inflacion-tasa" />
+  <DashboardNav active="inicio" />
 
   <div class="observatorio-container">
-    <PageHeader
-      eyebrow={`Actualizado · ${ultimoPeriodo}`}
-      hint={`Inflación ${distanciaMeta.startsWith("-") ? "" : "+"}${distanciaMeta} pp respecto a la meta · Datos DANE y Banco de la República`}
-    >
-      La inflación en Colombia se ubica en
-      <strong>{inflacionActual}%</strong>,
-      {fueraDeMeta ? "por fuera" : "dentro"} de la meta del Banco de la República (3%).
-      La tasa de intervención está en
-      <strong>{tasaActual}%</strong>,
-      dejando un spread real de
-      <strong>{spreadActual} pp</strong>.
-    </PageHeader>
+    <section class="panel-clave" aria-labelledby="panel-clave-titulo">
+      <div class="panel-clave__cabecera">
+        <p class="panel-clave__eyebrow">Indicadores clave</p>
+        <h2 class="panel-clave__titulo" id="panel-clave-titulo">Cómo va Colombia</h2>
+      </div>
 
-    <KpiRow indicadores={obs.indicadores} />
+      <div class="panel-clave__grupos">
+        {grupos.map((g) => (
+          <section
+            class="grupo"
+            style={`--span: ${g.items.length};`}
+            aria-labelledby={`grupo-${g.id}`}
+          >
+            <h3 class="grupo__titulo" id={`grupo-${g.id}`}>{g.titulo}</h3>
+            <div class="grupo__tarjetas">
+              {g.items.map((ind) => <IndicadorClaveCard indicador={ind} />)}
+            </div>
+          </section>
+        ))}
+      </div>
+    </section>
 
-    <IndicadorPanel
-      numero="01"
-      eyebrow="Contexto histórico"
-      titulo="La inflación de Colombia en los últimos 50 años"
-      lead="De cifras de dos dígitos en los 80 y 90 a una zona estable cerca del 3 % desde el 2000. Aquí se ven los cambios estructurales y los choques recientes."
-      fuente={fuenteHistorica}
-    >
-      <Fragment slot="text">
-        <p>
-          Colombia vivió épocas en las que los precios subían más del <strong>25 % al año</strong>. Comprar la
-          misma canasta familiar en diciembre costaba una cuarta parte más que en enero.
-        </p>
-        <ul>
-          <li><strong>70s, 80s y 90s:</strong> inflación de dos dígitos, con picos sobre 25 %.</li>
-          <li><strong>Post 2000:</strong> independencia del Banco de la República y meta de inflación; convergencia hacia el 3 %.</li>
-          <li><strong>2022 – 2023:</strong> choque pos-pandemia, dólar al alza y costos logísticos llevan la inflación a niveles no vistos en 20 años.</li>
-        </ul>
-      </Fragment>
-      <Chart slot="visual" id="inflacion-historica" embedded={true} />
-    </IndicadorPanel>
+    <section class="seccion" aria-labelledby="recientes-titulo">
+      <p class="seccion__eyebrow">Análisis e informes</p>
+      <h2 class="seccion__titulo" id="recientes-titulo">Lo más reciente</h2>
+      <div class="recientes">
+        {recientes.map((pub) => (
+          <Card
+            variant="blog"
+            href={pub.href}
+            image={pub.imagen}
+            imageAlt={pub.titulo}
+            title={pub.titulo}
+            description={pub.descripcion}
+            date={pub.fecha}
+            showTags={false}
+            data-ga-event="home_publicacion_click"
+            data-ga-tipo={pub.tipo}
+            data-ga-destino={pub.href}
+          />
+        ))}
+      </div>
+    </section>
 
-    <IndicadorPanel
-      numero="02"
-      eyebrow="Inflación reciente"
-      titulo="Inflación anual y meta del Banco de la República"
-      lead="La inflación es el aire que se le escapa al bolsillo. La meta del Banco es del 3 % con margen entre 2 % y 4 %."
-      fuente={fuenteInflacion}
-    >
-      <Fragment slot="text">
-        <p>
-          El Banco de la República tiene una <strong>meta de inflación del 3 %</strong>, con un margen de un
-          punto para arriba o para abajo (la banda sombreada). Cuando la inflación se sale por arriba, el Banco
-          suele subir su tasa para enfriar la economía.
-        </p>
-        <p>
-          El último dato cierra en <strong>{inflacionActual}%</strong> para {ultimoPeriodo}, por encima del
-          techo de 4 % de la banda objetivo.
-        </p>
-      </Fragment>
-      <Chart slot="visual" id="inflacion-anual" embedded={true} />
-    </IndicadorPanel>
+    <section class="seccion confianza" aria-labelledby="confianza-titulo">
+      <p class="seccion__eyebrow">Transparencia</p>
+      <h2 class="seccion__titulo" id="confianza-titulo">Datos en los que puedes confiar</h2>
+      <div class="confianza__grilla">
+        <div class="confianza__bloque">
+          <h3 class="confianza__subtitulo">Fuentes oficiales</h3>
+          <ul class="confianza__lista">
+            {fuentesPanel.map((f) => (
+              <li><a href={f.url} target="_blank" rel="noopener">{f.nombre}</a> · {f.indicador}</li>
+            ))}
+          </ul>
+        </div>
+        <div class="confianza__bloque">
+          <h3 class="confianza__subtitulo">Cómo se actualiza</h3>
+          <p>
+            Un pipeline automático descarga las fuentes oficiales varias veces al mes, valida cada serie y
+            publica los datos. Si una fuente falla, se conserva la última versión válida: nunca se reemplaza
+            un dato por uno más pobre.
+          </p>
+          <p><a href={urls.observatorioSub("acerca")}>Lee la metodología completa</a></p>
+        </div>
+        <div class="confianza__bloque">
+          <h3 class="confianza__subtitulo">Cita y comparte</h3>
+          <p>
+            Las cifras, gráficos y análisis del Observatorio se publican con licencia
+            <a href="https://creativecommons.org/licenses/by/4.0/deed.es" target="_blank" rel="noopener">CC BY 4.0</a>:
+            puedes citarlos y compartirlos mencionando la fuente.
+          </p>
+          <p class="confianza__cita"><span class="confianza__cita-label">Cita sugerida</span>{citaSugerida}</p>
+        </div>
+      </div>
+    </section>
 
-    <IndicadorPanel
-      numero="03"
-      eyebrow="Ritmo mensual"
-      titulo="Inflación mensual y su patrón estacional"
-      lead="La variación mensual dice a qué velocidad suben los precios hoy; la anual, cuánto se acumuló en doce meses."
-      fuente={fuenteInflacion}
-    >
-      <Fragment slot="text">
-        <p>
-          La <strong>inflación mensual</strong> compara los precios de un mes con los del mes anterior. En
-          {ultimoPeriodo} fue <strong>{inflacionMensualActual}%</strong>. Pero ese número no se lee solo: los
-          precios en Colombia siguen un calendario. <strong>Enero y febrero</strong> concentran la indexación
-          anual de salario mínimo, arriendos, matrículas y transporte; agosto y octubre son los meses más
-          planos, y los puntos verdes marcan los meses en que los precios cayeron.
-        </p>
-        <p>
-          Ese calendario explica algo que confunde: la inflación anual puede <strong>subir</strong> aunque la
-          mensual <strong>baje</strong>. La anual es una ventana móvil de doce meses; cada mes entra un dato
-          nuevo y sale el de hace un año. Si el que entra es más caro que el que sale, el acumulado sube por
-          más que los precios se estén moderando.
-        </p>
-      </Fragment>
-      <Chart slot="visual" id="inflacion-mensual" embedded={true} />
-    </IndicadorPanel>
-
-    <IndicadorPanel
-      numero="04"
-      eyebrow="Política monetaria"
-      titulo="Tasa de intervención del Banco de la República"
-      lead="La tasa BanRep es el pedal del freno y el acelerador de la economía: define el costo del crédito en todo el país."
-      fuente={fuenteTasa}
-    >
-      <Fragment slot="text">
-        <p>
-          La <strong>tasa de intervención</strong> es la que el Banco le cobra a los bancos comerciales. Es el
-          punto de partida del costo del crédito de vivienda, tarjeta y libre inversión que paga cualquier
-          colombiano.
-        </p>
-        <p>
-          Hoy está en <strong>{tasaActual}%</strong>. Cuando sube, todo el crédito se encarece; cuando baja, se
-          abarata y la economía se reactiva.
-        </p>
-      </Fragment>
-      <Chart slot="visual" id="tasa-interes" embedded={true} />
-    </IndicadorPanel>
-
-    <IndicadorPanel
-      numero="05"
-      eyebrow="Postura del Banco"
-      titulo="¿La política monetaria está frenando o acelerando?"
-      lead="Lo que importa no es la tasa nominal sino la tasa real: tasa de interés menos inflación. Ahí se ve si el Banco pisa el freno o el acelerador."
-      fuente={fuenteCalculo}
-    >
-      <Fragment slot="text">
-        <p>
-          Una tasa "alta" no siempre significa que el Banco está frenando. Si la inflación está en 8 % y la
-          tasa en 10 %, el freno apenas se siente. Si la inflación baja a 4 % con la tasa en 10 %, el mismo
-          número se vuelve un freno mucho más fuerte.
-        </p>
-        <ul>
-          <li><strong>Frenando:</strong> tasa muy por encima de la inflación.</li>
-          <li><strong>Neutral:</strong> tasa parecida a la inflación.</li>
-          <li><strong>Acelerando:</strong> tasa por debajo de la inflación.</li>
-        </ul>
-      </Fragment>
-      <Chart slot="visual" id="freno-acelerador" embedded={true} />
-    </IndicadorPanel>
-
-    <IndicadorPanel
-      numero="06"
-      eyebrow="El número clave"
-      titulo="El spread: la diferencia que mueve tu bolsillo"
-      lead={`Spread real de hoy: ${spreadActual} puntos porcentuales. Es la resta tasa − inflación y resume si ahorrar rinde y si endeudarse duele.`}
-      fuente={fuenteCalculo}
-    >
-      <Fragment slot="text">
-        <p>
-          Cuando el spread es <strong>positivo y grande</strong>, el ahorro rinde y el crédito duele. Cuando
-          es <strong>negativo</strong>, ahorrar pierde valor y endeudarse parece "barato" — pero suele ser
-          señal de inflación descontrolada.
-        </p>
-        <ul>
-          <li>Barras altas → política <strong>restrictiva</strong> (Banco frenando).</li>
-          <li>Barras bajas o negativas → política <strong>expansiva</strong> (Banco acelerando).</li>
-        </ul>
-        <p>
-          Lee el análisis del último dato en el blog:
-          <a href={urls.blogPost("inflacion-tasas-interes-colombia-agosto-2026")}>
-            Inflación en Colombia agosto 2026: sube a 6,25% y el BanRep mantiene la tasa en 12%</a>.
-        </p>
-      </Fragment>
-      <Chart slot="visual" id="spread" embedded={true} />
-    </IndicadorPanel>
-
-    <GlosarioGrid
-      fuenteInflacion={fuenteInflacion}
-      fuenteTasa={fuenteTasa}
-      primerPeriodo={obs.metadata.cobertura.primer_periodo}
-      ultimoPeriodo={obs.metadata.cobertura.ultimo_periodo}
-    />
+    <section class="seccion autor" aria-label="Quién construye el Observatorio">
+      <p class="seccion__eyebrow">Quién está detrás</p>
+      <AuthorBio />
+      <p class="autor__cta">
+        <a href={urls.home()} data-ga-event="home_autor_click" data-ga-destino="perfil">
+          Conoce mi trabajo y mi experiencia <span aria-hidden="true">→</span>
+        </a>
+      </p>
+    </section>
 
     <DashboardFooter
-      fuentes={[fuenteInflacion, fuenteTasa]}
-      ultimaActualizacion={obs.metadata.ultima_actualizacion}
+      fuentes={fuentesPanel}
+      ultimaActualizacion={ultimaActualizacion}
       definiciones={[
-        {
-          titulo: "Spread real",
-          texto: "tasa de intervención − inflación anual, en puntos porcentuales (tasa real ex-post)."
-        },
-        {
-          titulo: "Variación",
-          texto: "subió | bajó | igual respecto al mes inmediatamente anterior."
-        },
+        { titulo: "Promedio de 20 años", texto: "media de los valores publicados en los últimos 20 años de cada serie." },
+        { titulo: "Hace un año", texto: "valor del mismo periodo del año anterior; se usa en series en pesos o dólares corrientes." },
+        { titulo: "Dato no reciente", texto: "serie mensual sin dato nuevo 45 días después del cierre del mes siguiente, o anual sin dato 15 meses después del cierre del año." },
       ]}
-      cobertura={`${obs.metadata.cobertura.primer_periodo} → ${obs.metadata.cobertura.ultimo_periodo} · ${obs.metadata.cobertura.total_registros} registros`}
+      cobertura={`${anioMasAntiguo} → ${anioMasReciente} · ${DATASETS_PUBLICADOS.length} conjuntos de datos`}
     />
   </div>
 
@@ -289,10 +239,186 @@ const jsonLd = {
     padding: 1.75rem 0 3rem;
   }
 
+  .panel-clave {
+    margin-bottom: 1.5rem;
+  }
+
+  .panel-clave__cabecera {
+    margin-bottom: 1rem;
+  }
+
+  .panel-clave__eyebrow {
+    margin: 0 0 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .panel-clave__titulo {
+    margin: 0;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+
+  /* 8 columnas lógicas: cada grupo ocupa tantas como tarjetas tiene. */
+  .panel-clave__grupos {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem 1rem;
+  }
+
+  .grupo {
+    grid-column: span var(--span);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .grupo__titulo {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+  }
+
+  .grupo__tarjetas {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(var(--span), minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .seccion {
+    margin: 2.5rem 0 1.5rem;
+  }
+
+  .seccion__eyebrow {
+    margin: 0 0 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .seccion__titulo {
+    margin: 0 0 1rem;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+
+  .recientes {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .autor__cta {
+    margin: 1rem 0 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .autor__cta a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .autor__cta a:hover {
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+  }
+
+  .confianza__grilla {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .confianza__bloque {
+    padding: 1.25rem;
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .confianza__bloque p {
+    margin: 0 0 0.5rem;
+  }
+
+  .confianza__bloque a {
+    color: var(--color-accent);
+  }
+
+  .confianza__subtitulo {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+
+  .confianza__lista {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+  .confianza__lista li::marker {
+    color: var(--color-accent);
+  }
+
+  .confianza__cita {
+    padding: 0.75rem;
+    background: var(--color-bg);
+    border-radius: 6px;
+    word-break: break-word;
+  }
+
+  .confianza__cita-label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 1024px) {
+    .recientes,
+    .confianza__grilla {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .panel-clave__grupos {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .grupo {
+      grid-column: 1 / -1;
+    }
+
+    .grupo__tarjetas {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
   @media (max-width: 640px) {
     .observatorio-container {
       width: 100%;
       padding: 1.25rem 1rem 2rem;
+    }
+
+    .grupo__tarjetas,
+    .recientes,
+    .confianza__grilla {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

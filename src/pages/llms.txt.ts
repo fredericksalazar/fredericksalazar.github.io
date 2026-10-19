@@ -20,6 +20,7 @@ export const GET: APIRoute = async () => {
   lines.push(`- [Inicio](${absUrls.home()}): perfil, experiencia y portafolio.`);
   lines.push(`- [Blog](${absUrls.blog()}): índice de artículos.`);
   lines.push(`- [Proyectos](${absUrls.proyectos()}): proyectos de datos y software.`);
+  lines.push(`- [Observatorio de Datos de Colombia](${absUrls.observatorio()}): indicadores económicos clave de Colombia con fuente oficial y actualización automática.`);
   lines.push(`- [RSS feed](${absUrls.rss()}): feed actualizado de artículos.`);
   lines.push('');
   lines.push('## Artículos del blog');

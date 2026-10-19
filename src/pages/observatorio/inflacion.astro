@@ -1,0 +1,312 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import MapaColombia from "../../components/observatorio/MapaColombia.astro";
+import DashboardNav from "../../components/observatorio/DashboardNav.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+import KpiRow from "../../components/observatorio/KpiRow.astro";
+import PageHeader from "../../components/observatorio/PageHeader.astro";
+import IndicadorPanel from "../../components/observatorio/IndicadorPanel.astro";
+import GlosarioGrid from "../../components/observatorio/GlosarioGrid.astro";
+import Chart from "../../components/observatorio/Chart.astro";
+import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
+import { getObservatorio } from "../../lib/observatorio/data";
+import { absUrls, urls } from "../../lib/urls";
+import { trail, sectionCrumb } from "../../lib/seo";
+import { formatPeriodo } from "../../lib/observatorio/formatters";
+import { FUENTE_CALCULO_PROPIO, FUENTE_HISTORICA_BM } from "../../lib/observatorio/fuentes";
+
+const obs = getObservatorio();
+const ultimoPeriodo = formatPeriodo(obs.metadata.cobertura.ultimo_periodo);
+
+const inflacionActual = obs.indicadores.inflacion_anual.actual.valor ?? 0;
+const inflacionMensualActual = obs.indicadores.inflacion_mensual.actual.valor ?? 0;
+const tasaActual = obs.indicadores.tasa_interes.actual.valor ?? 0;
+const spreadActual = obs.indicadores.spread.actual.valor ?? 0;
+const distanciaMeta = (inflacionActual - 3).toFixed(2);
+const fueraDeMeta = inflacionActual > 4 || inflacionActual < 2;
+
+const fuenteInflacion = obs.metadata.fuentes.inflacion;
+const fuenteTasa = obs.metadata.fuentes.tasa_interes;
+
+const fuenteCalculo = obs.metadata.fuentes.calculo_propio ?? FUENTE_CALCULO_PROPIO;
+const fuenteHistorica = FUENTE_HISTORICA_BM;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Dataset",
+      name: "Observatorio de Datos de Colombia — Inflación y Tasas de Interés",
+      description:
+        "Serie mensual consolidada de inflación anual (DANE), tasa de intervención del Banco de la República y spread real para Colombia desde 2004.",
+      url: absUrls.observatorioSub("inflacion"),
+      keywords: [
+        "inflación Colombia",
+        "tasa de interés BanRep",
+        "IPC Colombia",
+        "política monetaria",
+        "spread tasa real",
+      ],
+      creator: {
+        "@type": "Person",
+        name: "Frederick Salazar",
+        url: "https://fredericksalazar.github.io/",
+      },
+      isBasedOn: [
+        { "@type": "CreativeWork", name: fuenteInflacion.nombre, url: fuenteInflacion.url },
+        { "@type": "CreativeWork", name: fuenteTasa.nombre, url: fuenteTasa.url },
+      ],
+      temporalCoverage: `${obs.metadata.cobertura.primer_periodo}/${obs.metadata.cobertura.ultimo_periodo}`,
+      dateModified: obs.metadata.ultima_actualizacion,
+      license: "https://creativecommons.org/licenses/by/4.0/",
+      spatialCoverage: { "@type": "Place", name: "Colombia" },
+    },
+    {
+      "@type": "Article",
+      headline: "Inflación vs Tasas de Interés en Colombia",
+      description:
+        "Explicación sencilla de cómo se mueven la inflación (DANE) y la tasa del Banco de la República, y qué significa el spread real para el bolsillo de los colombianos.",
+      author: { "@type": "Person", name: "Frederick Salazar" },
+      datePublished: "2026-05-08",
+      dateModified: obs.metadata.ultima_actualizacion,
+      about: [
+        { "@type": "Thing", name: "Inflación" },
+        { "@type": "Thing", name: "Tasa de interés" },
+        { "@type": "Thing", name: "Política monetaria" },
+        { "@type": "Place", name: "Colombia" },
+      ],
+      mainEntityOfPage: absUrls.observatorioSub("inflacion"),
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="Inflación y Tasas de Interés en Colombia"
+  description="Inflación del DANE, tasa del Banco de la República y spread real en Colombia. Datos mensuales desde 2004 explicados de forma sencilla."
+  image="/images/observatorio.png"
+  fullWidth={true}
+  breadcrumbs={trail(sectionCrumb.observatorio, { name: "Inflación y tasas", url: absUrls.observatorioSub("inflacion") })}
+>
+  <Hero
+    badge={{ text: "Datos Públicos · Colombia" }}
+    title="Inflación y tasas de interés en Colombia"
+    subtitle="El Observatorio de Datos de Colombia consolida, procesa y publica los indicadores macroeconómicos que definen el pulso del país: para que cualquier persona lea la economía colombiana como un gerente lee el dashboard de su empresa."
+    tags={["Inflación", "Empleo", "Comercio Exterior", "Sector Fiscal", "Monetario"]}
+    showPartners={false}
+  >
+    <MapaColombia slot="visual" />
+  </Hero>
+  <DashboardNav active="inflacion-tasa" />
+
+  <div class="observatorio-container">
+    <a class="volver-home" href={urls.observatorio()}>← Todos los indicadores</a>
+    <PageHeader
+      eyebrow={`Actualizado · ${ultimoPeriodo}`}
+      hint={`Inflación ${distanciaMeta.startsWith("-") ? "" : "+"}${distanciaMeta} pp respecto a la meta · Datos DANE y Banco de la República`}
+    >
+      La inflación en Colombia se ubica en
+      <strong>{inflacionActual}%</strong>,
+      {fueraDeMeta ? "por fuera" : "dentro"} de la meta del Banco de la República (3%).
+      La tasa de intervención está en
+      <strong>{tasaActual}%</strong>,
+      dejando un spread real de
+      <strong>{spreadActual} pp</strong>.
+    </PageHeader>
+
+    <KpiRow indicadores={obs.indicadores} />
+
+    <IndicadorPanel
+      numero="01"
+      eyebrow="Contexto histórico"
+      titulo="La inflación de Colombia en los últimos 50 años"
+      lead="De cifras de dos dígitos en los 80 y 90 a una zona estable cerca del 3 % desde el 2000. Aquí se ven los cambios estructurales y los choques recientes."
+      fuente={fuenteHistorica}
+    >
+      <Fragment slot="text">
+        <p>
+          Colombia vivió épocas en las que los precios subían más del <strong>25 % al año</strong>. Comprar la
+          misma canasta familiar en diciembre costaba una cuarta parte más que en enero.
+        </p>
+        <ul>
+          <li><strong>70s, 80s y 90s:</strong> inflación de dos dígitos, con picos sobre 25 %.</li>
+          <li><strong>Post 2000:</strong> independencia del Banco de la República y meta de inflación; convergencia hacia el 3 %.</li>
+          <li><strong>2022 – 2023:</strong> choque pos-pandemia, dólar al alza y costos logísticos llevan la inflación a niveles no vistos en 20 años.</li>
+        </ul>
+      </Fragment>
+      <Chart slot="visual" id="inflacion-historica" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="02"
+      eyebrow="Inflación reciente"
+      titulo="Inflación anual y meta del Banco de la República"
+      lead="La inflación es el aire que se le escapa al bolsillo. La meta del Banco es del 3 % con margen entre 2 % y 4 %."
+      fuente={fuenteInflacion}
+    >
+      <Fragment slot="text">
+        <p>
+          El Banco de la República tiene una <strong>meta de inflación del 3 %</strong>, con un margen de un
+          punto para arriba o para abajo (la banda sombreada). Cuando la inflación se sale por arriba, el Banco
+          suele subir su tasa para enfriar la economía.
+        </p>
+        <p>
+          El último dato cierra en <strong>{inflacionActual}%</strong> para {ultimoPeriodo}, por encima del
+          techo de 4 % de la banda objetivo.
+        </p>
+      </Fragment>
+      <Chart slot="visual" id="inflacion-anual" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="03"
+      eyebrow="Ritmo mensual"
+      titulo="Inflación mensual y su patrón estacional"
+      lead="La variación mensual dice a qué velocidad suben los precios hoy; la anual, cuánto se acumuló en doce meses."
+      fuente={fuenteInflacion}
+    >
+      <Fragment slot="text">
+        <p>
+          La <strong>inflación mensual</strong> compara los precios de un mes con los del mes anterior. En
+          {ultimoPeriodo} fue <strong>{inflacionMensualActual}%</strong>. Pero ese número no se lee solo: los
+          precios en Colombia siguen un calendario. <strong>Enero y febrero</strong> concentran la indexación
+          anual de salario mínimo, arriendos, matrículas y transporte; agosto y octubre son los meses más
+          planos, y los puntos verdes marcan los meses en que los precios cayeron.
+        </p>
+        <p>
+          Ese calendario explica algo que confunde: la inflación anual puede <strong>subir</strong> aunque la
+          mensual <strong>baje</strong>. La anual es una ventana móvil de doce meses; cada mes entra un dato
+          nuevo y sale el de hace un año. Si el que entra es más caro que el que sale, el acumulado sube por
+          más que los precios se estén moderando.
+        </p>
+      </Fragment>
+      <Chart slot="visual" id="inflacion-mensual" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="04"
+      eyebrow="Política monetaria"
+      titulo="Tasa de intervención del Banco de la República"
+      lead="La tasa BanRep es el pedal del freno y el acelerador de la economía: define el costo del crédito en todo el país."
+      fuente={fuenteTasa}
+    >
+      <Fragment slot="text">
+        <p>
+          La <strong>tasa de intervención</strong> es la que el Banco le cobra a los bancos comerciales. Es el
+          punto de partida del costo del crédito de vivienda, tarjeta y libre inversión que paga cualquier
+          colombiano.
+        </p>
+        <p>
+          Hoy está en <strong>{tasaActual}%</strong>. Cuando sube, todo el crédito se encarece; cuando baja, se
+          abarata y la economía se reactiva.
+        </p>
+      </Fragment>
+      <Chart slot="visual" id="tasa-interes" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="05"
+      eyebrow="Postura del Banco"
+      titulo="¿La política monetaria está frenando o acelerando?"
+      lead="Lo que importa no es la tasa nominal sino la tasa real: tasa de interés menos inflación. Ahí se ve si el Banco pisa el freno o el acelerador."
+      fuente={fuenteCalculo}
+    >
+      <Fragment slot="text">
+        <p>
+          Una tasa "alta" no siempre significa que el Banco está frenando. Si la inflación está en 8 % y la
+          tasa en 10 %, el freno apenas se siente. Si la inflación baja a 4 % con la tasa en 10 %, el mismo
+          número se vuelve un freno mucho más fuerte.
+        </p>
+        <ul>
+          <li><strong>Frenando:</strong> tasa muy por encima de la inflación.</li>
+          <li><strong>Neutral:</strong> tasa parecida a la inflación.</li>
+          <li><strong>Acelerando:</strong> tasa por debajo de la inflación.</li>
+        </ul>
+      </Fragment>
+      <Chart slot="visual" id="freno-acelerador" embedded={true} />
+    </IndicadorPanel>
+
+    <IndicadorPanel
+      numero="06"
+      eyebrow="El número clave"
+      titulo="El spread: la diferencia que mueve tu bolsillo"
+      lead={`Spread real de hoy: ${spreadActual} puntos porcentuales. Es la resta tasa − inflación y resume si ahorrar rinde y si endeudarse duele.`}
+      fuente={fuenteCalculo}
+    >
+      <Fragment slot="text">
+        <p>
+          Cuando el spread es <strong>positivo y grande</strong>, el ahorro rinde y el crédito duele. Cuando
+          es <strong>negativo</strong>, ahorrar pierde valor y endeudarse parece "barato" — pero suele ser
+          señal de inflación descontrolada.
+        </p>
+        <ul>
+          <li>Barras altas → política <strong>restrictiva</strong> (Banco frenando).</li>
+          <li>Barras bajas o negativas → política <strong>expansiva</strong> (Banco acelerando).</li>
+        </ul>
+        <p>
+          Lee el análisis del último dato en el blog:
+          <a href={urls.blogPost("inflacion-tasas-interes-colombia-agosto-2026")}>
+            Inflación en Colombia agosto 2026: sube a 6,25% y el BanRep mantiene la tasa en 12%</a>.
+        </p>
+      </Fragment>
+      <Chart slot="visual" id="spread" embedded={true} />
+    </IndicadorPanel>
+
+    <GlosarioGrid
+      fuenteInflacion={fuenteInflacion}
+      fuenteTasa={fuenteTasa}
+      primerPeriodo={obs.metadata.cobertura.primer_periodo}
+      ultimoPeriodo={obs.metadata.cobertura.ultimo_periodo}
+    />
+
+    <DashboardFooter
+      fuentes={[fuenteInflacion, fuenteTasa]}
+      ultimaActualizacion={obs.metadata.ultima_actualizacion}
+      definiciones={[
+        {
+          titulo: "Spread real",
+          texto: "tasa de intervención − inflación anual, en puntos porcentuales (tasa real ex-post)."
+        },
+        {
+          titulo: "Variación",
+          texto: "subió | bajó | igual respecto al mes inmediatamente anterior."
+        },
+      ]}
+      cobertura={`${obs.metadata.cobertura.primer_periodo} → ${obs.metadata.cobertura.ultimo_periodo} · ${obs.metadata.cobertura.total_registros} registros`}
+    />
+  </div>
+
+  <PlotlyLoader />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>
+
+<style>
+  .volver-home {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .volver-home:hover {
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+  }
+
+  .observatorio-container {
+    width: 97%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 1.75rem 0 3rem;
+  }
+
+  @media (max-width: 640px) {
+    .observatorio-container {
+      width: 100%;
+      padding: 1.25rem 1rem 2rem;
+    }
+  }
+</style>

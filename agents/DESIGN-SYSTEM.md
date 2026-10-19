@@ -13,7 +13,7 @@
 >
 > Las marcas **⚑ DECIDIR** son valores que el autor aún debe fijar.
 >
-> Versión 0.2.0 · Borrador · 2026-10-14 (feature 001: vistas y líneas de referencia únicas)
+> Versión 0.3.0 · Borrador · 2026-10-19 (feature 005: portada del Observatorio, `IndicadorClaveCard`, sparklines)
 
 ---
 
@@ -304,6 +304,30 @@ Todas las subpáginas del Observatorio siguen este orden, sin excepciones:
 - **Visual:** el gráfico (`embedded`).
 - **Pie:** "Fuente:" con enlace azul, separado por un borde de 1 px.
 
+### 5.5 Portada del Observatorio (`/observatorio/`)
+
+La Home sigue la sección 5.1 (Hero con mapa, menú, footer), pero sin
+`PageHeader` ni paneles numerados: presenta directamente los indicadores clave.
+No enlaza la descarga de los JSON procesados (decisión del autor).
+
+```
+1. <Hero> + <MapaColombia />        KPIs de contexto, cada uno con periodo y fuente
+2. <DashboardNav active="inicio" />
+3. "Cómo va Colombia"               un h2 por grupo · <IndicadorClaveCard> × 8
+4. "Lo más reciente"                <Card variant="blog"> × 4 (automático)
+5. "Datos en los que puedes confiar" fuentes, actualización, licencia y cita
+6. <AuthorBio> + CTA al perfil
+7. <DashboardFooter>
+```
+
+- **Sin juicios de valor:** el cambio ("subió/bajó X frente a {periodo}") y la
+  referencia (meta oficial, promedio de 20 años o hace un año) van en gris
+  neutro; nunca rojo/verde ni "mejor/peor".
+- **Frescura:** la etiqueta "Dato no reciente" usa el color de aviso (sección 2.1)
+  y siempre lleva texto.
+- **Grillas:** el panel ocupa 4 columnas lógicas (cada grupo tantas como tarjetas)
+  y pasa a 2 columnas en `≤ 1024px` y a 1 en `≤ 640px`.
+
 ## 6. Gráficos
 
 ### 6.1 Siempre en formato card
@@ -499,8 +523,9 @@ Antes de crear algo, se usa lo que existe.
 | `DashboardNav`, `EleccionesNav` | `components/observatorio/` | Menú horizontal de dominio |
 | `PageHeader` | `components/observatorio/` | Resumen del estado actual |
 | `KpiRow`, `IndicadorCard` | `components/observatorio/` | Fila de KPIs |
+| `IndicadorClaveCard` | `components/observatorio/` | Tarjeta de indicador clave de la Home: valor, periodo, cambio y referencia neutrales, fuente y sparkline |
 | `IndicadorPanel` | `components/observatorio/` | Panel narrativo con gráfico |
-| `Chart` + `ChartContainer` | `components/observatorio/` | Gráfico por id y su card |
+| `Chart` + `ChartContainer` | `components/observatorio/` | Gráfico por id y su card; `variant="sparkline"` para mini tendencias dentro de otra card |
 | `GlosarioGrid` | `components/observatorio/` | Glosario |
 | `DashboardFooter` | `components/observatorio/` | Fuentes, definiciones y cobertura |
 | `PlotlyLoader` | `components/observatorio/` | Carga de Plotly (una vez por página) |
@@ -538,8 +563,8 @@ Antes de crear algo, se usa lo que existe.
 | **UI-04** | Toda página de sección usa `<Hero>` con subtítulo y tags propios; nunca se copia el texto de otro hero. |
 | **UI-05** | El Observatorio, sus subpáginas y las calculadoras usan `<MapaColombia />` como visual del hero. Elecciones no lleva visual. |
 | **UI-06** | La navegación de un dominio va en un menú horizontal sticky bajo el hero, con el patrón de la sección 5.3. |
-| **UI-07** | Todo gráfico se muestra en card: `IndicadorPanel` en dashboards o chart-card en el resto. |
-| **UI-08** | Todo gráfico de línea tiene el interruptor "Ver en barras" (apagado = línea), declarado con `vistas: ["linea", "barras"]` en su `ChartDef`. |
+| **UI-07** | Todo gráfico se muestra en card: `IndicadorPanel` en dashboards o chart-card en el resto. *Excepción aprobada (spec 005, 2026-10-19): las sparklines `spark-*` viven dentro de `IndicadorClaveCard`, que es su card.* |
+| **UI-08** | Todo gráfico de línea tiene el interruptor "Ver en barras" (apagado = línea), declarado con `vistas: ["linea", "barras"]` en su `ChartDef`. *Excepción aprobada (spec 005, 2026-10-19): las sparklines `spark-*` (48 px, sin ejes, estáticas) no llevan interruptor.* |
 | **UI-09** | Color por defecto azul de marca; varias series con la paleta categórica en orden fijo; el agente pregunta el color al autor antes de crear un gráfico. |
 | **UI-10** | Las etiquetas de líneas de referencia (promedio, máximo, mínimo, meta) van a la izquierda del gráfico. |
 | **UI-11** | Antes de crear un componente se revisa el catálogo de la sección 8; uno nuevo requiere spec y se agrega al catálogo. |

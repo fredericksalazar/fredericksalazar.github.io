@@ -11,7 +11,7 @@ import Chart from "../../components/observatorio/Chart.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
 import { getDemografia } from "../../lib/observatorio/data";
 import { formatPeriodo } from "../../lib/observatorio/formatters";
-import { absUrls, SITE_URL } from "../../lib/urls";
+import { absUrls } from "../../lib/urls";
 import { trail, sectionCrumb } from "../../lib/seo";
 
 const dem = getDemografia();
@@ -51,7 +51,6 @@ const jsonLd = {
       dateModified: metadata.ultima_actualizacion,
       license: "https://creativecommons.org/licenses/by/4.0/",
       spatialCoverage: { "@type": "Place", name: "Colombia" },
-      distribution: [{ "@type": "DataDownload", encodingFormat: "application/json", contentUrl: `${SITE_URL}/data/data_demografia.json` }],
     },
     {
       "@type": "Article",

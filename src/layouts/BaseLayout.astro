@@ -263,6 +263,10 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
 
   .layout__main {
     flex: 1;
+    /* Sin esto el ítem flex crece hasta el min-content de su contenido (p. ej. el
+       menú horizontal del Observatorio) y desborda el viewport; `overflow-x: clip`
+       no lo evita porque no crea un contenedor de scroll. */
+    min-width: 0;
     margin-left: var(--sidebar-width);
     min-height: 100dvh;
     overflow-x: clip;

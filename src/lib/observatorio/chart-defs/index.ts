@@ -29,6 +29,7 @@ import {
   productosTradicionales,
 } from "./comercio";
 import { comparativoUzb, comparativoCog, comparativoPrt, comparativoGha, comparativoChe } from "./comparativo";
+import { sparklines } from "./sparkline";
 import {
   inflacionHistorica,
   pibHistorico,
@@ -190,6 +191,8 @@ const COMPARATIVO_DEFS: ChartDef[] = [...comparativoUzb, ...comparativoCog, ...c
 const CHART_DEFS: Record<string, ChartDef> = {
   ...BASE_DEFS,
   ...Object.fromEntries(COMPARATIVO_DEFS.map((d) => [d.id, d])),
+  // Mini tendencias de la Home (`spark-*`), una por indicador clave.
+  ...Object.fromEntries(sparklines.map((d) => [d.id, d])),
 };
 
 /** Ids con autocompletado para los charts del Observatorio; acepta también los `cmp-*`. */
