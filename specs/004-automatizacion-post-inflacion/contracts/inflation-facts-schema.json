@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "InflationFacts",
+  "type": "object",
+  "required": [
+    "status",
+    "periodo_actual",
+    "indicadores",
+    "rutas"
+  ],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["NEEDS_POST", "UP_TO_DATE"]
+    },
+    "periodo_actual": {
+      "type": "object",
+      "required": ["periodo", "mes_nombre", "anio", "etiqueta"],
+      "properties": {
+        "periodo": { "type": "string", "pattern": "^\\d{4}-\\d{2}$" },
+        "mes_num": { "type": "string" },
+        "mes_nombre": { "type": "string" },
+        "anio": { "type": "string" },
+        "etiqueta": { "type": "string" }
+      }
+    },
+    "indicadores": {
+      "type": "object",
+      "required": ["inflacion_anual", "inflacion_mensual", "tasa_interes", "spread"],
+      "properties": {
+        "inflacion_anual": { "$ref": "#/$defs/indicador" },
+        "inflacion_mensual": { "$ref": "#/$defs/indicador" },
+        "tasa_interes": { "$ref": "#/$defs/indicador" },
+        "spread": { "$ref": "#/$defs/indicador" }
+      }
+    },
+    "efecto_base": {
+      "type": "object",
+      "properties": {
+        "mes_saliente_nombre": { "type": "string" },
+        "mes_saliente_anio": { "type": "string" },
+        "inflacion_saliente": { "type": "number" },
+        "inflacion_entrante": { "type": "number" },
+        "direccion_efecto": { "type": "string", "enum": ["alza", "baja", "neutro"] }
+      }
+    },
+    "contexto": {
+      "type": "object",
+      "properties": {
+        "es_maximo_ano": { "type": "boolean" },
+        "es_minimo_ano": { "type": "boolean" },
+        "meses_tasa_estable": { "type": "integer" },
+        "tendencia_tasa": { "type": "string" }
+      }
+    },
+    "rutas": {
+      "type": "object",
+      "required": ["archivo_post", "imagen_cover", "url_canonica"],
+      "properties": {
+        "archivo_post": { "type": "string" },
+        "imagen_cover": { "type": "string" },
+        "url_canonica": { "type": "string" }
+      }
+    }
+  },
+  "$defs": {
+    "indicador": {
+      "type": "object",
+      "required": ["valor", "delta_mes", "variacion_mes"],
+      "properties": {
+        "valor": { "type": "number" },
+        "delta_mes": { "type": "number" },
+        "variacion_mes": { "type": "string", "enum": ["subio", "bajo", "igual"] },
+        "delta_ano": { "type": "number" },
+        "variacion_ano": { "type": "string", "enum": ["subio", "bajo", "igual"] }
+      }
+    }
+  }
+}

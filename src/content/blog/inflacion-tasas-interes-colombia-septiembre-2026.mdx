@@ -1,0 +1,123 @@
+---
+titulo: "Inflación en Colombia septiembre 2026: sube a 6,28% y el BanRep mantiene la tasa en 12%"
+tituloSeo: "Inflación en Colombia septiembre 2026: 6,28% y tasa BanRep 12%"
+fecha: 2026-10-19
+descripcion: "La inflación en Colombia subió a 6,28% anual en septiembre de 2026 y el Banco de la República mantuvo su tasa en 12%. Análisis con gráficos y comparativas."
+etiquetas: ["Inflación", "Colombia", "Economía", "Banco de la República", "Tasas de Interés", "Observatorio de Datos"]
+autor: "Frederick Salazar"
+imagen: "/images/blog/inflacion-tasas-colombia-septiembre-2026-cover.png"
+draft: false
+tipo: "analisis"
+destacado: true
+resumen: "En septiembre de 2026 la inflación anual de Colombia registró un nuevo máximo en 6,28%, mientras el Banco de la República completó tres meses consecutivos manteniendo su tasa en 12,0%. El efecto base y la persistencia de precios sostienen una de las posturas monetarias más restrictivas en dos décadas."
+---
+
+import Chart from "../../components/observatorio/Chart.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+import FaqSchema from "../../components/blog/FaqSchema.astro";
+
+<PlotlyLoader />
+
+<FaqSchema items={[
+  { q: "¿Cuánto fue la inflación en Colombia en septiembre de 2026?", a: "La inflación anual en Colombia en septiembre de 2026 fue de 6,28%, según el DANE. Frente a agosto (6,25%) subió 0,03 puntos y fijó un nuevo máximo anual. La variación mensual del mes fue de 0,37%." },
+  { q: "¿Cuál es la tasa de interés del Banco de la República en septiembre de 2026?", a: "La tasa de intervención de política monetaria del Banco de la República se mantuvo en 12,0% en septiembre de 2026 por tercer mes consecutivo, tras alcanzar ese nivel en julio." },
+  { q: "¿Por qué volvió a subir la inflación anual en septiembre?", a: "Principalmente por el efecto base: aunque los precios mensuales subieron 0,37% (apenas por debajo del 0,39% de agosto), este dato supera al 0,32% de septiembre de 2025 que salió del cálculo de los últimos doce meses, empujando el acumulado anual al alza." },
+  { q: "¿Cuál es la meta de inflación del Banco de la República?", a: "La meta oficial es del 3% anual, con un rango de tolerancia de ±1 punto porcentual (entre 2% y 4%). Con 6,28%, el registro actual duplica con holgura el centro de la meta." },
+  { q: "¿Qué significa que la tasa real (spread) esté en 5,72 puntos?", a: "Significa que la tasa del Banco de la República supera a la inflación en 5,72 puntos porcentuales. Es una tasa real fuertemente contractiva: encarece el financiamiento, modera el consumo y premia los rendimientos del ahorro." },
+]} />
+
+La **inflación en Colombia extendió su presión en septiembre de 2026**. El registro anual avanzó levemente hasta **6,28%**, consolidando un nuevo máximo para lo corrido del año frente al 6,25% alcanzado en agosto. Al mismo tiempo, la junta directiva del **Banco de la República mantuvo su tasa de intervención en 12,0%**, completando tres meses consecutivos de pausa monetaria.
+
+En esta nueva entrega del [Observatorio de Datos de Colombia](/observatorio/) analizamos qué revelan las cifras de septiembre: la anatomía del efecto base, la comparación interanual y los impactos directos en el crédito y el ahorro. Todos los gráficos son **interactivos**: puedes pasar el cursor o interactuar en dispositivos táctiles para consultar cada registro.
+
+## Los números de septiembre de 2026
+
+Cuatro métricas definen el panorama del mes:
+
+- **Inflación anual: 6,28%** — aumentó 0,03 puntos porcentuales respecto a agosto (6,25%) y marca el nivel más alto de 2026.
+- **Inflación mensual: 0,37%** — moderó ligeramente su ritmo frente al 0,39% de agosto, pero continúa en niveles elevados.
+- **Tasa de intervención del BanRep: 12,0%** — sin modificaciones por tercer mes consecutivo (julio, agosto y septiembre).
+- **Tasa real (spread): 5,72 puntos** — cedió marginalmente 0,03 puntos frente a agosto (5,75 pp), sosteniéndose en máximos históricos de restricción.
+
+La conclusión inmediata: la inflación se resiste a descender del 6% y continúa duplicando la **meta del 3%** del emisor. El banco central opta por la cautela y sostiene el freno a la espera de que la restricción previa continúe surtiendo efecto.
+
+## La inflación marca un nuevo pico en 2026
+
+Luego de la trayectoria descendente observada durante 2024 y 2025, el año 2026 ha mostrado una resistencia persistente en los precios. El indicador anual tocó su piso a mediados del año pasado y desde entonces ha acumulado presiones que lo ubican hoy en **6,28%**.
+
+<Chart id="inflacion-anual" embedded={true} />
+
+La banda verde del gráfico delimita el **rango meta del Banco de la República (3% ±1)**. La economía colombiana continúa distanciada de este corredor de estabilidad. Para conocer el comportamiento histórico de largo plazo, puedes consultar nuestro [análisis histórico de la inflación y las tasas del BanRep](/blog/visualizacion-inflacion-vs-tasas-interes-colombia/) con registros detallados desde 1960.
+
+### El papel del efecto base en septiembre
+
+En términos mensuales, los precios crecieron **0,37%** en septiembre, un ritmo similar aunque ligeramente inferior al **0,39%** de agosto. ¿Por qué sube entonces la cifra anual si el mes fue levemente más frío?
+
+La respuesta reside en el **efecto base**. La inflación anual totaliza las variaciones de los últimos doce meses. Cada nuevo período incorpora la variación reciente y descarta la de doce meses atrás. En septiembre de 2025 la variación mensual fue de **0,32%**. Al reemplazar ese dato por el **0,37%** de este mes, la suma neta incorpora 0,05 puntos adicionales, empujando la medición anual hacia arriba.
+
+## La postura del Banco de la República: pausa prolongada en 12%
+
+Tras el ciclo de incrementos ejecutado a comienzos de año para frenar el rebrote inflacionario —elevando la tasa desde 9,25% hasta 12,0%—, el emisor ratificó su postura de cautela y mantuvo el tipo de intervención en **12,0%**.
+
+<Chart id="tasa-interes" embedded={true} />
+
+La tasa de política monetaria actúa sobre las condiciones financieras de toda la economía: encarece el crédito comercial y de consumo, y busca enfriar la demanda agregada. Sostener la tasa en 12% indica que las autoridades consideran que el nivel actual de restricción es suficiente por ahora, pero no encuentran espacio para reducciones prematuras ante una inflación que no cede.
+
+## Septiembre 2026 frente a septiembre 2025: la foto del año
+
+El contraste de doce meses evidencia la magnitud del ajuste económico:
+
+| Indicador | Septiembre 2025 | Agosto 2026 | Septiembre 2026 |
+|---|---|---|---|
+| Inflación anual | 5,18% | 6,25% | **6,28%** |
+| Inflación mensual | 0,32% | 0,39% | **0,37%** |
+| Tasa BanRep | 9,25% | 12,0% | **12,0%** |
+| Tasa real (spread) | 4,07 pp | 5,75 pp | **5,72 pp** |
+
+En el transcurso de un año, la inflación anual creció **1,10 puntos porcentuales** (de 5,18% a 6,28%), mientras que la tasa del banco central subió con mayor contundencia: **2,75 puntos** (de 9,25% a 12,0%). Esta asimetría preventiva explica por qué la tasa real se mantiene en niveles tan restrictivos.
+
+## El freno monetario: comportamiento del spread
+
+El diferencial entre la tasa de interés y la inflación anual —la tasa de interés real o *spread*— refleja el grado de presión que el banco central ejerce sobre la actividad económica. Un diferencial positivo actúa como freno, mientras que uno negativo funciona como estímulo.
+
+<Chart id="spread" embedded={true} />
+
+En septiembre, el spread se situó en **5,72 puntos porcentuales**, una compresión mínima frente al 5,75 pp de agosto provocada por el leve ascenso inflacionario. No obstante, el nivel se mantiene muy cerca del récord de 5,98 pp registrado en julio, ubicando la política monetaria en territorio fuertemente contractivo (representado por las barras rojas en el gráfico).
+
+## Qué significa para tu bolsillo
+
+Este entorno de tasas estables en niveles altos e inflación persistente tiene implicaciones prácticas para las finanzas personales:
+
+- **Endeudamiento costoso:** Las tasas de interés de créditos de libre inversión, tarjetas de crédito y préstamos rotativos continúan en niveles altos. Es momento de evitar compras a plazos innecesarias.
+- **Ventana favorable para el ahorro:** Los depósitos a término (CDT) y cuentas de alta rentabilidad siguen generando rendimientos reales atractivos por encima de la inflación anual.
+- **Presión sostenida en gastos cotidianos:** Aunque la variación mensual bajó a 0,37%, el costo de bienes esenciales continúa acumulando incrementos en el presupuesto familiar.
+- **Postergación de compras no prioritarias:** La combinación de financiamiento caro y precios firmes recomienda cautela en proyectos de inversión o compra de activos de alto valor.
+
+## Conclusión
+
+El corte de septiembre de 2026 confirma que la inflación continúa arraigada por encima del 6%, marcando un nuevo techo anual en **6,28%**. El Banco de la República responde preservando su tasa de referencia en **12,0%**, sosteniendo el freno monetario sin introducir ajustes adicionales. El balance entre controlar precios y no castigar en exceso la actividad económica seguirá marcando la pauta de las decisiones de los próximos meses.
+
+Puedes monitorear estas variables en tiempo real en el [dashboard de inflación y tasas del Observatorio](/observatorio/).
+
+## Preguntas frecuentes
+
+### ¿Cuánto fue la inflación en Colombia en septiembre de 2026?
+La inflación anual en Colombia en septiembre de 2026 fue de **6,28%**, según el DANE. Frente a agosto (6,25%) subió 0,03 puntos y fijó un nuevo máximo anual. La variación mensual del mes fue de **0,37%**.
+
+### ¿Cuál es la tasa de interés del Banco de la República en septiembre de 2026?
+La tasa de intervención de política monetaria del Banco de la República se mantuvo en **12,0%** en septiembre de 2026 por tercer mes consecutivo, tras alcanzar ese nivel en julio.
+
+### ¿Por qué volvió a subir la inflación anual en septiembre?
+Principalmente por el **efecto base**: aunque los precios mensuales subieron 0,37% (apenas por debajo del 0,39% de agosto), este dato supera al 0,32% de septiembre de 2025 que salió del cálculo de los últimos doce meses, empujando el acumulado anual al alza.
+
+### ¿Cuál es la meta de inflación del Banco de la República?
+La meta oficial es del **3% anual**, con un rango de tolerancia de ±1 punto porcentual (entre 2% y 4%). Con 6,28%, el registro actual duplica con holgura el centro de la meta.
+
+### ¿Qué significa que la tasa real (spread) esté en 5,72 puntos?
+Significa que la tasa del Banco de la República supera a la inflación en 5,72 puntos porcentuales. Es una **tasa real fuertemente contractiva**: encarece el financiamiento, modera el consumo y premia los rendimientos del ahorro.
+
+## Fuentes y metodología
+
+Los datos provienen de fuentes públicas oficiales: el **Índice de Precios al Consumidor (IPC)** calculado por el [DANE](https://www.dane.gov.co/index.php/estadisticas-por-tema/precios-y-costos/indice-de-precios-al-consumidor-ipc) y la **Tasa de Política Monetaria** fijada por el [Banco de la República](https://www.banrep.gov.co/es/estadisticas/tasas-de-interes-de-politica-monetaria). La tasa real (spread) corresponde a la diferencia matemática entre la tasa de intervención y la inflación anual. Las series completas se actualizan mensualmente en el [Observatorio de Datos de Colombia](/observatorio/).
+
+Este es un análisis técnico, pedagógico e independiente, sin afiliación institucional ni política.

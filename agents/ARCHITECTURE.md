@@ -100,7 +100,7 @@ agents/                 Guía para agentes y humanos (agnóstica de proveedor)
 specs/                  Features en curso y cerradas (NNN-nombre/), creadas por Spec Kit
 .claude/                Integración de Claude Code (skills speckit-*). No versionada; se regenera.
 .github/workflows/      deploy.yml
-scripts/                Link-checker, IndexNow, portadas, optimización de imágenes
+scripts/                Link-checker, IndexNow, portadas hero, extractor determinista de hechos (extract-inflacion-facts.mjs), optimización de imágenes
 public/data/            CONTRATO: datasets JSON que consume el sitio (sincronizados desde odc-data-pipeline)
 public/geo/             GeoJSON de departamentos y municipios
 public/                 images/ badges/ logos/ informes/ y archivos de verificación
@@ -156,6 +156,10 @@ Cada spec declara qué módulos toca. Entre paréntesis, el pilar de
   opinion, caso-estudio, referencia), `resumen`, `destacado`.
 - **MDX:** puede usar `Chart` (`embedded`), un solo `PlotlyLoader`,
   `MarcadorEconomico`, `MarcadorFutbol`, `Callout`, `FaqSchema`.
+- **Automatización mensual de inflación:** orquestada vía skill `publicar-informe-inflacion`.
+  Lee `public/data/data_inflacion.json`, calcula deltas y efecto base de forma 100% determinista
+  con `scripts/extract-inflacion-facts.mjs`, genera la portada con `scripts/build-inflacion-cover-hero.mjs`,
+  compila en modo estricto, hace commit/push a `main` y notifica a IndexNow.
 - Etiquetas, archivo y borradores son `noindex` y no van al sitemap.
 
 ### 5.4 Observatorio de Datos (P3)
@@ -299,6 +303,7 @@ nuevos, `npm run build` exitoso y, si se tocó el pipeline en `odc-data-pipeline
 | Sin framework de islas | Menos JS y menos dependencias; la interactividad es acotada. |
 | og:image en PNG | Compatibilidad con previews de redes sociales. |
 | Wikipedia como fuente electoral y de salario mínimo | La Registraduría bloquea descargas automáticas; las tablas de salario mínimo se validan con anclas históricas. |
+| Determinismo en automatizaciones editoriales (`extract-inflacion-facts.mjs`) | Cero alucinaciones numéricas en LLMs: todos los cálculos, variaciones interanuales y efecto base se derivan en Node.js puro antes de la redacción. |
 
 ## 12. Deuda técnica conocida
 
