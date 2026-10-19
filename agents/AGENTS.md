@@ -32,8 +32,8 @@ contradicción por tu cuenta: avísale al autor.
 - `npm run dev` — servidor local (Node >=22.12)
 - `npm run build` — build + verificador de enlaces internos
 - `npx astro check` — verificación de tipos
-- `pytest ingestion/tests/` — tests del pipeline del Observatorio
-- `python -m ingestion.main` — pipeline de ingesta
+- `pytest tests/` (en `../odc-data-pipeline`) — tests de configuración, ingesta y contratos JSON
+- `python -m pipeline.main --stage all` (en `../odc-data-pipeline`) — pipeline de datos completo
 
 ## 3. Reglas operativas
 
@@ -69,7 +69,7 @@ llaman así:
 
 1. `npx astro check` sin errores nuevos.
 2. `npm run build` exitoso.
-3. Si tocaste el pipeline: `pytest ingestion/tests/`.
+3. Si tocaste el pipeline en `odc-data-pipeline`: `pytest tests/`.
 4. Si tocaste interfaz: revisión visual con `npm run dev`.
 5. Si cambiaste algo descrito en `agents/`, actualiza ese documento.
 6. Informa al autor qué cambió, qué verificaste y qué quedó pendiente, sin

@@ -13,13 +13,13 @@
       "primer_anio": 1960,
       "ultimo_anio": 2025
     },
-    "ultima_actualizacion": "2026-09-14",
+    "ultima_actualizacion": "2026-10-18",
     "nota": "Cada indicador usa el último año con dato disponible en ambos países; el año se indica en cada fila. Placeholders del CSV (0 y -100) tratados como nulos."
   },
   "indicadores": {
     "pib_percapita": {
       "anio": 2025,
-      "colombia": 8561.62,
+      "colombia": 8562,
       "oponente": 806.78,
       "unidad": "USD",
       "label": "PIB per cápita",
@@ -66,17 +66,17 @@
       "mejor": "menor"
     },
     "esperanza_vida": {
-      "anio": 2022,
-      "colombia": 73.73,
-      "oponente": 59.78,
+      "anio": 2024,
+      "colombia": 77.89,
+      "oponente": 62.09,
       "unidad": "años",
       "label": "Esperanza de vida",
       "mejor": "mayor"
     },
     "apertura": {
       "anio": 2025,
-      "colombia": 35.36,
-      "oponente": 87.34,
+      "colombia": 35.37,
+      "oponente": 87.33,
       "unidad": "% del PIB",
       "label": "Apertura comercial",
       "mejor": "mayor"
@@ -197,237 +197,237 @@
       },
       {
         "anio": 1979,
-        "colombia": 1095.03,
+        "colombia": 1095,
         "oponente": 582.09
       },
       {
         "anio": 1980,
-        "colombia": 1279.5,
+        "colombia": 1280,
         "oponente": 538.91
       },
       {
         "anio": 1981,
-        "colombia": 1362.18,
+        "colombia": 1362,
         "oponente": 455.91
       },
       {
         "anio": 1982,
-        "colombia": 1425.4,
+        "colombia": 1425,
         "oponente": 481.74
       },
       {
         "anio": 1983,
-        "colombia": 1383.79,
+        "colombia": 1384,
         "oponente": 376.29
       },
       {
         "anio": 1984,
-        "colombia": 1335.53,
+        "colombia": 1336,
         "oponente": 259.8
       },
       {
         "anio": 1985,
-        "colombia": 1192.22,
+        "colombia": 1192,
         "oponente": 230.13
       },
       {
         "anio": 1986,
-        "colombia": 1169.46,
+        "colombia": 1169,
         "oponente": 250.9
       },
       {
         "anio": 1987,
-        "colombia": 1192.59,
+        "colombia": 1193,
         "oponente": 230.09
       },
       {
         "anio": 1988,
-        "colombia": 1259.62,
+        "colombia": 1260,
         "oponente": 257.73
       },
       {
         "anio": 1989,
-        "colombia": 1244.33,
+        "colombia": 1244,
         "oponente": 254.23
       },
       {
         "anio": 1990,
-        "colombia": 1474.85,
+        "colombia": 1475,
         "oponente": 254.87
       },
       {
         "anio": 1991,
-        "colombia": 1485.74,
+        "colombia": 1486,
         "oponente": 253.8
       },
       {
         "anio": 1992,
-        "colombia": 1730.39,
+        "colombia": 1730,
         "oponente": 209.73
       },
       {
         "anio": 1993,
-        "colombia": 1929.27,
+        "colombia": 1929,
         "oponente": 263.34
       },
       {
         "anio": 1994,
-        "colombia": 2325.92,
+        "colombia": 2326,
         "oponente": 136.54
       },
       {
         "anio": 1995,
-        "colombia": 2583.67,
+        "colombia": 2584,
         "oponente": 127.01
       },
       {
         "anio": 1996,
-        "colombia": 2664.64,
+        "colombia": 2665,
         "oponente": 127.42
       },
       {
         "anio": 1997,
-        "colombia": 2873.28,
+        "colombia": 2873,
         "oponente": 132.32
       },
       {
         "anio": 1998,
-        "colombia": 2604.87,
+        "colombia": 2605,
         "oponente": 131.46
       },
       {
         "anio": 1999,
-        "colombia": 2241.23,
+        "colombia": 2241,
         "oponente": 96.32
       },
       {
         "anio": 2000,
-        "colombia": 2555.01,
+        "colombia": 2555,
         "oponente": 377.93
       },
       {
         "anio": 2001,
-        "colombia": 2472.99,
+        "colombia": 2473,
         "oponente": 142.68
       },
       {
         "anio": 2002,
-        "colombia": 2428.93,
+        "colombia": 2429,
         "oponente": 162.38
       },
       {
         "anio": 2003,
-        "colombia": 2311.94,
+        "colombia": 2312,
         "oponente": 161.49
       },
       {
         "anio": 2004,
-        "colombia": 2818.57,
+        "colombia": 2819,
         "oponente": 180.66
       },
       {
         "anio": 2005,
-        "colombia": 3456.07,
+        "colombia": 3456,
         "oponente": 214.54
       },
       {
         "anio": 2006,
-        "colombia": 3789.85,
+        "colombia": 3790,
         "oponente": 255.45
       },
       {
         "anio": 2007,
-        "colombia": 4769.93,
+        "colombia": 4770,
         "oponente": 294.1
       },
       {
         "anio": 2008,
-        "colombia": 5541.84,
+        "colombia": 5542,
         "oponente": 352.9
       },
       {
         "anio": 2009,
-        "colombia": 5250.97,
+        "colombia": 5251,
         "oponente": 280.18
       },
       {
         "anio": 2010,
-        "colombia": 6398.3,
+        "colombia": 6398,
         "oponente": 352.4
       },
       {
         "anio": 2011,
-        "colombia": 7400.99,
+        "colombia": 7401,
         "oponente": 372.51
       },
       {
         "anio": 2012,
-        "colombia": 8108.6,
+        "colombia": 8109,
         "oponente": 409.93
       },
       {
         "anio": 2013,
-        "colombia": 8279.1,
+        "colombia": 8279,
         "oponente": 460.37
       },
       {
         "anio": 2014,
-        "colombia": 8187.21,
+        "colombia": 8187,
         "oponente": 489.18
       },
       {
         "anio": 2015,
-        "colombia": 6248.51,
+        "colombia": 6249,
         "oponente": 495.83
       },
       {
         "anio": 2016,
-        "colombia": 5959.84,
+        "colombia": 5960,
         "oponente": 459.77
       },
       {
         "anio": 2017,
-        "colombia": 6479.53,
+        "colombia": 6480,
         "oponente": 431.05
       },
       {
         "anio": 2018,
-        "colombia": 6816.97,
+        "colombia": 6817,
         "oponente": 518.17
       },
       {
         "anio": 2019,
-        "colombia": 6472.55,
+        "colombia": 6473,
         "oponente": 504.0
       },
       {
         "anio": 2020,
-        "colombia": 5339.69,
+        "colombia": 5340,
         "oponente": 486.43
       },
       {
         "anio": 2021,
-        "colombia": 6222.62,
+        "colombia": 6223,
         "oponente": 595.74
       },
       {
         "anio": 2022,
-        "colombia": 6680.45,
+        "colombia": 6680,
         "oponente": 687.74
       },
       {
         "anio": 2023,
-        "colombia": 7012.49,
+        "colombia": 7012,
         "oponente": 660.21
       },
       {
         "anio": 2024,
-        "colombia": 7951.09,
+        "colombia": 7951,
         "oponente": 692.89
       },
       {
         "anio": 2025,
-        "colombia": 8561.62,
+        "colombia": 8562,
         "oponente": 806.78
       }
     ],
@@ -1254,22 +1254,22 @@
       {
         "anio": 1991,
         "colombia": 30.39,
-        "oponente": 2154.44
+        "oponente": 2154
       },
       {
         "anio": 1992,
         "colombia": 27.01,
-        "oponente": 4129.17
+        "oponente": 4129
       },
       {
         "anio": 1993,
         "colombia": 22.44,
-        "oponente": 1986.9
+        "oponente": 1987
       },
       {
         "anio": 1994,
         "colombia": 22.85,
-        "oponente": 23773.13
+        "oponente": 23773
       },
       {
         "anio": 1995,
@@ -1759,108 +1759,108 @@
     "esperanza_vida": [
       {
         "anio": 1960,
-        "colombia": 57.14,
-        "oponente": 40.81
+        "colombia": 56.62,
+        "oponente": 40.7
       },
       {
         "anio": 1961,
-        "colombia": 57.74,
-        "oponente": 40.19
+        "colombia": 57.21,
+        "oponente": 40.11
       },
       {
         "anio": 1962,
-        "colombia": 58.31,
-        "oponente": 40.3
+        "colombia": 57.74,
+        "oponente": 40.33
       },
       {
         "anio": 1963,
-        "colombia": 58.89,
+        "colombia": 58.3,
         "oponente": 40.56
       },
       {
         "anio": 1964,
-        "colombia": 59.38,
-        "oponente": 40.02
+        "colombia": 58.77,
+        "oponente": 40.06
       },
       {
         "anio": 1965,
-        "colombia": 59.81,
-        "oponente": 40.67
+        "colombia": 59.25,
+        "oponente": 40.73
       },
       {
         "anio": 1966,
-        "colombia": 60.2,
-        "oponente": 42.01
+        "colombia": 59.71,
+        "oponente": 42.13
       },
       {
         "anio": 1967,
-        "colombia": 60.53,
-        "oponente": 42.27
+        "colombia": 60.15,
+        "oponente": 42.3
       },
       {
         "anio": 1968,
-        "colombia": 60.87,
-        "oponente": 42.66
+        "colombia": 60.57,
+        "oponente": 42.63
       },
       {
         "anio": 1969,
-        "colombia": 61.21,
-        "oponente": 42.94
+        "colombia": 61.03,
+        "oponente": 42.92
       },
       {
         "anio": 1970,
-        "colombia": 61.56,
-        "oponente": 43.25
+        "colombia": 61.47,
+        "oponente": 43.26
       },
       {
         "anio": 1971,
-        "colombia": 62.05,
-        "oponente": 43.62
+        "colombia": 62.01,
+        "oponente": 43.54
       },
       {
         "anio": 1972,
-        "colombia": 62.56,
-        "oponente": 43.89
+        "colombia": 62.54,
+        "oponente": 43.83
       },
       {
         "anio": 1973,
-        "colombia": 63.06,
-        "oponente": 44.06
+        "colombia": 63.0,
+        "oponente": 44.05
       },
       {
         "anio": 1974,
-        "colombia": 63.64,
-        "oponente": 44.38
+        "colombia": 63.51,
+        "oponente": 44.28
       },
       {
         "anio": 1975,
-        "colombia": 64.28,
-        "oponente": 44.44
+        "colombia": 64.03,
+        "oponente": 44.5
       },
       {
         "anio": 1976,
-        "colombia": 64.85,
-        "oponente": 44.62
+        "colombia": 64.66,
+        "oponente": 44.66
       },
       {
         "anio": 1977,
-        "colombia": 65.44,
-        "oponente": 44.73
+        "colombia": 65.26,
+        "oponente": 44.83
       },
       {
         "anio": 1978,
-        "colombia": 65.97,
-        "oponente": 44.51
+        "colombia": 65.85,
+        "oponente": 44.6
       },
       {
         "anio": 1979,
-        "colombia": 66.41,
-        "oponente": 45.18
+        "colombia": 66.19,
+        "oponente": 45.25
       },
       {
         "anio": 1980,
-        "colombia": 66.9,
-        "oponente": 45.45
+        "colombia": 66.73,
+        "oponente": 45.52
       },
       {
         "anio": 1981,
@@ -1869,208 +1869,218 @@
       },
       {
         "anio": 1982,
-        "colombia": 67.57,
-        "oponente": 45.9
+        "colombia": 67.89,
+        "oponente": 45.92
       },
       {
         "anio": 1983,
-        "colombia": 67.8,
-        "oponente": 46.16
+        "colombia": 68.16,
+        "oponente": 46.18
       },
       {
         "anio": 1984,
-        "colombia": 68.03,
-        "oponente": 46.42
+        "colombia": 68.36,
+        "oponente": 46.49
       },
       {
         "anio": 1985,
-        "colombia": 66.33,
-        "oponente": 46.61
+        "colombia": 65.44,
+        "oponente": 46.64
       },
       {
         "anio": 1986,
-        "colombia": 68.34,
-        "oponente": 46.89
+        "colombia": 68.39,
+        "oponente": 46.99
       },
       {
         "anio": 1987,
-        "colombia": 68.38,
-        "oponente": 47.31
+        "colombia": 68.27,
+        "oponente": 47.34
       },
       {
         "anio": 1988,
-        "colombia": 68.53,
-        "oponente": 47.75
+        "colombia": 68.42,
+        "oponente": 47.74
       },
       {
         "anio": 1989,
-        "colombia": 68.68,
-        "oponente": 48.15
+        "colombia": 68.75,
+        "oponente": 48.13
       },
       {
         "anio": 1990,
-        "colombia": 68.81,
-        "oponente": 48.59
+        "colombia": 68.85,
+        "oponente": 48.52
       },
       {
         "anio": 1991,
-        "colombia": 68.97,
-        "oponente": 48.94
+        "colombia": 68.94,
+        "oponente": 48.93
       },
       {
         "anio": 1992,
-        "colombia": 69.19,
-        "oponente": 49.23
+        "colombia": 68.94,
+        "oponente": 49.32
       },
       {
         "anio": 1993,
-        "colombia": 69.49,
-        "oponente": 49.56
+        "colombia": 69.24,
+        "oponente": 49.62
       },
       {
         "anio": 1994,
-        "colombia": 69.75,
+        "colombia": 69.56,
         "oponente": 49.88
       },
       {
         "anio": 1995,
-        "colombia": 70.06,
-        "oponente": 50.42
+        "colombia": 69.93,
+        "oponente": 50.39
       },
       {
         "anio": 1996,
-        "colombia": 70.31,
-        "oponente": 49.35
+        "colombia": 70.32,
+        "oponente": 49.42
       },
       {
         "anio": 1997,
-        "colombia": 70.62,
-        "oponente": 50.44
+        "colombia": 70.74,
+        "oponente": 50.49
       },
       {
         "anio": 1998,
-        "colombia": 70.85,
-        "oponente": 49.82
+        "colombia": 71.03,
+        "oponente": 49.78
       },
       {
         "anio": 1999,
-        "colombia": 71.03,
-        "oponente": 50.06
+        "colombia": 71.02,
+        "oponente": 50.2
       },
       {
         "anio": 2000,
-        "colombia": 71.43,
-        "oponente": 51.8
+        "colombia": 71.02,
+        "oponente": 51.9
       },
       {
         "anio": 2001,
-        "colombia": 71.6,
-        "oponente": 52.12
+        "colombia": 71.3,
+        "oponente": 52.22
       },
       {
         "anio": 2002,
-        "colombia": 72.03,
-        "oponente": 52.34
+        "colombia": 71.64,
+        "oponente": 52.38
       },
       {
         "anio": 2003,
-        "colombia": 72.44,
-        "oponente": 52.83
+        "colombia": 72.38,
+        "oponente": 52.96
       },
       {
         "anio": 2004,
-        "colombia": 72.77,
-        "oponente": 53.41
+        "colombia": 72.82,
+        "oponente": 53.53
       },
       {
         "anio": 2005,
-        "colombia": 73.14,
-        "oponente": 53.92
+        "colombia": 73.2,
+        "oponente": 54.0
       },
       {
         "anio": 2006,
-        "colombia": 73.52,
-        "oponente": 54.53
+        "colombia": 73.54,
+        "oponente": 54.5
       },
       {
         "anio": 2007,
-        "colombia": 73.88,
-        "oponente": 54.91
+        "colombia": 73.79,
+        "oponente": 54.95
       },
       {
         "anio": 2008,
-        "colombia": 74.33,
-        "oponente": 55.34
+        "colombia": 74.24,
+        "oponente": 55.39
       },
       {
         "anio": 2009,
-        "colombia": 74.77,
-        "oponente": 55.84
+        "colombia": 74.56,
+        "oponente": 55.8
       },
       {
         "anio": 2010,
-        "colombia": 75.06,
+        "colombia": 74.9,
         "oponente": 56.41
       },
       {
         "anio": 2011,
-        "colombia": 75.34,
-        "oponente": 57.07
+        "colombia": 75.2,
+        "oponente": 56.91
       },
       {
         "anio": 2012,
-        "colombia": 75.62,
-        "oponente": 57.25
+        "colombia": 75.63,
+        "oponente": 57.35
       },
       {
         "anio": 2013,
-        "colombia": 75.84,
-        "oponente": 57.77
+        "colombia": 75.85,
+        "oponente": 57.8
       },
       {
         "anio": 2014,
-        "colombia": 76.06,
-        "oponente": 58.3
+        "colombia": 75.96,
+        "oponente": 58.24
       },
       {
         "anio": 2015,
-        "colombia": 76.27,
-        "oponente": 58.5
+        "colombia": 76.08,
+        "oponente": 58.66
       },
       {
         "anio": 2016,
-        "colombia": 76.48,
-        "oponente": 59.07
+        "colombia": 76.24,
+        "oponente": 59.09
       },
       {
         "anio": 2017,
-        "colombia": 76.65,
-        "oponente": 59.41
+        "colombia": 76.43,
+        "oponente": 59.51
       },
       {
         "anio": 2018,
-        "colombia": 76.75,
-        "oponente": 59.95
+        "colombia": 76.59,
+        "oponente": 59.94
       },
       {
         "anio": 2019,
-        "colombia": 76.76,
-        "oponente": 60.29
+        "colombia": 76.8,
+        "oponente": 60.26
       },
       {
         "anio": 2020,
-        "colombia": 74.84,
-        "oponente": 59.76
+        "colombia": 74.86,
+        "oponente": 60.45
       },
       {
         "anio": 2021,
-        "colombia": 72.92,
-        "oponente": 59.23
+        "colombia": 72.82,
+        "oponente": 60.07
       },
       {
         "anio": 2022,
-        "colombia": 73.73,
-        "oponente": 59.78
+        "colombia": 76.52,
+        "oponente": 61.0
+      },
+      {
+        "anio": 2023,
+        "colombia": 77.7,
+        "oponente": 61.91
+      },
+      {
+        "anio": 2024,
+        "colombia": 77.89,
+        "oponente": 62.09
       }
     ],
     "apertura": [
@@ -2126,12 +2136,12 @@
       },
       {
         "anio": 1970,
-        "colombia": 27.82,
+        "colombia": 27.83,
         "oponente": null
       },
       {
         "anio": 1971,
-        "colombia": 27.99,
+        "colombia": 27.98,
         "oponente": null
       },
       {
@@ -2141,7 +2151,7 @@
       },
       {
         "anio": 1973,
-        "colombia": 27.58,
+        "colombia": 27.59,
         "oponente": null
       },
       {
@@ -2156,27 +2166,27 @@
       },
       {
         "anio": 1976,
-        "colombia": 30.95,
+        "colombia": 30.94,
         "oponente": null
       },
       {
         "anio": 1977,
-        "colombia": 30.07,
+        "colombia": 30.06,
         "oponente": null
       },
       {
         "anio": 1978,
-        "colombia": 30.43,
+        "colombia": 30.42,
         "oponente": null
       },
       {
         "anio": 1979,
-        "colombia": 28.67,
+        "colombia": 28.66,
         "oponente": null
       },
       {
         "anio": 1980,
-        "colombia": 31.82,
+        "colombia": 31.81,
         "oponente": null
       },
       {
@@ -2196,12 +2206,12 @@
       },
       {
         "anio": 1984,
-        "colombia": 24.34,
+        "colombia": 24.35,
         "oponente": null
       },
       {
         "anio": 1985,
-        "colombia": 26.34,
+        "colombia": 26.33,
         "oponente": null
       },
       {
@@ -2216,7 +2226,7 @@
       },
       {
         "anio": 1988,
-        "colombia": 30.15,
+        "colombia": 30.14,
         "oponente": null
       },
       {
@@ -2241,7 +2251,7 @@
       },
       {
         "anio": 1993,
-        "colombia": 36.17,
+        "colombia": 36.18,
         "oponente": null
       },
       {
@@ -2251,13 +2261,13 @@
       },
       {
         "anio": 1995,
-        "colombia": 35.49,
+        "colombia": 35.5,
         "oponente": 52.21
       },
       {
         "anio": 1996,
         "colombia": 36.04,
-        "oponente": 60.31
+        "oponente": 60.32
       },
       {
         "anio": 1997,
@@ -2286,7 +2296,7 @@
       },
       {
         "anio": 2002,
-        "colombia": 32.99,
+        "colombia": 32.98,
         "oponente": 29.32
       },
       {
@@ -2307,7 +2317,7 @@
       {
         "anio": 2006,
         "colombia": 39.64,
-        "oponente": 44.76
+        "oponente": 44.77
       },
       {
         "anio": 2007,
@@ -2317,27 +2327,27 @@
       {
         "anio": 2008,
         "colombia": 39.17,
-        "oponente": 72.96
+        "oponente": 72.95
       },
       {
         "anio": 2009,
-        "colombia": 35.15,
-        "oponente": 63.08
+        "colombia": 35.16,
+        "oponente": 63.09
       },
       {
         "anio": 2010,
         "colombia": 34.26,
-        "oponente": 80.99
+        "oponente": 81.0
       },
       {
         "anio": 2011,
         "colombia": 39.47,
-        "oponente": 83.42
+        "oponente": 83.41
       },
       {
         "anio": 2012,
-        "colombia": 38.83,
-        "oponente": 66.7
+        "colombia": 38.84,
+        "oponente": 66.71
       },
       {
         "anio": 2013,
@@ -2346,37 +2356,37 @@
       },
       {
         "anio": 2014,
-        "colombia": 37.48,
-        "oponente": 74.12
+        "colombia": 37.49,
+        "oponente": 74.11
       },
       {
         "anio": 2015,
         "colombia": 38.36,
-        "oponente": 57.76
+        "oponente": 57.75
       },
       {
         "anio": 2016,
-        "colombia": 36.21,
+        "colombia": 36.2,
         "oponente": 68.01
       },
       {
         "anio": 2017,
-        "colombia": 35.29,
-        "oponente": 65.91
+        "colombia": 35.28,
+        "oponente": 65.92
       },
       {
         "anio": 2018,
-        "colombia": 36.54,
+        "colombia": 36.53,
         "oponente": 72.56
       },
       {
         "anio": 2019,
         "colombia": 37.56,
-        "oponente": 60.92
+        "oponente": 60.91
       },
       {
         "anio": 2020,
-        "colombia": 34.05,
+        "colombia": 34.06,
         "oponente": 61.03
       },
       {
@@ -2391,7 +2401,7 @@
       },
       {
         "anio": 2023,
-        "colombia": 40.14,
+        "colombia": 40.13,
         "oponente": 86.74
       },
       {
@@ -2401,8 +2411,8 @@
       },
       {
         "anio": 2025,
-        "colombia": 35.36,
-        "oponente": 87.34
+        "colombia": 35.37,
+        "oponente": 87.33
       }
     ],
     "deuda_externa": [

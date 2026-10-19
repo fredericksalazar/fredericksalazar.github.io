@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-10-15T17:34:56+00:00",
+    "ultima_actualizacion": "2026-10-18T00:43:25+00:00",
     "fuentes": {
       "empleo": {
         "nombre": "DANE — Departamento Administrativo Nacional de Estadística",
@@ -10,11 +10,11 @@
       "historico": {
         "nombre": "Banco Mundial — World Development Indicators",
         "url": "https://data.worldbank.org/indicator/SL.UEM.TOTL.ZS?locations=CO",
-        "indicador": "Tasa de desempleo modelada por la OIT (% PEA, anual)"
+        "indicador": "Tasa de desempleo modelada por la OIT (% de la fuerza laboral)"
       }
     },
     "definiciones": {
-      "variacion": "subio | bajo | igual respecto al periodo inmediatamente anterior",
+      "variacion": "subio | bajo | igual respecto al periodo de comparación (interanual en serie mensual)",
       "epsilon_variacion": 0.001
     },
     "cobertura": {
@@ -23,7 +23,7 @@
       "total_registros": 318,
       "granularidad": "mensual"
     },
-    "notas": "Datos mensuales provenientes de la GEIH (DANE). Datos anuales históricos del Banco Mundial (OMS/OIT). El pipeline intenta DANE primero; si no está disponible degrada a solo Banco Mundial."
+    "notas": "Datos mensuales provenientes de la GEIH (DANE). Datos anuales históricos del Banco Mundial (OIT). El pipeline prioriza DANE mensual y complementa años previos con Banco Mundial."
   },
   "indicadores": {
     "tasa_desempleo": {
@@ -64,7 +64,7 @@
     },
     "informalidad": {
       "actual": {
-        "periodo": "2026-08",
+        "periodo": null,
         "valor": null,
         "variacion": null,
         "delta": null
@@ -5404,8 +5404,8 @@
     {
       "periodo": "2001-12",
       "tasa_desempleo": 13.61,
-      "tasa_desempleo_delta": -6.91,
-      "tasa_desempleo_variacion": "bajo",
+      "tasa_desempleo_delta": null,
+      "tasa_desempleo_variacion": null,
       "tgp": 68.81,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5422,8 +5422,8 @@
     {
       "periodo": "2001-11",
       "tasa_desempleo": 13.68,
-      "tasa_desempleo_delta": -6.38,
-      "tasa_desempleo_variacion": "bajo",
+      "tasa_desempleo_delta": null,
+      "tasa_desempleo_variacion": null,
       "tgp": 69.68,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5440,8 +5440,8 @@
     {
       "periodo": "2001-10",
       "tasa_desempleo": 14.52,
-      "tasa_desempleo_delta": -0.48,
-      "tasa_desempleo_variacion": "bajo",
+      "tasa_desempleo_delta": null,
+      "tasa_desempleo_variacion": null,
       "tgp": 68.51,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5458,8 +5458,8 @@
     {
       "periodo": "2001-09",
       "tasa_desempleo": 14.07,
-      "tasa_desempleo_delta": 1.93,
-      "tasa_desempleo_variacion": "subio",
+      "tasa_desempleo_delta": null,
+      "tasa_desempleo_variacion": null,
       "tgp": 68.31,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5476,8 +5476,8 @@
     {
       "periodo": "2001-08",
       "tasa_desempleo": 14.91,
-      "tasa_desempleo_delta": 3.1,
-      "tasa_desempleo_variacion": "subio",
+      "tasa_desempleo_delta": null,
+      "tasa_desempleo_variacion": null,
       "tgp": 67.44,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5494,8 +5494,8 @@
     {
       "periodo": "2001-07",
       "tasa_desempleo": 15.18,
-      "tasa_desempleo_delta": 6.46,
-      "tasa_desempleo_variacion": "subio",
+      "tasa_desempleo_delta": null,
+      "tasa_desempleo_variacion": null,
       "tgp": 66.74,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5512,8 +5512,8 @@
     {
       "periodo": "2001-06",
       "tasa_desempleo": 15.31,
-      "tasa_desempleo_delta": 7.06,
-      "tasa_desempleo_variacion": "subio",
+      "tasa_desempleo_delta": null,
+      "tasa_desempleo_variacion": null,
       "tgp": 66.33,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5530,8 +5530,8 @@
     {
       "periodo": "2001-05",
       "tasa_desempleo": 14.04,
-      "tasa_desempleo_delta": 6.24,
-      "tasa_desempleo_variacion": "subio",
+      "tasa_desempleo_delta": null,
+      "tasa_desempleo_variacion": null,
       "tgp": 65.41,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5548,8 +5548,8 @@
     {
       "periodo": "2001-04",
       "tasa_desempleo": 14.52,
-      "tasa_desempleo_delta": 5.08,
-      "tasa_desempleo_variacion": "subio",
+      "tasa_desempleo_delta": null,
+      "tasa_desempleo_variacion": null,
       "tgp": 65.22,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5566,8 +5566,8 @@
     {
       "periodo": "2001-03",
       "tasa_desempleo": 15.81,
-      "tasa_desempleo_delta": 5.69,
-      "tasa_desempleo_variacion": "subio",
+      "tasa_desempleo_delta": null,
+      "tasa_desempleo_variacion": null,
       "tgp": 68.39,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5620,8 +5620,8 @@
     {
       "periodo": "2000-12",
       "tasa_desempleo": 20.52,
-      "tasa_desempleo_delta": null,
-      "tasa_desempleo_variacion": null,
+      "tasa_desempleo_delta": 0.46,
+      "tasa_desempleo_variacion": "subio",
       "tgp": null,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5638,8 +5638,8 @@
     {
       "periodo": "1999-12",
       "tasa_desempleo": 20.06,
-      "tasa_desempleo_delta": null,
-      "tasa_desempleo_variacion": null,
+      "tasa_desempleo_delta": 5.06,
+      "tasa_desempleo_variacion": "subio",
       "tgp": null,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5656,8 +5656,8 @@
     {
       "periodo": "1998-12",
       "tasa_desempleo": 15.0,
-      "tasa_desempleo_delta": null,
-      "tasa_desempleo_variacion": null,
+      "tasa_desempleo_delta": 2.86,
+      "tasa_desempleo_variacion": "subio",
       "tgp": null,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5674,8 +5674,8 @@
     {
       "periodo": "1997-12",
       "tasa_desempleo": 12.14,
-      "tasa_desempleo_delta": null,
-      "tasa_desempleo_variacion": null,
+      "tasa_desempleo_delta": 0.33,
+      "tasa_desempleo_variacion": "subio",
       "tgp": null,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5692,8 +5692,8 @@
     {
       "periodo": "1996-12",
       "tasa_desempleo": 11.81,
-      "tasa_desempleo_delta": null,
-      "tasa_desempleo_variacion": null,
+      "tasa_desempleo_delta": 3.09,
+      "tasa_desempleo_variacion": "subio",
       "tgp": null,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5710,8 +5710,8 @@
     {
       "periodo": "1995-12",
       "tasa_desempleo": 8.72,
-      "tasa_desempleo_delta": null,
-      "tasa_desempleo_variacion": null,
+      "tasa_desempleo_delta": 0.47,
+      "tasa_desempleo_variacion": "subio",
       "tgp": null,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5728,8 +5728,8 @@
     {
       "periodo": "1994-12",
       "tasa_desempleo": 8.25,
-      "tasa_desempleo_delta": null,
-      "tasa_desempleo_variacion": null,
+      "tasa_desempleo_delta": 0.45,
+      "tasa_desempleo_variacion": "subio",
       "tgp": null,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5746,8 +5746,8 @@
     {
       "periodo": "1993-12",
       "tasa_desempleo": 7.8,
-      "tasa_desempleo_delta": null,
-      "tasa_desempleo_variacion": null,
+      "tasa_desempleo_delta": -1.64,
+      "tasa_desempleo_variacion": "bajo",
       "tgp": null,
       "tgp_delta": null,
       "tgp_variacion": null,
@@ -5764,8 +5764,8 @@
     {
       "periodo": "1992-12",
       "tasa_desempleo": 9.44,
-      "tasa_desempleo_delta": null,
-      "tasa_desempleo_variacion": null,
+      "tasa_desempleo_delta": -0.68,
+      "tasa_desempleo_variacion": "bajo",
       "tgp": null,
       "tgp_delta": null,
       "tgp_variacion": null,

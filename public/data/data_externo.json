@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-10-15T17:34:34+00:00",
+    "ultima_actualizacion": "2026-10-18T00:43:25+00:00",
     "fuentes": {
       "banrep_trm": {
         "nombre": "Banco de la Republica — TRM",
@@ -23,7 +23,7 @@
       "reservas_netas": "Activos externos netos del Banco de la Republica, en miles de millones de USD.",
       "cuenta_corriente": "Saldo de cuenta corriente como porcentaje del PIB (WDI BN.CAB.XOKA.GD.ZS).",
       "ied": "Inversion extranjera directa, ingresos netos, como porcentaje del PIB (WDI BX.KLT.DINV.WD.GD.ZS).",
-      "deuda_externa": "Stock de deuda externa total como porcentaje del INB (WDI DT.DOD.DECT.GN.ZS).",
+      "deuda_externa": "Stock de deuda externa total como porcentaje del PIB (WDI DT.DOD.DECT.CD / NY.GDP.MKTP.CD).",
       "variacion": "subio | bajo | igual respecto al periodo anterior",
       "epsilon_variacion": 0.001
     },
@@ -38,9 +38,9 @@
     "trm": {
       "actual": {
         "periodo": "2026-10",
-        "valor": 3232.11,
+        "valor": 3219.79,
         "variacion": "subio",
-        "delta": 52.33
+        "delta": 40.01
       },
       "unidad": "COP/USD"
     },
@@ -56,9 +56,9 @@
     "cuenta_corriente": {
       "actual": {
         "periodo": "2025-12",
-        "valor": -2.38,
+        "valor": -2.41,
         "variacion": "bajo",
-        "delta": -0.71
+        "delta": -0.72
       },
       "unidad": "% PIB"
     },
@@ -73,10 +73,10 @@
     },
     "deuda_externa": {
       "actual": {
-        "periodo": "2025-12",
-        "valor": 0.0,
+        "periodo": "2024-12",
+        "valor": 47.98,
         "variacion": "bajo",
-        "delta": -47.98
+        "delta": -5.49
       },
       "unidad": "% PIB"
     }
@@ -84,8 +84,8 @@
   "serie": [
     {
       "periodo": "2026-10",
-      "trm": 3232.11,
-      "trm_delta": 52.33,
+      "trm": 3219.79,
+      "trm_delta": 40.01,
       "trm_variacion": "subio",
       "reservas_netas": null,
       "reservas_netas_delta": null,
@@ -270,15 +270,15 @@
       "reservas_netas": 65.81,
       "reservas_netas_delta": 3.91,
       "reservas_netas_variacion": "subio",
-      "cuenta_corriente": -2.38,
-      "cuenta_corriente_delta": -0.71,
+      "cuenta_corriente": -2.41,
+      "cuenta_corriente_delta": -0.72,
       "cuenta_corriente_variacion": "bajo",
       "ied": 2.53,
       "ied_delta": -0.72,
       "ied_variacion": "bajo",
-      "deuda_externa": 0.0,
-      "deuda_externa_delta": -47.98,
-      "deuda_externa_variacion": "bajo"
+      "deuda_externa": null,
+      "deuda_externa_delta": null,
+      "deuda_externa_variacion": null
     },
     {
       "periodo": "2025-11",
@@ -486,8 +486,8 @@
       "reservas_netas": 61.9,
       "reservas_netas_delta": 2.86,
       "reservas_netas_variacion": "subio",
-      "cuenta_corriente": -1.67,
-      "cuenta_corriente_delta": 0.6,
+      "cuenta_corriente": -1.69,
+      "cuenta_corriente_delta": 0.58,
       "cuenta_corriente_variacion": "subio",
       "ied": 3.25,
       "ied_delta": -1.33,
@@ -5818,11 +5818,11 @@
       "cuenta_corriente_delta": -1.36,
       "cuenta_corriente_variacion": "bajo",
       "ied": 0.6,
-      "ied_delta": 0.6,
-      "ied_variacion": "subio",
+      "ied_delta": null,
+      "ied_variacion": null,
       "deuda_externa": 32.47,
-      "deuda_externa_delta": 32.47,
-      "deuda_externa_variacion": "subio"
+      "deuda_externa_delta": null,
+      "deuda_externa_variacion": null
     },
     {
       "periodo": "1969-12",
@@ -5835,12 +5835,12 @@
       "cuenta_corriente": -2.71,
       "cuenta_corriente_delta": 0.04,
       "cuenta_corriente_variacion": "subio",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual",
-      "deuda_externa": 0.0,
-      "deuda_externa_delta": 0.0,
-      "deuda_externa_variacion": "igual"
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null,
+      "deuda_externa": null,
+      "deuda_externa_delta": null,
+      "deuda_externa_variacion": null
     },
     {
       "periodo": "1968-12",
@@ -5851,14 +5851,14 @@
       "reservas_netas_delta": 0.1,
       "reservas_netas_variacion": "subio",
       "cuenta_corriente": -2.75,
-      "cuenta_corriente_delta": -2.75,
-      "cuenta_corriente_variacion": "bajo",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual",
-      "deuda_externa": 0.0,
-      "deuda_externa_delta": 0.0,
-      "deuda_externa_variacion": "igual"
+      "cuenta_corriente_delta": null,
+      "cuenta_corriente_variacion": null,
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null,
+      "deuda_externa": null,
+      "deuda_externa_delta": null,
+      "deuda_externa_variacion": null
     },
     {
       "periodo": "1967-12",
@@ -5868,15 +5868,15 @@
       "reservas_netas": 0.08,
       "reservas_netas_delta": 0.0,
       "reservas_netas_variacion": "igual",
-      "cuenta_corriente": 0.0,
-      "cuenta_corriente_delta": 0.0,
-      "cuenta_corriente_variacion": "igual",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual",
-      "deuda_externa": 0.0,
-      "deuda_externa_delta": 0.0,
-      "deuda_externa_variacion": "igual"
+      "cuenta_corriente": null,
+      "cuenta_corriente_delta": null,
+      "cuenta_corriente_variacion": null,
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null,
+      "deuda_externa": null,
+      "deuda_externa_delta": null,
+      "deuda_externa_variacion": null
     },
     {
       "periodo": "1966-12",
@@ -5886,15 +5886,15 @@
       "reservas_netas": 0.08,
       "reservas_netas_delta": -0.02,
       "reservas_netas_variacion": "bajo",
-      "cuenta_corriente": 0.0,
-      "cuenta_corriente_delta": 0.0,
-      "cuenta_corriente_variacion": "igual",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual",
-      "deuda_externa": 0.0,
-      "deuda_externa_delta": 0.0,
-      "deuda_externa_variacion": "igual"
+      "cuenta_corriente": null,
+      "cuenta_corriente_delta": null,
+      "cuenta_corriente_variacion": null,
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null,
+      "deuda_externa": null,
+      "deuda_externa_delta": null,
+      "deuda_externa_variacion": null
     },
     {
       "periodo": "1965-12",
@@ -5904,15 +5904,15 @@
       "reservas_netas": 0.1,
       "reservas_netas_delta": 0.0,
       "reservas_netas_variacion": "igual",
-      "cuenta_corriente": 0.0,
-      "cuenta_corriente_delta": 0.0,
-      "cuenta_corriente_variacion": "igual",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual",
-      "deuda_externa": 0.0,
-      "deuda_externa_delta": 0.0,
-      "deuda_externa_variacion": "igual"
+      "cuenta_corriente": null,
+      "cuenta_corriente_delta": null,
+      "cuenta_corriente_variacion": null,
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null,
+      "deuda_externa": null,
+      "deuda_externa_delta": null,
+      "deuda_externa_variacion": null
     },
     {
       "periodo": "1964-12",
@@ -5922,15 +5922,15 @@
       "reservas_netas": 0.1,
       "reservas_netas_delta": 0.01,
       "reservas_netas_variacion": "subio",
-      "cuenta_corriente": 0.0,
-      "cuenta_corriente_delta": 0.0,
-      "cuenta_corriente_variacion": "igual",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual",
-      "deuda_externa": 0.0,
-      "deuda_externa_delta": 0.0,
-      "deuda_externa_variacion": "igual"
+      "cuenta_corriente": null,
+      "cuenta_corriente_delta": null,
+      "cuenta_corriente_variacion": null,
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null,
+      "deuda_externa": null,
+      "deuda_externa_delta": null,
+      "deuda_externa_variacion": null
     },
     {
       "periodo": "1963-12",
@@ -5940,15 +5940,15 @@
       "reservas_netas": 0.09,
       "reservas_netas_delta": 0.0,
       "reservas_netas_variacion": "igual",
-      "cuenta_corriente": 0.0,
-      "cuenta_corriente_delta": 0.0,
-      "cuenta_corriente_variacion": "igual",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual",
-      "deuda_externa": 0.0,
-      "deuda_externa_delta": 0.0,
-      "deuda_externa_variacion": "igual"
+      "cuenta_corriente": null,
+      "cuenta_corriente_delta": null,
+      "cuenta_corriente_variacion": null,
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null,
+      "deuda_externa": null,
+      "deuda_externa_delta": null,
+      "deuda_externa_variacion": null
     },
     {
       "periodo": "1962-12",
@@ -5958,15 +5958,15 @@
       "reservas_netas": 0.09,
       "reservas_netas_delta": -0.05,
       "reservas_netas_variacion": "bajo",
-      "cuenta_corriente": 0.0,
-      "cuenta_corriente_delta": 0.0,
-      "cuenta_corriente_variacion": "igual",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual",
-      "deuda_externa": 0.0,
-      "deuda_externa_delta": 0.0,
-      "deuda_externa_variacion": "igual"
+      "cuenta_corriente": null,
+      "cuenta_corriente_delta": null,
+      "cuenta_corriente_variacion": null,
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null,
+      "deuda_externa": null,
+      "deuda_externa_delta": null,
+      "deuda_externa_variacion": null
     },
     {
       "periodo": "1961-12",
@@ -5976,15 +5976,15 @@
       "reservas_netas": 0.14,
       "reservas_netas_delta": -0.03,
       "reservas_netas_variacion": "bajo",
-      "cuenta_corriente": 0.0,
-      "cuenta_corriente_delta": 0.0,
-      "cuenta_corriente_variacion": "igual",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual",
-      "deuda_externa": 0.0,
-      "deuda_externa_delta": 0.0,
-      "deuda_externa_variacion": "igual"
+      "cuenta_corriente": null,
+      "cuenta_corriente_delta": null,
+      "cuenta_corriente_variacion": null,
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null,
+      "deuda_externa": null,
+      "deuda_externa_delta": null,
+      "deuda_externa_variacion": null
     },
     {
       "periodo": "1960-12",
@@ -5994,13 +5994,13 @@
       "reservas_netas": 0.17,
       "reservas_netas_delta": null,
       "reservas_netas_variacion": null,
-      "cuenta_corriente": 0.0,
+      "cuenta_corriente": null,
       "cuenta_corriente_delta": null,
       "cuenta_corriente_variacion": null,
-      "ied": 0.0,
+      "ied": null,
       "ied_delta": null,
       "ied_variacion": null,
-      "deuda_externa": 0.0,
+      "deuda_externa": null,
       "deuda_externa_delta": null,
       "deuda_externa_variacion": null
     }
@@ -6030,7 +6030,7 @@
       "2023": 4327.55,
       "2024": 4071.18,
       "2025": 4053.02,
-      "2026": 3474.04
+      "2026": 3472.81
     },
     "reservas_netas": {
       "1960": 0.17,
@@ -6101,14 +6101,6 @@
       "2025": 65.81
     },
     "cuenta_corriente": {
-      "1960": 0.0,
-      "1961": 0.0,
-      "1962": 0.0,
-      "1963": 0.0,
-      "1964": 0.0,
-      "1965": 0.0,
-      "1966": 0.0,
-      "1967": 0.0,
       "1968": -2.75,
       "1969": -2.71,
       "1970": -4.07,
@@ -6165,20 +6157,10 @@
       "2021": -5.64,
       "2022": -6.04,
       "2023": -2.27,
-      "2024": -1.67,
-      "2025": -2.38
+      "2024": -1.69,
+      "2025": -2.41
     },
     "ied": {
-      "1960": 0.0,
-      "1961": 0.0,
-      "1962": 0.0,
-      "1963": 0.0,
-      "1964": 0.0,
-      "1965": 0.0,
-      "1966": 0.0,
-      "1967": 0.0,
-      "1968": 0.0,
-      "1969": 0.0,
       "1970": 0.6,
       "1971": 0.55,
       "1972": 0.21,
@@ -6237,16 +6219,6 @@
       "2025": 2.53
     },
     "deuda_externa": {
-      "1960": 0.0,
-      "1961": 0.0,
-      "1962": 0.0,
-      "1963": 0.0,
-      "1964": 0.0,
-      "1965": 0.0,
-      "1966": 0.0,
-      "1967": 0.0,
-      "1968": 0.0,
-      "1969": 0.0,
       "1970": 32.47,
       "1971": 33.71,
       "1972": 34.19,
@@ -6301,8 +6273,7 @@
       "2021": 54.08,
       "2022": 53.38,
       "2023": 53.47,
-      "2024": 47.98,
-      "2025": 0.0
+      "2024": 47.98
     }
   }
 }

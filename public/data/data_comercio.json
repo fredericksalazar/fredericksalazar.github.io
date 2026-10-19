@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-09-14T14:58:25+00:00",
+    "ultima_actualizacion": "2026-10-18T00:43:25+00:00",
     "fuentes": {
       "comercio": {
         "nombre": "Banco Mundial — World Development Indicators",
@@ -48,9 +48,9 @@
     "balanza_comercial": {
       "actual": {
         "periodo": "2025-12",
-        "valor": -2.38,
+        "valor": -2.41,
         "variacion": "bajo",
-        "delta": -0.71
+        "delta": -0.72
       },
       "unidad": "% PIB"
     },
@@ -82,8 +82,8 @@
       "importaciones": 20.38,
       "importaciones_delta": 0.14,
       "importaciones_variacion": "subio",
-      "balanza_comercial": -2.38,
-      "balanza_comercial_delta": -0.71,
+      "balanza_comercial": -2.41,
+      "balanza_comercial_delta": -0.72,
       "balanza_comercial_variacion": "bajo",
       "apertura": 35.36,
       "apertura_delta": -0.96,
@@ -100,8 +100,8 @@
       "importaciones": 20.24,
       "importaciones_delta": -2.09,
       "importaciones_variacion": "bajo",
-      "balanza_comercial": -1.67,
-      "balanza_comercial_delta": 0.6,
+      "balanza_comercial": -1.69,
+      "balanza_comercial_delta": 0.58,
       "balanza_comercial_variacion": "subio",
       "apertura": 36.32,
       "apertura_delta": -3.82,
@@ -1079,8 +1079,8 @@
       "apertura_delta": 2.27,
       "apertura_variacion": "subio",
       "ied": 0.6,
-      "ied_delta": 0.6,
-      "ied_variacion": "subio"
+      "ied_delta": null,
+      "ied_variacion": null
     },
     {
       "periodo": "1969-12",
@@ -1096,9 +1096,9 @@
       "apertura": 25.55,
       "apertura_delta": 0.97,
       "apertura_variacion": "subio",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual"
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null
     },
     {
       "periodo": "1968-12",
@@ -1109,14 +1109,14 @@
       "importaciones_delta": 2.47,
       "importaciones_variacion": "subio",
       "balanza_comercial": -2.75,
-      "balanza_comercial_delta": -2.75,
-      "balanza_comercial_variacion": "bajo",
+      "balanza_comercial_delta": null,
+      "balanza_comercial_variacion": null,
       "apertura": 24.58,
       "apertura_delta": 3.03,
       "apertura_variacion": "subio",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual"
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null
     },
     {
       "periodo": "1967-12",
@@ -1126,15 +1126,15 @@
       "importaciones": 10.34,
       "importaciones_delta": -4.01,
       "importaciones_variacion": "bajo",
-      "balanza_comercial": 0.0,
-      "balanza_comercial_delta": 0.0,
-      "balanza_comercial_variacion": "igual",
+      "balanza_comercial": null,
+      "balanza_comercial_delta": null,
+      "balanza_comercial_variacion": null,
       "apertura": 21.55,
       "apertura_delta": -2.78,
       "apertura_variacion": "bajo",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual"
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null
     },
     {
       "periodo": "1966-12",
@@ -1144,15 +1144,15 @@
       "importaciones": 14.35,
       "importaciones_delta": 4.64,
       "importaciones_variacion": "subio",
-      "balanza_comercial": 0.0,
-      "balanza_comercial_delta": 0.0,
-      "balanza_comercial_variacion": "igual",
+      "balanza_comercial": null,
+      "balanza_comercial_delta": null,
+      "balanza_comercial_variacion": null,
       "apertura": 24.33,
       "apertura_delta": 2.49,
       "apertura_variacion": "subio",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual"
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null
     },
     {
       "periodo": "1965-12",
@@ -1162,15 +1162,15 @@
       "importaciones": 9.71,
       "importaciones_delta": -2.94,
       "importaciones_variacion": "bajo",
-      "balanza_comercial": 0.0,
-      "balanza_comercial_delta": 0.0,
-      "balanza_comercial_variacion": "igual",
+      "balanza_comercial": null,
+      "balanza_comercial_delta": null,
+      "balanza_comercial_variacion": null,
       "apertura": 21.84,
       "apertura_delta": -2.77,
       "apertura_variacion": "bajo",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual"
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null
     },
     {
       "periodo": "1964-12",
@@ -1180,15 +1180,15 @@
       "importaciones": 12.65,
       "importaciones_delta": 0.3,
       "importaciones_variacion": "subio",
-      "balanza_comercial": 0.0,
-      "balanza_comercial_delta": 0.0,
-      "balanza_comercial_variacion": "igual",
+      "balanza_comercial": null,
+      "balanza_comercial_delta": null,
+      "balanza_comercial_variacion": null,
       "apertura": 24.61,
       "apertura_delta": 0.28,
       "apertura_variacion": "subio",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual"
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null
     },
     {
       "periodo": "1963-12",
@@ -1198,15 +1198,15 @@
       "importaciones": 12.35,
       "importaciones_delta": 0.12,
       "importaciones_variacion": "subio",
-      "balanza_comercial": 0.0,
-      "balanza_comercial_delta": 0.0,
-      "balanza_comercial_variacion": "igual",
+      "balanza_comercial": null,
+      "balanza_comercial_delta": null,
+      "balanza_comercial_variacion": null,
       "apertura": 24.33,
       "apertura_delta": -0.12,
       "apertura_variacion": "bajo",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual"
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null
     },
     {
       "periodo": "1962-12",
@@ -1216,15 +1216,15 @@
       "importaciones": 12.23,
       "importaciones_delta": -1.6,
       "importaciones_variacion": "bajo",
-      "balanza_comercial": 0.0,
-      "balanza_comercial_delta": 0.0,
-      "balanza_comercial_variacion": "igual",
+      "balanza_comercial": null,
+      "balanza_comercial_delta": null,
+      "balanza_comercial_variacion": null,
       "apertura": 24.45,
       "apertura_delta": -2.37,
       "apertura_variacion": "bajo",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual"
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null
     },
     {
       "periodo": "1961-12",
@@ -1234,15 +1234,15 @@
       "importaciones": 13.83,
       "importaciones_delta": -0.93,
       "importaciones_variacion": "bajo",
-      "balanza_comercial": 0.0,
-      "balanza_comercial_delta": 0.0,
-      "balanza_comercial_variacion": "igual",
+      "balanza_comercial": null,
+      "balanza_comercial_delta": null,
+      "balanza_comercial_variacion": null,
       "apertura": 26.82,
       "apertura_delta": -3.63,
       "apertura_variacion": "bajo",
-      "ied": 0.0,
-      "ied_delta": 0.0,
-      "ied_variacion": "igual"
+      "ied": null,
+      "ied_delta": null,
+      "ied_variacion": null
     },
     {
       "periodo": "1960-12",
@@ -1252,13 +1252,13 @@
       "importaciones": 14.76,
       "importaciones_delta": null,
       "importaciones_variacion": null,
-      "balanza_comercial": 0.0,
+      "balanza_comercial": null,
       "balanza_comercial_delta": null,
       "balanza_comercial_variacion": null,
       "apertura": 30.45,
       "apertura_delta": null,
       "apertura_variacion": null,
-      "ied": 0.0,
+      "ied": null,
       "ied_delta": null,
       "ied_variacion": null
     }
@@ -1550,11 +1550,11 @@
       "otros": 4643688.9
     },
     "2026": {
-      "total": 32489164.26,
-      "agropecuarios": 8664675.97,
-      "combustibles": 13142015.3,
-      "manufacturas": 6098479.44,
-      "otros": 4583993.51
+      "total": 36880668.53,
+      "agropecuarios": 9731461.53,
+      "combustibles": 14863431.35,
+      "manufacturas": 6990714.6,
+      "otros": 5295061.01
     }
   },
   "matriz_importaciones": {
@@ -1776,11 +1776,11 @@
       "otros": 128585.43
     },
     "2026": {
-      "total": 38075769.73,
-      "agropecuarios": 5452756.95,
-      "combustibles": 3981061.01,
-      "manufacturas": 28594662.0,
-      "otros": 47289.74
+      "total": 46043903.61,
+      "agropecuarios": 6564183.68,
+      "combustibles": 5053216.33,
+      "manufacturas": 34369360.97,
+      "otros": 57142.6
     }
   },
   "productos_tradicionales": {
@@ -1789,7 +1789,6 @@
       "carbon": 555430.33,
       "petroleo": 1412943.13,
       "ferroniquel": 125155.61,
-      "no_tradicionales": null,
       "total_tradicionales": 3352376.66
     },
     "1993": {
@@ -1797,7 +1796,6 @@
       "carbon": 564414.2,
       "petroleo": 1323259.64,
       "ferroniquel": 101897.99,
-      "no_tradicionales": null,
       "total_tradicionales": 3129440.05
     },
     "1994": {
@@ -1805,7 +1803,6 @@
       "carbon": 549833.33,
       "petroleo": 1312722.93,
       "ferroniquel": 118782.7,
-      "no_tradicionales": null,
       "total_tradicionales": 3971472.8
     },
     "1995": {
@@ -1813,7 +1810,6 @@
       "carbon": 592538.82,
       "petroleo": 2184679.91,
       "ferroniquel": 184786.03,
-      "no_tradicionales": null,
       "total_tradicionales": 4793899.06
     },
     "1996": {
@@ -1821,7 +1817,6 @@
       "carbon": 848553.53,
       "petroleo": 2947002.48,
       "ferroniquel": 172073.56,
-      "no_tradicionales": null,
       "total_tradicionales": 5546060.18
     },
     "1997": {
@@ -1829,7 +1824,6 @@
       "carbon": 887899.24,
       "petroleo": 2707140.51,
       "ferroniquel": 160551.43,
-      "no_tradicionales": null,
       "total_tradicionales": 6016759.35
     },
     "1998": {
@@ -1837,7 +1831,6 @@
       "carbon": 935696.79,
       "petroleo": 2328850.89,
       "ferroniquel": 119650.85,
-      "no_tradicionales": null,
       "total_tradicionales": 5277300.73
     },
     "1999": {
@@ -1845,7 +1838,6 @@
       "carbon": 856553.34,
       "petroleo": 3754744.28,
       "ferroniquel": 154109.41,
-      "no_tradicionales": null,
       "total_tradicionales": 6112609.66
     },
     "2000": {
@@ -1853,7 +1845,6 @@
       "carbon": 892881.72,
       "petroleo": 4775488.0,
       "ferroniquel": 211403.69,
-      "no_tradicionales": null,
       "total_tradicionales": 6947124.64
     },
     "2001": {
@@ -1861,7 +1852,6 @@
       "carbon": 1197013.28,
       "petroleo": 3285064.23,
       "ferroniquel": 235229.63,
-      "no_tradicionales": null,
       "total_tradicionales": 5481149.0
     },
     "2002": {
@@ -1869,7 +1859,6 @@
       "carbon": 990515.24,
       "petroleo": 3275204.7,
       "ferroniquel": 271529.13,
-      "no_tradicionales": null,
       "total_tradicionales": 5309450.59
     },
     "2003": {
@@ -1877,7 +1866,6 @@
       "carbon": 1422026.19,
       "petroleo": 3383239.51,
       "ferroniquel": 416228.25,
-      "no_tradicionales": null,
       "total_tradicionales": 6030825.03
     },
     "2004": {
@@ -1885,7 +1873,6 @@
       "carbon": 1859074.17,
       "petroleo": 4227421.4,
       "ferroniquel": 636665.52,
-      "no_tradicionales": null,
       "total_tradicionales": 7679403.63
     },
     "2005": {
@@ -1893,7 +1880,6 @@
       "carbon": 2554323.85,
       "petroleo": 5559383.23,
       "ferroniquel": 737157.62,
-      "no_tradicionales": null,
       "total_tradicionales": 10322998.23
     },
     "2006": {
@@ -1901,7 +1887,6 @@
       "carbon": 2926419.6,
       "petroleo": 6333126.59,
       "ferroniquel": 1106849.6,
-      "no_tradicionales": null,
       "total_tradicionales": 11837942.05
     },
     "2007": {
@@ -1909,7 +1894,6 @@
       "carbon": 3603883.57,
       "petroleo": 7322933.37,
       "ferroniquel": 1713558.02,
-      "no_tradicionales": null,
       "total_tradicionales": 14369797.15
     },
     "2008": {
@@ -1917,7 +1901,6 @@
       "carbon": 4512608.56,
       "petroleo": 12210501.6,
       "ferroniquel": 778213.97,
-      "no_tradicionales": null,
       "total_tradicionales": 19356290.68
     },
     "2009": {
@@ -1925,7 +1908,6 @@
       "carbon": 5416385.32,
       "petroleo": 10267501.95,
       "ferroniquel": 725933.99,
-      "no_tradicionales": null,
       "total_tradicionales": 17952518.78
     },
     "2010": {
@@ -1933,7 +1915,6 @@
       "carbon": 6015184.47,
       "petroleo": 16501625.0,
       "ferroniquel": 967337.83,
-      "no_tradicionales": null,
       "total_tradicionales": 25367704.26
     },
     "2011": {
@@ -1941,7 +1922,6 @@
       "carbon": 8396865.72,
       "petroleo": 28420664.79,
       "ferroniquel": 826621.46,
-      "no_tradicionales": null,
       "total_tradicionales": 40252517.11
     },
     "2012": {
@@ -1949,7 +1929,6 @@
       "carbon": 7805189.98,
       "petroleo": 31558933.1,
       "ferroniquel": 881168.76,
-      "no_tradicionales": null,
       "total_tradicionales": 42155288.95
     },
     "2013": {
@@ -1957,7 +1936,6 @@
       "carbon": 6687897.46,
       "petroleo": 32485854.63,
       "ferroniquel": 680123.59,
-      "no_tradicionales": null,
       "total_tradicionales": 41737781.71
     },
     "2014": {
@@ -1965,7 +1943,6 @@
       "carbon": 6810062.51,
       "petroleo": 28988175.78,
       "ferroniquel": 640594.92,
-      "no_tradicionales": null,
       "total_tradicionales": 38912080.87
     },
     "2015": {
@@ -1973,7 +1950,6 @@
       "carbon": 4560025.74,
       "petroleo": 14566129.51,
       "ferroniquel": 429753.19,
-      "no_tradicionales": null,
       "total_tradicionales": 22082440.02
     },
     "2016": {
@@ -1981,7 +1957,6 @@
       "carbon": 4638881.18,
       "petroleo": 10795579.3,
       "ferroniquel": 327764.77,
-      "no_tradicionales": null,
       "total_tradicionales": 18179917.38
     },
     "2017": {
@@ -1989,7 +1964,6 @@
       "carbon": 7389996.47,
       "petroleo": 13308015.22,
       "ferroniquel": 360543.77,
-      "no_tradicionales": null,
       "total_tradicionales": 23572335.79
     },
     "2018": {
@@ -1997,7 +1971,6 @@
       "carbon": 7447913.06,
       "petroleo": 16842686.91,
       "ferroniquel": 558456.76,
-      "no_tradicionales": null,
       "total_tradicionales": 27116567.57
     },
     "2019": {
@@ -2005,7 +1978,6 @@
       "carbon": 5668328.99,
       "petroleo": 15961953.42,
       "ferroniquel": 545023.75,
-      "no_tradicionales": null,
       "total_tradicionales": 24456980.41
     },
     "2020": {
@@ -2013,7 +1985,6 @@
       "carbon": 4165865.47,
       "petroleo": 8754767.27,
       "ferroniquel": 435437.5,
-      "no_tradicionales": null,
       "total_tradicionales": 15802668.44
     },
     "2021": {
@@ -2021,7 +1992,6 @@
       "carbon": 5652258.12,
       "petroleo": 13514410.6,
       "ferroniquel": 528447.6,
-      "no_tradicionales": null,
       "total_tradicionales": 22786954.54
     },
     "2022": {
@@ -2029,7 +1999,6 @@
       "carbon": 12288826.9,
       "petroleo": 18724034.02,
       "ferroniquel": 908437.53,
-      "no_tradicionales": null,
       "total_tradicionales": 35883618.08
     },
     "2023": {
@@ -2037,7 +2006,6 @@
       "carbon": 9163264.55,
       "petroleo": 15836355.21,
       "ferroniquel": 637336.62,
-      "no_tradicionales": null,
       "total_tradicionales": 28428905.9
     },
     "2024": {
@@ -2045,7 +2013,6 @@
       "carbon": 7106629.87,
       "petroleo": 15032659.71,
       "ferroniquel": 542146.64,
-      "no_tradicionales": null,
       "total_tradicionales": 26074845.1
     },
     "2025": {
@@ -2053,16 +2020,14 @@
       "carbon": 4901591.39,
       "petroleo": 12481905.21,
       "ferroniquel": 475477.42,
-      "no_tradicionales": null,
       "total_tradicionales": 23647196.06
     },
     "2026": {
-      "cafe": 2841541.3,
-      "carbon": 2895988.96,
-      "petroleo": 9002044.27,
-      "ferroniquel": 156443.53,
-      "no_tradicionales": null,
-      "total_tradicionales": 14896018.06
+      "cafe": 3239719.11,
+      "carbon": 3343666.9,
+      "petroleo": 10047923.59,
+      "ferroniquel": 183456.52,
+      "total_tradicionales": 16814766.11
     }
   }
 }
