@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-09-14T14:58:23+00:00",
+    "ultima_actualizacion": "2026-10-18T00:43:25+00:00",
     "fuentes": {
       "pib": {
         "nombre": "Banco Mundial — World Development Indicators",
@@ -65,19 +65,19 @@
     },
     "deuda_publica": {
       "actual": {
-        "periodo": "2025-12",
-        "valor": 0.0,
+        "periodo": "2024-12",
+        "valor": 71.2,
         "variacion": "bajo",
-        "delta": -71.2
+        "delta": -0.01
       },
       "unidad": "% PIB"
     },
     "gini": {
       "actual": {
-        "periodo": "2025-12",
-        "valor": 0.0,
+        "periodo": "2024-12",
+        "valor": 54.4,
         "variacion": "bajo",
-        "delta": -54.4
+        "delta": -0.2
       },
       "unidad": "pts"
     }
@@ -97,12 +97,12 @@
       "poblacion": 53425635.0,
       "poblacion_delta": 539272.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": -71.2,
-      "deuda_publica_variacion": "bajo",
-      "gini": 0.0,
-      "gini_delta": -54.4,
-      "gini_variacion": "bajo"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "2024-12",
@@ -455,10 +455,10 @@
       "poblacion_delta": 523434.0,
       "poblacion_variacion": "subio",
       "deuda_publica": 65.25,
-      "deuda_publica_delta": 65.25,
+      "deuda_publica_delta": 12.71,
       "deuda_publica_variacion": "subio",
       "gini": 55.0,
-      "gini_delta": 55.0,
+      "gini_delta": 1.1,
       "gini_variacion": "subio"
     },
     {
@@ -475,12 +475,12 @@
       "poblacion": 43235374.0,
       "poblacion_delta": 544290.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "2006-12",
@@ -496,12 +496,12 @@
       "poblacion": 42691084.0,
       "poblacion_delta": 562107.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": -53.9,
-      "gini_variacion": "bajo"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "2005-12",
@@ -517,9 +517,9 @@
       "poblacion": 42128977.0,
       "poblacion_delta": 585806.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
       "gini": 53.9,
       "gini_delta": -1.1,
       "gini_variacion": "bajo"
@@ -538,9 +538,9 @@
       "poblacion": 41543171.0,
       "poblacion_delta": 605742.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": -52.54,
-      "deuda_publica_variacion": "bajo",
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
       "gini": 55.0,
       "gini_delta": 1.4,
       "gini_variacion": "subio"
@@ -560,7 +560,7 @@
       "poblacion_delta": 612749.0,
       "poblacion_variacion": "subio",
       "deuda_publica": 52.54,
-      "deuda_publica_delta": 52.54,
+      "deuda_publica_delta": 34.83,
       "deuda_publica_variacion": "subio",
       "gini": 53.6,
       "gini_delta": -2.4,
@@ -580,9 +580,9 @@
       "poblacion": 40324680.0,
       "poblacion_delta": 615418.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
       "gini": 56.0,
       "gini_delta": -1.3,
       "gini_variacion": "bajo"
@@ -601,9 +601,9 @@
       "poblacion": 39709262.0,
       "poblacion_delta": 619328.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": -17.71,
-      "deuda_publica_variacion": "bajo",
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
       "gini": 57.3,
       "gini_delta": -1.1,
       "gini_variacion": "bajo"
@@ -647,7 +647,7 @@
       "deuda_publica_delta": 13.67,
       "deuda_publica_variacion": "subio",
       "gini": 58.5,
-      "gini_delta": 58.5,
+      "gini_delta": 1.7,
       "gini_variacion": "subio"
     },
     {
@@ -665,11 +665,11 @@
       "poblacion_delta": 671016.0,
       "poblacion_variacion": "subio",
       "deuda_publica": 5.4,
-      "deuda_publica_delta": 5.4,
-      "deuda_publica_variacion": "subio",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1997-12",
@@ -685,12 +685,12 @@
       "poblacion": 37121149.0,
       "poblacion_delta": 658404.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": -56.8,
-      "gini_variacion": "bajo"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1996-12",
@@ -706,11 +706,11 @@
       "poblacion": 36462745.0,
       "poblacion_delta": 658083.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
       "gini": 56.8,
-      "gini_delta": 56.8,
+      "gini_delta": 5.5,
       "gini_variacion": "subio"
     },
     {
@@ -727,12 +727,12 @@
       "poblacion": 35804662.0,
       "poblacion_delta": 677252.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1994-12",
@@ -748,12 +748,12 @@
       "poblacion": 35127410.0,
       "poblacion_delta": 685937.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1993-12",
@@ -769,12 +769,12 @@
       "poblacion": 34441473.0,
       "poblacion_delta": 680902.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": -51.3,
-      "gini_variacion": "bajo"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1992-12",
@@ -790,9 +790,9 @@
       "poblacion": 33760571.0,
       "poblacion_delta": 662199.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
       "gini": 51.3,
       "gini_delta": 0.0,
       "gini_variacion": "igual"
@@ -811,12 +811,12 @@
       "poblacion": 33098372.0,
       "poblacion_delta": 658303.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
       "gini": 51.3,
-      "gini_delta": 51.3,
-      "gini_variacion": "subio"
+      "gini_delta": -1.5,
+      "gini_variacion": "bajo"
     },
     {
       "periodo": "1990-12",
@@ -832,12 +832,12 @@
       "poblacion": 32440069.0,
       "poblacion_delta": 663790.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": -52.8,
-      "gini_variacion": "bajo"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1989-12",
@@ -853,9 +853,9 @@
       "poblacion": 31776279.0,
       "poblacion_delta": 645755.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
       "gini": 52.8,
       "gini_delta": -0.3,
       "gini_variacion": "bajo"
@@ -874,12 +874,12 @@
       "poblacion": 31130524.0,
       "poblacion_delta": 631057.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
       "gini": 53.1,
-      "gini_delta": 53.1,
-      "gini_variacion": "subio"
+      "gini_delta": -2.0,
+      "gini_variacion": "bajo"
     },
     {
       "periodo": "1987-12",
@@ -895,12 +895,12 @@
       "poblacion": 30499467.0,
       "poblacion_delta": 620355.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1986-12",
@@ -916,12 +916,12 @@
       "poblacion": 29879112.0,
       "poblacion_delta": 610642.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1985-12",
@@ -937,12 +937,12 @@
       "poblacion": 29268470.0,
       "poblacion_delta": 625780.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1984-12",
@@ -958,12 +958,12 @@
       "poblacion": 28642690.0,
       "poblacion_delta": 654517.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1983-12",
@@ -979,12 +979,12 @@
       "poblacion": 27988173.0,
       "poblacion_delta": 649842.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1982-12",
@@ -1000,12 +1000,12 @@
       "poblacion": 27338331.0,
       "poblacion_delta": 625064.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1981-12",
@@ -1021,12 +1021,12 @@
       "poblacion": 26713267.0,
       "poblacion_delta": 608769.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": -55.1,
-      "gini_variacion": "bajo"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1980-12",
@@ -1042,12 +1042,12 @@
       "poblacion": 26104498.0,
       "poblacion_delta": 588872.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
       "gini": 55.1,
-      "gini_delta": 55.1,
-      "gini_variacion": "subio"
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1979-12",
@@ -1063,12 +1063,12 @@
       "poblacion": 25515626.0,
       "poblacion_delta": 565289.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1978-12",
@@ -1084,12 +1084,12 @@
       "poblacion": 24950337.0,
       "poblacion_delta": 556843.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1977-12",
@@ -1105,12 +1105,12 @@
       "poblacion": 24393494.0,
       "poblacion_delta": 534684.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1976-12",
@@ -1126,12 +1126,12 @@
       "poblacion": 23858810.0,
       "poblacion_delta": 514166.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1975-12",
@@ -1147,12 +1147,12 @@
       "poblacion": 23344644.0,
       "poblacion_delta": 511175.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1974-12",
@@ -1168,12 +1168,12 @@
       "poblacion": 22833469.0,
       "poblacion_delta": 508095.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1973-12",
@@ -1189,12 +1189,12 @@
       "poblacion": 22325374.0,
       "poblacion_delta": 505811.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1972-12",
@@ -1210,12 +1210,12 @@
       "poblacion": 21819563.0,
       "poblacion_delta": 500467.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1971-12",
@@ -1231,12 +1231,12 @@
       "poblacion": 21319096.0,
       "poblacion_delta": 507314.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1970-12",
@@ -1252,12 +1252,12 @@
       "poblacion": 20811782.0,
       "poblacion_delta": 519840.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1969-12",
@@ -1273,12 +1273,12 @@
       "poblacion": 20291942.0,
       "poblacion_delta": 525146.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1968-12",
@@ -1294,12 +1294,12 @@
       "poblacion": 19766796.0,
       "poblacion_delta": 531178.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1967-12",
@@ -1315,12 +1315,12 @@
       "poblacion": 19235618.0,
       "poblacion_delta": 532930.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1966-12",
@@ -1336,12 +1336,12 @@
       "poblacion": 18702688.0,
       "poblacion_delta": 533638.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1965-12",
@@ -1357,12 +1357,12 @@
       "poblacion": 18169050.0,
       "poblacion_delta": 531639.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1964-12",
@@ -1378,12 +1378,12 @@
       "poblacion": 17637411.0,
       "poblacion_delta": 523588.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1963-12",
@@ -1399,12 +1399,12 @@
       "poblacion": 17113823.0,
       "poblacion_delta": 514794.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1962-12",
@@ -1420,12 +1420,12 @@
       "poblacion": 16599029.0,
       "poblacion_delta": 503826.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1961-12",
@@ -1433,27 +1433,27 @@
       "pib_total_delta": 0.51,
       "pib_total_variacion": "subio",
       "crecimiento_pib": 5.09,
-      "crecimiento_pib_delta": 5.09,
-      "crecimiento_pib_variacion": "subio",
+      "crecimiento_pib_delta": null,
+      "crecimiento_pib_variacion": null,
       "pib_percapita": 282.1,
       "pib_percapita_delta": 23.8,
       "pib_percapita_variacion": "subio",
       "poblacion": 16095203.0,
       "poblacion_delta": 488994.0,
       "poblacion_variacion": "subio",
-      "deuda_publica": 0.0,
-      "deuda_publica_delta": 0.0,
-      "deuda_publica_variacion": "igual",
-      "gini": 0.0,
-      "gini_delta": 0.0,
-      "gini_variacion": "igual"
+      "deuda_publica": null,
+      "deuda_publica_delta": null,
+      "deuda_publica_variacion": null,
+      "gini": null,
+      "gini_delta": null,
+      "gini_variacion": null
     },
     {
       "periodo": "1960-12",
       "pib_total": 4.03,
       "pib_total_delta": null,
       "pib_total_variacion": null,
-      "crecimiento_pib": 0.0,
+      "crecimiento_pib": null,
       "crecimiento_pib_delta": null,
       "crecimiento_pib_variacion": null,
       "pib_percapita": 258.3,
@@ -1462,10 +1462,10 @@
       "poblacion": 15606209.0,
       "poblacion_delta": null,
       "poblacion_variacion": null,
-      "deuda_publica": 0.0,
+      "deuda_publica": null,
       "deuda_publica_delta": null,
       "deuda_publica_variacion": null,
-      "gini": 0.0,
+      "gini": null,
       "gini_delta": null,
       "gini_variacion": null
     }

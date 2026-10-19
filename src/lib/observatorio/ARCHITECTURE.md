@@ -16,7 +16,7 @@ dato, la entrega del dato y la presentación del dato. Cada capa tiene una
 ```
   ┌──────────────────────┐    ┌──────────────────────┐    ┌──────────────────────┐
   │ 1. Pipeline (Python) │ →  │ 2. JSON públicos     │ →  │ 3. Astro + Plotly    │
-  │  ETL automático      │    │  public/data/*.json  │    │  Charts en cliente   │
+  │  odc-data-pipeline   │    │  public/data/*.json  │    │  Charts en cliente   │
   └──────────────────────┘    └──────────────────────┘    └──────────────────────┘
    - Descarga fuentes         - Contrato estable           - Lectura por `fetch`
    - Procesa / normaliza      - Versionable                - SEO build-time
@@ -24,7 +24,7 @@ dato, la entrega del dato y la presentación del dato. Cada capa tiene una
 ```
 
 **REGLA 1 — Una sola fuente de verdad.** Todo dato cuantitativo del
-Observatorio nace en el pipeline y se materializa en
+Observatorio nace en el pipeline (`odc-data-pipeline`) y se materializa en
 `public/data/*.json`. Está prohibido hardcodear series, valores numéricos o
 metadatos de fuente en TypeScript/Astro fuera del fallback documentado en
 [`fuentes.ts`](./fuentes.ts).
@@ -44,14 +44,18 @@ el frontmatter de Astro.
 
 ```
 public/data/
-  data_inflacion.json    ← Pipeline → JSON. Contrato: ObservatorioData
-  data_empleo.json       ← Pipeline → JSON. Contrato: EmpleoData
-  data_comercio.json     ← Pipeline → JSON. Contrato: ComercioData
-  data_pib.json          ← Pipeline → JSON. Contrato: PIBData
-  data_salario_minimo.json ← Pipeline (pipeline/salario_minimo) → JSON. Contrato: SalarioMinimoData
-  data_ingresos.json     ← Pipeline (pipeline/ingresos) → JSON. Contrato: IngresosData
-  data_salarios_cargos.json ← Pipeline (pipeline/ingresos) → JSON. Contrato: SalariosCargosData
-  presidentes.json       ← Referencia estática (no es serie temporal)
+  data_inflacion.json             ← odc-data-pipeline → JSON. Contrato: ObservatorioData
+  data_empleo.json                ← odc-data-pipeline → JSON. Contrato: EmpleoData
+  data_comercio.json              ← odc-data-pipeline → JSON. Contrato: ComercioData
+  data_pib.json                   ← odc-data-pipeline → JSON. Contrato: PIBData
+  data_externo.json               ← odc-data-pipeline → JSON. Contrato: ExternoData
+  data_demografia.json            ← odc-data-pipeline → JSON. Contrato: DemografiaData
+  data_comparativo_col_<key>.json ← odc-data-pipeline → JSON. Contrato: ComparativoData (uzb, cog, prt, gha, che)
+  data_salario_minimo.json        ← odc-data-pipeline → JSON. Contrato: SalarioMinimoData
+  data_ingresos.json              ← odc-data-pipeline → JSON. Contrato: IngresosData
+  data_salarios_cargos.json       ← odc-data-pipeline → JSON. Contrato: SalariosCargosData
+  data_pres_*.json                ← odc-data-pipeline → JSON. Contratos electorales (2022/2026)
+  presidentes.json                ← Referencia estática (no es serie temporal)
 
 src/lib/observatorio/
   types.ts               ← Tipos del contrato JSON. SOLO se toca cuando el pipeline cambia el shape.
@@ -70,6 +74,10 @@ src/lib/observatorio/
     pib.ts               ← Defs del dominio "PIB".
     empleo.ts            ← Defs del dominio "empleo".
     comercio.ts          ← Defs del dominio "comercio".
+    externo.ts           ← Defs del dominio "sector externo / monetario".
+    demografia.ts        ← Defs del dominio "demografía".
+    comparativo.ts       ← Fábrica makeComparativoSet para comparativos entre países.
+    elecciones.ts        ← Defs de elecciones presidenciales.
     historico.ts         ← Barras históricas anuales: `buildHistorico` (interruptor de
                            color-presidente.ts, apagado al cargar; `referencias` = Máx/Mín/Prom).
 
@@ -87,10 +95,12 @@ src/components/observatorio/
   MapaColombia.astro     ← Visual del hero.
 
 src/pages/observatorio/
-  index.astro            ← Dashboard "Inflación vs Tasa".
+  index.astro            ← Vista general del Observatorio.
+  monetario.astro        ← Dashboard "Política Monetaria e Inflación".
   empleo.astro           ← Dashboard "Empleo".
-  comercio.astro         ← Dashboard "Comercio".
+  comercio.astro         ← Dashboard "Comercio y Sector Externo".
   pib.astro              ← Dashboard "PIB".
+  demografia.astro       ← Dashboard "Demografía".
   acerca.astro           ← Página estática.
 ```
 
