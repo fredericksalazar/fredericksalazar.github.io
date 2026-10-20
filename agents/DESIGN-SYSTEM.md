@@ -314,7 +314,7 @@ No enlaza la descarga de los JSON procesados (decisión del autor).
 1. <Hero> + <MapaColombia />        KPIs de contexto, cada uno con periodo y fuente
 2. <DashboardNav active="inicio" />
 3. "Cómo va Colombia"               un h2 por grupo · <IndicadorClaveCard> × 8
-4. "Lo más reciente"                <Card variant="blog"> × 4 (automático)
+4. "Lo más reciente"                <BandaOscura> · <Card variant="blog"> × 4 (automático)
 5. "Datos en los que puedes confiar" fuentes, actualización, licencia y cita
 6. <AuthorBio> + CTA al perfil
 7. <DashboardFooter>
@@ -523,6 +523,7 @@ Antes de crear algo, se usa lo que existe.
 | `DashboardNav`, `EleccionesNav` | `components/observatorio/` | Menú horizontal de dominio |
 | `PageHeader` | `components/observatorio/` | Resumen del estado actual |
 | `KpiRow`, `IndicadorCard` | `components/observatorio/` | Fila de KPIs |
+| `BandaOscura` | `components/observatorio/` | Sección de contraste a todo el ancho (azul marino, retícula y orbes, texto claro). Usada en Acerca y en "Lo más reciente" de la Home |
 | `IndicadorClaveCard` | `components/observatorio/` | Tarjeta de indicador clave de la Home: valor, periodo, cambio y referencia neutrales, fuente y sparkline |
 | `IndicadorPanel` | `components/observatorio/` | Panel narrativo con gráfico |
 | `Chart` + `ChartContainer` | `components/observatorio/` | Gráfico por id y su card; `variant="sparkline"` para mini tendencias dentro de otra card |

@@ -1,0 +1,89 @@
+---
+/**
+ * BandaOscura — sección de contraste a todo el ancho: fondo azul marino con
+ * retícula y dos orbes difuminados, texto claro. Definición única (ARQ-19) de
+ * la banda que usan /observatorio/acerca/ y la Home del Observatorio.
+ *
+ * El contenido va en el slot; el ancho máximo y la tipografía los pone la página.
+ */
+interface Props {
+  ariaLabel?: string;
+  ariaLabelledby?: string;
+  id?: string;
+  class?: string;
+}
+
+const { ariaLabel, ariaLabelledby, id, class: className = "" } = Astro.props;
+---
+
+<section
+  class={`banda-oscura ${className}`}
+  id={id}
+  aria-label={ariaLabel}
+  aria-labelledby={ariaLabelledby}
+>
+  <div class="banda-oscura__grid" aria-hidden="true"></div>
+  <div class="banda-oscura__orb banda-oscura__orb--a" aria-hidden="true"></div>
+  <div class="banda-oscura__orb banda-oscura__orb--b" aria-hidden="true"></div>
+  <div class="banda-oscura__inner">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .banda-oscura {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 80% 60% at 80% -10%, rgba(37, 99, 235, 0.35) 0%, transparent 60%),
+      linear-gradient(180deg, #0b1633 0%, #0e1a3d 50%, #0a1430 100%);
+    color: #e2e8f0;
+    padding: 5.5rem 1.5rem;
+  }
+
+  .banda-oscura__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse 100% 80% at 50% 50%, black 50%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 100% 80% at 50% 50%, black 50%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .banda-oscura__orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+  }
+
+  .banda-oscura__orb--a {
+    top: -120px;
+    right: -80px;
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.45) 0%, transparent 70%);
+  }
+
+  .banda-oscura__orb--b {
+    bottom: -100px;
+    left: -100px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%);
+  }
+
+  .banda-oscura__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    .banda-oscura {
+      padding: 3.5rem 1.25rem;
+    }
+  }
+</style>

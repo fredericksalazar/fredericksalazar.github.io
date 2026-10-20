@@ -1,4 +1,5 @@
 ---
+import BandaOscura from "../../components/observatorio/BandaOscura.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
 import DashboardNav from "../../components/observatorio/DashboardNav.astro";
@@ -229,12 +230,8 @@ const metodologia = [
     </section>
 
     <!-- ─── Por qué nace (sección oscura) ─── -->
-    <section class="acerca-section acerca-section--dark" aria-label="El problema">
-      <div class="acerca-dark__grid" aria-hidden="true"></div>
-      <div class="acerca-dark__orb acerca-dark__orb--a" aria-hidden="true"></div>
-      <div class="acerca-dark__orb acerca-dark__orb--b" aria-hidden="true"></div>
-
-      <div class="acerca-section__inner acerca-dark__inner">
+    <BandaOscura ariaLabel="El problema">
+      <div class="acerca-section__inner">
         <div class="problema-grid">
           <header class="problema-header">
             <span class="section-index section-index--light" aria-hidden="true">02</span>
@@ -260,7 +257,7 @@ const metodologia = [
           </ul>
         </div>
       </div>
-    </section>
+    </BandaOscura>
 
     <!-- ─── Misión y Visión ─── -->
     <section class="acerca-section">
@@ -370,12 +367,8 @@ const metodologia = [
     </section>
 
     <!-- ─── Cómo funciona (pipeline · oscura) ─── -->
-    <section class="acerca-section acerca-section--dark" aria-label="Cómo funciona">
-      <div class="acerca-dark__grid" aria-hidden="true"></div>
-      <div class="acerca-dark__orb acerca-dark__orb--a" aria-hidden="true"></div>
-      <div class="acerca-dark__orb acerca-dark__orb--b" aria-hidden="true"></div>
-
-      <div class="acerca-section__inner acerca-dark__inner">
+    <BandaOscura ariaLabel="Cómo funciona">
+      <div class="acerca-section__inner">
         <div class="pipe-header">
           <span class="section-index section-index--light" aria-hidden="true">06</span>
           <span class="eyebrow eyebrow--light">Cómo funciona</span>
@@ -399,7 +392,7 @@ const metodologia = [
           ))}
         </ol>
       </div>
-    </section>
+    </BandaOscura>
 
     <!-- ─── Fuentes ─── -->
     <section class="acerca-section">
@@ -468,12 +461,8 @@ const metodologia = [
     </section>
 
     <!-- ─── Metodología (oscura) ─── -->
-    <section class="acerca-section acerca-section--dark" aria-label="Metodología">
-      <div class="acerca-dark__grid" aria-hidden="true"></div>
-      <div class="acerca-dark__orb acerca-dark__orb--a" aria-hidden="true"></div>
-      <div class="acerca-dark__orb acerca-dark__orb--b" aria-hidden="true"></div>
-
-      <div class="acerca-section__inner acerca-dark__inner">
+    <BandaOscura ariaLabel="Metodología">
+      <div class="acerca-section__inner">
         <div class="metodologia">
           <div class="metodologia__intro">
             <span class="section-index section-index--light" aria-hidden="true">08</span>
@@ -496,7 +485,7 @@ const metodologia = [
           </ul>
         </div>
       </div>
-    </section>
+    </BandaOscura>
 
     <!-- ─── Para quién ─── -->
     <section class="acerca-section">
@@ -561,12 +550,8 @@ const metodologia = [
     </section>
 
     <!-- ─── Creador (simple, oscura) ─── -->
-    <section class="acerca-section acerca-section--dark" id="creador" aria-label="Creador del Observatorio">
-      <div class="acerca-dark__grid" aria-hidden="true"></div>
-      <div class="acerca-dark__orb acerca-dark__orb--a" aria-hidden="true"></div>
-      <div class="acerca-dark__orb acerca-dark__orb--b" aria-hidden="true"></div>
-
-      <div class="acerca-section__inner acerca-dark__inner">
+    <BandaOscura id="creador" ariaLabel="Creador del Observatorio">
+      <div class="acerca-section__inner">
         <div class="lead-creator">
           <div class="lead-creator__photo-wrap">
             <div class="lead-creator__halo" aria-hidden="true"></div>
@@ -613,7 +598,7 @@ const metodologia = [
           </div>
         </div>
       </div>
-    </section>
+    </BandaOscura>
 
   </main>
 </BaseLayout>
@@ -1236,51 +1221,6 @@ const metodologia = [
     gap: 0.85rem;
   }
 
-  /* ── Sección oscura (Problema) ── */
-  .acerca-section--dark {
-    position: relative;
-    overflow: hidden;
-    background:
-      radial-gradient(ellipse 80% 60% at 80% -10%, rgba(37, 99, 235, 0.35) 0%, transparent 60%),
-      linear-gradient(180deg, #0b1633 0%, #0e1a3d 50%, #0a1430 100%);
-    color: #e2e8f0;
-    padding: 5.5rem 1.5rem;
-  }
-  .acerca-dark__grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-    background-size: 40px 40px;
-    mask-image: radial-gradient(ellipse 100% 80% at 50% 50%, black 50%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 100% 80% at 50% 50%, black 50%, transparent 100%);
-    pointer-events: none;
-  }
-  .acerca-dark__orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(90px);
-    pointer-events: none;
-  }
-  .acerca-dark__orb--a {
-    top: -120px;
-    right: -80px;
-    width: 380px;
-    height: 380px;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.45) 0%, transparent 70%);
-  }
-  .acerca-dark__orb--b {
-    bottom: -100px;
-    left: -100px;
-    width: 320px;
-    height: 320px;
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%);
-  }
-  .acerca-dark__inner {
-    position: relative;
-    z-index: 1;
-  }
   .eyebrow--light {
     color: #93c5fd;
   }
@@ -1640,33 +1580,6 @@ const metodologia = [
   .fuente-card__monogram--intl {
     background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
     box-shadow: 0 4px 10px rgba(168, 85, 247, 0.28);
-  }
-
-  /* ── Transiciones suaves entre claras y oscuras ── */
-  .acerca-section--dark + .acerca-section,
-  .acerca-section + .acerca-section--dark {
-    position: relative;
-  }
-  .acerca-section--dark::before,
-  .acerca-section--dark::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 60px;
-    pointer-events: none;
-    z-index: 2;
-  }
-  .acerca-section--dark::before {
-    top: 0;
-    background: linear-gradient(180deg, rgba(11, 22, 51, 1) 0%, rgba(11, 22, 51, 0) 100%);
-    /* La sección oscura ya cubre el fondo; el gradiente añade un fade desde la sección anterior */
-    display: none;
-  }
-  .acerca-section--dark::after {
-    bottom: -1px;
-    background: linear-gradient(180deg, rgba(10, 20, 48, 0) 0%, rgba(255, 255, 255, 0) 100%);
-    display: none;
   }
 
   /* ── Pipeline dark ── */
@@ -2396,9 +2309,6 @@ const metodologia = [
     }
     .pipe-flow__line {
       display: none;
-    }
-    .acerca-section--dark {
-      padding: 3.5rem 1.25rem;
     }
     .lead-creator {
       grid-template-columns: 1fr;

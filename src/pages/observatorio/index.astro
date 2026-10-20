@@ -11,6 +11,7 @@ import DashboardNav from "../../components/observatorio/DashboardNav.astro";
 import IndicadorClaveCard from "../../components/observatorio/IndicadorClaveCard.astro";
 import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
+import BandaOscura from "../../components/observatorio/BandaOscura.astro";
 import Card from "../../components/Card.astro";
 import AuthorBio from "../../components/AuthorBio.astro";
 import { getCollection } from "astro:content";
@@ -150,9 +151,12 @@ const jsonLd = catalogoSchema(
       </div>
     </section>
 
-    <section class="seccion" aria-labelledby="recientes-titulo">
-      <p class="seccion__eyebrow">Análisis e informes</p>
-      <h2 class="seccion__titulo" id="recientes-titulo">Lo más reciente</h2>
+  </div>
+
+  <BandaOscura class="recientes-banda" ariaLabelledby="recientes-titulo">
+    <div class="observatorio-ancho">
+      <p class="seccion__eyebrow seccion__eyebrow--claro">Análisis e informes</p>
+      <h2 class="seccion__titulo seccion__titulo--claro" id="recientes-titulo">Lo más reciente</h2>
       <div class="recientes">
         {recientes.map((pub) => (
           <Card
@@ -170,7 +174,10 @@ const jsonLd = catalogoSchema(
           />
         ))}
       </div>
-    </section>
+    </div>
+  </BandaOscura>
+
+  <div class="observatorio-container">
 
     <section class="seccion confianza" aria-labelledby="confianza-titulo">
       <p class="seccion__eyebrow">Transparencia</p>
@@ -232,11 +239,28 @@ const jsonLd = catalogoSchema(
 </BaseLayout>
 
 <style>
-  .observatorio-container {
+  .observatorio-container,
+  .observatorio-ancho {
     width: 97%;
     max-width: 1800px;
     margin: 0 auto;
+  }
+
+  .observatorio-container {
     padding: 1.75rem 0 3rem;
+  }
+
+  /* Dentro de la banda el padding lateral ya lo pone BandaOscura. */
+  .observatorio-ancho {
+    width: 100%;
+  }
+
+  .seccion__eyebrow.seccion__eyebrow--claro {
+    color: #93c5fd;
+  }
+
+  .seccion__titulo.seccion__titulo--claro {
+    color: #ffffff;
   }
 
   .panel-clave {

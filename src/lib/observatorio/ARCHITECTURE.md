@@ -93,6 +93,7 @@ src/components/observatorio/
   PlotlyLoader.astro     ← Carga del CDN. UNA sola instancia por página.
   KpiRow.astro           ← KPIs (build-time, SEO crítico).
   IndicadorClaveCard.astro ← Tarjeta de indicador clave de la Home (sin juicios de valor).
+  BandaOscura.astro      ← Sección de contraste a todo el ancho (Acerca y Home).
   IndicadorCard.astro    ← Card de KPI.
   IndicadorPanel.astro   ← Panel narrativo (texto + gráfico).
   PageHeader.astro       ← Header con eyebrow + lead.
