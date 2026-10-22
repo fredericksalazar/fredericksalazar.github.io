@@ -27,6 +27,7 @@ import {
 } from "../../lib/observatorio/data";
 import {
   DATASETS_PUBLICADOS,
+  buildFaqObservatorio,
   buildIndicadoresClave,
   publicacionesRecientes,
   type DatasetObservatorio,
@@ -120,8 +121,12 @@ const capacidades = [
   },
 ];
 
-// JSON-LD DataCatalog: un Dataset por JSON publicado (FR-015). La clave del
-// archivo usa "_" y el nombre del dataset en data-client usa "-".
+const faqs = buildFaqObservatorio(indicadores);
+const KEYWORDS_OBSERVATORIO =
+  "indicadores económicos colombia, inflación colombia hoy, tasa de interés banrep, pib colombia, desempleo dane, trm dólar hoy, salario mínimo colombia, datos abiertos colombia, observatorio de datos colombia";
+
+// JSON-LD DataCatalog + WebPage + FAQPage: un Dataset por JSON publicado (FR-015).
+// La clave del archivo usa "_" y el nombre del dataset en data-client usa "-".
 const jsonLd = catalogoSchema(
   DATASETS_PUBLICADOS.map((d) => {
     const data = datasets[d.clave.replace("_", "-") as keyof DatasetsHome]!;
@@ -133,7 +138,12 @@ const jsonLd = catalogoSchema(
       fuentes: Object.values(data.metadata.fuentes).filter((f): f is Fuente => !!f),
     };
   }),
-  { nombre: TITULO, descripcion: DESCRIPCION },
+  {
+    nombre: TITULO,
+    descripcion: DESCRIPCION,
+    ultimaActualizacion,
+    faqs,
+  },
 );
 ---
 
@@ -141,6 +151,8 @@ const jsonLd = catalogoSchema(
   title={TITULO}
   description={DESCRIPCION}
   image="/images/observatorio-home.png"
+  imageAlt="Observatorio de Datos de Colombia — Indicadores económicos y sociales oficiales del DANE, Banco de la República y Banco Mundial"
+  keywords={KEYWORDS_OBSERVATORIO}
   fullWidth={true}
   breadcrumbs={trail(sectionCrumb.observatorio)}
 >
@@ -239,10 +251,10 @@ const jsonLd = catalogoSchema(
       <div class="quienes-grid">
         <div class="quienes-grid__lead">
           <span class="seccion-index" aria-hidden="true">03</span>
-          <p class="seccion-eyebrow" id="quienes-somos-titulo">Quiénes somos</p>
-          <p class="quienes-h2">
+          <p class="seccion-eyebrow">Quiénes somos</p>
+          <h2 class="quienes-h2" id="quienes-somos-titulo">
             Una plataforma <em>independiente</em> para integrar y comprender la información pública de Colombia.
-          </p>
+          </h2>
         </div>
         <div class="quienes-grid__body">
           <p>
@@ -431,6 +443,40 @@ const jsonLd = catalogoSchema(
             </div>
           </div>
         </div>
+      </div>
+    </PanelBlueprint>
+
+    <!-- ─── 07 · Preguntas frecuentes (SEO & Featured Snippets) ─── -->
+    <PanelBlueprint class="home-panel" ariaLabelledby="faq-observatorio-titulo">
+      <header class="seccion-head">
+        <div>
+          <span class="seccion-index" aria-hidden="true">07</span>
+          <p class="seccion-eyebrow">Respuestas rápidas con datos oficiales</p>
+          <h2 class="seccion-titulo" id="faq-observatorio-titulo">Preguntas frecuentes sobre la economía de Colombia</h2>
+          <p class="seccion-subtitulo">
+            Síntesis actualizada de las consultas más buscadas sobre inflación, tasas de interés, empleo, crecimiento y dólar en Colombia.
+          </p>
+        </div>
+      </header>
+
+      <div class="faq-list">
+        {faqs.map((faq, idx) => (
+          <details class="faq-item" open={idx === 0}>
+            <summary class="faq-item__summary">
+              <span class="faq-item__num" aria-hidden="true">{String(idx + 1).padStart(2, "0")}</span>
+              <h3 class="faq-item__question">{faq.pregunta}</h3>
+              <span class="faq-item__chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </summary>
+            <div class="faq-item__body">
+              <p class="faq-item__answer">{faq.respuesta}</p>
+              <a href={faq.href} class="faq-item__link">
+                {faq.cta} <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </details>
+        ))}
       </div>
     </PanelBlueprint>
 
@@ -1080,6 +1126,125 @@ const jsonLd = catalogoSchema(
     transform: translateY(-2px);
   }
 
+  /* ── 07 · Preguntas frecuentes (FAQ SEO) ── */
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .faq-item {
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .faq-item[open] {
+    border-color: rgba(37, 99, 235, 0.35);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  }
+
+  .faq-item:hover {
+    border-color: var(--color-accent);
+  }
+
+  .faq-item__summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 1.15rem 1.35rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .faq-item__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item__num {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--color-active-bg);
+    color: var(--color-accent);
+    font-size: 0.72rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .faq-item[open] .faq-item__num {
+    background: var(--color-accent);
+    color: #ffffff;
+  }
+
+  .faq-item__question {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.35;
+    flex: 1;
+  }
+
+  .faq-item__chevron {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    transition: transform 0.2s ease, color 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .faq-item__chevron svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .faq-item[open] .faq-item__chevron {
+    transform: rotate(180deg);
+    color: var(--color-accent);
+  }
+
+  .faq-item__body {
+    padding: 0 1.35rem 1.25rem 3.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .faq-item__answer {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .faq-item__link {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .faq-item__link:hover {
+    text-decoration: underline;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .btn-outline,
     .btn-ghost,
@@ -1140,6 +1305,10 @@ const jsonLd = catalogoSchema(
     .recientes,
     .capacidades {
       grid-template-columns: minmax(0, 1fr);
+    }
+
+    .faq-item__body {
+      padding: 0 1.15rem 1.1rem;
     }
   }
 </style>

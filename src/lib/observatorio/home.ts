@@ -7,7 +7,7 @@
  *
  * Los catálogos solo declaran QUÉ mostrar; ninguna cifra vive aquí (ARQ-02).
  */
-import { urls } from "../urls";
+import { absUrls, urls } from "../urls";
 import type { DatasetName } from "./data-client";
 import { referenciaIndicador, valoresNoNulos, yearOf } from "./derivations";
 import type { ReferenciaCalculada, TipoReferencia } from "./derivations";
@@ -331,15 +331,155 @@ export function buildIndicadoresClave(datasets: DatasetsHome, hoy: Date = new Da
  * Datasets abiertos del Observatorio que describe la Home (hero y JSON-LD).
  * La clave es el sufijo del archivo `public/data/data_<clave>.json`.
  */
-export const DATASETS_PUBLICADOS: { clave: string; nombre: string; descripcion: string }[] = [
-  { clave: "inflacion", nombre: "Inflación y tasas de interés de Colombia", descripcion: "Inflación anual y mensual (DANE), tasa de intervención del Banco de la República y tasa real." },
-  { clave: "empleo", nombre: "Mercado laboral de Colombia", descripcion: "Desempleo, ocupación, participación y subempleo según la GEIH del DANE." },
-  { clave: "pib", nombre: "Producto Interno Bruto de Colombia", descripcion: "PIB total, crecimiento real, PIB por habitante y población." },
-  { clave: "comercio", nombre: "Comercio exterior de Colombia", descripcion: "Exportaciones, importaciones y apertura comercial como porcentaje del PIB." },
-  { clave: "externo", nombre: "Sector externo de Colombia", descripcion: "TRM, reservas internacionales, cuenta corriente, inversión extranjera y deuda externa." },
-  { clave: "demografia", nombre: "Demografía de Colombia", descripcion: "Población, crecimiento demográfico y esperanza de vida por sexo." },
-  { clave: "salario_minimo", nombre: "Salario mínimo de Colombia", descripcion: "Salario mínimo legal, auxilio de transporte y su variación anual." },
+export const DATASETS_PUBLICADOS: {
+  clave: string;
+  nombre: string;
+  descripcion: string;
+  url: string;
+  variables: string[];
+}[] = [
+  {
+    clave: "inflacion",
+    nombre: "Inflación y tasas de interés de Colombia",
+    descripcion: "Inflación anual y mensual (DANE), tasa de intervención del Banco de la República y tasa real.",
+    url: absUrls.observatorioSub("inflacion"),
+    variables: ["Inflación anual (IPC)", "Inflación mensual (IPC)", "Tasa de intervención BanRep", "Tasa de interés real"],
+  },
+  {
+    clave: "empleo",
+    nombre: "Mercado laboral de Colombia",
+    descripcion: "Desempleo, ocupación, participación y subempleo según la GEIH del DANE.",
+    url: absUrls.observatorioSub("empleo"),
+    variables: ["Tasa de desempleo", "Tasa de ocupación", "Tasa global de participación", "Subempleo"],
+  },
+  {
+    clave: "pib",
+    nombre: "Producto Interno Bruto de Colombia",
+    descripcion: "PIB total, crecimiento real, PIB por habitante y población.",
+    url: absUrls.observatorioSub("pib"),
+    variables: ["Crecimiento anual del PIB", "PIB per cápita en dólares", "PIB total", "Población total"],
+  },
+  {
+    clave: "comercio",
+    nombre: "Comercio exterior de Colombia",
+    descripcion: "Exportaciones, importaciones y apertura comercial como porcentaje del PIB.",
+    url: absUrls.observatorioSub("comercio"),
+    variables: ["Exportaciones (% del PIB)", "Importaciones (% del PIB)", "Balanza comercial", "Apertura comercial"],
+  },
+  {
+    clave: "externo",
+    nombre: "Sector externo de Colombia",
+    descripcion: "TRM, reservas internacionales, cuenta corriente, inversión extranjera y deuda externa.",
+    url: absUrls.observatorioSub("monetario"),
+    variables: ["Tasa Representativa del Mercado (TRM)", "Cuenta corriente (% del PIB)", "Reservas internacionales", "Inversión extranjera directa"],
+  },
+  {
+    clave: "demografia",
+    nombre: "Demografía de Colombia",
+    descripcion: "Población, crecimiento demográfico y esperanza de vida por sexo.",
+    url: absUrls.observatorioSub("demografia"),
+    variables: ["Población de Colombia", "Crecimiento demográfico anual", "Esperanza de vida al nacer"],
+  },
+  {
+    clave: "salario_minimo",
+    nombre: "Salario mínimo de Colombia",
+    descripcion: "Salario mínimo legal, auxilio de transporte y su variación anual.",
+    url: absUrls.calculadora("sueldo-vs-inflacion"),
+    variables: ["Salario mínimo mensual legal vigente (SMMLV)", "Auxilio de transporte", "Variación anual del salario mínimo"],
+  },
 ];
+
+export interface FaqObservatorioItem {
+  pregunta: string;
+  respuesta: string;
+  href: string;
+  cta: string;
+}
+
+/**
+ * Construye las preguntas frecuentes (FAQ) de la Home del Observatorio a partir
+ * de los indicadores leídos en build (`public/data/*.json`). Ninguna cifra se
+ * escribe a mano (REGLA 1 y PRD-03).
+ */
+export function buildFaqObservatorio(indicadores: IndicadorClave[]): FaqObservatorioItem[] {
+  const porId = new Map(indicadores.map((i) => [i.def.id, i]));
+  const items: FaqObservatorioItem[] = [];
+
+  const inf = porId.get("inflacion-anual");
+  const tasa = porId.get("tasa-banrep");
+  if (inf) {
+    const perInf = formatPeriodoIndicador(inf.periodo, inf.def.periodicidad);
+    const fuenteInf = inf.fuente?.nombre ?? "DANE";
+    const complementoTasa = tasa
+      ? ` Por su parte, la tasa de intervención del Banco de la República se ubica en ${formatIndicador(tasa.valor, tasa.unidad)} (${formatPeriodoIndicador(tasa.periodo, tasa.def.periodicidad)}).`
+      : "";
+    items.push({
+      pregunta: "¿Cuál es la inflación anual y la tasa de interés en Colombia hoy?",
+      respuesta: `Según el último corte oficial (${perInf}, ${fuenteInf}), la inflación anual en Colombia se ubica en ${formatIndicador(inf.valor, inf.unidad)}. ${inf.referencia.frase}.${complementoTasa}`,
+      href: inf.def.href,
+      cta: inf.def.destino,
+    });
+  }
+
+  const des = porId.get("desempleo");
+  if (des) {
+    const perDes = formatPeriodoIndicador(des.periodo, des.def.periodicidad);
+    const fuenteDes = des.fuente?.nombre ?? "DANE";
+    items.push({
+      pregunta: "¿En cuánto está la tasa de desempleo actual en Colombia?",
+      respuesta: `La tasa de desempleo nacional reportada por ${fuenteDes} para ${perDes} es de ${formatIndicador(des.valor, des.unidad)}. ${des.referencia.frase}.`,
+      href: des.def.href,
+      cta: des.def.destino,
+    });
+  }
+
+  const pibCrec = porId.get("crecimiento-pib");
+  const pibPc = porId.get("pib-percapita");
+  if (pibCrec) {
+    const perPib = formatPeriodoIndicador(pibCrec.periodo, pibCrec.def.periodicidad);
+    const extraPc = pibPc
+      ? ` El PIB por habitante se sitúa en ${formatIndicador(pibPc.valor, pibPc.unidad)} (${formatPeriodoIndicador(pibPc.periodo, pibPc.def.periodicidad)}).`
+      : "";
+    items.push({
+      pregunta: "¿Cuánto creció el PIB de Colombia y cuál es el PIB por habitante?",
+      respuesta: `En el corte anual de ${perPib}, el crecimiento del Producto Interno Bruto (PIB) de Colombia fue de ${formatIndicador(pibCrec.valor, pibCrec.unidad)} (${pibCrec.referencia.frase.toLowerCase()}).${extraPc}`,
+      href: pibCrec.def.href,
+      cta: pibCrec.def.destino,
+    });
+  }
+
+  const trm = porId.get("trm");
+  const smmlv = porId.get("salario-minimo");
+  if (trm || smmlv) {
+    const partes: string[] = [];
+    if (trm) {
+      partes.push(
+        `El dólar (TRM promedio mensual a ${formatPeriodoIndicador(trm.periodo, trm.def.periodicidad)}) registra un valor de ${formatIndicador(trm.valor, trm.unidad)} (${trm.referencia.frase.toLowerCase()}).`,
+      );
+    }
+    if (smmlv) {
+      partes.push(
+        `El salario mínimo mensual legal vigente (${formatPeriodoIndicador(smmlv.periodo, smmlv.def.periodicidad)}) es de ${formatIndicador(smmlv.valor, smmlv.unidad)} sin auxilio de transporte.`,
+      );
+    }
+    items.push({
+      pregunta: "¿En cuánto están el dólar (TRM) y el salario mínimo en Colombia?",
+      respuesta: partes.join(" "),
+      href: trm?.def.href ?? smmlv!.def.href,
+      cta: trm?.def.destino ?? smmlv!.def.destino,
+    });
+  }
+
+  items.push({
+    pregunta: "¿De dónde provienen los datos del Observatorio de Datos de Colombia y cómo se actualizan?",
+    respuesta:
+      "Todas las series provienen de fuentes primarias oficiales: DANE (IPC, GEIH, Cuentas Nacionales), Banco de la República (tasas de política monetaria, TRM, sector externo), Banco Mundial (World Development Indicators) y Ministerio del Trabajo. Un pipeline automatizado recolecta, normaliza, valida y publica los indicadores bajo licencia abierta CC BY 4.0.",
+    href: urls.observatorioSub("acerca"),
+    cta: "Ver metodología y fuentes",
+  });
+
+  return items;
+}
 
 /**
  * Etiquetas del blog que identifican publicaciones del Observatorio (research R9):

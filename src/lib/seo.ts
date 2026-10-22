@@ -131,6 +131,8 @@ export const sectionCrumb = {
 export interface DatasetCatalogo {
   nombre: string;
   descripcion: string;
+  url?: string;
+  variables?: string[];
   ultimaActualizacion: string;
   primerPeriodo: string;
   ultimoPeriodo: string;
@@ -140,54 +142,82 @@ export interface DatasetCatalogo {
 const LICENCIA_CC_BY = 'https://creativecommons.org/licenses/by/4.0/';
 
 /**
- * `DataCatalog` + `WebPage` de la Home del Observatorio (spec 005, FR-015):
- * un `Dataset` por conjunto publicado, para Google Dataset Search.
+ * `DataCatalog` + `WebPage` + `FAQPage` de la Home del Observatorio (spec 005, FR-015):
+ * un `Dataset` por conjunto publicado, para Google Dataset Search y motores de respuesta.
  */
-export const catalogoSchema = (datasets: DatasetCatalogo[], pagina: { nombre: string; descripcion: string }) => {
+export const catalogoSchema = (
+  datasets: DatasetCatalogo[],
+  pagina: {
+    nombre: string;
+    descripcion: string;
+    ultimaActualizacion?: string;
+    faqs?: { pregunta: string; respuesta: string }[];
+  },
+) => {
   const url = absUrls.observatorio();
   const creator = { '@id': PERSON_ID };
+  const graph: Record<string, unknown>[] = [
+    {
+      '@type': 'WebPage',
+      '@id': `${url}#webpage`,
+      url,
+      name: pagina.nombre,
+      description: pagina.descripcion,
+      inLanguage: 'es-CO',
+      isPartOf: { '@id': WEBSITE_ID },
+      about: { '@id': `${url}#catalogo` },
+      author: creator,
+      ...(pagina.ultimaActualizacion ? { dateModified: pagina.ultimaActualizacion } : {}),
+    },
+    {
+      '@type': 'DataCatalog',
+      '@id': `${url}#catalogo`,
+      name: 'Observatorio de Datos de Colombia',
+      description:
+        'Catálogo de indicadores económicos y sociales de Colombia con fuente oficial y actualización automática.',
+      url,
+      inLanguage: 'es-CO',
+      creator,
+      publisher: creator,
+      license: LICENCIA_CC_BY,
+      ...(pagina.ultimaActualizacion ? { dateModified: pagina.ultimaActualizacion } : {}),
+      spatialCoverage: { '@type': 'Place', name: 'Colombia' },
+      dataset: datasets.map((d) => ({
+        '@type': 'Dataset',
+        name: d.nombre,
+        description: d.descripcion,
+        url: d.url ?? url,
+        creator,
+        license: LICENCIA_CC_BY,
+        isAccessibleForFree: true,
+        spatialCoverage: { '@type': 'Place', name: 'Colombia' },
+        temporalCoverage: `${d.primerPeriodo}/${d.ultimoPeriodo}`,
+        dateModified: d.ultimaActualizacion,
+        ...(d.variables && d.variables.length > 0 ? { variableMeasured: d.variables } : {}),
+        isBasedOn: d.fuentes.map((f) => ({ '@type': 'CreativeWork', name: f.nombre, url: f.url })),
+        // Sin `distribution` a propósito: el autor no quiere promover la descarga
+        // directa de los JSON procesados (refinamiento de la spec 005).
+      })),
+    },
+  ];
+
+  if (pagina.faqs && pagina.faqs.length > 0) {
+    graph.push({
+      '@type': 'FAQPage',
+      '@id': `${url}#faq`,
+      mainEntity: pagina.faqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.pregunta,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.respuesta,
+        },
+      })),
+    });
+  }
+
   return {
     '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'WebPage',
-        '@id': `${url}#webpage`,
-        url,
-        name: pagina.nombre,
-        description: pagina.descripcion,
-        inLanguage: 'es-CO',
-        isPartOf: { '@id': WEBSITE_ID },
-        about: { '@id': `${url}#catalogo` },
-        author: creator,
-      },
-      {
-        '@type': 'DataCatalog',
-        '@id': `${url}#catalogo`,
-        name: 'Observatorio de Datos de Colombia',
-        description:
-          'Catálogo de indicadores económicos y sociales de Colombia con fuente oficial y actualización automática.',
-        url,
-        inLanguage: 'es-CO',
-        creator,
-        publisher: creator,
-        license: LICENCIA_CC_BY,
-        spatialCoverage: { '@type': 'Place', name: 'Colombia' },
-        dataset: datasets.map((d) => ({
-          '@type': 'Dataset',
-          name: d.nombre,
-          description: d.descripcion,
-          url,
-          creator,
-          license: LICENCIA_CC_BY,
-          isAccessibleForFree: true,
-          spatialCoverage: { '@type': 'Place', name: 'Colombia' },
-          temporalCoverage: `${d.primerPeriodo}/${d.ultimoPeriodo}`,
-          dateModified: d.ultimaActualizacion,
-          isBasedOn: d.fuentes.map((f) => ({ '@type': 'CreativeWork', name: f.nombre, url: f.url })),
-          // Sin `distribution` a propósito: el autor no quiere promover la descarga
-          // directa de los JSON procesados (refinamiento de la spec 005).
-        })),
-      },
-    ],
+    '@graph': graph,
   };
 };
