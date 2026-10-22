@@ -34,7 +34,11 @@ const dashboards: DashboardItem[] = DOMINIOS.map((d) => ({ slug: d.slug, label: 
         }
         return (
           <li class={`dashboard-nav__item ${isActive ? "dashboard-nav__item--active" : ""}`}>
-            <a href={d.href} class="dashboard-nav__link" data-astro-reload>
+            <a
+              href={d.href}
+              class="dashboard-nav__link"
+              aria-current={isActive ? "page" : undefined}
+            >
               {isActive && <span class="dashboard-nav__dot" aria-hidden="true"></span>}
               <span class="dashboard-nav__label">{d.label}</span>
             </a>
@@ -62,6 +66,19 @@ const dashboards: DashboardItem[] = DOMINIOS.map((d) => ({ slug: d.slug, label: 
     padding: 0 1.5rem;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .dashboard-nav__inner::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 960px) {
+    .dashboard-nav__inner {
+      padding: 0 1rem;
+      mask-image: linear-gradient(to right, black calc(100% - 2.5rem), transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black calc(100% - 2.5rem), transparent 100%);
+    }
   }
 
   .dashboard-nav__list {

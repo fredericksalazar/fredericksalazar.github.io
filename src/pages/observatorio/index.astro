@@ -145,6 +145,7 @@ const jsonLd = catalogoSchema(
   breadcrumbs={trail(sectionCrumb.observatorio)}
 >
   <Hero
+    class="hero--observatorio"
     badge={{ text: "Datos públicos · Colombia" }}
     title="Observatorio de Datos de Colombia"
     subtitle="Inflación, empleo, crecimiento y dólar en un solo vistazo. Cifras oficiales del DANE, el Banco de la República y el Banco Mundial, actualizadas de forma automática y explicadas para cualquier persona."
@@ -218,6 +219,12 @@ const jsonLd = catalogoSchema(
             title={pub.titulo}
             description={pub.descripcion}
             date={pub.fecha}
+            tipoBadge={
+              pub.tipo === "informe"
+                ? { label: "Informe especial", value: "informe" }
+                : { label: "Análisis", value: "analisis" }
+            }
+            ctaText={pub.tipo === "informe" ? "Consultar informe" : "Leer análisis"}
             showTags={false}
             data-ga-event="home_publicacion_click"
             data-ga-tipo={pub.tipo}
@@ -239,7 +246,7 @@ const jsonLd = catalogoSchema(
         </div>
         <div class="quienes-grid__body">
           <p>
-            El <strong>Observatorio de Datos de Colombia</strong> es una plataforma independiente de integración, procesamiento, análisis y visualización de información pública del país. Es un proyecto creado y mantenido por <a href={`${urls.observatorioSub("acerca")}#creador`} class="identidad-link">Frederick Salazar</a>, Data Engineer.
+            El <strong>Observatorio de Datos de Colombia</strong> es una plataforma independiente de integración, procesamiento, análisis y visualización de información pública del país. Es un proyecto creado y mantenido por <a href="#creador" class="identidad-link">Frederick Salazar</a>, Data Engineer.
           </p>
           <p>
             Su objetivo es consolidar en un solo lugar los principales indicadores económicos, sociales y territoriales de Colombia, ofreciendo acceso a datos históricos, actualizados y verificables desde una experiencia clara, moderna y accesible.
@@ -340,6 +347,91 @@ const jsonLd = catalogoSchema(
       </header>
 
       <PipelineBlueprint />
+    </PanelBlueprint>
+
+    <!-- ─── 06 · Iniciativa liderada por ─── -->
+    <PanelBlueprint id="creador" class="home-panel" ariaLabelledby="creador-titulo">
+      <div class="creador-card">
+        <div class="creador-card__visual">
+          <div class="creador-card__grid" aria-hidden="true"></div>
+          <div class="creador-card__halo" aria-hidden="true"></div>
+
+          <div class="creador-card__photo-frame">
+            <img
+              src="/images/profile.png"
+              alt="Frederick Salazar"
+              class="creador-card__photo"
+              width="184"
+              height="184"
+              loading="lazy"
+            />
+            <span class="creador-card__status">
+              <span class="creador-card__status-dot" aria-hidden="true"></span>
+              Arquitecto &amp; Autor
+            </span>
+          </div>
+
+          <div class="creador-card__signature">
+            <span class="creador-card__sig-label">Creador del Observatorio</span>
+            <span class="creador-card__sig-name">Frederick Salazar</span>
+            <span class="creador-card__sig-handle">@fredericksalazar</span>
+          </div>
+        </div>
+
+        <div class="creador-card__body">
+          <div class="creador-card__head">
+            <div>
+              <span class="seccion-index" aria-hidden="true">06</span>
+              <p class="seccion-eyebrow">Iniciativa liderada por</p>
+              <h2 class="creador-card__name" id="creador-titulo">Frederick Salazar</h2>
+            </div>
+            <div class="creador-card__pills">
+              <span class="creador-pill creador-pill--primary">Senior Data Architect &amp; Data Engineer</span>
+              <span class="creador-pill">+8 años en LATAM</span>
+              <span class="creador-pill">Datos Abiertos</span>
+            </div>
+          </div>
+
+          <p class="creador-card__bio">
+            El <strong>Observatorio de Datos de Colombia</strong> es una iniciativa independiente creada y liderada por Frederick Salazar con un propósito claro: <strong>democratizar el acceso a la información pública y al análisis basado en datos</strong>, para que cualquier persona —sin importar su perfil técnico— pueda comprender la evolución económica y social del país.
+          </p>
+
+          <div class="creador-card__mission">
+            <div class="creador-card__mission-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            </div>
+            <p class="creador-card__mission-text">
+              <strong>Combatir la desinformación con datos.</strong> Promover una conversación pública informada, basada en evidencia oficial, trazable y verificable.
+            </p>
+          </div>
+
+          <div class="creador-card__footer">
+            <div class="creador-card__actions">
+              <a href={urls.home()} class="btn-primary-creador">
+                Ver portafolio profesional
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+              <a href={urls.proyectos()} class="btn-outline">
+                Proyectos de datos
+              </a>
+              <a href={urls.observatorioSub("acerca")} class="btn-ghost">
+                Acerca del Observatorio
+              </a>
+            </div>
+
+            <div class="creador-card__socials" aria-label="Redes profesionales de Frederick Salazar">
+              <a href="https://www.linkedin.com/in/fredericksalazar" target="_blank" rel="noopener noreferrer" class="creador-social" aria-label="LinkedIn de Frederick Salazar">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.28V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+                <span>LinkedIn</span>
+              </a>
+              <a href="https://github.com/fredericksalazar" target="_blank" rel="noopener noreferrer" class="creador-social" aria-label="GitHub de Frederick Salazar">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.7.8 1.3 1.9 1.3 3.1 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.2.9 2.3v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3z"/></svg>
+                <span>GitHub</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </PanelBlueprint>
 
     <DashboardFooter
@@ -681,15 +773,326 @@ const jsonLd = catalogoSchema(
     color: var(--color-text-secondary);
   }
 
+  /* ── 06 · Iniciativa liderada por (Founder Card refinada) ── */
+  .creador-card {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    background: var(--color-sidebar);
+    border: 1px solid rgba(37, 99, 235, 0.22);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.04),
+      0 14px 36px -16px rgba(37, 99, 235, 0.14);
+  }
+
+  .creador-card__visual {
+    position: relative;
+    padding: 2.25rem 1.75rem;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 25%, rgba(96, 165, 250, 0.32) 0%, transparent 70%),
+      linear-gradient(160deg, #0f1f4a 0%, #1e3a8a 52%, #2563eb 100%);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    overflow: hidden;
+  }
+
+  .creador-card__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    background-size: 24px 24px;
+    mask-image: radial-gradient(ellipse 90% 80% at 50% 45%, black 50%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 45%, black 50%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .creador-card__halo {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.22) 0%, transparent 65%);
+    filter: blur(24px);
+    pointer-events: none;
+  }
+
+  .creador-card__photo-frame {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .creador-card__photo {
+    width: 176px;
+    height: 176px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.95);
+    box-shadow:
+      0 0 0 6px rgba(255, 255, 255, 0.14),
+      0 18px 40px rgba(15, 23, 42, 0.4);
+  }
+
+  .creador-card__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.3rem 0.75rem;
+    background: rgba(15, 23, 42, 0.42);
+    border: 1px solid rgba(147, 197, 253, 0.38);
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #e2e8f0;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .creador-card__status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+  }
+
+  .creador-card__signature {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding-top: 1.1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .creador-card__sig-label {
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #93c5fd;
+  }
+
+  .creador-card__sig-name {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .creador-card__sig-handle {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .creador-card__body {
+    padding: 2.25rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.15rem;
+  }
+
+  .creador-card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(37, 99, 235, 0.12);
+  }
+
+  .creador-card__name {
+    margin: 0;
+    font-size: clamp(1.65rem, 2.5vw, 2.15rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    line-height: 1.15;
+  }
+
+  .creador-card__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    align-items: center;
+  }
+
+  .creador-pill {
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+  }
+
+  .creador-pill--primary {
+    background: var(--color-active-bg);
+    border-color: rgba(37, 99, 235, 0.25);
+    color: var(--color-accent);
+  }
+
+  .creador-card__bio {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .creador-card__bio strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  .creador-card__mission {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding: 1rem 1.15rem;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.07) 0%, rgba(240, 245, 255, 0.65) 100%);
+    border: 1px solid rgba(37, 99, 235, 0.22);
+    border-left: 3px solid var(--color-accent);
+    border-radius: 12px;
+  }
+
+  .creador-card__mission-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    background: var(--color-accent);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .creador-card__mission-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .creador-card__mission-text {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+
+  .creador-card__mission-text strong {
+    color: var(--color-text-primary);
+    font-weight: 700;
+  }
+
+  .creador-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-top: 0.5rem;
+  }
+
+  .creador-card__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .btn-primary-creador {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
+    background: var(--color-accent);
+    color: #ffffff;
+    border: 1px solid var(--color-accent);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 2px 8px var(--color-accent-glow);
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .btn-primary-creador svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .btn-primary-creador:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px var(--color-accent-glow);
+  }
+
+  .creador-card__socials {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .creador-social {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.85rem;
+    border-radius: 10px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  }
+
+  .creador-social svg {
+    width: 15px;
+    height: 15px;
+    color: var(--color-accent);
+  }
+
+  .creador-social:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-active-bg);
+    transform: translateY(-2px);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .btn-outline,
     .btn-ghost,
+    .btn-primary-creador,
+    .creador-social,
     .mv-card,
     .capacidad {
       transition: none;
     }
 
     .btn-outline:hover,
+    .btn-primary-creador:hover,
+    .creador-social:hover,
     .mv-card:hover,
     .capacidad:hover {
       transform: none;
@@ -703,8 +1106,12 @@ const jsonLd = catalogoSchema(
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .quienes-grid {
+    .quienes-grid,
+    .creador-card {
       grid-template-columns: minmax(0, 1fr);
+    }
+
+    .quienes-grid {
       gap: 1.5rem;
     }
   }
@@ -712,6 +1119,10 @@ const jsonLd = catalogoSchema(
   @media (max-width: 768px) {
     .mision-vision {
       grid-template-columns: minmax(0, 1fr);
+    }
+
+    .creador-card__body {
+      padding: 1.5rem 1.25rem;
     }
 
     .observatorio-container {

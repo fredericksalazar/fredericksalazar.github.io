@@ -24,14 +24,20 @@ interface Props {
 }
 
 const { indicador, indice } = Astro.props;
-const { def, valor, unidad, periodo, delta, variacion, referencia, fuente, periodoComparado, frescura } = indicador;
+const { def, valor, unidad, periodo, delta, variacion, referencia, fuente, periodoComparado, periodoInicioVentana, frescura } = indicador;
 const grupoTitulo = GRUPOS.find((g) => g.id === def.grupo)?.titulo ?? def.grupo;
 
 // "% del PIB" en una columna angosta parte la cifra: "del PIB" pasa junto al periodo.
 const esPctPib = unidad === "% PIB";
 const valorFmt = formatIndicador(valor, esPctPib ? "%" : unidad);
-const periodoFmt = `${esPctPib ? "del PIB · " : ""}${formatPeriodoIndicador(periodo, def.periodicidad)}`;
+const periodoCorto = formatPeriodoIndicador(periodo, def.periodicidad);
+const periodoFmt = `${esPctPib ? "del PIB · " : ""}${periodoCorto}`;
 const comparadoFmt = periodoComparado ? formatPeriodoIndicador(periodoComparado, def.periodicidad) : null;
+const ventanaFmt = periodoInicioVentana
+  ? `${formatPeriodoIndicador(periodoInicioVentana, def.periodicidad)} — ${periodoCorto}`
+  : def.periodicidad === "mensual"
+    ? "Últimos 24 meses"
+    : "Últimos 20 años";
 
 const flecha = variacion === "subio" ? "↑" : variacion === "bajo" ? "↓" : variacion === "igual" ? "→" : "";
 let cambio: string | null = null;
@@ -62,15 +68,20 @@ const tituloId = `ind-${def.id}`;
   {cambio && (
     <p class="ind-card__cambio">
       <span class="ind-card__flecha" aria-hidden="true">{flecha}</span>
-      {cambio}
+      <span>{cambio}</span>
     </p>
   )}
 
-  <div class="ind-card__spark">
-    <Chart id={sparklineId(def.id)} variant="sparkline" />
+  <div class="ind-card__spark-box">
+    <div class="ind-card__spark">
+      <Chart id={sparklineId(def.id)} variant="sparkline" />
+    </div>
+    <div class="ind-card__spark-meta">
+      <span class="ind-card__ventana">{ventanaFmt}</span>
+      <span class="ind-card__referencia">{referencia.frase}</span>
+    </div>
   </div>
 
-  <p class="ind-card__referencia">{referencia.frase}</p>
   <p class="ind-card__explicacion">{def.explicacion}</p>
 
   <footer class="ind-card__pie">
@@ -86,7 +97,8 @@ const tituloId = `ind-${def.id}`;
       data-ga-indicador={def.id}
       data-ga-destino={def.href}
     >
-      {def.destino} <span aria-hidden="true">→</span>
+      <span>{def.destino}</span>
+      <span class="ind-card__destino-arrow" aria-hidden="true">→</span>
     </a>
   </footer>
 </article>
@@ -185,26 +197,71 @@ const tituloId = `ind-${def.id}`;
     color: var(--color-text-muted);
   }
 
-  .ind-card__cambio,
-  .ind-card__referencia {
+  .ind-card__cambio {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
     margin: 0;
-    font-size: 0.85rem;
+    padding: 0.22rem 0.6rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
     color: var(--color-text-secondary);
     font-variant-numeric: tabular-nums;
   }
 
   .ind-card__flecha {
-    margin-right: 0.25rem;
+    color: var(--color-text-primary);
+    font-weight: 700;
+  }
+
+  .ind-card__spark-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.35rem 0.5rem 0.45rem;
+    background: linear-gradient(180deg, rgba(248, 250, 255, 0.7) 0%, rgba(240, 245, 255, 0.45) 100%);
+    border: 1px solid rgba(37, 99, 235, 0.12);
+    border-radius: 9px;
   }
 
   .ind-card__spark {
     height: 48px;
   }
 
+  .ind-card__spark-meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding-top: 0.25rem;
+    border-top: 1px dashed rgba(37, 99, 235, 0.14);
+  }
+
+  .ind-card__ventana {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+
+  .ind-card__referencia {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
   .ind-card__explicacion {
     margin: 0;
-    font-size: 0.85rem;
-    line-height: 1.5;
+    font-size: 0.84rem;
+    line-height: 1.48;
     color: var(--color-text-muted);
   }
 
@@ -214,13 +271,14 @@ const tituloId = `ind-${def.id}`;
     border-top: 1px solid var(--color-border);
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.3rem;
     font-size: 0.72rem;
   }
 
   .ind-card__fuente {
     position: relative;
     z-index: 1;
+    align-self: flex-start;
     color: var(--color-text-muted);
     text-decoration: underline;
     text-underline-offset: 2px;
@@ -231,10 +289,24 @@ const tituloId = `ind-${def.id}`;
   }
 
   .ind-card__destino {
-    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.35rem;
+    font-size: 0.84rem;
     font-weight: 600;
     color: var(--color-accent);
     text-decoration: none;
+  }
+
+  .ind-card__destino-arrow {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .ind-card:hover .ind-card__destino-arrow,
+  .ind-card:focus-within .ind-card__destino-arrow {
+    transform: translateX(4px);
   }
 
   /* Enlace "estirado": toda la tarjeta lleva al dominio; la fuente queda por encima. */
@@ -260,12 +332,15 @@ const tituloId = `ind-${def.id}`;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ind-card {
+    .ind-card,
+    .ind-card__destino-arrow {
       transition: none;
     }
 
     .ind-card:hover,
-    .ind-card:focus-within {
+    .ind-card:focus-within,
+    .ind-card:hover .ind-card__destino-arrow,
+    .ind-card:focus-within .ind-card__destino-arrow {
       transform: none;
     }
   }

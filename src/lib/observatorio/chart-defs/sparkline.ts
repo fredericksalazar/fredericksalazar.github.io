@@ -35,22 +35,39 @@ export const makeSparkline = (ind: IndicadorClaveDef): ChartDef => ({
     const x = puntos.map((p) => periodoToISODate(p.periodo));
     const y = puntos.map((p) => p.valor);
     const ultimo = puntos.length - 1;
+    const minY = y.length ? Math.min(...y) : 0;
+    const maxY = y.length ? Math.max(...y) : 1;
+    const pad = (maxY - minY) * 0.16 || 1;
+    const baseY = minY - pad;
     return {
       traces: [
         {
           type: "scatter",
           mode: "lines",
+          x: x.length ? [x[0], x[ultimo]] : [],
+          y: x.length ? [baseY, baseY] : [],
+          line: { width: 0, color: "rgba(0,0,0,0)" },
+          hoverinfo: "skip",
+        },
+        {
+          type: "scatter",
+          mode: "lines",
           x,
           y,
+          fill: "tonexty",
+          fillcolor: "rgba(37, 99, 235, 0.08)",
           line: { color: COLORS.brand, width: 2, shape: "spline", smoothing: 0.4 },
           hoverinfo: "skip",
         },
         {
           type: "scatter",
           mode: "markers",
-          x: [x[ultimo]],
-          y: [y[ultimo]],
-          marker: { color: COLORS.brand, size: 6 },
+          x: x.length > 1 ? [x[0], x[ultimo]] : [x[ultimo]],
+          y: y.length > 1 ? [y[0], y[ultimo]] : [y[ultimo]],
+          marker: {
+            color: x.length > 1 ? ["rgba(37, 99, 235, 0.45)", COLORS.brand] : [COLORS.brand],
+            size: x.length > 1 ? [4, 6.5] : [6.5],
+          },
           hoverinfo: "skip",
         },
       ],
@@ -59,7 +76,7 @@ export const makeSparkline = (ind: IndicadorClaveDef): ChartDef => ({
         showlegend: false,
         height: 48,
         xaxis: { visible: false, fixedrange: true },
-        yaxis: { visible: false, fixedrange: true },
+        yaxis: { visible: false, fixedrange: true, range: [baseY, maxY + pad] },
       }),
       config: { staticPlot: true, displayModeBar: false, responsive: true },
     };

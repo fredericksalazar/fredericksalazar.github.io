@@ -236,6 +236,7 @@ const etapas = [
       {fuentes.map((f) => (
         <g transform={`translate(28, ${f.y - 24})`} class="bp-svg-source-node">
           <rect
+            class="bp-svg-source-rect"
             width="168"
             height="48"
             rx="10"
@@ -268,6 +269,7 @@ const etapas = [
           />
           <!-- Card de la etapa -->
           <rect
+            class="bp-svg-stage-rect"
             width="150"
             height="86"
             rx="13"
@@ -302,85 +304,88 @@ const etapas = [
         </text>
       </g>
 
-      <!-- ── NODO FINAL: DASHBOARD DEL OBSERVATORIO (Derecha) ── -->
-      <g transform="translate(892, 76)">
-        <!-- Halo exterior pulsante -->
-        <rect
-          x="-6"
-          y="-6"
-          width="248"
-          height="308"
-          rx="22"
-          fill="none"
-          stroke="rgba(37, 99, 235, 0.22)"
-          stroke-width="2"
-          class="bp-svg-dash-halo"
-        />
-
-        <!-- Contenedor principal del Dashboard -->
-        <rect
-          width="236"
-          height="296"
-          rx="18"
-          fill="url(#bp-dash-grad)"
-          stroke="#60a5fa"
-          stroke-width="1.5"
-        />
-
-        <!-- Cabecera de ventana del Dashboard -->
-        <circle cx="20" cy="22" r="4" fill="#60a5fa" />
-        <circle cx="34" cy="22" r="4" fill="#93c5fd" opacity="0.6" />
-        <circle cx="48" cy="22" r="4" fill="#93c5fd" opacity="0.3" />
-        <text x="218" y="25" text-anchor="end" class="bp-svg-dash-badge">● EN VIVO</text>
-        <line x1="16" y1="36" x2="220" y2="36" stroke="rgba(255, 255, 255, 0.14)" />
-
-        <!-- Título dentro del nodo Dashboard -->
-        <text x="18" y="58" class="bp-svg-dash-eyebrow">PUBLIC/DATA/*.JSON</text>
-        <text x="18" y="78" class="bp-svg-dash-title">Dashboard Público</text>
-
-        <!-- Mini KPI cards simuladas -->
-        <g transform="translate(18, 92)">
-          <rect width="96" height="48" rx="8" fill="rgba(255, 255, 255, 0.1)" stroke="rgba(255, 255, 255, 0.18)" />
-          <text x="10" y="18" class="bp-svg-mini-label">IPC ANUAL</text>
-          <text x="10" y="38" class="bp-svg-mini-val">DANE · OK</text>
-
-          <rect x="104" width="96" height="48" rx="8" fill="rgba(255, 255, 255, 0.1)" stroke="rgba(255, 255, 255, 0.18)" />
-          <text x="114" y="18" class="bp-svg-mini-label">TRM / TASA</text>
-          <text x="114" y="38" class="bp-svg-mini-val">BanRep · OK</text>
-        </g>
-
-        <!-- Mini gráfico vivo dentro del Dashboard -->
-        <g transform="translate(18, 152)">
-          <rect width="200" height="92" rx="10" fill="rgba(15, 23, 42, 0.45)" stroke="rgba(147, 197, 253, 0.25)" />
-          <line x1="12" y1="26" x2="188" y2="26" stroke="rgba(255, 255, 255, 0.08)" stroke-dasharray="3 3" />
-          <line x1="12" y1="50" x2="188" y2="50" stroke="rgba(255, 255, 255, 0.08)" stroke-dasharray="3 3" />
-          <line x1="12" y1="74" x2="188" y2="74" stroke="rgba(255, 255, 255, 0.08)" />
-
-          <!-- Área bajo la curva -->
-          <path
-            d="M 16 68 L 46 54 L 78 60 L 110 38 L 142 44 L 182 22 L 182 76 L 16 76 Z"
-            fill="url(#bp-spark-area)"
-          />
-          <!-- Línea de tendencia animada -->
-          <path
-            d="M 16 68 L 46 54 L 78 60 L 110 38 L 142 44 L 182 22"
+      <!-- ── NODO FINAL: DASHBOARD DEL OBSERVATORIO (Derecha · Enlace interactivo) ── -->
+      <a href="#panel-clave-titulo" class="bp-svg-dest-link" aria-label="Explorar los 8 indicadores clave en el Dashboard Público">
+        <g transform="translate(892, 76)" class="bp-svg-dest-node">
+          <!-- Halo exterior pulsante -->
+          <rect
+            x="-6"
+            y="-6"
+            width="248"
+            height="308"
+            rx="22"
             fill="none"
-            stroke="#60a5fa"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="bp-svg-chart-line"
+            stroke="rgba(37, 99, 235, 0.22)"
+            stroke-width="2"
+            class="bp-svg-dash-halo"
           />
-          <circle cx="182" cy="22" r="4.5" fill="#22c55e" stroke="#ffffff" stroke-width="1.5" class="bp-svg-sonar" />
+
+          <!-- Contenedor principal del Dashboard -->
+          <rect
+            class="bp-svg-dest-rect"
+            width="236"
+            height="296"
+            rx="18"
+            fill="url(#bp-dash-grad)"
+            stroke="#60a5fa"
+            stroke-width="1.5"
+          />
+
+          <!-- Cabecera de ventana del Dashboard -->
+          <circle cx="20" cy="22" r="4" fill="#60a5fa" />
+          <circle cx="34" cy="22" r="4" fill="#93c5fd" opacity="0.6" />
+          <circle cx="48" cy="22" r="4" fill="#93c5fd" opacity="0.3" />
+          <text x="218" y="25" text-anchor="end" class="bp-svg-dash-badge">● EN VIVO</text>
+          <line x1="16" y1="36" x2="220" y2="36" stroke="rgba(255, 255, 255, 0.14)" />
+
+          <!-- Título dentro del nodo Dashboard -->
+          <text x="18" y="58" class="bp-svg-dash-eyebrow">PUBLIC/DATA/*.JSON</text>
+          <text x="18" y="78" class="bp-svg-dash-title">Dashboard Público</text>
+
+          <!-- Mini KPI cards simuladas -->
+          <g transform="translate(18, 92)">
+            <rect width="96" height="48" rx="8" fill="rgba(255, 255, 255, 0.1)" stroke="rgba(255, 255, 255, 0.18)" />
+            <text x="10" y="18" class="bp-svg-mini-label">IPC ANUAL</text>
+            <text x="10" y="38" class="bp-svg-mini-val">DANE · OK</text>
+
+            <rect x="104" width="96" height="48" rx="8" fill="rgba(255, 255, 255, 0.1)" stroke="rgba(255, 255, 255, 0.18)" />
+            <text x="114" y="18" class="bp-svg-mini-label">TRM / TASA</text>
+            <text x="114" y="38" class="bp-svg-mini-val">BanRep · OK</text>
+          </g>
+
+          <!-- Mini gráfico vivo dentro del Dashboard -->
+          <g transform="translate(18, 152)">
+            <rect width="200" height="92" rx="10" fill="rgba(15, 23, 42, 0.45)" stroke="rgba(147, 197, 253, 0.25)" />
+            <line x1="12" y1="26" x2="188" y2="26" stroke="rgba(255, 255, 255, 0.08)" stroke-dasharray="3 3" />
+            <line x1="12" y1="50" x2="188" y2="50" stroke="rgba(255, 255, 255, 0.08)" stroke-dasharray="3 3" />
+            <line x1="12" y1="74" x2="188" y2="74" stroke="rgba(255, 255, 255, 0.08)" />
+
+            <!-- Área bajo la curva -->
+            <path
+              d="M 16 68 L 46 54 L 78 60 L 110 38 L 142 44 L 182 22 L 182 76 L 16 76 Z"
+              fill="url(#bp-spark-area)"
+            />
+            <!-- Línea de tendencia animada -->
+            <path
+              d="M 16 68 L 46 54 L 78 60 L 110 38 L 142 44 L 182 22"
+              fill="none"
+              stroke="#60a5fa"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="bp-svg-chart-line"
+            />
+            <circle cx="182" cy="22" r="4.5" fill="#22c55e" stroke="#ffffff" stroke-width="1.5" class="bp-svg-sonar" />
+          </g>
+
+          <!-- Pie del nodo Dashboard -->
+          <text x="18" y="268" class="bp-svg-dash-foot">✓ Verificado · Trazabilidad 100 %</text>
+          <text x="18" y="283" class="bp-svg-dash-sub">Explorar los 8 indicadores clave ↑</text>
+
+          <!-- Puerto receptor izquierdo (conecta con el final de path-pipeline-main en 892, 230) -->
+          <circle cx="0" cy="154" r="6" fill="#22c55e" stroke="#ffffff" stroke-width="2" />
         </g>
-
-        <!-- Pie del nodo Dashboard -->
-        <text x="18" y="268" class="bp-svg-dash-foot">✓ Verificado · Trazabilidad 100 %</text>
-        <text x="18" y="283" class="bp-svg-dash-sub">8 indicadores clave + 7 tableros</text>
-
-        <!-- Puerto receptor izquierdo (conecta con el final de path-pipeline-main en 892, 230) -->
-        <circle cx="0" cy="154" r="6" fill="#22c55e" stroke="#ffffff" stroke-width="2" />
-      </g>
+      </a>
     </svg>
   </div>
 
@@ -409,10 +414,10 @@ const etapas = [
       ))}
     </ol>
 
-    <div class="bp-arch__mobile-out">
+    <a href="#panel-clave-titulo" class="bp-arch__mobile-out">
       <span class="bp-arch__live-dot" aria-hidden="true"></span>
-      <span><strong>Dashboard Público</strong> · Contratos JSON servidos con trazabilidad histórica</span>
-    </div>
+      <span><strong>Dashboard Público</strong> · Explorar los 8 indicadores clave ↑</span>
+    </a>
   </div>
 </div>
 
@@ -603,8 +608,49 @@ const etapas = [
 
   .bp-svg-dash-sub {
     font-size: 10px;
-    font-weight: 500;
-    fill: #cbd5e1;
+    font-weight: 600;
+    fill: #bfdbfe;
+    transition: fill 0.2s ease;
+  }
+
+  /* ── Micro-interacciones de nodos en el plano SVG ── */
+  .bp-svg-source-node,
+  .bp-svg-stage {
+    cursor: default;
+  }
+
+  .bp-svg-source-rect,
+  .bp-svg-stage-rect,
+  .bp-svg-dest-rect {
+    transition: stroke 0.2s ease, stroke-width 0.2s ease, filter 0.2s ease;
+  }
+
+  .bp-svg-source-node:hover .bp-svg-source-rect,
+  .bp-svg-stage:hover .bp-svg-stage-rect {
+    stroke: #2563eb;
+    stroke-width: 2;
+    filter: drop-shadow(0 4px 10px rgba(37, 99, 235, 0.16));
+  }
+
+  .bp-svg-dest-link {
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .bp-svg-dest-link:hover .bp-svg-dest-rect,
+  .bp-svg-dest-link:focus-visible .bp-svg-dest-rect {
+    stroke: #93c5fd;
+    stroke-width: 2.5;
+    filter: drop-shadow(0 8px 18px rgba(37, 99, 235, 0.35));
+  }
+
+  .bp-svg-dest-link:hover .bp-svg-dash-sub,
+  .bp-svg-dest-link:focus-visible .bp-svg-dash-sub {
+    fill: #ffffff;
+  }
+
+  .bp-svg-dest-link:focus-visible {
+    outline: none;
   }
 
   /* ── Animaciones de flujo en cables y nodos ── */
@@ -770,8 +816,16 @@ const etapas = [
     padding: 0.95rem 1.1rem;
     background: #0f1f4a;
     color: #ffffff;
+    border: 1px solid rgba(96, 165, 250, 0.35);
     border-radius: 12px;
     font-size: 0.85rem;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .bp-arch__mobile-out:hover {
+    background: #1e3a8a;
+    border-color: #60a5fa;
   }
 
   @media (max-width: 768px) {

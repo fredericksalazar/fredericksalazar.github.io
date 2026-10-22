@@ -66,6 +66,8 @@ export interface IndicadorClave {
   frescura: "reciente" | "no-reciente";
   /** Periodo contra el que se mide `delta` ("YYYY-MM"), o null si no hay. */
   periodoComparado: string | null;
+  /** Primer periodo incluido en la ventana de la miniserie (sparkline). */
+  periodoInicioVentana: string | null;
 }
 
 export interface DominioObservatorio {
@@ -300,6 +302,8 @@ export function buildIndicadoresClave(datasets: DatasetsHome, hoy: Date = new Da
       continue;
     }
     const valores = valoresNoNulos(data.serie, def.campo);
+    const limiteVentana = def.periodicidad === "mensual" ? 24 : 20;
+    const periodoInicioVentana = valores.slice(0, limiteVentana).at(-1)?.periodo ?? null;
     const periodoComparado = def.comparacion === "interanual"
       ? `${parseInt(yearOf(periodo), 10) - 1}${periodo.slice(4)}`
       : valores.find((v) => v.periodo < periodo)?.periodo ?? null;
@@ -317,6 +321,7 @@ export function buildIndicadoresClave(datasets: DatasetsHome, hoy: Date = new Da
       fuente: data.metadata.fuentes[def.fuenteKey] ?? null,
       frescura: estadoFrescura(periodo, def.periodicidad, hoy),
       periodoComparado,
+      periodoInicioVentana,
     });
   }
   return resultado;

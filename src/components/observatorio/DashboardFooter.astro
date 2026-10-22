@@ -16,6 +16,8 @@ interface Props {
 
 const { fuentes, ultimaActualizacion, definiciones = [], cobertura } = Astro.props;
 const fechaActualizacion = formatFechaActualizacion(ultimaActualizacion);
+const anioCita = ultimaActualizacion.slice(0, 4);
+const citaSugerida = `Salazar, F. (${anioCita}). Observatorio de Datos de Colombia. Recuperado de https://fredericksalazar.github.io/observatorio/ (Licencia CC BY 4.0).`;
 ---
 
 <footer class="dashboard-footer" aria-label="Metodología y fuentes">
@@ -59,7 +61,52 @@ const fechaActualizacion = formatFechaActualizacion(ultimaActualizacion);
       )}
     </div>
   </div>
+
+  <div class="dashboard-footer__citation">
+    <div class="dashboard-footer__citation-main">
+      <span class="dashboard-footer__license">CC BY 4.0</span>
+      <p class="dashboard-footer__citation-text">
+        <strong>Cómo citar:</strong> <span data-citation-text>{citaSugerida}</span>
+      </p>
+    </div>
+    <button
+      type="button"
+      class="dashboard-footer__copy-btn"
+      data-copy-citation={citaSugerida}
+      aria-label="Copiar cita sugerida al portapapeles"
+    >
+      <span data-copy-label>Copiar cita</span>
+    </button>
+  </div>
 </footer>
+
+<script>
+  function initCitationCopy() {
+    document.querySelectorAll<HTMLButtonElement>("[data-copy-citation]").forEach((btn) => {
+      if (btn.dataset.bound === "true") return;
+      btn.dataset.bound = "true";
+      btn.addEventListener("click", async () => {
+        const text = btn.dataset.copyCitation;
+        const label = btn.querySelector<HTMLElement>("[data-copy-label]");
+        if (!text || !label) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          label.textContent = "Cita copiada ✓";
+          btn.classList.add("is-copied");
+          setTimeout(() => {
+            label.textContent = "Copiar cita";
+            btn.classList.remove("is-copied");
+          }, 2200);
+        } catch {
+          label.textContent = "CC BY 4.0";
+        }
+      });
+    });
+  }
+
+  initCitationCopy();
+  document.addEventListener("astro:page-load", initCitationCopy);
+</script>
 
 <style>
   .dashboard-footer {
@@ -121,5 +168,71 @@ const fechaActualizacion = formatFechaActualizacion(ultimaActualizacion);
   .dashboard-footer__sources a:hover,
   .dashboard-footer__link:hover {
     text-decoration: underline;
+  }
+
+  .dashboard-footer__citation {
+    margin-top: 1.5rem;
+    padding: 0.9rem 1.25rem;
+    background: var(--color-sidebar);
+    border: 1px solid rgba(37, 99, 235, 0.18);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .dashboard-footer__citation-main {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    min-width: 0;
+  }
+
+  .dashboard-footer__license {
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+    background: var(--color-active-bg);
+    border: 1px solid rgba(37, 99, 235, 0.22);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  .dashboard-footer__citation-text {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--color-text-secondary);
+    line-height: 1.45;
+  }
+
+  .dashboard-footer__copy-btn {
+    appearance: none;
+    padding: 0.42rem 0.9rem;
+    border-radius: 999px;
+    background: var(--color-bg);
+    border: 1px solid rgba(37, 99, 235, 0.25);
+    color: var(--color-accent);
+    font-family: inherit;
+    font-size: 0.76rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .dashboard-footer__copy-btn:hover {
+    background: var(--color-active-bg);
+    border-color: var(--color-accent);
+  }
+
+  .dashboard-footer__copy-btn.is-copied {
+    background: rgba(22, 163, 74, 0.1);
+    border-color: rgba(22, 163, 74, 0.4);
+    color: #15803d;
   }
 </style>
