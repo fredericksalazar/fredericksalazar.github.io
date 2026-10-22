@@ -307,17 +307,20 @@ Todas las subpáginas del Observatorio siguen este orden, sin excepciones:
 ### 5.5 Portada del Observatorio (`/observatorio/`)
 
 La Home sigue la sección 5.1 (Hero con mapa, menú, footer), pero sin
-`PageHeader` ni paneles numerados: presenta directamente los indicadores clave.
+`PageHeader` ni paneles numerados: presenta directamente los indicadores clave,
+las publicaciones recientes y la identidad del Observatorio dentro de contenedores
+reutilizables `PanelBlueprint`.
 No enlaza la descarga de los JSON procesados (decisión del autor).
 
 ```
 1. <Hero> + <MapaColombia />        KPIs de contexto, cada uno con periodo y fuente
 2. <DashboardNav active="inicio" />
-3. "Cómo va Colombia"               un h2 por grupo · <IndicadorClaveCard> × 8
-4. "Lo más reciente"                <BandaOscura> · <Card variant="blog"> × 4 (automático)
-5. "Datos en los que puedes confiar" fuentes, actualización, licencia y cita
-6. <AuthorBio> + CTA al perfil
-7. <DashboardFooter>
+3. "Cómo va Colombia"               01 · <PanelBlueprint> · grilla 4 columnas · <IndicadorClaveCard> × 8
+4. "Últimas publicaciones"          02 · <PanelBlueprint> · grilla 4 columnas · <Card variant="blog"> × 4
+5. "Quiénes somos" + Misión/Visión  03 · <PanelBlueprint> · bloque de identidad y propósito del Observatorio
+6. "Qué hacemos"                    04 · <PanelBlueprint> · grilla 3 columnas · 6 capacidades de la infraestructura
+7. "Cómo funciona"                  05 · <PanelBlueprint> · <PipelineBlueprint /> (mapa arquitectónico animado)
+8. <DashboardFooter>
 ```
 
 - **Sin juicios de valor:** el cambio ("subió/bajó X frente a {periodo}") y la
@@ -325,8 +328,8 @@ No enlaza la descarga de los JSON procesados (decisión del autor).
   neutro; nunca rojo/verde ni "mejor/peor".
 - **Frescura:** la etiqueta "Dato no reciente" usa el color de aviso (sección 2.1)
   y siempre lleva texto.
-- **Grillas:** el panel ocupa 4 columnas lógicas (cada grupo tantas como tarjetas)
-  y pasa a 2 columnas en `≤ 1024px` y a 1 en `≤ 640px`.
+- **Grillas:** el panel de indicadores y el de publicaciones ocupan 4 columnas
+  y pasan a 2 columnas en `≤ 1024px` y a 1 en `≤ 640px`.
 
 ## 6. Gráficos
 
@@ -523,8 +526,10 @@ Antes de crear algo, se usa lo que existe.
 | `DashboardNav`, `EleccionesNav` | `components/observatorio/` | Menú horizontal de dominio |
 | `PageHeader` | `components/observatorio/` | Resumen del estado actual |
 | `KpiRow`, `IndicadorCard` | `components/observatorio/` | Fila de KPIs |
-| `BandaOscura` | `components/observatorio/` | Sección de contraste a todo el ancho (azul marino, retícula y orbes, texto claro). Usada en Acerca y en "Lo más reciente" de la Home |
-| `IndicadorClaveCard` | `components/observatorio/` | Tarjeta de indicador clave de la Home: valor, periodo, cambio y referencia neutrales, fuente y sparkline |
+| `BandaOscura` | `components/observatorio/` | Sección de contraste a todo el ancho (azul marino, retícula y orbes, texto claro). Usada en Acerca |
+| `PanelBlueprint` | `components/observatorio/` | Contenedor de sección con estética blueprint sutil (gradiente blanco a `#f0f5ff`, retícula de puntos, halo radial azul, borde traslúcido y radio XL `24px`). Usado en las 5 secciones de la Home |
+| `PipelineBlueprint` | `components/observatorio/` | Mapa arquitectónico blueprint animado que conecta las fuentes oficiales con las 6 fases del pipeline automatizado hasta el Dashboard público |
+| `IndicadorClaveCard` | `components/observatorio/` | Tarjeta de indicador clave de la Home: pill de grupo, índice, valor, periodo, cambio y referencia neutrales, fuente y sparkline |
 | `IndicadorPanel` | `components/observatorio/` | Panel narrativo con gráfico |
 | `Chart` + `ChartContainer` | `components/observatorio/` | Gráfico por id y su card; `variant="sparkline"` para mini tendencias dentro de otra card |
 | `GlosarioGrid` | `components/observatorio/` | Glosario |

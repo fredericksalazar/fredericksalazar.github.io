@@ -1,0 +1,77 @@
+---
+/**
+ * PanelBlueprint — contenedor reutilizable de sección con estética blueprint
+ * sutil: superficie degradada de blanco a azul hielo (#f0f5ff), retícula de
+ * puntos con máscara elíptica superior derecha, halo radial azul difuminado,
+ * borde traslúcido de 1 px y radio XL (24 px en escritorio, 18 px en móvil).
+ *
+ * Definición única (ARQ-19, UI-11) para agrupar bloques temáticos del
+ * Observatorio sin duplicar el DOM decorativo ni los estilos.
+ */
+interface Props {
+  id?: string;
+  ariaLabel?: string;
+  ariaLabelledby?: string;
+  class?: string;
+}
+
+const { id, ariaLabel, ariaLabelledby, class: className = "" } = Astro.props;
+---
+
+<section
+  class={`panel-blueprint${className ? ` ${className}` : ""}`}
+  id={id}
+  aria-label={ariaLabel}
+  aria-labelledby={ariaLabelledby}
+>
+  <div class="panel-blueprint__grid" aria-hidden="true"></div>
+  <div class="panel-blueprint__glow" aria-hidden="true"></div>
+  <div class="panel-blueprint__inner">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .panel-blueprint {
+    position: relative;
+    overflow: hidden;
+    padding: 2.5rem 2.25rem;
+    background: linear-gradient(180deg, var(--color-sidebar) 0%, #f0f5ff 100%);
+    border: 1px solid rgba(37, 99, 235, 0.18);
+    border-radius: 24px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  }
+
+  .panel-blueprint__grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(37, 99, 235, 0.18) 1px, transparent 1px);
+    background-size: 24px 24px;
+    mask-image: radial-gradient(ellipse 90% 80% at 85% 15%, black 15%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 85% 15%, black 15%, transparent 75%);
+    pointer-events: none;
+  }
+
+  .panel-blueprint__glow {
+    position: absolute;
+    top: -120px;
+    right: -80px;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--color-accent-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .panel-blueprint__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    .panel-blueprint {
+      padding: 1.5rem 1.25rem;
+      border-radius: 18px;
+    }
+  }
+</style>

@@ -1,6 +1,6 @@
 ---
 /**
- * Home del Observatorio de Datos de Colombia (spec 005).
+ * Home del Observatorio de Datos de Colombia.
  * Todas las cifras salen de `public/data/*.json` en build (data.ts → home.ts);
  * las mini tendencias se cargan en cliente (REGLA 2).
  */
@@ -8,12 +8,12 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
 import MapaColombia from "../../components/observatorio/MapaColombia.astro";
 import DashboardNav from "../../components/observatorio/DashboardNav.astro";
+import PanelBlueprint from "../../components/observatorio/PanelBlueprint.astro";
+import PipelineBlueprint from "../../components/observatorio/PipelineBlueprint.astro";
 import IndicadorClaveCard from "../../components/observatorio/IndicadorClaveCard.astro";
 import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
-import BandaOscura from "../../components/observatorio/BandaOscura.astro";
 import Card from "../../components/Card.astro";
-import AuthorBio from "../../components/AuthorBio.astro";
 import { getCollection } from "astro:content";
 import { INFORMES } from "../../lib/observatorio/informes";
 import {
@@ -27,15 +27,15 @@ import {
 } from "../../lib/observatorio/data";
 import {
   DATASETS_PUBLICADOS,
-  GRUPOS,
   buildIndicadoresClave,
   publicacionesRecientes,
   type DatasetObservatorio,
   type DatasetsHome,
 } from "../../lib/observatorio/home";
 import { yearOf } from "../../lib/observatorio/derivations";
+import { formatFechaActualizacion } from "../../lib/observatorio/formatters";
 import { trail, sectionCrumb, catalogoSchema } from "../../lib/seo";
-import { urls, absUrls } from "../../lib/urls";
+import { urls } from "../../lib/urls";
 import type { Fuente } from "../../lib/observatorio/types";
 
 const datasets = {
@@ -50,10 +50,6 @@ const datasets = {
 
 const indicadores = buildIndicadoresClave(datasets);
 const recientes = publicacionesRecientes(await getCollection("blog"), INFORMES);
-
-const grupos = GRUPOS
-  .map((g) => ({ ...g, items: indicadores.filter((i) => i.def.grupo === g.id) }))
-  .filter((g) => g.items.length > 0);
 
 // Cifras de contexto del hero, cada una con periodo y fuente (constitución, principio II).
 const todos = Object.values(datasets) as DatasetObservatorio[];
@@ -78,19 +74,51 @@ const ultimaActualizacion = todos
   .map((d) => d.metadata.ultima_actualizacion)
   .sort()
   .at(-1)!;
-// Fuentes oficiales del panel, sin duplicados (sección de confianza y footer).
+const fechaActualizacionFmt = formatFechaActualizacion(ultimaActualizacion);
+
+// Fuentes oficiales del panel, sin duplicados (footer).
 const fuentesPanel = [
   ...new Map(
     indicadores.filter((i) => i.fuente).map((i) => [i.fuente!.url, i.fuente!] as const),
   ).values(),
 ] as Fuente[];
-const anioVersion = yearOf(ultimaActualizacion);
-const citaSugerida =
-  `Salazar, F. (${anioVersion}). Observatorio de Datos de Colombia [Conjunto de datos]. ${absUrls.observatorio()}`;
 
 const TITULO = "Indicadores económicos de Colombia hoy · Observatorio";
 const DESCRIPCION =
   "Inflación, tasa BanRep, desempleo, PIB y dólar en Colombia: los indicadores clave del país en un vistazo, con fuente oficial y actualización automática.";
+
+const capacidades = [
+  {
+    titulo: "Consolidación de fuentes",
+    desc: "Integración de información proveniente de entidades públicas, sistemas estadísticos y organismos nacionales en una única capa estructurada.",
+    icon: "layers",
+  },
+  {
+    titulo: "Series históricas",
+    desc: "Indicadores organizados a lo largo del tiempo para analizar tendencias, cambios y comportamientos del país.",
+    icon: "history",
+  },
+  {
+    titulo: "Actualización automatizada",
+    desc: "Procesos automáticos detectan y sincronizan nuevas publicaciones oficiales para mantener los indicadores al día.",
+    icon: "refresh",
+  },
+  {
+    titulo: "Visualización clara",
+    desc: "Herramientas visuales que permiten consultar y comprender indicadores complejos desde una experiencia intuitiva.",
+    icon: "chart",
+  },
+  {
+    titulo: "Análisis e interpretación",
+    desc: "Análisis basados en datos para facilitar la comprensión de fenómenos económicos, sociales y territoriales.",
+    icon: "lens",
+  },
+  {
+    titulo: "Acceso centralizado",
+    desc: "Toda la información se presenta desde una única plataforma estructurada, accesible y abierta.",
+    icon: "globe",
+  },
+];
 
 // JSON-LD DataCatalog: un Dataset por JSON publicado (FR-015). La clave del
 // archivo usa "_" y el nombre del dataset en data-client usa "-".
@@ -129,34 +157,57 @@ const jsonLd = catalogoSchema(
   <DashboardNav active="inicio" />
 
   <div class="observatorio-container">
-    <section class="panel-clave" aria-labelledby="panel-clave-titulo">
-      <div class="panel-clave__cabecera">
-        <p class="panel-clave__eyebrow">Indicadores clave</p>
-        <h2 class="panel-clave__titulo" id="panel-clave-titulo">Cómo va Colombia</h2>
-      </div>
+    <!-- ─── 01 · Indicadores más importantes ─── -->
+    <PanelBlueprint class="home-panel" ariaLabelledby="panel-clave-titulo">
+      <header class="seccion-head">
+        <div>
+          <span class="seccion-index" aria-hidden="true">01</span>
+          <p class="seccion-eyebrow">Indicadores clave</p>
+          <h2 class="seccion-titulo" id="panel-clave-titulo">Cómo va Colombia</h2>
+          <p class="seccion-subtitulo">
+            Ocho indicadores macroeconómicos y sociales esenciales con su variación, tendencia y referencia histórica.
+          </p>
+        </div>
+        <div class="panel-clave__meta">
+          <span class="panel-clave__badge">
+            <span class="panel-clave__dot" aria-hidden="true"></span>
+            Actualizado · {fechaActualizacionFmt}
+          </span>
+        </div>
+      </header>
 
-      <div class="panel-clave__grupos">
-        {grupos.map((g) => (
-          <section
-            class="grupo"
-            style={`--span: ${g.items.length};`}
-            aria-labelledby={`grupo-${g.id}`}
-          >
-            <h3 class="grupo__titulo" id={`grupo-${g.id}`}>{g.titulo}</h3>
-            <div class="grupo__tarjetas">
-              {g.items.map((ind) => <IndicadorClaveCard indicador={ind} />)}
-            </div>
-          </section>
+      <div class="panel-clave__grilla">
+        {indicadores.map((ind, idx) => (
+          <IndicadorClaveCard
+            indicador={ind}
+            indice={String(idx + 1).padStart(2, "0")}
+          />
         ))}
       </div>
-    </section>
+    </PanelBlueprint>
 
-  </div>
+    <!-- ─── 02 · Últimas publicaciones ─── -->
+    <PanelBlueprint class="home-panel" ariaLabelledby="recientes-titulo">
+      <header class="seccion-head">
+        <div>
+          <span class="seccion-index" aria-hidden="true">02</span>
+          <p class="seccion-eyebrow">Análisis e informes</p>
+          <h2 class="seccion-titulo" id="recientes-titulo">Últimas publicaciones</h2>
+          <p class="seccion-subtitulo">
+            Informes económicos mensuales, comparativos internacionales y hallazgos basados en datos oficiales.
+          </p>
+        </div>
+        <div class="recientes-acciones">
+          <a href={urls.observatorioInformes()} class="btn-outline">
+            Ver informes
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href={urls.blog()} class="btn-ghost">
+            Ir al blog
+          </a>
+        </div>
+      </header>
 
-  <BandaOscura class="recientes-banda" ariaLabelledby="recientes-titulo">
-    <div class="observatorio-ancho">
-      <p class="seccion__eyebrow seccion__eyebrow--claro">Análisis e informes</p>
-      <h2 class="seccion__titulo seccion__titulo--claro" id="recientes-titulo">Lo más reciente</h2>
       <div class="recientes">
         {recientes.map((pub) => (
           <Card
@@ -174,53 +225,122 @@ const jsonLd = catalogoSchema(
           />
         ))}
       </div>
-    </div>
-  </BandaOscura>
+    </PanelBlueprint>
 
-  <div class="observatorio-container">
-
-    <section class="seccion confianza" aria-labelledby="confianza-titulo">
-      <p class="seccion__eyebrow">Transparencia</p>
-      <h2 class="seccion__titulo" id="confianza-titulo">Datos en los que puedes confiar</h2>
-      <div class="confianza__grilla">
-        <div class="confianza__bloque">
-          <h3 class="confianza__subtitulo">Fuentes oficiales</h3>
-          <ul class="confianza__lista">
-            {fuentesPanel.map((f) => (
-              <li><a href={f.url} target="_blank" rel="noopener">{f.nombre}</a> · {f.indicador}</li>
-            ))}
-          </ul>
-        </div>
-        <div class="confianza__bloque">
-          <h3 class="confianza__subtitulo">Cómo se actualiza</h3>
-          <p>
-            Un pipeline automático descarga las fuentes oficiales varias veces al mes, valida cada serie y
-            publica los datos. Si una fuente falla, se conserva la última versión válida: nunca se reemplaza
-            un dato por uno más pobre.
+    <!-- ─── 03 · Quiénes somos + Misión y Visión ─── -->
+    <PanelBlueprint class="home-panel" ariaLabelledby="quienes-somos-titulo">
+      <div class="quienes-grid">
+        <div class="quienes-grid__lead">
+          <span class="seccion-index" aria-hidden="true">03</span>
+          <p class="seccion-eyebrow" id="quienes-somos-titulo">Quiénes somos</p>
+          <p class="quienes-h2">
+            Una plataforma <em>independiente</em> para integrar y comprender la información pública de Colombia.
           </p>
-          <p><a href={urls.observatorioSub("acerca")}>Lee la metodología completa</a></p>
         </div>
-        <div class="confianza__bloque">
-          <h3 class="confianza__subtitulo">Cita y comparte</h3>
+        <div class="quienes-grid__body">
           <p>
-            Las cifras, gráficos y análisis del Observatorio se publican con licencia
-            <a href="https://creativecommons.org/licenses/by/4.0/deed.es" target="_blank" rel="noopener">CC BY 4.0</a>:
-            puedes citarlos y compartirlos mencionando la fuente.
+            El <strong>Observatorio de Datos de Colombia</strong> es una plataforma independiente de integración, procesamiento, análisis y visualización de información pública del país. Es un proyecto creado y mantenido por <a href={`${urls.observatorioSub("acerca")}#creador`} class="identidad-link">Frederick Salazar</a>, Data Engineer.
           </p>
-          <p class="confianza__cita"><span class="confianza__cita-label">Cita sugerida</span>{citaSugerida}</p>
+          <p>
+            Su objetivo es consolidar en un solo lugar los principales indicadores económicos, sociales y territoriales de Colombia, ofreciendo acceso a datos históricos, actualizados y verificables desde una experiencia clara, moderna y accesible.
+          </p>
         </div>
       </div>
-    </section>
 
-    <section class="seccion autor" aria-label="Quién construye el Observatorio">
-      <p class="seccion__eyebrow">Quién está detrás</p>
-      <AuthorBio />
-      <p class="autor__cta">
-        <a href={urls.home()} data-ga-event="home_autor_click" data-ga-destino="perfil">
-          Conoce mi trabajo y mi experiencia <span aria-hidden="true">→</span>
-        </a>
-      </p>
-    </section>
+      <div class="mision-vision" aria-label="Misión y visión del Observatorio">
+        <article class="mv-card">
+          <div class="mv-card__head">
+            <div class="mv-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            </div>
+            <span class="seccion-eyebrow mv-card__eyebrow">Nuestra misión</span>
+          </div>
+          <h3 class="mv-card__title">Democratizar el acceso a información pública confiable</h3>
+          <p class="mv-card__desc">
+            Construir una plataforma que permita comprender la evolución económica y social de Colombia a través de indicadores históricos, visualizaciones y análisis basados en datos verificables.
+          </p>
+        </article>
+
+        <article class="mv-card">
+          <div class="mv-card__head">
+            <div class="mv-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <span class="seccion-eyebrow mv-card__eyebrow">Nuestra visión</span>
+          </div>
+          <h3 class="mv-card__title">Convertirnos en una referencia nacional de inteligencia pública abierta</h3>
+          <p class="mv-card__desc">
+            Construir una infraestructura abierta de datos que ciudadanos, investigadores, periodistas, empresas, estudiantes y tomadores de decisión puedan usar para interpretar la realidad del país desde información estructurada, histórica y accesible.
+          </p>
+        </article>
+      </div>
+    </PanelBlueprint>
+
+    <!-- ─── 04 · Qué hacemos ─── -->
+    <PanelBlueprint class="home-panel" ariaLabelledby="que-hacemos-titulo">
+      <header class="seccion-head">
+        <div>
+          <span class="seccion-index" aria-hidden="true">04</span>
+          <p class="seccion-eyebrow">Qué hacemos</p>
+          <h2 class="seccion-titulo" id="que-hacemos-titulo">Seis capacidades, una infraestructura</h2>
+          <p class="seccion-subtitulo">
+            Consolidamos información pública proveniente de entidades oficiales y construimos una capa unificada de datos estructurados y actualizados.
+          </p>
+        </div>
+      </header>
+
+      <div class="capacidades">
+        {capacidades.map((c, i) => (
+          <article class="capacidad">
+            <span class="capacidad__index" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <div class="capacidad__icon" aria-hidden="true">
+              {c.icon === "layers" && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              )}
+              {c.icon === "history" && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><polyline points="3 3 3 8 8 8"/><polyline points="12 7 12 12 15 14"/></svg>
+              )}
+              {c.icon === "refresh" && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              )}
+              {c.icon === "chart" && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              )}
+              {c.icon === "lens" && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              )}
+              {c.icon === "globe" && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              )}
+            </div>
+            <h3 class="capacidad__title">{c.titulo}</h3>
+            <p class="capacidad__desc">{c.desc}</p>
+          </article>
+        ))}
+      </div>
+    </PanelBlueprint>
+
+    <!-- ─── 05 · Cómo funciona (Mapa Blueprint Animado) ─── -->
+    <PanelBlueprint class="home-panel" ariaLabelledby="como-funciona-titulo">
+      <header class="seccion-head">
+        <div>
+          <span class="seccion-index" aria-hidden="true">05</span>
+          <p class="seccion-eyebrow">Cómo funciona</p>
+          <h2 class="seccion-titulo" id="como-funciona-titulo">Del dato disperso al indicador histórico</h2>
+          <p class="seccion-subtitulo">
+            Procesos automatizados recolectan información publicada por entidades oficiales y la transforman en indicadores históricos consistentes y trazables hasta llegar a este dashboard.
+          </p>
+        </div>
+        <div class="recientes-acciones">
+          <a href={urls.observatorioSub("acerca")} class="btn-outline">
+            Conocer metodología
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </header>
+
+      <PipelineBlueprint />
+    </PanelBlueprint>
 
     <DashboardFooter
       fuentes={fuentesPanel}
@@ -239,87 +359,40 @@ const jsonLd = catalogoSchema(
 </BaseLayout>
 
 <style>
-  .observatorio-container,
-  .observatorio-ancho {
+  .observatorio-container {
     width: 97%;
     max-width: 1800px;
     margin: 0 auto;
-  }
-
-  .observatorio-container {
-    padding: 1.75rem 0 3rem;
-  }
-
-  /* Dentro de la banda el padding lateral ya lo pone BandaOscura. */
-  .observatorio-ancho {
-    width: 100%;
-  }
-
-  .seccion__eyebrow.seccion__eyebrow--claro {
-    color: #93c5fd;
-  }
-
-  .seccion__titulo.seccion__titulo--claro {
-    color: #ffffff;
-  }
-
-  .panel-clave {
-    margin-bottom: 1.5rem;
-  }
-
-  .panel-clave__cabecera {
-    margin-bottom: 1rem;
-  }
-
-  .panel-clave__eyebrow {
-    margin: 0 0 0.25rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-accent);
-  }
-
-  .panel-clave__titulo {
-    margin: 0;
-    font-size: 1.7rem;
-    font-weight: 700;
-    color: var(--color-text-primary);
-  }
-
-  /* 8 columnas lógicas: cada grupo ocupa tantas como tarjetas tiene. */
-  .panel-clave__grupos {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.5rem 1rem;
-  }
-
-  .grupo {
-    grid-column: span var(--span);
+    padding: 2.5rem 0 3.5rem;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 2.5rem;
   }
 
-  .grupo__titulo {
-    margin: 0;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--color-text-secondary);
-  }
-
-  .grupo__tarjetas {
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(var(--span), minmax(0, 1fr));
+  /* ── Cabeceras e índices de sección ── */
+  .seccion-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
     gap: 1rem;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(37, 99, 235, 0.12);
   }
 
-  .seccion {
-    margin: 2.5rem 0 1.5rem;
+  .seccion-index {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--color-accent);
+    margin-bottom: 0.25rem;
+    opacity: 0.85;
+    font-variant-numeric: tabular-nums;
   }
 
-  .seccion__eyebrow {
+  .seccion-eyebrow {
     margin: 0 0 0.25rem;
     font-size: 0.72rem;
     font-weight: 700;
@@ -328,108 +401,321 @@ const jsonLd = catalogoSchema(
     color: var(--color-accent);
   }
 
-  .seccion__titulo {
-    margin: 0 0 1rem;
+  .seccion-titulo {
+    margin: 0;
     font-size: 1.7rem;
     font-weight: 700;
     color: var(--color-text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .seccion-subtitulo {
+    margin: 0.35rem 0 0;
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    max-width: 640px;
+  }
+
+  /* ── 01 · Indicadores clave ── */
+  .panel-clave__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.9rem;
+    background: var(--color-sidebar);
+    border: 1px solid rgba(37, 99, 235, 0.22);
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  }
+
+  .panel-clave__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #16a34a;
+  }
+
+  .panel-clave__grilla {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  /* ── 02 · Últimas publicaciones ── */
+  .recientes-acciones {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-outline,
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .btn-outline {
+    background: var(--color-sidebar);
+    color: var(--color-accent);
+    border: 1px solid rgba(37, 99, 235, 0.25);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  }
+
+  .btn-outline svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px var(--color-accent-glow);
+  }
+
+  .btn-ghost {
+    background: var(--color-sidebar);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+  }
+
+  .btn-ghost:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    background: var(--color-active-bg);
   }
 
   .recientes {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1rem;
+    gap: 1.25rem;
   }
 
-  .autor__cta {
-    margin: 1rem 0 0;
-    font-size: 0.85rem;
-    font-weight: 600;
-  }
-
-  .autor__cta a {
-    color: var(--color-accent);
-    text-decoration: none;
-  }
-
-  .autor__cta a:hover {
-    color: var(--color-accent-hover);
-    text-decoration: underline;
-  }
-
-  .confianza__grilla {
+  /* ── 03 · Quiénes somos + Misión y Visión ── */
+  .quienes-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    padding-bottom: 2.25rem;
+    margin-bottom: 2.25rem;
+    border-bottom: 1px solid rgba(37, 99, 235, 0.12);
   }
 
-  .confianza__bloque {
-    padding: 1.25rem;
-    background: var(--color-sidebar);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    font-size: 0.85rem;
-    line-height: 1.6;
+  .quienes-h2 {
+    margin: 0;
+    font-size: clamp(1.5rem, 2.4vw, 2.15rem);
+    font-weight: 700;
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+  }
+
+  .quienes-h2 em {
+    color: var(--color-accent);
+    font-style: normal;
+    background: linear-gradient(180deg, transparent 65%, var(--color-active-bg) 65%);
+  }
+
+  .quienes-grid__body p {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+    line-height: 1.7;
     color: var(--color-text-secondary);
   }
 
-  .confianza__bloque p {
-    margin: 0 0 0.5rem;
+  .quienes-grid__body p:last-child {
+    margin-bottom: 0;
   }
 
-  .confianza__bloque a {
+  .identidad-link {
     color: var(--color-accent);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(37, 99, 235, 0.35);
+    transition: border-color 0.2s ease;
   }
 
-  .confianza__subtitulo {
-    margin: 0 0 0.5rem;
-    font-size: 1rem;
+  .identidad-link:hover {
+    border-bottom-color: var(--color-accent);
+  }
+
+  /* ── Misión y Visión (superficie blanca sólida sobre PanelBlueprint) ── */
+  .mision-vision {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .mv-card {
+    padding: 1.75rem;
+    border-radius: 18px;
+    border: 1px solid var(--color-border);
+    background: var(--color-sidebar);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .mv-card:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px var(--color-accent-glow);
+  }
+
+  .mv-card__head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .mv-card__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-accent);
+    color: #ffffff;
+    flex-shrink: 0;
+  }
+
+  .mv-card__icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .mv-card__eyebrow {
+    margin: 0;
+  }
+
+  .mv-card__title {
+    margin: 0 0 0.65rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--color-text-primary);
+  }
+
+  .mv-card__desc {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+  }
+
+  /* ── 04 · Qué hacemos (Seis capacidades) ── */
+  .capacidades {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .capacidad {
+    position: relative;
+    padding: 1.5rem;
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .capacidad:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px var(--color-accent-glow);
+  }
+
+  .capacidad__index {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.4rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    opacity: 0.5;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .capacidad__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--color-active-bg);
+    color: var(--color-accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.85rem;
+  }
+
+  .capacidad__icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .capacidad__title {
+    margin: 0 0 0.4rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: var(--color-text-primary);
   }
 
-  .confianza__lista {
+  .capacidad__desc {
     margin: 0;
-    padding-left: 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
   }
 
-  .confianza__lista li::marker {
-    color: var(--color-accent);
-  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn-outline,
+    .btn-ghost,
+    .mv-card,
+    .capacidad {
+      transition: none;
+    }
 
-  .confianza__cita {
-    padding: 0.75rem;
-    background: var(--color-bg);
-    border-radius: 6px;
-    word-break: break-word;
-  }
-
-  .confianza__cita-label {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
+    .btn-outline:hover,
+    .mv-card:hover,
+    .capacidad:hover {
+      transform: none;
+    }
   }
 
   @media (max-width: 1024px) {
+    .panel-clave__grilla,
     .recientes,
-    .confianza__grilla {
+    .capacidades {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .panel-clave__grupos {
+    .quienes-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .mision-vision {
       grid-template-columns: minmax(0, 1fr);
     }
 
-    .grupo {
-      grid-column: 1 / -1;
-    }
-
-    .grupo__tarjetas {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .observatorio-container {
+      gap: 1.75rem;
     }
   }
 
@@ -439,9 +725,9 @@ const jsonLd = catalogoSchema(
       padding: 1.25rem 1rem 2rem;
     }
 
-    .grupo__tarjetas,
+    .panel-clave__grilla,
     .recientes,
-    .confianza__grilla {
+    .capacidades {
       grid-template-columns: minmax(0, 1fr);
     }
   }

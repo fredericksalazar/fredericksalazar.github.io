@@ -1,0 +1,807 @@
+---
+/**
+ * PipelineBlueprint — Mapa arquitectónico blueprint animado que ilustra cómo
+ * las fuentes públicas de datos de Colombia se conectan y viajan por las 6
+ * fases del pipeline automatizado hasta llegar al Dashboard público.
+ *
+ * Incluye:
+ *  - Lienzo SVG de alta precisión en escritorio con curvas Bézier, paquetes
+ *    de datos luminosos en movimiento (`<animateMotion>`), pulsos tipo sonar,
+ *    anillos de procesamiento y vista previa del dashboard en vivo.
+ *  - Versión estructurada responsive para pantallas móviles / tablets y
+ *    lista semántica accesible para lectores de pantalla.
+ *  - Respeto estricto a `prefers-reduced-motion: reduce`.
+ */
+
+const fuentes = [
+  { id: "dane", sigla: "DANE", detalle: "IPC · GEIH · PIB · Demografía", y: 74, delay: "0s", dur: "4.2s" },
+  { id: "banrep", sigla: "BanRep", detalle: "Tasas · TRM · Reservas · SDMX", y: 152, delay: "0.7s", dur: "3.8s" },
+  { id: "bm", sigla: "Banco Mundial", detalle: "API WDI · Series comparadas", y: 230, delay: "1.4s", dur: "4.5s" },
+  { id: "minhacienda", sigla: "MinHacienda · DIAN", detalle: "Cifras fiscales y tributarias", y: 308, delay: "0.35s", dur: "4.0s" },
+  { id: "abiertos", sigla: "Datos Abiertos", detalle: "Series históricas y territoriales", y: 386, delay: "1.1s", dur: "4.3s" },
+];
+
+const etapas = [
+  { paso: "01", label: "Recolección", sub: "Ingesta API / SDMX / XLSX", x: 355, y: 155 },
+  { paso: "02", label: "Normalización", sub: "Limpieza y tipos estándar", x: 545, y: 155 },
+  { paso: "03", label: "Transformación", sub: "Cálculo de deltas y series", x: 735, y: 155 },
+  { paso: "04", label: "Estructuración", sub: "Contratos JSON validados", x: 355, y: 325 },
+  { paso: "05", label: "Versionado", sub: "Guarda de no regresión Git", x: 545, y: 325 },
+  { paso: "06", label: "Almacenamiento", sub: "Publicación estática CDN", x: 735, y: 325 },
+];
+---
+
+<div class="bp-arch">
+  <!-- Barra superior de telemetría del plano -->
+  <div class="bp-arch__statusbar" aria-hidden="true">
+    <div class="bp-arch__status-left">
+      <span class="bp-arch__live-dot"></span>
+      <span class="bp-arch__code">ARCH-ODC · PIPELINE DE DATOS EN VIVO</span>
+    </div>
+    <div class="bp-arch__status-pills">
+      <span class="bp-arch__pill">5 núcleos de fuentes</span>
+      <span class="bp-arch__pill">6 fases deterministas</span>
+      <span class="bp-arch__pill bp-arch__pill--accent">Latencia 0 ms en cliente (SSG + JSON)</span>
+    </div>
+  </div>
+
+  <!-- Diagrama SVG interactivo / animado (Escritorio) -->
+  <div class="bp-arch__canvas-wrap" role="img" aria-label="Mapa animado del flujo de datos: las fuentes oficiales DANE, Banco de la República, Banco Mundial, MinHacienda y Datos Abiertos envían datos al colector de ingesta, recorren las 6 fases del pipeline (Recolección, Normalización, Transformación, Estructuración, Versionado y Almacenamiento) y alimentan el Dashboard público del Observatorio.">
+    <svg
+      class="bp-arch__svg"
+      viewBox="0 0 1160 460"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <defs>
+        <!-- Retícula técnica blueprint -->
+        <pattern id="bp-subgrid" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(37, 99, 235, 0.06)" stroke-width="1" />
+        </pattern>
+        <pattern id="bp-grid" width="100" height="100" patternUnits="userSpaceOnUse">
+          <rect width="100" height="100" fill="url(#bp-subgrid)" />
+          <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(37, 99, 235, 0.12)" stroke-width="1" />
+        </pattern>
+
+        <!-- Gradientes -->
+        <linearGradient id="bp-cable-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#93c5fd" stop-opacity="0.45" />
+          <stop offset="50%" stop-color="#2563eb" stop-opacity="0.85" />
+          <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0.95" />
+        </linearGradient>
+
+        <linearGradient id="bp-stage-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff" />
+          <stop offset="100%" stop-color="#f5f8ff" />
+        </linearGradient>
+
+        <linearGradient id="bp-core-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#2563eb" />
+          <stop offset="100%" stop-color="#1d4ed8" />
+        </linearGradient>
+
+        <linearGradient id="bp-dash-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#0f1f4a" />
+          <stop offset="55%" stop-color="#1e3a8a" />
+          <stop offset="100%" stop-color="#2563eb" />
+        </linearGradient>
+
+        <linearGradient id="bp-spark-area" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.45" />
+          <stop offset="100%" stop-color="#60a5fa" stop-opacity="0" />
+        </linearGradient>
+
+        <!-- Filtro de brillo para partículas de datos -->
+        <filter id="bp-glow" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="3.5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+
+        <!-- Rutas de conexión desde cada fuente al colector (252, 230) -->
+        <path id="path-src-0" d="M 196 74 C 228 74, 222 230, 252 230" />
+        <path id="path-src-1" d="M 196 152 C 224 152, 224 230, 252 230" />
+        <path id="path-src-2" d="M 196 230 L 252 230" />
+        <path id="path-src-3" d="M 196 308 C 224 308, 224 230, 252 230" />
+        <path id="path-src-4" d="M 196 386 C 228 386, 222 230, 252 230" />
+
+        <!-- Ruta maestra del pipeline: Colector → 01 → 02 → 03 → 04 → 05 → 06 → Dashboard -->
+        <path
+          id="path-pipeline-main"
+          d="M 252 230 C 272 230, 272 155, 290 155 L 735 155 C 832 155, 832 240, 545 240 C 258 240, 258 325, 355 325 L 800 325 C 845 325, 850 230, 892 230"
+        />
+      </defs>
+
+      <!-- Fondo técnico con retícula blueprint -->
+      <rect x="0" y="0" width="1160" height="460" rx="16" fill="#f8faff" />
+      <rect x="0" y="0" width="1160" height="460" rx="16" fill="url(#bp-grid)" />
+
+      <!-- Marcos de zonas arquitectónicas -->
+      <!-- Zona A: Fuentes -->
+      <rect
+        x="16"
+        y="20"
+        width="196"
+        height="420"
+        rx="14"
+        fill="rgba(255, 255, 255, 0.65)"
+        stroke="rgba(37, 99, 235, 0.18)"
+        stroke-dasharray="4 4"
+      />
+      <text x="32" y="42" class="bp-svg-zone">A · FUENTES OFICIALES</text>
+
+      <!-- Zona B: Motor del Pipeline -->
+      <rect
+        x="232"
+        y="20"
+        width="628"
+        height="420"
+        rx="14"
+        fill="rgba(255, 255, 255, 0.72)"
+        stroke="rgba(37, 99, 235, 0.22)"
+      />
+      <text x="252" y="42" class="bp-svg-zone">B · MOTOR ETL AUTOMATIZADO (ODC-DATA-PIPELINE)</text>
+      <text x="840" y="42" text-anchor="end" class="bp-svg-coord">SYNC · CRON GITHUB ACTIONS</text>
+
+      <!-- Zona C: Salida al Dashboard -->
+      <rect
+        x="878"
+        y="20"
+        width="266"
+        height="420"
+        rx="14"
+        fill="rgba(255, 255, 255, 0.65)"
+        stroke="rgba(37, 99, 235, 0.18)"
+        stroke-dasharray="4 4"
+      />
+      <text x="894" y="42" class="bp-svg-zone">C · CAPA DE PRESENTACIÓN</text>
+
+      <!-- ── CABLES DE INGESTA (Fuentes → Colector) ── -->
+      <g fill="none" stroke="rgba(37, 99, 235, 0.22)" stroke-width="2">
+        <use href="#path-src-0" />
+        <use href="#path-src-1" />
+        <use href="#path-src-2" />
+        <use href="#path-src-3" />
+        <use href="#path-src-4" />
+      </g>
+      <g fill="none" stroke="#2563eb" stroke-width="2" class="bp-svg-flow-dash">
+        <use href="#path-src-0" />
+        <use href="#path-src-1" />
+        <use href="#path-src-2" />
+        <use href="#path-src-3" />
+        <use href="#path-src-4" />
+      </g>
+
+      <!-- Partículas luminosas viajando desde cada fuente -->
+      {fuentes.map((f, idx) => (
+        <g class="bp-svg-particle" filter="url(#bp-glow)">
+          <circle r="4.5" fill="#2563eb">
+            <animateMotion dur={f.dur} begin={f.delay} repeatCount="indefinite" rotate="auto">
+              <mpath href={`#path-src-${idx}`} />
+            </animateMotion>
+          </circle>
+          <circle r="2" fill="#ffffff">
+            <animateMotion dur={f.dur} begin={f.delay} repeatCount="indefinite" rotate="auto">
+              <mpath href={`#path-src-${idx}`} />
+            </animateMotion>
+          </circle>
+        </g>
+      ))}
+
+      <!-- ── RUTA MAESTRA DEL PIPELINE (Fases 01 → 06 → Dashboard) ── -->
+      <!-- Riel base -->
+      <use
+        href="#path-pipeline-main"
+        fill="none"
+        stroke="rgba(37, 99, 235, 0.16)"
+        stroke-width="6"
+        stroke-linecap="round"
+      />
+      <!-- Línea energética punteada -->
+      <use
+        href="#path-pipeline-main"
+        fill="none"
+        stroke="url(#bp-cable-grad)"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        class="bp-svg-main-stream"
+      />
+
+      <!-- Tren de paquetes de datos recorriendo las 6 etapas hasta el Dashboard -->
+      {["0s", "1.6s", "3.2s", "4.8s", "6.4s"].map((delay) => (
+        <g class="bp-svg-particle" filter="url(#bp-glow)">
+          <circle r="6" fill="#2563eb" opacity="0.9">
+            <animateMotion dur="8s" begin={delay} repeatCount="indefinite">
+              <mpath href="#path-pipeline-main" />
+            </animateMotion>
+          </circle>
+          <circle r="2.8" fill="#ffffff">
+            <animateMotion dur="8s" begin={delay} repeatCount="indefinite">
+              <mpath href="#path-pipeline-main" />
+            </animateMotion>
+          </circle>
+        </g>
+      ))}
+
+      <!-- ── NODO COLECTOR DE INGESTA (252, 230) ── -->
+      <g transform="translate(252, 230)">
+        <circle r="18" fill="rgba(37, 99, 235, 0.12)" class="bp-svg-sonar" />
+        <circle r="12" fill="url(#bp-core-grad)" stroke="#ffffff" stroke-width="2.5" />
+        <circle r="4" fill="#ffffff" />
+      </g>
+
+      <!-- ── NODOS DE FUENTES OFICIALES (Columna izquierda) ── -->
+      {fuentes.map((f) => (
+        <g transform={`translate(28, ${f.y - 24})`} class="bp-svg-source-node">
+          <rect
+            width="168"
+            height="48"
+            rx="10"
+            fill="#ffffff"
+            stroke="rgba(37, 99, 235, 0.26)"
+            stroke-width="1.25"
+          />
+          <rect x="8" y="9" width="30" height="30" rx="7" fill="rgba(37, 99, 235, 0.1)" />
+          <text x="23" y="28" text-anchor="middle" class="bp-svg-monogram">
+            {f.sigla.slice(0, 2).toUpperCase()}
+          </text>
+          <text x="46" y="22" class="bp-svg-source-title">{f.sigla}</text>
+          <text x="46" y="36" class="bp-svg-source-sub">{f.detalle}</text>
+          <!-- Puerto de salida con pulso -->
+          <circle cx="168" cy="24" r="4.5" fill="#2563eb" stroke="#ffffff" stroke-width="1.5" />
+        </g>
+      ))}
+
+      <!-- ── LOS 6 NODOS DEL PIPELINE (2 filas × 3 etapas) ── -->
+      {etapas.map((e, i) => (
+        <g transform={`translate(${e.x - 75}, ${e.y - 44})`} class="bp-svg-stage">
+          <!-- Sombra/halo sutil -->
+          <rect
+            x="-2"
+            y="2"
+            width="154"
+            height="88"
+            rx="14"
+            fill="rgba(37, 99, 235, 0.06)"
+          />
+          <!-- Card de la etapa -->
+          <rect
+            width="150"
+            height="86"
+            rx="13"
+            fill="url(#bp-stage-bg)"
+            stroke="rgba(37, 99, 235, 0.32)"
+            stroke-width="1.5"
+          />
+          <!-- Barra superior de estado -->
+          <rect x="12" y="12" width="34" height="20" rx="6" fill="#2563eb" />
+          <text x="29" y="26" text-anchor="middle" class="bp-svg-step-num">{e.paso}</text>
+
+          <!-- Indicador luminoso secuencial por etapa -->
+          <circle
+            cx="132"
+            cy="22"
+            r="4.5"
+            fill="#16a34a"
+            class="bp-svg-stage-led"
+            style={`animation-delay: ${i * 0.45}s`}
+          />
+
+          <text x="14" y="52" class="bp-svg-stage-title">{e.label}</text>
+          <text x="14" y="69" class="bp-svg-stage-sub">{e.sub}</text>
+        </g>
+      ))}
+
+      <!-- Etiquetas técnicas en los rieles intermedios -->
+      <g transform="translate(545, 240)">
+        <rect x="-78" y="-11" width="156" height="22" rx="11" fill="#ffffff" stroke="rgba(37, 99, 235, 0.25)" />
+        <text x="0" y="4" text-anchor="middle" class="bp-svg-bus-label">
+          VALIDACIÓN Y ESQUEMA
+        </text>
+      </g>
+
+      <!-- ── NODO FINAL: DASHBOARD DEL OBSERVATORIO (Derecha) ── -->
+      <g transform="translate(892, 76)">
+        <!-- Halo exterior pulsante -->
+        <rect
+          x="-6"
+          y="-6"
+          width="248"
+          height="308"
+          rx="22"
+          fill="none"
+          stroke="rgba(37, 99, 235, 0.22)"
+          stroke-width="2"
+          class="bp-svg-dash-halo"
+        />
+
+        <!-- Contenedor principal del Dashboard -->
+        <rect
+          width="236"
+          height="296"
+          rx="18"
+          fill="url(#bp-dash-grad)"
+          stroke="#60a5fa"
+          stroke-width="1.5"
+        />
+
+        <!-- Cabecera de ventana del Dashboard -->
+        <circle cx="20" cy="22" r="4" fill="#60a5fa" />
+        <circle cx="34" cy="22" r="4" fill="#93c5fd" opacity="0.6" />
+        <circle cx="48" cy="22" r="4" fill="#93c5fd" opacity="0.3" />
+        <text x="218" y="25" text-anchor="end" class="bp-svg-dash-badge">● EN VIVO</text>
+        <line x1="16" y1="36" x2="220" y2="36" stroke="rgba(255, 255, 255, 0.14)" />
+
+        <!-- Título dentro del nodo Dashboard -->
+        <text x="18" y="58" class="bp-svg-dash-eyebrow">PUBLIC/DATA/*.JSON</text>
+        <text x="18" y="78" class="bp-svg-dash-title">Dashboard Público</text>
+
+        <!-- Mini KPI cards simuladas -->
+        <g transform="translate(18, 92)">
+          <rect width="96" height="48" rx="8" fill="rgba(255, 255, 255, 0.1)" stroke="rgba(255, 255, 255, 0.18)" />
+          <text x="10" y="18" class="bp-svg-mini-label">IPC ANUAL</text>
+          <text x="10" y="38" class="bp-svg-mini-val">DANE · OK</text>
+
+          <rect x="104" width="96" height="48" rx="8" fill="rgba(255, 255, 255, 0.1)" stroke="rgba(255, 255, 255, 0.18)" />
+          <text x="114" y="18" class="bp-svg-mini-label">TRM / TASA</text>
+          <text x="114" y="38" class="bp-svg-mini-val">BanRep · OK</text>
+        </g>
+
+        <!-- Mini gráfico vivo dentro del Dashboard -->
+        <g transform="translate(18, 152)">
+          <rect width="200" height="92" rx="10" fill="rgba(15, 23, 42, 0.45)" stroke="rgba(147, 197, 253, 0.25)" />
+          <line x1="12" y1="26" x2="188" y2="26" stroke="rgba(255, 255, 255, 0.08)" stroke-dasharray="3 3" />
+          <line x1="12" y1="50" x2="188" y2="50" stroke="rgba(255, 255, 255, 0.08)" stroke-dasharray="3 3" />
+          <line x1="12" y1="74" x2="188" y2="74" stroke="rgba(255, 255, 255, 0.08)" />
+
+          <!-- Área bajo la curva -->
+          <path
+            d="M 16 68 L 46 54 L 78 60 L 110 38 L 142 44 L 182 22 L 182 76 L 16 76 Z"
+            fill="url(#bp-spark-area)"
+          />
+          <!-- Línea de tendencia animada -->
+          <path
+            d="M 16 68 L 46 54 L 78 60 L 110 38 L 142 44 L 182 22"
+            fill="none"
+            stroke="#60a5fa"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="bp-svg-chart-line"
+          />
+          <circle cx="182" cy="22" r="4.5" fill="#22c55e" stroke="#ffffff" stroke-width="1.5" class="bp-svg-sonar" />
+        </g>
+
+        <!-- Pie del nodo Dashboard -->
+        <text x="18" y="268" class="bp-svg-dash-foot">✓ Verificado · Trazabilidad 100 %</text>
+        <text x="18" y="283" class="bp-svg-dash-sub">8 indicadores clave + 7 tableros</text>
+
+        <!-- Puerto receptor izquierdo (conecta con el final de path-pipeline-main en 892, 230) -->
+        <circle cx="0" cy="154" r="6" fill="#22c55e" stroke="#ffffff" stroke-width="2" />
+      </g>
+    </svg>
+  </div>
+
+  <!-- Lista estructurada para pantallas pequeñas y lectores de pantalla -->
+  <div class="bp-arch__mobile">
+    <div class="bp-arch__mobile-group">
+      <p class="bp-arch__mobile-label">A · Fuentes oficiales conectadas</p>
+      <div class="bp-arch__mobile-sources">
+        {fuentes.map((f) => (
+          <span class="bp-arch__mobile-chip">
+            <strong>{f.sigla}</strong> · {f.detalle}
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <ol class="bp-arch__mobile-steps" aria-label="Fases del procesamiento de datos">
+      {etapas.map((e) => (
+        <li class="bp-arch__mobile-step">
+          <span class="bp-arch__mobile-num">{e.paso}</span>
+          <div>
+            <strong class="bp-arch__mobile-title">{e.label}</strong>
+            <span class="bp-arch__mobile-sub">{e.sub}</span>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <div class="bp-arch__mobile-out">
+      <span class="bp-arch__live-dot" aria-hidden="true"></span>
+      <span><strong>Dashboard Público</strong> · Contratos JSON servidos con trazabilidad histórica</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .bp-arch {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* ── Barra de telemetría superior ── */
+  .bp-arch__statusbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.75rem 1.1rem;
+    background: var(--color-sidebar);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    border-radius: 12px;
+  }
+
+  .bp-arch__status-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .bp-arch__live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #16a34a;
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.55);
+    animation: bpPulseDot 2.2s ease-out infinite;
+    flex-shrink: 0;
+  }
+
+  .bp-arch__code {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bp-arch__status-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .bp-arch__pill {
+    padding: 0.22rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+  }
+
+  .bp-arch__pill--accent {
+    background: var(--color-active-bg);
+    border-color: rgba(37, 99, 235, 0.25);
+    color: var(--color-accent);
+  }
+
+  /* ── Lienzo SVG Blueprint ── */
+  .bp-arch__canvas-wrap {
+    width: 100%;
+    background: var(--color-sidebar);
+    border: 1px solid rgba(37, 99, 235, 0.24);
+    border-radius: 18px;
+    padding: 0.65rem;
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.04),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+  }
+
+  .bp-arch__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    font-family: var(--font-sans);
+  }
+
+  /* Tipografías internas del SVG */
+  .bp-svg-zone {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    fill: #2563eb;
+  }
+
+  .bp-svg-coord {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    fill: #636c76;
+  }
+
+  .bp-svg-monogram {
+    font-size: 11px;
+    font-weight: 800;
+    fill: #2563eb;
+  }
+
+  .bp-svg-source-title {
+    font-size: 12px;
+    font-weight: 700;
+    fill: #1f2328;
+  }
+
+  .bp-svg-source-sub {
+    font-size: 9.5px;
+    font-weight: 500;
+    fill: #636c76;
+  }
+
+  .bp-svg-step-num {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    fill: #ffffff;
+  }
+
+  .bp-svg-stage-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    fill: #1f2328;
+  }
+
+  .bp-svg-stage-sub {
+    font-size: 10px;
+    font-weight: 500;
+    fill: #424a53;
+  }
+
+  .bp-svg-bus-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    fill: #2563eb;
+  }
+
+  .bp-svg-dash-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    fill: #86efac;
+  }
+
+  .bp-svg-dash-eyebrow {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    fill: #93c5fd;
+  }
+
+  .bp-svg-dash-title {
+    font-size: 16px;
+    font-weight: 700;
+    fill: #ffffff;
+  }
+
+  .bp-svg-mini-label {
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    fill: #bfdbfe;
+  }
+
+  .bp-svg-mini-val {
+    font-size: 11px;
+    font-weight: 700;
+    fill: #ffffff;
+  }
+
+  .bp-svg-dash-foot {
+    font-size: 11px;
+    font-weight: 700;
+    fill: #86efac;
+  }
+
+  .bp-svg-dash-sub {
+    font-size: 10px;
+    font-weight: 500;
+    fill: #cbd5e1;
+  }
+
+  /* ── Animaciones de flujo en cables y nodos ── */
+  .bp-svg-flow-dash {
+    stroke-dasharray: 5 9;
+    animation: bpDashMove 1.4s linear infinite;
+  }
+
+  .bp-svg-main-stream {
+    stroke-dasharray: 8 10;
+    animation: bpDashMove 1.1s linear infinite;
+  }
+
+  .bp-svg-stage-led {
+    animation: bpLedBlink 2.4s ease-in-out infinite;
+  }
+
+  .bp-svg-sonar {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: bpSonarScale 2.4s ease-out infinite;
+  }
+
+  .bp-svg-dash-halo {
+    animation: bpHaloBreath 3.2s ease-in-out infinite;
+  }
+
+  @keyframes bpDashMove {
+    to {
+      stroke-dashoffset: -36;
+    }
+  }
+
+  @keyframes bpLedBlink {
+    0%, 100% {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes bpSonarScale {
+    0% {
+      transform: scale(0.9);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(1.45);
+      opacity: 0;
+    }
+  }
+
+  @keyframes bpHaloBreath {
+    0%, 100% {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 0.85;
+    }
+  }
+
+  @keyframes bpPulseDot {
+    0% {
+      box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.55);
+    }
+    70% {
+      box-shadow: 0 0 0 8px rgba(22, 163, 74, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+    }
+  }
+
+  /* ── Vista estructurada para móvil / tablet ── */
+  .bp-arch__mobile {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .bp-arch__mobile-group {
+    padding: 1rem;
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+  }
+
+  .bp-arch__mobile-label {
+    margin: 0 0 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .bp-arch__mobile-sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .bp-arch__mobile-chip {
+    padding: 0.3rem 0.65rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font-size: 0.78rem;
+    color: var(--color-text-secondary);
+  }
+
+  .bp-arch__mobile-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .bp-arch__mobile-step {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    background: var(--color-sidebar);
+    border: 1px solid rgba(37, 99, 235, 0.22);
+    border-radius: 12px;
+  }
+
+  .bp-arch__mobile-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--color-accent);
+    color: #ffffff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bp-arch__mobile-title {
+    display: block;
+    font-size: 0.92rem;
+    color: var(--color-text-primary);
+  }
+
+  .bp-arch__mobile-sub {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+  }
+
+  .bp-arch__mobile-out {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.95rem 1.1rem;
+    background: #0f1f4a;
+    color: #ffffff;
+    border-radius: 12px;
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 768px) {
+    .bp-arch__canvas-wrap {
+      display: none;
+    }
+
+    .bp-arch__mobile {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .bp-arch__mobile-steps {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bp-arch__live-dot,
+    .bp-svg-flow-dash,
+    .bp-svg-main-stream,
+    .bp-svg-stage-led,
+    .bp-svg-sonar,
+    .bp-svg-dash-halo {
+      animation: none;
+    }
+
+    .bp-svg-particle {
+      display: none;
+    }
+  }
+</style>

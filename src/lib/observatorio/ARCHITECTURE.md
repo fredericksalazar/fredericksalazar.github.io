@@ -93,7 +93,9 @@ src/components/observatorio/
   PlotlyLoader.astro     ← Carga del CDN. UNA sola instancia por página.
   KpiRow.astro           ← KPIs (build-time, SEO crítico).
   IndicadorClaveCard.astro ← Tarjeta de indicador clave de la Home (sin juicios de valor).
-  BandaOscura.astro      ← Sección de contraste a todo el ancho (Acerca y Home).
+  PanelBlueprint.astro   ← Contenedor reutilizable de sección con estética blueprint sutil (Home).
+  PipelineBlueprint.astro ← Mapa arquitectónico blueprint animado de fuentes → pipeline → dashboard (Home).
+  BandaOscura.astro      ← Sección de contraste a todo el ancho (Acerca).
   IndicadorCard.astro    ← Card de KPI.
   IndicadorPanel.astro   ← Panel narrativo (texto + gráfico).
   PageHeader.astro       ← Header con eyebrow + lead.
@@ -103,7 +105,7 @@ src/components/observatorio/
   MapaColombia.astro     ← Visual del hero.
 
 src/pages/observatorio/
-  index.astro            ← Home: 8 indicadores clave, recientes, confianza, autor.
+  index.astro            ← Home: 8 indicadores clave, recientes, quiénes somos y misión/visión.
   inflacion.astro        ← Dashboard "Inflación vs Tasa de interés".
   monetario.astro        ← Dashboard "Política Monetaria e Inflación".
   empleo.astro           ← Dashboard "Empleo".
