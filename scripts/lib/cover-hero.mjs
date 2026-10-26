@@ -8,7 +8,8 @@
  * Rasteriza con sharp a PNG RGB (sin canal alfa, aplanado sobre blanco) para
  * máxima compatibilidad con los scrapers de redes sociales (ARQ-10).
  *
- * Usado por: build-inflacion-cover-hero.mjs, build-observatorio-home-cover.mjs.
+ * Usado por: build-inflacion-cover-hero.mjs, build-pib-cover-hero.mjs,
+ * build-observatorio-home-cover.mjs.
  */
 
 import { readFile, mkdir } from "node:fs/promises";

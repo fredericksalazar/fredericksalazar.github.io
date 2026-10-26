@@ -276,7 +276,7 @@ export const importacionesHistorica: ChartDef = {
 export const pibPerCapitaHistorico: ChartDef = {
   id: "pib-percapita",
   titulo: "PIB per cápita",
-  pregunta: "PIB por habitante en USD desde 1960. Pasó de $258 en 1960 a $7,919 en 2024. Activa «Color por presidente» para ver quién gobernaba cada año.",
+  pregunta: "PIB por habitante en USD desde 1960. Pasó de $258 en 1960 a $8,562 en 2025. Activa «Color por presidente» para ver quién gobernaba cada año.",
   fuenteTexto: "Banco Mundial — WDI · Presidentes: Registraduría Nacional",
   datasets: ["pib"],
   height: 420,
