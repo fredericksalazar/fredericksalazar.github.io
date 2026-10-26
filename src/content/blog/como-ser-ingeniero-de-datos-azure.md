@@ -17,11 +17,11 @@ En el mundo de los datos, el Cloud Computing ha revolucionado la manera en que l
 
 A partir de ahora, vamos a explorar uno a uno los conceptos fundamentales y las rutas necesarias para convertirte en ingeniero de datos.
 
-### 1. ¿Qué es un Ingeniero de Datos en Azure?
+## 1. ¿Qué es un Ingeniero de Datos en Azure?
 
 Un Ingeniero de Datos en Azure es un profesional que diseña, implementa y gestiona soluciones de datos en la nube de Microsoft. Su rol es crucial para transformar los datos en información valiosa que impulsa la toma de decisiones estratégicas en las organizaciones.
 
-### 2. Habilidades Básicas
+## 2. Habilidades Básicas
 
 Antes de iniciar tu camino para ser Ingeniero de Datos en Azure, debes tener unas habilidades básicas para no morir en el intento. Estas incluyen conocimientos básicos y/o intermedios de programación en Python, conocimiento básico y/o intermedio en bases de datos relacionales, y manejo del lenguaje SQL.
 
@@ -33,7 +33,7 @@ A continuación, te dejaré los enlaces a una serie de cursos básicos que te re
 - [Entendiendo la Ingeniería de Datos](#)
 - [Diseño de bases de datos](#)
 
-### 3. Certificación AZ-900 Azure Fundamentals
+## 3. Certificación AZ-900 Azure Fundamentals
 
 Antes de sumergirte en los servicios específicos de Azure para datos, es crucial que tengas una comprensión sólida de los conceptos básicos de la nube. Esto incluye conocer la infraestructura como servicio (IaaS), la plataforma como servicio (PaaS), y los diferentes modelos de implementación en la nube (pública, privada, híbrida).
 
@@ -41,13 +41,13 @@ Antes de sumergirte en los servicios específicos de Azure para datos, es crucia
 
 - [Aquí podrás hacer el curso GRATIS de Azure Fundamentals](#)
 
-### 4. Certificación DP-900 Azure Data Fundamentals
+## 4. Certificación DP-900 Azure Data Fundamentals
 
 Una habilidad importante de cualquier Ingeniero de Datos es conocer todo lo relacionado con datos: tipos de datos, almacenamiento de los datos, tipos de almacenamiento de acuerdo con los tipos de datos, y administración de servicios de datos. Por tanto, el siguiente paso luego de tener la certificación Azure Fundamentals es realizar la certificación **Azure Data Fundamentals**. En esta, aprenderás todo lo relacionado con bases de datos relacionales y no relacionales, almacenamiento y administración de DataLakes, visualización de datos, etc.
 
 - [Aquí podrás hacer el curso GRATIS de la certificación Azure Data Fundamentals](#)
 
-### 5. Certificación DP-203 Azure Data Engineer
+## 5. Certificación DP-203 Azure Data Engineer
 
 El siguiente paso en tu camino para ser Ingeniero de Datos en Azure es estudiar y realizar la certificación **DP-203 Azure Data Engineer Associate**. Aquí aprenderás sobre todos los servicios y tecnologías de Azure para las tareas de ingeniería, tales como: extracción de datos, integración de datos, procesamiento de datos, almacenamiento de datos, procesamiento de datos en batch y en streaming. Es el paso más importante, pues conocerás al menos los siguientes servicios:
 

@@ -29,8 +29,8 @@ const smlvActual = smlv.indicadores.salario_minimo.actual.valor ?? 0;
 const smlvAnio = smlv.indicadores.salario_minimo.actual.periodo.slice(0, 4);
 const fmtCOP = new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 });
 
-const title = "Calculadora: ¿cuánto vale hoy tu sueldo de hace unos años? Inflación en Colombia";
-const description = `Convierte un sueldo o monto de cualquier año desde ${anioMin} a pesos de hoy con la inflación oficial de Colombia (DANE / Banco Mundial). Descubre cuánto poder adquisitivo perdió tu plata y a cuántos salarios mínimos equivale.`;
+const title = "¿Cuánto vale hoy tu sueldo? Calculadora inflación Colombia";
+const description = `Convierte un sueldo de cualquier año desde ${anioMin} a pesos de hoy con la inflación oficial de Colombia (DANE) y mira cuánto poder adquisitivo perdiste.`;
 
 const faqs = [
   {

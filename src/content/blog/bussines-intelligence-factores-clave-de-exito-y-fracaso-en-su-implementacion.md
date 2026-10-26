@@ -26,6 +26,6 @@ De acuerdo a lo anterior, se presentan los factores clave para el éxito (**key 
 
 No se deje engañar, Bussines Intelligence no es powerBI, Tableu, Qlik o cualquier otra herramienta de Visualización, Bussines Intelligence es mucho mas que eso, es la union entre personas, procesos y tecnología para aprovechar los datos en la toma de decisiones en su organización. Debes disponer de personas, conocimiento, investigación, herramientas una fuerte vinculación y compromiso del negocio no solo en el desarrollo sino en la adopción de los productos de datos en la organización, así como un presupuesto adecuado para la arquitectura de datos de tu empresa. Por otro lado no tener objetivos claros, no tener personal calificado (Data Engineers, Data Architectures, Data Analyst, Data Scientist entre otros) o no invertir en la capacitación de tu personal asegura el fracaso y mas aún con un mercado laboral cada vez mas competitivo, no tener una buena priorización de tus requerimientos y tener problemas con la calidad de tus datos son algunos de los factores que te llevan al fracaso y quizá aun no lo sabes.
 
-### Fuentes y Bibliografía
+## Fuentes y Bibliografía
 
 [1] Harvey, C. (2022). Organizations Struggle with Time to Value for BI. Retrieved 13 January 2022, from <https://www.informationweek.com/big-data/organizations-struggle-> with-time-to-value-for-bi

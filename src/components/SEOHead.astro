@@ -148,10 +148,12 @@ const IMAGE_URL   = new URL(image, SITE_URL).href;
 <link rel="alternate" type="application/rss+xml" title="Blog · Frederick Salazar" href={urls.rss()} />
 
 <!-- ── Google Fonts: Google Sans Flex ───────────────────────────── -->
+<!-- Solo el rango de pesos que usa el sitio (400–800): el archivo de fuente
+     variable es más liviano que el rango completo 100..900. -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
-  href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@100..900&display=swap"
+  href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400..800&display=swap"
   rel="stylesheet"
 />
 

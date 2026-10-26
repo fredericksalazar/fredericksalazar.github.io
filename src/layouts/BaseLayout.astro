@@ -67,7 +67,7 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
     <!-- Google Sans Flex: las etiquetas <link> de fuentes viven en SEOHead
          (preconnect + stylesheet). No duplicar aquí. -->
     <!-- Google tag (gtag.js) -->
-    <script is:inline src="https://www.googletagmanager.com/gtag/js?id=G-ZFSVVSZG6K"></script>
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-ZFSVVSZG6K"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -125,6 +125,9 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
   </head>
 
   <body>
+    <!-- ── Skip to content (accesibilidad): primer elemento enfocable ─── -->
+    <a href="#main-content" class="skip-link">Saltar al contenido</a>
+
     <div class="layout">
       <!-- ── Sidebar fijo ─────────────────────────────────────────── -->
       <Sidebar />
@@ -150,9 +153,6 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
         </div>
       </main>
     </div>
-
-    <!-- ── Skip to content (accesibilidad) ────────────────────────── -->
-    <a href="#main-content" class="skip-link">Saltar al contenido</a>
 
     <Footer />
 
