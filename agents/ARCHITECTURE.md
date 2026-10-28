@@ -184,8 +184,8 @@ Cada spec declara qué módulos toca. Entre paréntesis, el pilar de
   cargan en el navegador.
 
 ### 5.5 Informes (P3)
-- **Rutas:** `/observatorio/informes/` y una página `.astro` por informe
-  (hoy `historia-de-colombia`).
+- **Rutas:** `/observatorio/informes/` y `/observatorio/informes/[slug]/`
+  (generada en build desde `INFORMES`: `pib-colombia-2025`, `historia-de-colombia`).
 - **Datos:** catálogo en `lib/observatorio/informes.ts`; PDFs en
   `public/informes/`, enlazados con `urls.informePdf()`.
 - `InformePopup` aparece en todo el sitio salvo en las páginas de informe.

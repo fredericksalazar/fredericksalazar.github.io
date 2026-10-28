@@ -2,42 +2,76 @@
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import Hero from "../../../components/Hero.astro";
 import DashboardNav from "../../../components/observatorio/DashboardNav.astro";
-import { getInforme, formatFechaInforme } from "../../../lib/observatorio/informes";
-import { urls, absUrls } from "../../../lib/urls";
-import { trail, sectionCrumb } from "../../../lib/seo";
+import { INFORMES, formatFechaInforme, type Informe } from "../../../lib/observatorio/informes";
+import { SITE_URL, urls, absUrls } from "../../../lib/urls";
+import { PERSON_ID, trail, sectionCrumb } from "../../../lib/seo";
 
-const informe = getInforme("historia-de-colombia");
-if (!informe) throw new Error("Informe 'historia-de-colombia' no encontrado en el catálogo.");
+export function getStaticPaths() {
+  return INFORMES.map((informe) => ({
+    params: { slug: informe.slug },
+    props: { informe },
+  }));
+}
 
+interface Props {
+  informe: Informe;
+}
+
+const { informe } = Astro.props;
 const vigente = informe.versiones.find((v) => v.vigente) ?? informe.versiones[0];
+const pageTitle = informe.tituloSeo ?? `${informe.titulo} · Observatorio de Datos de Colombia`;
+const ogImage = informe.ogImage ?? informe.portada ?? "/images/observatorio.png";
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Report",
+  "@id": `${absUrls.observatorioInforme(informe.slug)}#report`,
   name: informe.titulo,
+  headline: pageTitle,
   abstract: informe.resumen,
   description: informe.descripcion,
   url: absUrls.observatorioInforme(informe.slug),
-  inLanguage: "es",
+  inLanguage: "es-CO",
   datePublished: vigente.fecha,
+  dateModified: vigente.fecha,
   temporalCoverage: informe.cobertura,
-  creator: { "@type": "Person", name: "Frederick Salazar", url: absUrls.home() },
-  publisher: { "@type": "Organization", name: "Observatorio de Datos de Colombia", url: absUrls.observatorio() },
+  ...(vigente.paginas ? { numberOfPages: vigente.paginas } : {}),
+  image: new URL(ogImage, SITE_URL).href,
+  author: { "@id": PERSON_ID },
+  creator: { "@id": PERSON_ID },
+  publisher: {
+    "@type": "Organization",
+    name: "Observatorio de Datos de Colombia",
+    url: absUrls.observatorio(),
+  },
   license: "https://creativecommons.org/licenses/by/4.0/",
+  isAccessibleForFree: true,
   spatialCoverage: { "@type": "Place", name: "Colombia" },
-  isPartOf: { "@type": "CollectionPage", name: "Informes del Observatorio", url: absUrls.observatorioInformes() },
+  ...(informe.dimensiones ? { keywords: informe.dimensiones.join(", ") } : {}),
+  isPartOf: {
+    "@type": "CollectionPage",
+    name: "Informes del Observatorio",
+    url: absUrls.observatorioInformes(),
+  },
 };
 ---
 
 <BaseLayout
-  title={`${informe.titulo} · Observatorio de Datos de Colombia`}
+  title={pageTitle}
   description={informe.resumen}
-  image={informe.portada ?? "/images/observatorio.png"}
+  image={ogImage}
+  imageAlt={`Portada del informe ${informe.titulo}`}
+  keywords={informe.keywords}
+  publishedTime={`${vigente.fecha}-01`}
   fullWidth={true}
-  breadcrumbs={trail(sectionCrumb.observatorio, sectionCrumb.informes, { name: informe.titulo, url: absUrls.observatorioInforme("historia-de-colombia") })}
+  breadcrumbs={trail(
+    sectionCrumb.observatorio,
+    sectionCrumb.informes,
+    { name: informe.titulo, url: absUrls.observatorioInforme(informe.slug) },
+  )}
 >
   <Hero
-    badge={{ text: `Informe · ${informe.cobertura}` }}
+    badge={{ text: `Informe · ${informe.cobertura ?? "Colombia"}` }}
     title={informe.titulo}
     subtitle={informe.resumen}
     tags={informe.dimensiones ?? []}
@@ -45,7 +79,14 @@ const jsonLd = {
   >
     <div slot="visual" class="hdc-hero-visual">
       {informe.portada && (
-        <img class="hdc-hero-cover" src={informe.portada} alt={`Portada de ${informe.titulo}`} width="360" height="466" loading="eager" />
+        <img
+          class="hdc-hero-cover"
+          src={informe.portada}
+          alt={`Portada de ${informe.titulo}`}
+          width="480"
+          height="360"
+          loading="eager"
+        />
       )}
     </div>
   </Hero>
@@ -74,6 +115,21 @@ const jsonLd = {
           <p class="hdc-body">{informe.objetivo}</p>
         </section>
 
+        {informe.hallazgos && informe.hallazgos.length > 0 && (
+          <section class="hdc-section">
+            <span class="hdc-eyebrow">Síntesis ejecutiva</span>
+            <h2 class="hdc-h2">Hallazgos principales del informe</h2>
+            <ul class="hdc-findings" role="list">
+              {informe.hallazgos.map((h) => (
+                <li class="hdc-finding">
+                  <h3 class="hdc-finding__title">{h.titulo}</h3>
+                  <p class="hdc-finding__detail">{h.detalle}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         {informe.dimensiones && informe.dimensiones.length > 0 && (
           <section class="hdc-section">
             <span class="hdc-eyebrow">Contenido</span>
@@ -86,6 +142,14 @@ const jsonLd = {
                 </li>
               ))}
             </ul>
+          </section>
+        )}
+
+        {informe.metodologia && (
+          <section class="hdc-section">
+            <span class="hdc-eyebrow">Rigor y trazabilidad</span>
+            <h2 class="hdc-h2">Fuentes y metodología</h2>
+            <p class="hdc-body">{informe.metodologia}</p>
           </section>
         )}
 
@@ -113,8 +177,17 @@ const jsonLd = {
                     {v.tamanoMB && <span>PDF · {v.tamanoMB} MB</span>}
                   </div>
                 </div>
-                <a class="version-row__download" href={urls.informePdf(v.archivo)} download
-                  data-ga-event="descarga_informe" data-ga-informe={informe.slug} data-ga-archivo={v.archivo} data-ga-version={v.version} data-ga-ubicacion="lista_versiones">
+                <a
+                  class="version-row__download"
+                  href={urls.informePdf(v.archivo)}
+                  download
+                  data-ga-event="descarga_informe"
+                  data-ga-informe={informe.slug}
+                  data-ga-titulo={informe.titulo}
+                  data-ga-archivo={v.archivo}
+                  data-ga-version={v.version}
+                  data-ga-ubicacion="lista_versiones"
+                >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                   Descargar PDF
                 </a>
@@ -135,12 +208,29 @@ const jsonLd = {
             {vigente.paginas && (<><dt>Páginas</dt><dd>{vigente.paginas}</dd></>)}
             {vigente.tamanoMB && (<><dt>Tamaño</dt><dd>{vigente.tamanoMB} MB · PDF</dd></>)}
           </dl>
-          <a class="hdc-download-card__cta" href={urls.informePdf(vigente.archivo)} download
-            data-ga-event="descarga_informe" data-ga-informe={informe.slug} data-ga-archivo={vigente.archivo} data-ga-version={vigente.version} data-ga-ubicacion="card_lateral">
+          <a
+            class="hdc-download-card__cta"
+            href={urls.informePdf(vigente.archivo)}
+            download
+            data-ga-event="descarga_informe"
+            data-ga-informe={informe.slug}
+            data-ga-titulo={informe.titulo}
+            data-ga-archivo={vigente.archivo}
+            data-ga-version={vigente.version}
+            data-ga-ubicacion="card_lateral"
+          >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Descargar informe
           </a>
-          <a class="hdc-download-card__secondary" href={urls.observatorio()}>Explorar el dashboard en vivo</a>
+          {informe.enlacesRelacionados && informe.enlacesRelacionados.length > 0 ? (
+            <div class="hdc-download-card__links">
+              {informe.enlacesRelacionados.map((enlace) => (
+                <a class="hdc-download-card__secondary" href={enlace.href}>{enlace.etiqueta}</a>
+              ))}
+            </div>
+          ) : (
+            <a class="hdc-download-card__secondary" href={urls.observatorio()}>Explorar el dashboard en vivo</a>
+          )}
         </div>
 
         <p class="hdc-aside__note">
@@ -159,7 +249,7 @@ const jsonLd = {
     position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 2rem;
   }
   .hdc-hero-cover {
-    width: auto; height: 80%; max-height: 460px; border-radius: 8px;
+    width: auto; max-width: 100%; height: auto; max-height: 440px; border-radius: 10px;
     box-shadow: 0 22px 50px rgba(15, 23, 42, .22); border: 1px solid rgba(37, 99, 235, .15);
     object-fit: contain;
   }
@@ -181,6 +271,21 @@ const jsonLd = {
   .hdc-h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -.015em; color: var(--color-text-primary); margin: 0 0 .85rem; }
   .hdc-body { font-size: 1.02rem; line-height: 1.7; color: var(--color-text-secondary); margin: 0; }
   .hdc-body--muted { font-size: .95rem; margin-bottom: 1.25rem; }
+
+  .hdc-findings {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;
+  }
+  .hdc-finding {
+    padding: 1.15rem 1.25rem; background: #fff; border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent); border-radius: 12px;
+  }
+  .hdc-finding__title {
+    font-size: .98rem; font-weight: 700; color: var(--color-text-primary); margin: 0 0 .4rem;
+  }
+  .hdc-finding__detail {
+    font-size: .88rem; line-height: 1.55; color: var(--color-text-secondary); margin: 0;
+  }
 
   .hdc-dims { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .6rem; }
   .hdc-dim {
@@ -214,7 +319,7 @@ const jsonLd = {
     padding: .6rem 1rem; background: var(--color-accent); color: #fff; font-size: .85rem; font-weight: 600;
     border-radius: 10px; text-decoration: none; transition: transform .2s ease, box-shadow .2s ease;
   }
-  .version-row__download:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, .3); }
+  .version-row__download:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, .3); color: #fff; }
   .version-row__download svg { width: 17px; height: 17px; }
 
   /* ── Sidebar ── */
@@ -234,9 +339,11 @@ const jsonLd = {
     padding: .8rem 1.2rem; background: var(--color-accent); color: #fff; font-size: .92rem; font-weight: 600;
     border-radius: 11px; text-decoration: none; transition: transform .2s ease, box-shadow .2s ease;
   }
-  .hdc-download-card__cta:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(37, 99, 235, .3); }
+  .hdc-download-card__cta:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(37, 99, 235, .3); color: #fff; }
   .hdc-download-card__cta svg { width: 19px; height: 19px; }
+  .hdc-download-card__links { display: flex; flex-direction: column; gap: .45rem; margin-top: .85rem; }
   .hdc-download-card__secondary { margin-top: .85rem; text-align: center; font-size: .85rem; font-weight: 600; color: var(--color-accent); text-decoration: none; }
+  .hdc-download-card__links .hdc-download-card__secondary { margin-top: 0; }
   .hdc-download-card__secondary:hover { text-decoration: underline; }
   .hdc-aside__note { font-size: .78rem; line-height: 1.55; color: var(--color-text-muted); margin: 0; padding: 0 .25rem; }
 

@@ -19,10 +19,12 @@ const jsonLd = {
     "Informes descargables del Observatorio de Datos de Colombia: análisis históricos de los principales indicadores económicos y sociales del país, a partir de fuentes públicas oficiales.",
   url: absUrls.observatorioInformes(),
   isPartOf: { "@type": "WebSite", name: "Observatorio de Datos de Colombia", url: absUrls.observatorio() },
-  hasPart: INFORMES.map((inf) => ({
+  hasPart: informes.map(({ inf, vigente }) => ({
     "@type": "Report",
     name: inf.titulo,
     abstract: inf.resumen,
+    datePublished: vigente.fecha,
+    temporalCoverage: inf.cobertura,
     url: absUrls.observatorioInforme(inf.slug),
   })),
 };
@@ -85,7 +87,14 @@ const jsonLd = {
     <ul class="informes-grid" role="list">
       {informes.map(({ inf, vigente }) => (
         <li class="informe-card">
-          <a class="informe-card__link" href={urls.observatorioInforme(inf.slug)} aria-label={`Ver informe ${inf.titulo}`}>
+          <a
+            class="informe-card__link"
+            href={urls.observatorioInforme(inf.slug)}
+            aria-label={`Ver informe ${inf.titulo}`}
+            data-ga-event="click_informe_cta"
+            data-ga-informe={inf.slug}
+            data-ga-ubicacion="catalogo_informes"
+          >
             <div class="informe-card__cover">
               {inf.portada ? (
                 <img src={inf.portada} alt={`Portada de ${inf.titulo}`} width="320" height="414" loading="lazy" />

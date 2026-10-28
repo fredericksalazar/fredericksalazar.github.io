@@ -92,7 +92,7 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
       document.addEventListener('click', (e) => {
         const el = e.target.closest && e.target.closest('[data-ga-event]');
         if (!el) return;
-        const params = {};
+        const params = { transport_type: 'beacon' };
         for (const attr of el.attributes) {
           if (attr.name.startsWith('data-ga-') && attr.name !== 'data-ga-event') {
             params[attr.name.slice(8).replace(/-/g, '_')] = attr.value;
