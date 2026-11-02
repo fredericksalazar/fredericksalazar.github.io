@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-10-18T00:43:25+00:00",
+    "ultima_actualizacion": "2026-11-02T18:59:38+00:00",
     "fuentes": {
       "empleo": {
         "nombre": "DANE — Departamento Administrativo Nacional de Estadística",
@@ -19,8 +19,8 @@
     },
     "cobertura": {
       "primer_periodo": "1991-12",
-      "ultimo_periodo": "2026-08",
-      "total_registros": 318,
+      "ultimo_periodo": "2026-09",
+      "total_registros": 319,
       "granularidad": "mensual"
     },
     "notas": "Datos mensuales provenientes de la GEIH (DANE). Datos anuales históricos del Banco Mundial (OIT). El pipeline prioriza DANE mensual y complementa años previos con Banco Mundial."
@@ -28,37 +28,37 @@
   "indicadores": {
     "tasa_desempleo": {
       "actual": {
-        "periodo": "2026-08",
-        "valor": 9.36,
-        "variacion": "subio",
-        "delta": 0.76
+        "periodo": "2026-09",
+        "valor": 8.02,
+        "variacion": "bajo",
+        "delta": -0.15
       },
       "unidad": "%"
     },
     "tgp": {
       "actual": {
-        "periodo": "2026-08",
-        "valor": 63.29,
+        "periodo": "2026-09",
+        "valor": 63.77,
         "variacion": "bajo",
-        "delta": -0.65
+        "delta": -0.11
       },
       "unidad": "%"
     },
     "to": {
       "actual": {
-        "periodo": "2026-08",
-        "valor": 57.36,
-        "variacion": "bajo",
-        "delta": -1.08
+        "periodo": "2026-09",
+        "valor": 58.66,
+        "variacion": "igual",
+        "delta": 0.0
       },
       "unidad": "%"
     },
     "subempleo": {
       "actual": {
-        "periodo": "2026-08",
-        "valor": 6.87,
-        "variacion": "bajo",
-        "delta": -0.68
+        "periodo": "2026-09",
+        "valor": 6.83,
+        "variacion": "subio",
+        "delta": 0.15
       },
       "unidad": "%"
     },
@@ -73,6 +73,24 @@
     }
   },
   "serie": [
+    {
+      "periodo": "2026-09",
+      "tasa_desempleo": 8.02,
+      "tasa_desempleo_delta": -0.15,
+      "tasa_desempleo_variacion": "bajo",
+      "tgp": 63.77,
+      "tgp_delta": -0.11,
+      "tgp_variacion": "bajo",
+      "to": 58.66,
+      "to_delta": 0.0,
+      "to_variacion": "igual",
+      "subempleo": 6.83,
+      "subempleo_delta": 0.15,
+      "subempleo_variacion": "subio",
+      "informalidad": null,
+      "informalidad_delta": null,
+      "informalidad_variacion": null
+    },
     {
       "periodo": "2026-08",
       "tasa_desempleo": 9.36,
