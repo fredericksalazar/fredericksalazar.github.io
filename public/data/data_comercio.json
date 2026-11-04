@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "ultima_actualizacion": "2026-10-18T00:43:25+00:00",
+    "ultima_actualizacion": "2026-11-02T18:59:39+00:00",
     "fuentes": {
       "comercio": {
         "nombre": "Banco Mundial — World Development Indicators",
@@ -1776,11 +1776,11 @@
       "otros": 128585.43
     },
     "2026": {
-      "total": 46043903.61,
-      "agropecuarios": 6564183.68,
-      "combustibles": 5053216.33,
-      "manufacturas": 34369360.97,
-      "otros": 57142.6
+      "total": 53746367.11,
+      "agropecuarios": 7628999.58,
+      "combustibles": 6230216.35,
+      "manufacturas": 39809010.15,
+      "otros": 78141.0
     }
   },
   "productos_tradicionales": {
