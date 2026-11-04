@@ -1,0 +1,400 @@
+---
+titulo: "Tilo: Nueva pestaña limpia, rápida y privada para Chrome"
+tituloSeo: "Tilo · Nueva pestaña limpia y rápida para Chrome"
+descripcion: "Tilo convierte la nueva pestaña de Chrome en un lugar limpio, rápido y tuyo: accesos directos sincronizados, tareas, clima y fondos. Gratis y sin rastreo."
+tecnologias: ["Chrome Extension", "Manifest V3", "JavaScript", "HTML5", "CSS3", "Web APIs", "MIT License"]
+categoria: "software"
+fecha: "2026-10-30"
+github: ""
+demo: ""
+imagen: "/images/proyectos/tilo-cover.png"
+destacado: true
+orden: 3
+---
+
+import FaqSchema from "../../components/blog/FaqSchema.astro";
+
+<FaqSchema
+  items={[
+    {
+      q: "¿Tilo es gratis?",
+      a: "Sí. Todas sus funciones son gratis. Si te gusta, puedes apoyarlo con una donación.",
+    },
+    {
+      q: "¿Necesito crear una cuenta?",
+      a: "No. Tilo funciona en cuanto lo instalas.",
+    },
+    {
+      q: "¿Dónde se guardan mis accesos directos?",
+      a: "En una carpeta de tus marcadores de Chrome. Si tienes la sincronización activada, los verás en tus otros equipos.",
+    },
+    {
+      q: "¿Por qué pide mi ubicación?",
+      a: "Solo para el clima, y solo si lo eliges. Puedes escribir tu ciudad o desactivar el clima en Personalizar.",
+    },
+    {
+      q: "¿Cambia mi buscador de Chrome?",
+      a: "No. Tilo usa el que ya tienes; si eliges otro motor, solo cambia en la pestaña de Tilo.",
+    },
+    {
+      q: "¿Puedo volver a la nueva pestaña de siempre?",
+      a: "Sí. Desactiva o quita Tilo en chrome://extensions y Chrome vuelve a la suya. Tus accesos directos se quedan en tus marcadores.",
+    },
+    {
+      q: "¿Funciona en otros navegadores?",
+      a: "Por ahora en Chrome y en navegadores que instalan desde la Chrome Web Store, como Brave.",
+    },
+  ]}
+/>
+
+{/* SECCIÓN: PORTADA DE PRODUCTO (HERO) */}
+<div class="tilo-product">
+
+  <section class="tilo-hero" aria-labelledby="tilo-hero-title">
+    <div class="tilo-hero__top">
+      <div class="tilo-brand">
+        <svg class="tilo-brand__icon" width="44" height="44" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="tiloRingGrad" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#7C6CF2" />
+              <stop offset="25%" stop-color="#F27BA8" />
+              <stop offset="50%" stop-color="#FFC857" />
+              <stop offset="75%" stop-color="#4FD1A5" />
+              <stop offset="100%" stop-color="#5AB8F0" />
+            </linearGradient>
+          </defs>
+          <circle cx="24" cy="24" r="18" stroke="url(#tiloRingGrad)" stroke-width="5" />
+          <path d="M17 30C20 20 26 17 31 18C29 24 24 29 17 30Z" fill="#4FD1A5" />
+        </svg>
+        <span class="tilo-brand__wordmark">tilo</span>
+        <span class="tilo-brand__version">v2.2.0 · Gratis · MIT</span>
+      </div>
+
+      <nav class="tilo-subnav" aria-label="Secciones de Tilo">
+        <a href="#funciones">Funciones</a>
+        <a href="#como-empezar">Cómo empezar</a>
+        <a href="#privacidad">Privacidad</a>
+        <a href="#preguntas">Preguntas</a>
+        <a href="#licencia">Licencia</a>
+        <a href="#apoya">Apoya</a>
+      </nav>
+    </div>
+
+    <div class="tilo-hero__body">
+      <h2 id="tilo-hero-title" class="tilo-hero__headline">Tu pestaña, limpia y tuya</h2>
+      <p class="tilo-hero__subtitle">Tilo cambia la nueva pestaña de Chrome por un espacio tranquilo y rápido: tus accesos directos, tus tareas y el clima, sin anuncios ni distracciones.</p>
+
+      <div class="tilo-hero__cta-group">
+        {/* Enlace a la Chrome Web Store: reemplazar #como-empezar por {{URL_CHROME_WEB_STORE}} cuando esté publicado */}
+        <a href="#como-empezar" class="tilo-btn tilo-btn--primary" data-store-placeholder="{{URL_CHROME_WEB_STORE}}" data-ga-event="tilo_cta_click" data-ga-location="hero">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Añadir a Chrome, es gratis</span>
+        </a>
+        <a href="#funciones" class="tilo-btn tilo-btn--secondary">
+          <span>Explorar funciones</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+        </a>
+      </div>
+
+      <p class="tilo-hero__trust">
+        <span>Sin cuentas</span>
+        <span aria-hidden="true">·</span>
+        <span>Sin anuncios</span>
+        <span aria-hidden="true">·</span>
+        <span>Sin rastreo</span>
+      </p>
+    </div>
+
+    {/* HUECO IMAGEN: captura-portada */}
+    <figure class="tilo-hero__figure">
+      <img
+        src="/images/proyectos/tilo-portada.png"
+        alt="La nueva pestaña de Tilo con el buscador, los accesos directos y el fondo animado"
+        width="1024"
+        height="562"
+        loading="eager"
+      />
+    </figure>
+  </section>
+
+  {/* SECCIÓN: FUNCIONES */}
+  <section id="funciones" class="tilo-section" aria-labelledby="tilo-funciones-title">
+    <div class="tilo-section__header">
+      <span class="section-label">Funciones</span>
+      <h2 id="tilo-funciones-title" class="tilo-section__title">Todo lo que necesitas al abrir una pestaña</h2>
+      <p class="tilo-section__subtitle">Y nada más.</p>
+    </div>
+
+    <div class="tilo-features-grid">
+      <article class="tilo-card">
+        <div class="tilo-card__icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+        </div>
+        <h3 class="tilo-card__title">Accesos directos que viajan contigo</h3>
+        <p class="tilo-card__text">Guarda hasta 100 webs como accesos directos. Viven en tus marcadores, así que se sincronizan con tu cuenta de Chrome sin crear otra.</p>
+      </article>
+
+      <article class="tilo-card">
+        <div class="tilo-card__icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+        </div>
+        <h3 class="tilo-card__title">Añade una web al momento</h3>
+        <p class="tilo-card__text">Pulsa <kbd>⌥⇧D</kbd> (<kbd>Alt+Mayús+D</kbd> en Windows), usa el icono de Tilo o el clic derecho, y la página aparece en tu pestaña.</p>
+      </article>
+
+      <article class="tilo-card">
+        <div class="tilo-card__icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </div>
+        <h3 class="tilo-card__title">Busca con tu motor</h3>
+        <p class="tilo-card__text">Por defecto, Tilo usa el buscador que ya tienes en Chrome. Si prefieres otro, elige entre Google, Bing, DuckDuckGo, Brave, Ecosia, Perplexity o Yahoo!.</p>
+      </article>
+
+      <article class="tilo-card">
+        <div class="tilo-card__icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+        <h3 class="tilo-card__title">Un fondo que respira</h3>
+        <p class="tilo-card__text">El fondo de Tilo es un campo de color que se mueve despacio alrededor de un aura. También tienes 12 colores, 15 degradados, un fondo liso o tu propia imagen, con desenfoque si quieres.</p>
+      </article>
+
+      <article class="tilo-card">
+        <div class="tilo-card__icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </div>
+        <h3 class="tilo-card__title">Claro, oscuro o como tu equipo</h3>
+        <p class="tilo-card__text">Elige el tema o deja que siga a tu dispositivo, también cuando cambia solo al anochecer.</p>
+      </article>
+
+      <article class="tilo-card">
+        <div class="tilo-card__icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <h3 class="tilo-card__title">Tareas sin complicaciones</h3>
+        <p class="tilo-card__text">Una lista con subtareas en una esquina. Lo que terminas se tacha hoy y desaparece mañana.</p>
+      </article>
+
+      <article class="tilo-card">
+        <div class="tilo-card__icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+        </div>
+        <h3 class="tilo-card__title">El clima, a tu manera</h3>
+        <p class="tilo-card__text">Usa tu ubicación, escribe tu ciudad o no lo muestres. Tú decides antes de que se envíe nada.</p>
+      </article>
+
+      <article class="tilo-card">
+        <div class="tilo-card__icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>
+        </div>
+        <h3 class="tilo-card__title">Prueba de velocidad</h3>
+        <p class="tilo-card__text">Mide la descarga, la subida, la latencia y el jitter de tu conexión en unos 15 segundos.</p>
+      </article>
+    </div>
+
+    {/* GALERÍA DE CAPTURAS: captura-panel, captura-oscuro, velocidad y degradado */}
+    <div class="tilo-gallery">
+      <figure class="tilo-gallery__item">
+        <img
+          src="/images/proyectos/tilo-panel.png"
+          alt="El panel Personalizar de Tilo con el tema, el idioma, el buscador y los fondos"
+          width="1024"
+          height="562"
+          loading="lazy"
+        />
+        <figcaption>Panel Personalizar: tema, idioma, motor de búsqueda y fondos.</figcaption>
+      </figure>
+
+      <figure class="tilo-gallery__item">
+        <img
+          src="/images/proyectos/tilo-oscuro.png"
+          alt="Tilo en tema oscuro"
+          width="1024"
+          height="562"
+          loading="lazy"
+        />
+        <figcaption>Tilo en tema oscuro con el fondo animado alrededor del aura.</figcaption>
+      </figure>
+
+      <figure class="tilo-gallery__item">
+        <img
+          src="/images/proyectos/tilo-velocidad.png"
+          alt="Prueba de velocidad integrada en Tilo con descarga, subida, latencia y jitter"
+          width="1024"
+          height="562"
+          loading="lazy"
+        />
+        <figcaption>Prueba de velocidad integrada: descarga, subida, latencia y jitter en 15 segundos.</figcaption>
+      </figure>
+
+      <figure class="tilo-gallery__item">
+        <img
+          src="/images/proyectos/tilo-degradado.png"
+          alt="Tilo con fondo degradado limpio y accesos directos sincronizados"
+          width="1024"
+          height="562"
+          loading="lazy"
+        />
+        <figcaption>Fondos lisos y 15 degradados para una estética aún más sobria.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  {/* SECCIÓN: CÓMO EMPEZAR */}
+  <section id="como-empezar" class="tilo-section" aria-labelledby="tilo-pasos-title">
+    <div class="tilo-section__header">
+      <span class="section-label">Cómo empezar</span>
+      <h2 id="tilo-pasos-title" class="tilo-section__title">Listo en un minuto</h2>
+    </div>
+
+    <div class="tilo-steps">
+      <div class="tilo-step">
+        <span class="tilo-step__num">01</span>
+        <h3 class="tilo-step__title">Instálalo</h3>
+        <p class="tilo-step__text">Añade Tilo desde la Chrome Web Store.</p>
+      </div>
+
+      <div class="tilo-step">
+        <span class="tilo-step__num">02</span>
+        <h3 class="tilo-step__title">Abre una pestaña</h3>
+        <p class="tilo-step__text">Una guía corta te enseña lo básico y te pregunta cómo quieres el clima.</p>
+      </div>
+
+      <div class="tilo-step">
+        <span class="tilo-step__num">03</span>
+        <h3 class="tilo-step__title">Hazlo tuyo</h3>
+        <p class="tilo-step__text">Añade tus webs y elige fondo, tema e idioma en Personalizar.</p>
+      </div>
+    </div>
+  </section>
+
+  {/* SECCIÓN: PRIVACIDAD */}
+  <section id="privacidad" class="tilo-section" aria-labelledby="tilo-privacidad-title">
+    <div class="tilo-privacy-panel">
+      <div class="tilo-privacy-panel__header">
+        <span class="section-label">Privacidad por diseño</span>
+        <h2 id="tilo-privacidad-title" class="tilo-section__title">Lo tuyo se queda contigo</h2>
+      </div>
+      <p class="tilo-privacy-panel__lead">Tilo no tiene servidores propios, no te pide cuenta y no lleva analítica ni anuncios. Tus accesos directos son marcadores de Chrome; tus tareas y tu imagen de fondo se quedan en tu equipo.</p>
+      <ul class="tilo-privacy-list">
+        <li>El clima solo se pide si tú lo eliges, y puedes escribir tu ciudad en lugar de compartir tu ubicación.</li>
+        <li>La prueba de velocidad solo se ejecuta cuando la inicias.</li>
+        <li>Nunca vendemos ni compartimos tus datos.</li>
+      </ul>
+    </div>
+  </section>
+
+  {/* SECCIÓN: IDIOMAS */}
+  <section id="idiomas" class="tilo-section" aria-labelledby="tilo-idiomas-title">
+    <div class="tilo-section__header">
+      <span class="section-label">Internacionalización</span>
+      <h2 id="tilo-idiomas-title" class="tilo-section__title">Habla tu idioma</h2>
+      <p class="tilo-section__desc">Tilo está en español, inglés, francés, italiano, alemán, portugués, japonés, coreano y chino. Usa el idioma de Chrome o elige otro cuando quieras.</p>
+    </div>
+
+    <div class="tilo-lang-pills" role="list" aria-label="Idiomas disponibles en Tilo">
+      <span class="pill" role="listitem">Español</span>
+      <span class="pill" role="listitem">English</span>
+      <span class="pill" role="listitem">Français</span>
+      <span class="pill" role="listitem">Italiano</span>
+      <span class="pill" role="listitem">Deutsch</span>
+      <span class="pill" role="listitem">Português</span>
+      <span class="pill" role="listitem">日本語</span>
+      <span class="pill" role="listitem">한국어</span>
+      <span class="pill" role="listitem">中文</span>
+    </div>
+  </section>
+
+  {/* SECCIÓN: PREGUNTAS FRECUENTES */}
+  <section id="preguntas" class="tilo-section" aria-labelledby="tilo-faq-title">
+    <div class="tilo-section__header">
+      <span class="section-label">Dudas comunes</span>
+      <h2 id="tilo-faq-title" class="tilo-section__title">Preguntas frecuentes</h2>
+    </div>
+
+    <div class="tilo-faq-list">
+      <details class="tilo-faq-item" open>
+        <summary>¿Tilo es gratis?</summary>
+        <p>Sí. Todas sus funciones son gratis. Si te gusta, puedes apoyarlo con una donación.</p>
+      </details>
+
+      <details class="tilo-faq-item">
+        <summary>¿Necesito crear una cuenta?</summary>
+        <p>No. Tilo funciona en cuanto lo instalas.</p>
+      </details>
+
+      <details class="tilo-faq-item">
+        <summary>¿Dónde se guardan mis accesos directos?</summary>
+        <p>En una carpeta de tus marcadores de Chrome. Si tienes la sincronización activada, los verás en tus otros equipos.</p>
+      </details>
+
+      <details class="tilo-faq-item">
+        <summary>¿Por qué pide mi ubicación?</summary>
+        <p>Solo para el clima, y solo si lo eliges. Puedes escribir tu ciudad o desactivar el clima en Personalizar.</p>
+      </details>
+
+      <details class="tilo-faq-item">
+        <summary>¿Cambia mi buscador de Chrome?</summary>
+        <p>No. Tilo usa el que ya tienes; si eliges otro motor, solo cambia en la pestaña de Tilo.</p>
+      </details>
+
+      <details class="tilo-faq-item">
+        <summary>¿Puedo volver a la nueva pestaña de siempre?</summary>
+        <p>Sí. Desactiva o quita Tilo en <code>chrome://extensions</code> y Chrome vuelve a la suya. Tus accesos directos se quedan en tus marcadores.</p>
+      </details>
+
+      <details class="tilo-faq-item">
+        <summary>¿Funciona en otros navegadores?</summary>
+        <p>Por ahora en Chrome y en navegadores que instalan desde la Chrome Web Store, como Brave.</p>
+      </details>
+    </div>
+  </section>
+
+  {/* SECCIÓN: LICENCIA MIT Y PROTECCIÓN DE MARCA */}
+  <section id="licencia" class="tilo-section" aria-labelledby="tilo-licencia-title">
+    <div class="tilo-license-card">
+      <div class="tilo-license-card__header">
+        <span class="section-label">Propiedad intelectual y licenciamiento</span>
+        <h2 id="tilo-licencia-title" class="tilo-section__title">Licencia MIT y protección de marca</h2>
+      </div>
+
+      <div class="tilo-license-grid">
+        <div class="tilo-license-block">
+          <h3>Código fuente · Licencia MIT</h3>
+          <p>El código de <strong>Tilo</strong> se distribuye bajo la <strong>Licencia MIT</strong> (Copyright © 2026 Frederick Adolfo Salazar Sánchez). Se permite usar, estudiar, copiar, modificar y distribuir el software de forma gratuita, siempre que se mantenga el aviso de derechos de autor original y el texto de la licencia en todas las copias o partes sustanciales del software.</p>
+        </div>
+
+        <div class="tilo-license-block">
+          <h3>Reserva de derechos sobre la marca «Tilo»</h3>
+          <p>La Licencia MIT cubre exclusivamente el código fuente y <strong>no concede derechos de uso sobre la marca, el nombre comercial ni la identidad visual</strong>. El nombre <strong>«Tilo»</strong>, el logotipo <strong>«tilo»</strong>, el isotipo del anillo cromático y las capturas oficiales son propiedad exclusiva de <strong>Frederick Salazar</strong>. Las versiones derivadas o redistribuidas no pueden publicarse bajo el nombre «Tilo» ni utilizar sus logotipos oficiales en la Chrome Web Store u otras tiendas sin autorización previa y por escrito del autor.</p>
+        </div>
+      </div>
+
+      <p class="tilo-legal-footnote">Chrome es una marca de Google LLC. Tilo no está afiliado a Google. · © 2026 Frederick Salazar.</p>
+    </div>
+  </section>
+
+  {/* SECCIÓN: APOYA TILO */}
+  <section id="apoya" class="tilo-section" aria-labelledby="tilo-apoya-title">
+    <div class="tilo-support-card">
+      <span class="section-label">Apoya el proyecto</span>
+      <h2 id="tilo-apoya-title" class="tilo-section__title">Hecho con calma, mantenido con cariño</h2>
+      <p class="tilo-support-card__text">Tilo es gratis. Si te ahorra un poco de ruido cada día, puedes invitarme a un café.</p>
+
+      <div class="tilo-support-actions">
+        <a href="https://buymeacoffee.com/fredericksalazar" target="_blank" rel="noopener noreferrer" class="tilo-btn tilo-btn--primary" data-ga-event="tilo_donate_click" data-ga-provider="buymeacoffee">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+          <span>Invítame a un café</span>
+        </a>
+        <a href="https://www.paypal.com/donate/?business=fredefass01%40gmail.com&no_recurring=0" target="_blank" rel="noopener noreferrer" class="tilo-btn tilo-btn--secondary" data-ga-event="tilo_donate_click" data-ga-provider="paypal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          <span>Donar con PayPal</span>
+        </a>
+        <a href="mailto:frederick.ssalazar@gmail.com" class="tilo-btn tilo-btn--ghost">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          <span>Contacto</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>

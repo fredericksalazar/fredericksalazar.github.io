@@ -7,6 +7,8 @@ import { INFORMES } from '../lib/observatorio/informes';
 export const GET: APIRoute = async () => {
   const posts = (await getCollection('blog', ({ data }) => !data.draft))
     .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+  const proyectos = (await getCollection('proyectos'))
+    .sort((a, b) => a.data.orden - b.data.orden);
 
   const formatDate = (d: Date) => d.toISOString().slice(0, 10);
 
@@ -32,6 +34,12 @@ export const GET: APIRoute = async () => {
   }
   for (const inf of INFORMES) {
     lines.push(`- [Informe: ${inf.titulo}](${absUrls.observatorioInforme(inf.slug)}) — ${inf.resumen}`);
+  }
+  lines.push('');
+  lines.push('## Proyectos y productos de software');
+  lines.push('');
+  for (const proj of proyectos) {
+    lines.push(`- [${proj.data.titulo}](${absUrls.proyecto(proj.id)}) — ${proj.data.descripcion}`);
   }
   lines.push('');
   lines.push('## Artículos del blog');

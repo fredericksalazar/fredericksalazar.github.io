@@ -2,7 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { urls, absUrls, SITE_URL } from '../../lib/urls';
-import { trail, sectionCrumb } from '../../lib/seo';
+import { trail, sectionCrumb, PERSON_ID } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const projects = await getCollection('proyectos');
@@ -19,6 +19,11 @@ const hasGithub = proyecto.data.github && proyecto.data.github !== '';
 const hasDemo   = proyecto.data.demo   && proyecto.data.demo   !== '';
 
 const isDataCompass = proyecto.id === 'datacompass';
+const isTilo = proyecto.id === 'tilo';
+
+const tiloKeywords =
+  'tilo, nueva pestaña chrome, new tab chrome extension, accesos directos chrome, marcadores sincronizados, tareas nueva pestaña, prueba de velocidad chrome, extension sin rastreo, frederick salazar, open source mit';
+
 const softwareSchema = isDataCompass ? {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
@@ -38,11 +43,13 @@ const softwareSchema = isDataCompass ? {
   },
   author: {
     '@type': 'Person',
+    '@id': PERSON_ID,
     name: 'Frederick Salazar',
     url: SITE_URL,
   },
   creator: {
     '@type': 'Person',
+    '@id': PERSON_ID,
     name: 'Frederick Salazar',
     url: SITE_URL,
   },
@@ -60,6 +67,64 @@ const softwareSchema = isDataCompass ? {
     'Diagnóstico en menos de 10 minutos',
   ],
   keywords: 'gobierno de datos, data governance, madurez de datos, CMMI, evaluación de datos, diagnóstico de datos, calidad de datos, arquitectura de datos',
+} : isTilo ? {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Tilo',
+  alternateName: 'tilo',
+  description: proyecto.data.descripcion,
+  url: absUrls.proyecto('tilo'),
+  applicationCategory: 'BrowserApplication',
+  applicationSubCategory: 'New Tab Extension',
+  softwareVersion: '2.2.0',
+  operatingSystem: 'Chrome, Brave, Chromium',
+  inLanguage: ['es', 'en', 'fr', 'it', 'de', 'pt', 'ja', 'ko', 'zh-CN'],
+  isAccessibleForFree: true,
+  license: 'https://opensource.org/licenses/MIT',
+  copyrightYear: 2026,
+  copyrightHolder: {
+    '@type': 'Person',
+    '@id': PERSON_ID,
+    name: 'Frederick Salazar',
+    url: SITE_URL,
+  },
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+  },
+  author: {
+    '@type': 'Person',
+    '@id': PERSON_ID,
+    name: 'Frederick Salazar',
+    url: SITE_URL,
+  },
+  creator: {
+    '@type': 'Person',
+    '@id': PERSON_ID,
+    name: 'Frederick Salazar',
+    url: SITE_URL,
+  },
+  image: proyecto.data.imagen ? new URL(proyecto.data.imagen, SITE_URL).href : undefined,
+  screenshot: [
+    new URL('/images/proyectos/tilo-portada.png', SITE_URL).href,
+    new URL('/images/proyectos/tilo-panel.png', SITE_URL).href,
+    new URL('/images/proyectos/tilo-oscuro.png', SITE_URL).href,
+    new URL('/images/proyectos/tilo-velocidad.png', SITE_URL).href,
+    new URL('/images/proyectos/tilo-degradado.png', SITE_URL).href,
+  ],
+  featureList: [
+    'Hasta 100 accesos directos sincronizados con tus marcadores de Chrome sin cuenta adicional',
+    'Atajo rápido ⌥⇧D (Alt+Mayús+D en Windows), clic derecho o icono de la extensión',
+    'Selector de motor de búsqueda: por defecto de Chrome, Google, Bing, DuckDuckGo, Brave, Ecosia, Perplexity o Yahoo!',
+    'Fondo animado con aura de color, 12 colores sólidos, 15 degradados o imagen propia con desenfoque',
+    'Tema claro, oscuro o automático según el dispositivo',
+    'Lista de tareas y subtareas integrada en la pestaña',
+    'Clima opcional por ubicación o ciudad escrita manualmente',
+    'Prueba de velocidad integrada (descarga, subida, latencia y jitter en 15 segundos)',
+  ],
+  keywords: tiloKeywords,
 } : null;
 ---
 
@@ -67,15 +132,16 @@ const softwareSchema = isDataCompass ? {
   title={proyecto.data.tituloSeo ?? proyecto.data.titulo}
   description={proyecto.data.descripcion}
   image={proyecto.data.imagen}
+  keywords={isTilo ? tiloKeywords : undefined}
   breadcrumbs={trail(sectionCrumb.proyectos, { name: proyecto.data.titulo, url: absUrls.proyecto(proyecto.id) })}
 >
   {softwareSchema && (
     <script is:inline type="application/ld+json" set:html={JSON.stringify(softwareSchema)} />
   )}
 
-  <nav class="breadcrumb"><a href={urls.proyectos()}>← Proyectos</a></nav>
+  <nav class={`breadcrumb ${isTilo ? 'breadcrumb--wide' : ''}`}><a href={urls.proyectos()}>← Proyectos</a></nav>
 
-  <article>
+  <article class={isTilo ? 'article--product' : ''}>
 
     <!-- ── Header del proyecto ──────────────────────────────────────── -->
     <header class="proj-header">
@@ -124,8 +190,8 @@ const softwareSchema = isDataCompass ? {
       </div>
     </header>
 
-    <!-- ── Imagen destacada ────────────────────────────────────────── -->
-    {proyecto.data.imagen && (
+    <!-- ── Imagen destacada (omitida en vista producto cuando tiene hero propio) ── -->
+    {proyecto.data.imagen && !isTilo && (
       <div class="proj-cover">
         <img
           src={proyecto.data.imagen}
@@ -149,12 +215,17 @@ const softwareSchema = isDataCompass ? {
 
 <style>
   .breadcrumb { margin-bottom: 1.5rem; font-size: 0.85rem; max-width: 800px; margin-left: auto; margin-right: auto; }
+  .breadcrumb--wide { max-width: 1080px; }
   .breadcrumb a { color: var(--color-text-muted); text-decoration: none; }
   .breadcrumb a:hover { color: var(--color-accent); }
 
   article {
     max-width: 800px;
     margin: 0 auto;
+  }
+
+  .article--product {
+    max-width: 1080px;
   }
 
   .proj-header { margin-bottom: 2rem; }
@@ -282,4 +353,538 @@ const softwareSchema = isDataCompass ? {
   }
   .back-link { font-size: 0.875rem; color: var(--color-text-muted); text-decoration: none; }
   .back-link:hover { color: var(--color-accent); }
+
+  /* ── Vista de Producto (Tilo) ────────────────────────────────────── */
+  .prose :global(.tilo-product) {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    margin-top: 1rem;
+  }
+
+  .prose :global(.tilo-hero) {
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 24px;
+    padding: 2rem 2.25rem;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  }
+
+  .prose :global(.tilo-hero__top) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 2rem;
+  }
+
+  .prose :global(.tilo-brand) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .prose :global(.tilo-brand__icon) {
+    flex-shrink: 0;
+  }
+
+  .prose :global(.tilo-brand__wordmark) {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-text-primary);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .prose :global(.tilo-brand__version) {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    background: var(--color-active-bg);
+    border: 1px solid var(--color-border);
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+  }
+
+  .prose :global(.tilo-subnav) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .prose :global(.tilo-subnav a) {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .prose :global(.tilo-subnav a:hover) {
+    color: var(--color-accent);
+    background: var(--color-hover);
+  }
+
+  .prose :global(.tilo-hero__body) {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 2rem;
+  }
+
+  .prose :global(.tilo-hero__headline) {
+    font-size: clamp(1.8rem, 3.8vw, 2.75rem);
+    font-weight: 800;
+    color: var(--color-accent);
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.75rem;
+  }
+
+  .prose :global(.tilo-hero__subtitle) {
+    font-size: 1.05rem;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin: 0 0 1.5rem;
+  }
+
+  .prose :global(.tilo-hero__cta-group) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose :global(a.tilo-btn) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.35rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+  }
+
+  .prose :global(a.tilo-btn p) {
+    margin: 0;
+  }
+
+  .prose :global(a.tilo-btn svg) {
+    flex-shrink: 0;
+  }
+
+  .prose :global(a.tilo-btn--primary) {
+    background: var(--color-accent);
+    color: var(--color-sidebar);
+    border: 1px solid var(--color-accent);
+    box-shadow: 0 4px 12px var(--color-accent-glow);
+  }
+
+  .prose :global(a.tilo-btn--primary:hover) {
+    background: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+    color: var(--color-sidebar);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px var(--color-accent-glow);
+  }
+
+  .prose :global(a.tilo-btn--secondary) {
+    background: var(--color-sidebar);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  }
+
+  .prose :global(a.tilo-btn--secondary:hover) {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-hover);
+    transform: translateY(-1px);
+  }
+
+  .prose :global(a.tilo-btn--ghost) {
+    background: var(--color-bg);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+  }
+
+  .prose :global(a.tilo-btn--ghost:hover) {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    background: var(--color-hover);
+    transform: translateY(-1px);
+  }
+
+  .prose :global(.tilo-hero__trust) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .prose :global(.tilo-hero__figure) {
+    margin: 0;
+  }
+
+  .prose :global(.tilo-hero__figure img) {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    margin: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    display: block;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  }
+
+  .prose :global(.tilo-section) {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .prose :global(.tilo-section__header) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .prose :global(.tilo-section__title) {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .prose :global(.tilo-section__subtitle) {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin: 0;
+  }
+
+  .prose :global(.tilo-section__desc) {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    max-width: 680px;
+    margin: 0.25rem 0 0;
+  }
+
+  .prose :global(.tilo-features-grid) {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .prose :global(.tilo-card) {
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .prose :global(.tilo-card:hover) {
+    border-color: var(--color-accent);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+    transform: translateY(-2px);
+  }
+
+  .prose :global(.tilo-card__icon) {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--color-active-bg);
+    color: var(--color-accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .prose :global(.tilo-card__title) {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0.25rem 0 0;
+    line-height: 1.3;
+  }
+
+  .prose :global(.tilo-card__text) {
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .prose :global(.tilo-card__text kbd) {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: var(--color-hover);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 0.1rem 0.35rem;
+    color: var(--color-text-primary);
+  }
+
+  .prose :global(.tilo-gallery) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-top: 0.5rem;
+  }
+
+  .prose :global(.tilo-gallery__item) {
+    margin: 0;
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .prose :global(.tilo-gallery__item img) {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .prose :global(.tilo-gallery__item figcaption) {
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.45;
+  }
+
+  .prose :global(.tilo-steps) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .prose :global(.tilo-step) {
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .prose :global(.tilo-step__num) {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .prose :global(.tilo-step__title) {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0.25rem 0 0;
+  }
+
+  .prose :global(.tilo-step__text) {
+    font-size: 0.92rem;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .prose :global(.tilo-privacy-panel) {
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 24px;
+    padding: 2rem 2.25rem;
+  }
+
+  .prose :global(.tilo-privacy-panel__lead) {
+    font-size: 1.05rem;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin: 0.75rem 0 1rem;
+  }
+
+  .prose :global(.tilo-privacy-list) {
+    margin: 0 0 0 1.25rem;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+  }
+
+  .prose :global(.tilo-lang-pills) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .prose :global(.tilo-faq-list) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .prose :global(.tilo-faq-item) {
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+  }
+
+  .prose :global(.tilo-faq-item summary) {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .prose :global(.tilo-faq-item summary::after) {
+    content: "+";
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  .prose :global(.tilo-faq-item[open] summary::after) {
+    content: "−";
+  }
+
+  .prose :global(.tilo-faq-item p) {
+    margin: 0.65rem 0 0;
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .prose :global(.tilo-license-card) {
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 24px;
+    padding: 2rem 2.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .prose :global(.tilo-license-grid) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .prose :global(.tilo-license-block) {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+
+  .prose :global(.tilo-license-block h3) {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 0.5rem;
+  }
+
+  .prose :global(.tilo-license-block p) {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .prose :global(.tilo-legal-footnote) {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .prose :global(.tilo-support-card) {
+    background: var(--color-sidebar);
+    border: 1px solid var(--color-border);
+    border-radius: 24px;
+    padding: 2rem 2.25rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .prose :global(.tilo-support-card__text) {
+    font-size: 1.05rem;
+    color: var(--color-text-secondary);
+    max-width: 540px;
+    margin: 0 0 0.5rem;
+  }
+
+  .prose :global(.tilo-support-actions) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 1024px) {
+    .prose :global(.tilo-features-grid) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .prose :global(.tilo-hero),
+    .prose :global(.tilo-privacy-panel),
+    .prose :global(.tilo-license-card),
+    .prose :global(.tilo-support-card) {
+      padding: 1.25rem;
+      border-radius: 18px;
+    }
+
+    .prose :global(.tilo-gallery),
+    .prose :global(.tilo-steps),
+    .prose :global(.tilo-license-grid) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .prose :global(.tilo-features-grid) {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
