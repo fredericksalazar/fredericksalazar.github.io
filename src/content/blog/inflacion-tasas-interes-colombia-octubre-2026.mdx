@@ -1,0 +1,123 @@
+---
+titulo: "Inflación en Colombia octubre 2026: sube a 6,30% y el BanRep eleva la tasa a 12,25%"
+tituloSeo: "Inflación Colombia octubre 2026: 6,30% y tasa BanRep 12,25%"
+fecha: 2026-11-10
+descripcion: "La inflación en Colombia subió a 6,30% anual en octubre de 2026 y el Banco de la República elevó su tasa a 12,25%. Análisis con gráficos y comparativas."
+etiquetas: ["Inflación", "Colombia", "Economía", "Banco de la República", "Tasas de Interés", "Observatorio de Datos"]
+autor: "Frederick Salazar"
+imagen: "/images/blog/inflacion-tasas-colombia-octubre-2026-cover.png"
+draft: false
+tipo: "analisis"
+destacado: true
+resumen: "En octubre de 2026 la inflación anual de Colombia marcó un nuevo máximo del año en 6,30%, mientras el Banco de la República rompió tres meses de pausa y elevó su tasa de intervención en 25 puntos básicos hasta 12,25%. El efecto base y la persistencia inflacionaria llevan el spread real a 5,95 puntos porcentuales."
+---
+
+import Chart from "../../components/observatorio/Chart.astro";
+import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
+import FaqSchema from "../../components/blog/FaqSchema.astro";
+
+<PlotlyLoader />
+
+<FaqSchema items={[
+  { q: "¿Cuánto fue la inflación en Colombia en octubre de 2026?", a: "La inflación anual en Colombia en octubre de 2026 fue de 6,30%, según el DANE. Frente a septiembre (6,28%) subió 0,02 puntos porcentuales y marcó un nuevo máximo en lo corrido de 2026. La variación mensual fue de 0,20%." },
+  { q: "¿Cuál es la tasa de interés del Banco de la República en octubre de 2026?", a: "El Banco de la República elevó su tasa de intervención de política monetaria en 25 puntos básicos hasta 12,25% en octubre de 2026, tras haberla mantenido en 12,0% durante julio, agosto y septiembre." },
+  { q: "¿Por qué subió la inflación anual en octubre si el dato mensual bajó a 0,20%?", a: "Por el efecto base estadístico: aunque la variación mensual se moderó a 0,20% frente al 0,37% de septiembre, superó al 0,18% registrado en octubre de 2025 que salió del cálculo de doce meses, sumando 0,02 puntos netos al indicador anual." },
+  { q: "¿Cuál es la meta de inflación del Banco de la República?", a: "La meta oficial es del 3% anual, con un rango de tolerancia de ±1 punto porcentual (entre 2% y 4%). Con 6,30%, la inflación actual más que duplica el centro de la meta." },
+  { q: "¿Qué significa que la tasa real (spread) esté en 5,95 puntos?", a: "Significa que la tasa de intervención del Banco de la República (12,25%) supera a la inflación anual (6,30%) en 5,95 puntos porcentuales, configurando una postura monetaria altamente contractiva que encarece el crédito e incentiva el ahorro." },
+]} />
+
+La **inflación en Colombia mantuvo su resistencia al cierre de octubre de 2026**. El indicador anual avanzó levemente hasta **6,30%**, superando el 6,28% de septiembre y fijando un nuevo máximo en lo corrido del año. Ante la persistencia de los precios por encima del 6%, la junta directiva del **Banco de la República rompió tres meses de pausa y elevó su tasa de intervención en 25 puntos básicos hasta 12,25%**.
+
+En esta entrega del [Observatorio de Datos de Colombia](/observatorio/) revisamos en detalle las cifras de octubre: la mecánica del efecto base pese a la moderación mensual, la reacción del emisor, el balance frente a octubre de 2025 y el impacto directo sobre el bolsillo. Todos los gráficos son **interactivos**: puedes pasar el cursor o tocar cada serie para inspeccionar los valores puntuales.
+
+## Los números de octubre de 2026
+
+Cuatro indicadores resumen el panorama macroeconómico del mes:
+
+- **Inflación anual: 6,30%** — subió 0,02 puntos porcentuales frente a septiembre (6,28%) y marca el registro más alto de 2026.
+- **Inflación mensual: 0,20%** — desaceleró 0,17 puntos respecto al 0,37% de septiembre, pero superó ligeramente el registro del mismo mes del año anterior (0,18%).
+- **Tasa de intervención del BanRep: 12,25%** — aumentó 0,25 puntos porcentuales tras tres meses consecutivos en 12,0% (julio a septiembre).
+- **Tasa real (spread): 5,95 puntos** — se amplió 0,23 puntos porcentuales frente a septiembre (5,72 pp), acercándose nuevamente al máximo del año (5,98 pp en julio).
+
+El mensaje central es claro: aunque el ritmo mensual de los precios cedió a 0,20%, el acumulado de doce meses sigue escalando y más que duplica la **meta del 3%** del banco central, lo que llevó al emisor a reforzar el ajuste monetario.
+
+## La inflación marca un nuevo techo anual en 6,30%
+
+Tras haber cerrado 2025 en 5,10%, la trayectoria de precios durante 2026 ha mantenido una tendencia gradual al alza que llevó el indicador desde 5,35% en enero hasta **6,30%** en octubre, encadenando tres meses consecutivos de incrementos en la medición interanual.
+
+<Chart id="inflacion-anual" embedded={true} />
+
+La franja verde del gráfico representa el **rango meta del Banco de la República (3% ±1)**. La brecha frente a ese corredor de estabilidad supera los tres puntos porcentuales. Si deseas explorar la evolución completa de estas variables a lo largo de más de seis décadas, consulta nuestro [análisis histórico de la inflación y las tasas del BanRep](/blog/visualizacion-inflacion-vs-tasas-interes-colombia/).
+
+### De dónde viene la variación de octubre: el efecto base
+
+A primera vista resulta llamativo que la inflación anual suba a **6,30%** en un mes donde la variación mensual cayó de **0,37%** (septiembre) a **0,20%** (octubre). La explicación está en el **efecto base**.
+
+La inflación anual acumula las variaciones de los últimos doce meses. Al incorporar octubre de 2026, sale de la ventana estadística el dato de octubre de 2025, que había sido particularmente bajo (**0,18%**). Como el registro entrante (**0,20%**) supera en 0,02 puntos al saliente (**0,18%**), el resultado acumulado sube de 6,28% a **6,30%** pese a la menor presión mensual.
+
+## La respuesta del Banco de la República: ajuste a 12,25%
+
+Después de mantener la tasa de política monetaria en 12,0% durante julio, agosto y septiembre, el Banco de la República aplicó un incremento de **25 puntos básicos**, llevando el indicador de referencia a **12,25%**.
+
+<Chart id="tasa-interes" embedded={true} />
+
+En lo corrido de 2026, el emisor ha elevado su tasa desde el 9,25% de enero hasta el 12,25% actual —un ajuste acumulado de **300 puntos básicos**— con el propósito de anclar las expectativas de inflación y evitar que los precios se consoliden por encima del 6% de cara a las negociaciones salariales y ajustes indexados de fin de año.
+
+## Octubre 2026 frente a octubre 2025: la foto del año
+
+La comparación a doce meses refleja cómo se ha transformado el entorno macroeconómico:
+
+| Indicador | Octubre 2025 | Septiembre 2026 | Octubre 2026 |
+|---|---|---|---|
+| Inflación anual | 5,51% | 6,28% | **6,30%** |
+| Inflación mensual | 0,18% | 0,37% | **0,20%** |
+| Tasa BanRep | 9,25% | 12,0% | **12,25%** |
+| Tasa real (spread) | 3,74 pp | 5,72 pp | **5,95 pp** |
+
+En el último año, la inflación anual aumentó **0,79 puntos porcentuales** (de 5,51% a 6,30%), mientras que la tasa de intervención del Banco de la República subió **3,00 puntos porcentuales** (de 9,25% a 12,25%). Esa respuesta más que proporcional del emisor amplió la tasa real en **2,21 puntos porcentuales** respecto a hace un año.
+
+## El freno monetario: comportamiento del spread
+
+El diferencial entre la tasa de intervención y la inflación anual —conocido como tasa de interés real ex-post o *spread*— mide la intensidad del freno monetario sobre la economía. Valores positivos altos (barras rojas) restringen el crédito y enfrían el gasto; valores negativos (barras verdes) estimulan la demanda.
+
+<Chart id="spread" embedded={true} />
+
+Con el incremento de la tasa a 12,25% y una inflación anual en 6,30%, el spread subió de 5,72 pp en septiembre a **5,95 puntos porcentuales** en octubre. Este registro se ubica apenas a tres centésimas del pico de 5,98 pp observado en julio de 2026 y ratifica una de las posturas contractivas más severas de las últimas dos décadas.
+
+## Qué significa para tu bolsillo
+
+Un escenario de inflación anual en 6,30% y tasa de referencia en 12,25% impacta de forma directa las decisiones financieras de hogares y empresas:
+
+- **El crédito se encarece aún más:** El nuevo ajuste de 25 puntos básicos presiona al alza el costo del financiamiento comercial, de consumo y tarjetas de crédito. Conviene priorizar la reducción de deudas a tasa variable o de corto plazo.
+- **El ahorro conserva altos rendimientos reales:** Con un spread de 5,95 puntos porcentuales, los instrumentos de renta fija como CDT y cuentas remuneradas continúan ofreciendo retornos superiores a la inflación.
+- **Los precios moderan su ritmo mensual pero siguen acumulando alza:** La variación mensual de 0,20% da un respiro frente a meses previos, aunque el nivel anual de 6,30% exige mantener control sobre el presupuesto familiar.
+- **Decisiones financieras de cierre de año:** Como el dato de octubre y noviembre perfila el piso de indexación de arriendos, tarifas y salario mínimo para el próximo año, es clave planificar flujos de caja con prudencia.
+
+## Conclusión
+
+El corte de octubre de 2026 muestra una dualidad relevante: mientras la inflación mensual cedió a **0,20%**, el efecto base empujó la inflación anual a un nuevo máximo del año en **6,30%**, llevando al Banco de la República a elevar su tasa de intervención a **12,25%** y situar el spread real en **5,95 puntos porcentuales**. Los dos últimos meses del año serán decisivos para definir con qué nivel de precios e indexación entrará la economía colombiana al próximo ciclo anual.
+
+Puedes consultar la serie completa y sus actualizaciones en el [dashboard de inflación y tasas del Observatorio](/observatorio/inflacion/).
+
+## Preguntas frecuentes
+
+### ¿Cuánto fue la inflación en Colombia en octubre de 2026?
+La inflación anual en Colombia en octubre de 2026 fue de **6,30%**, según el DANE. Frente a septiembre (6,28%) subió 0,02 puntos porcentuales y marcó un nuevo máximo en lo corrido de 2026. La variación mensual fue de **0,20%**.
+
+### ¿Cuál es la tasa de interés del Banco de la República en octubre de 2026?
+El Banco de la República elevó su tasa de intervención de política monetaria en 25 puntos básicos hasta **12,25%** en octubre de 2026, tras haberla mantenido en 12,0% durante julio, agosto y septiembre.
+
+### ¿Por qué subió la inflación anual en octubre si el dato mensual bajó a 0,20%?
+Por el **efecto base estadístico**: aunque la variación mensual se moderó a 0,20% frente al 0,37% de septiembre, superó al 0,18% registrado en octubre de 2025 que salió del cálculo de doce meses, sumando 0,02 puntos netos al indicador anual.
+
+### ¿Cuál es la meta de inflación del Banco de la República?
+La meta oficial es del **3% anual**, con un rango de tolerancia de ±1 punto porcentual (entre 2% y 4%). Con 6,30%, la inflación actual más que duplica el centro de la meta.
+
+### ¿Qué significa que la tasa real (spread) esté en 5,95 puntos?
+Significa que la tasa de intervención del Banco de la República (12,25%) supera a la inflación anual (6,30%) en 5,95 puntos porcentuales, configurando una **postura monetaria altamente contractiva** que encarece el crédito e incentiva el ahorro.
+
+## Fuentes y metodología
+
+Los datos provienen de fuentes públicas oficiales: el **Índice de Precios al Consumidor (IPC)** calculado por el [DANE](https://www.dane.gov.co/index.php/estadisticas-por-tema/precios-y-costos/indice-de-precios-al-consumidor-ipc) y la **Tasa de Política Monetaria** fijada por el [Banco de la República](https://www.banrep.gov.co/es/estadisticas/tasas-de-interes-de-politica-monetaria). La tasa real (spread) corresponde a la diferencia matemática entre la tasa de intervención y la inflación anual. Las series completas se actualizan mensualmente en el [Observatorio de Datos de Colombia](/observatorio/).
+
+Este es un análisis técnico, pedagógico e independiente, sin afiliación institucional ni política.
