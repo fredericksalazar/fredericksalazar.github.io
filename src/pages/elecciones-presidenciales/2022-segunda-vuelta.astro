@@ -173,8 +173,8 @@ const jsonLd = {
   .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 0 0 2rem; }
 
   .kpi-card {
-    background: var(--card-bg, #fff);
-    border: 1px solid var(--border, #e5e7eb);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
     border-radius: 14px;
     padding: 1.25rem 1.35rem 1rem;
     display: flex;
@@ -186,7 +186,7 @@ const jsonLd = {
 
   .kpi-card__label {
     font-size: 0.72rem;
-    color: var(--text-muted, #6b7280);
+    color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     margin: 0 0 0.45rem;
@@ -196,20 +196,20 @@ const jsonLd = {
     font-size: 1.9rem;
     font-weight: 800;
     margin: 0;
-    color: var(--color-accent, #2563eb);
+    color: var(--color-accent-text, #2563eb);
     line-height: 1.1;
     letter-spacing: -0.02em;
   }
   .kpi-card__sub {
     font-size: 0.78rem;
-    color: var(--text-muted, #6b7280);
+    color: var(--color-text-muted);
     margin: 0.3rem 0 0;
     line-height: 1.4;
   }
 
   .kpi-card__divider {
     height: 1px;
-    background: var(--border, #e5e7eb);
+    background: var(--color-border);
     margin: 0.85rem 0 0.75rem;
     border: none;
   }
@@ -229,12 +229,12 @@ const jsonLd = {
   }
   .kpi-card__delta-pill.is-up {
     background: rgba(22, 163, 74, 0.12);
-    color: #15803d;
+    color: var(--color-text-success);
     border-color: rgba(22, 163, 74, 0.35);
   }
   .kpi-card__delta-pill.is-down {
     background: rgba(220, 38, 38, 0.10);
-    color: #b91c1c;
+    color: var(--color-text-danger);
     border-color: rgba(220, 38, 38, 0.30);
   }
   .kpi-card__delta-arrow { font-size: 0.7rem; line-height: 1; }

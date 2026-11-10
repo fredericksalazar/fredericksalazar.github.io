@@ -71,7 +71,7 @@ export const tgpToDual: ChartDef = {
           line: { color: COLORS.brand, width: 2.2 },
           hovertemplate: "<b>%{x|%b %Y}</b><br>TGP: %{y:.2f}%<extra></extra>" },
         { name: "Tasa de Ocupación", x: to.x, y: to.y, mode: "lines",
-          line: { color: "#64748b", width: 2.2, dash: "dash" },
+          line: { color: COLORS.textMuted, width: 2.2, dash: "dash" },
           hovertemplate: "<b>%{x|%b %Y}</b><br>TO: %{y:.2f}%<extra></extra>" },
       ],
       layout: baseLayout({

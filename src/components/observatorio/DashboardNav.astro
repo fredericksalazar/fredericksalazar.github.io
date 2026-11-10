@@ -57,7 +57,7 @@ const dashboards: DashboardItem[] = DOMINIOS.map((d) => ({ slug: d.slug, label: 
     top: 0;
     z-index: 30;
     backdrop-filter: blur(8px);
-    background: rgba(255, 255, 255, 0.92);
+    background: var(--color-surface-overlay);
   }
 
   .dashboard-nav__inner {
@@ -110,12 +110,12 @@ const dashboards: DashboardItem[] = DOMINIOS.map((d) => ({ slug: d.slug, label: 
   }
 
   .dashboard-nav__link:hover {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     border-bottom-color: rgba(37, 99, 235, 0.3);
   }
 
   .dashboard-nav__item--active .dashboard-nav__link {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     border-bottom-color: var(--color-accent);
     font-weight: 600;
   }

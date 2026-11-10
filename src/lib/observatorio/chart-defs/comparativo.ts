@@ -1,4 +1,5 @@
 import { COLORS, baseLayout } from "../charts";
+import { chartTheme } from "../theme-colors";
 import type { ChartDef } from "./types";
 
 /**
@@ -32,13 +33,13 @@ function refMaxMin(
   const line = (value: number, label: string) => ({
     shape: {
       type: "line", xref: "paper", x0: 0, x1: 1, yref: "y", y0: value, y1: value,
-      line: { color: "#94a3b8", width: 1.2, dash: "dot" }, layer: "below",
+      line: { color: COLORS.textMuted, width: 1.2, dash: "dot" }, layer: "below",
     },
     ann: {
       xref: "paper", yref: "y", x: 1, xanchor: "right", y: value, yanchor: "bottom",
       text: `${label} · ${fmt(value)}`, showarrow: false,
-      font: { size: 9.5, color: "#64748b" },
-      bgcolor: "rgba(255,255,255,0.85)", borderpad: 2,
+      font: { size: 9.5, color: COLORS.textMuted },
+      bgcolor: chartTheme().hoverBg, borderpad: 2,
     },
   });
   const hi = line(max, "Máx");
@@ -173,7 +174,7 @@ function makeDef(ind: IndicadorCmp, op: Oponente): ChartDef {
         layout: baseLayout({
           title: {
             text: `<b>${ind.titulo}</b>`,
-            font: { size: 14, color: "#1f2328" },
+            font: { size: 14, color: COLORS.textPrimary },
             x: 0, xanchor: "left", xref: "paper", y: 0.97, yanchor: "top",
           },
           showlegend: true,
@@ -181,8 +182,8 @@ function makeDef(ind: IndicadorCmp, op: Oponente): ChartDef {
           hovermode: "x unified",
           margin: { l: 60, r: 28, t: 46, b: 56 },
           yaxis: {
-            showgrid: true, gridcolor: "rgba(208,215,220,0.4)", zeroline: false,
-            tickfont: { size: 11, color: "#636c76" }, ticksuffix: ind.ySuffix ?? "", automargin: true,
+            showgrid: true, gridcolor: COLORS.grid, zeroline: false,
+            tickfont: { size: 11, color: COLORS.textMuted }, ticksuffix: ind.ySuffix ?? "", automargin: true,
           },
           shapes: refs.shapes,
           annotations: refs.annotations,

@@ -53,7 +53,7 @@ async function buildHistorico(
     hovertemplate:
       `<b>%{x}</b><br>${opts.name}: <b>%{y:${yFormat}}${opts.hoverSuffix}</b><br>` +
       "Presidente: %{customdata[0]}<br>" +
-      "<span style='color:#94a3b8'>%{customdata[1]}</span><extra></extra>",
+      "<span style='color:" + COLORS.textMuted + "'>%{customdata[1]}</span><extra></extra>",
   });
 
   // Referencias con el generador único (UI-10): Máx, Mín, Prom y meta BanRep.
@@ -70,8 +70,8 @@ async function buildHistorico(
     margin: { l: 48, r: 24, t: 16, b: 40 },
     showlegend: false, hovermode: "x",
     yaxis: {
-      showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
-      tickfont: { size: 11, color: "#636c76" },
+      showgrid: true, gridcolor: COLORS.grid, zeroline: false,
+      tickfont: { size: 11, color: COLORS.textMuted },
       ticksuffix: opts.yaxisTickSuffix ?? "%", automargin: true,
     },
     ...(shapes.length ? { shapes } : {}),
@@ -206,7 +206,7 @@ export const salarioMinimoVariacion: ChartDef = {
       hovertemplate:
         `<b>%{x}</b><br>Variación: <b>%{y:.2f}%</b><br>` +
         "Presidente: %{customdata[0]}<br>" +
-        "<span style='color:#94a3b8'>%{customdata[1]}</span><extra></extra>",
+        "<span style='color:" + COLORS.textMuted + "'>%{customdata[1]}</span><extra></extra>",
     });
 
     const layout = baseLayout({
@@ -215,9 +215,9 @@ export const salarioMinimoVariacion: ChartDef = {
       hovermode: "x",
       yaxis: {
         showgrid: true,
-        gridcolor: "rgba(208, 215, 220, 0.4)",
+        gridcolor: COLORS.grid,
         zeroline: false,
-        tickfont: { size: 11, color: "#636c76" },
+        tickfont: { size: 11, color: COLORS.textMuted },
         ticksuffix: "%",
         automargin: true,
       },

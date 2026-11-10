@@ -50,6 +50,22 @@ export async function mountPlotly(elementId: string, spec: PlotlySpec): Promise<
   mounted.add(elementId);
 }
 
+export async function reactPlotly(elementId: string, spec: PlotlySpec): Promise<void> {
+  const target = document.getElementById(elementId);
+  if (!target) return;
+  if (!mounted.has(elementId) || !window.Plotly) {
+    await mountPlotly(elementId, spec);
+    return;
+  }
+  await window.Plotly.react(
+    target,
+    spec.traces,
+    spec.layout,
+    spec.config ?? DEFAULT_CONFIG,
+  );
+  setState(elementId, "ready");
+}
+
 export function purgeChart(elementId: string): void {
   const target = document.getElementById(elementId);
   if (target && window.Plotly) window.Plotly.purge(target);

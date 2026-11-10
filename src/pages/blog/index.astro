@@ -197,7 +197,7 @@ const blogSchema = {
     color: var(--color-text-muted);
   }
   .breadcrumb a { color: var(--color-text-muted); text-decoration: none; }
-  .breadcrumb a:hover { color: var(--color-accent); }
+  .breadcrumb a:hover { color: var(--color-accent-text); }
   .breadcrumb span:last-child { color: var(--color-text-secondary); }
 
   .blog-hero { margin-bottom: 2rem; }
@@ -228,7 +228,7 @@ const blogSchema = {
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     text-decoration: none;
     font-weight: 500;
   }
@@ -243,7 +243,7 @@ const blogSchema = {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     margin: 0 0 0.75rem;
   }
   /* "Stretched link" pattern: el <a> envuelve solo el título, y un
@@ -276,7 +276,7 @@ const blogSchema = {
     z-index: 1;
   }
   .featured__card:hover .featured__link {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
   .featured__media { aspect-ratio: 1200 / 630; overflow: hidden; background: var(--color-border); }
   .featured__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -318,7 +318,7 @@ const blogSchema = {
     padding: 0.18rem 0.5rem;
     border-radius: 0.3rem;
     background: var(--color-accent);
-    color: #fff;
+    color: var(--color-on-accent);
   }
   .tipo-badge--tutorial { background: #16a34a; }
   .tipo-badge--analisis { background: var(--color-accent); }
@@ -330,7 +330,7 @@ const blogSchema = {
     font-size: 0.72rem;
     padding: 0.18rem 0.55rem;
     background: var(--color-tag-bg); border: 1px solid var(--color-tag-border);
-    border-radius: 999px; color: var(--color-accent);
+    border-radius: 999px; color: var(--color-accent-text);
   }
 
   /* ── Grid ──────────────────────────────────────────────────────── */
@@ -348,7 +348,7 @@ const blogSchema = {
   .empty-state--filtered { font-style: normal; }
   .link-btn {
     background: none; border: none; padding: 0;
-    color: var(--color-accent); cursor: pointer; font: inherit;
+    color: var(--color-accent-text); cursor: pointer; font: inherit;
     text-decoration: underline;
   }
 
@@ -363,7 +363,7 @@ const blogSchema = {
     color: var(--color-text-muted);
   }
   .blog-footer-links a {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     text-decoration: none;
   }
   .blog-footer-links a:hover { text-decoration: underline; }

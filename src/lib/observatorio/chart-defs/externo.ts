@@ -89,8 +89,8 @@ export const trmHistorica: ChartDef = {
 
     const layout = baseLayout({
       yaxis: {
-        showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
-        tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true,
+        showgrid: true, gridcolor: COLORS.grid, zeroline: false,
+        tickfont: { size: 11, color: COLORS.textMuted }, ticksuffix: "", automargin: true,
       },
       shapes: refs.shapes,
       annotations: refs.annotations,
@@ -105,7 +105,7 @@ export const trmHistorica: ChartDef = {
       fill: "tozeroy", fillcolor: "rgba(37, 99, 235, 0.06)",
       customdata: conPresidente ? customdata : undefined,
       hovertemplate: conPresidente
-        ? "<b>%{x|%b %Y}</b><br>TRM: <b>$%{y:,.0f}</b><br>Presidente: %{customdata[0]}<br><span style='color:#94a3b8'>%{customdata[1]}</span><extra></extra>"
+        ? `<b>%{x|%b %Y}</b><br>TRM: <b>$%{y:,.0f}</b><br>Presidente: %{customdata[0]}<br><span style='color:${COLORS.textMuted}'>%{customdata[1]}</span><extra></extra>`
         : "<b>%{x|%b %Y}</b><br>TRM: <b>$%{y:,.0f} COP/USD</b><extra></extra>",
     });
 
@@ -136,8 +136,8 @@ export const reservasInternacionales: ChartDef = {
 
     const layout = baseLayout({
       yaxis: {
-        showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
-        tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true,
+        showgrid: true, gridcolor: COLORS.grid, zeroline: false,
+        tickfont: { size: 11, color: COLORS.textMuted }, ticksuffix: "", automargin: true,
       },
     });
 
@@ -149,7 +149,7 @@ export const reservasInternacionales: ChartDef = {
       },
       customdata: withPresident ? customdata : undefined,
       hovertemplate: withPresident
-        ? "<b>%{x|%Y}</b><br>Reservas: <b>%{y:,.1f} mil M USD</b><br>Presidente: %{customdata[0]}<br><span style='color:#94a3b8'>%{customdata[1]}</span><extra></extra>"
+        ? `<b>%{x|%Y}</b><br>Reservas: <b>%{y:,.1f} mil M USD</b><br>Presidente: %{customdata[0]}<br><span style='color:${COLORS.textMuted}'>%{customdata[1]}</span><extra></extra>`
         : "<b>%{x|%Y}</b><br>Reservas: <b>%{y:,.1f} mil M USD</b><extra></extra>",
     });
 
@@ -191,7 +191,7 @@ export const cuentaCorrientePib: ChartDef = {
       layout: baseLayout({
         showlegend: false, margin: { l: 48, r: 24, t: 16, b: 40 }, hovermode: "x",
         shapes: [{ type: "line", xref: "paper", x0: 0, x1: 1, yref: "y", y0: 0, y1: 0,
-          line: { color: "#1f2328", width: 1.5, dash: "solid" } }],
+          line: { color: COLORS.textPrimary, width: 1.5, dash: "solid" } }],
       }),
     };
   },
@@ -221,8 +221,8 @@ export const deudaExternaPib: ChartDef = {
         hovertemplate: "<b>%{x|%Y}</b><br>Deuda externa: <b>%{y:.1f}%</b> PIB<extra></extra>",
       }],
       layout: baseLayout({
-        yaxis: { showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
-          tickfont: { size: 11, color: "#636c76" }, ticksuffix: "%", automargin: true },
+        yaxis: { showgrid: true, gridcolor: COLORS.grid, zeroline: false,
+          tickfont: { size: 11, color: COLORS.textMuted }, ticksuffix: "%", automargin: true },
         shapes: refs.shapes,
         annotations: refs.annotations,
       }),
@@ -257,7 +257,7 @@ export const passThroughTrmInflacion: ChartDef = {
         hovermode: "x unified",
         yaxis: {
           title: { text: "TRM (COP/USD)", font: { size: 11, color: COLORS.externo } },
-          showgrid: true, gridcolor: "rgba(208,215,220,0.4)", zeroline: false,
+          showgrid: true, gridcolor: COLORS.grid, zeroline: false,
           tickfont: { size: 11, color: COLORS.externo }, ticksuffix: "", automargin: true,
         },
         yaxis2: {

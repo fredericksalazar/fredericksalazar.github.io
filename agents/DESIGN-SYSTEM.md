@@ -28,7 +28,10 @@
 4. **Los datos son protagonistas:** la interfaz se retira (bordes de 1 px, grises
    suaves) para que las cifras y los gráficos destaquen.
 5. **Consistencia por reutilización:** cada patrón existe una vez como componente.
-6. **Solo modo claro** (`color-scheme: light`). No hay modo oscuro.
+6. **Dos temas: claro y oscuro** (spec `007-tema-claro-oscuro`). El claro es la
+   identidad de referencia; el oscuro usa grises azulados tipo slate (nunca negro
+   puro) y conserva el azul de marca. El visitante elige Automático, Claro u
+   Oscuro desde el sidebar (sección 2.9).
 
 ## 2. Tokens
 
@@ -61,6 +64,54 @@ gráfico):
 | Éxito / disponible | `#16a34a` | `#15803d` |
 | Aviso | `#d97706` | `#b45309` |
 | Importante / error | `#dc2626` | `#b91c1c` |
+
+En componentes se usan como tokens: `--color-status-positive|warning|danger|info`
+(borde/ícono) y `--color-text-success|danger` (texto). `--color-text-violet` es
+el texto violeta de etiquetas de certificación.
+
+### 2.1.1 Tokens semánticos añadidos con el tema oscuro
+
+| Token | Claro | Oscuro | Uso |
+|---|---|---|---|
+| `--color-surface` / `-raised` / `-sunken` | `#ffffff` / `#ffffff` / `#f6f8fa` | `#131c2e` / `#1a2438` / `#0a0f1c` | Cards, inputs, botones, fondos hundidos (tabs, footers de mapa) |
+| `--color-surface-overlay` | blanco al 96 % | `#0b1120` al 92 % | Barras sticky con `backdrop-filter` |
+| `--color-accent-text` / `-hover` | `#2563eb` / `#1d4ed8` | `#60a5fa` / `#93c5fd` | **Todo texto en azul** (enlaces, cifras, eyebrows) |
+| `--color-accent-fill` / `-hover` | `#2563eb` / `#1d4ed8` | `#2563eb` / `#3b82f6` | Rellenos azules (botones, switches) |
+| `--color-on-accent` | `#ffffff` | `#ffffff` | Texto sobre relleno azul |
+| `--color-focus` | `#2563eb` | `#60a5fa` | Anillo de foco |
+| `--color-code-bg` / `-border` | `#f6f8fa` / `#d0d7de` | `#0a0f1c` / `#2a3649` | Bloques de código |
+| `--color-chart-*` (`grid`, `axis`, `hover-bg`, `text`, `muted`, `reference`) | ver `BaseLayout` | ver `BaseLayout` | Neutros de Plotly, leídos por `theme-colors.ts` |
+| `--color-blueprint-*` (`bg-start`, `bg-end`, `dot`, `border`, `glow`, `soft`, `soft-strong`) | blanco → `#f5f8ff`, azules suaves | `#0d1427` → `#13203d`, azules translúcidos | Hero, `PanelBlueprint`, ilustraciones SVG del hero |
+| `--color-shadow` / `-strong` | slate al 8 % / 16 % | negro al 45 % / 60 % | Sombras |
+
+**Paleta oscura base:** `--color-bg #0b1120`, `--color-sidebar` y
+`--color-surface #131c2e`, `--color-border #2a3649`, `--color-hover #1c2638`,
+texto `#f1f5f9` / `#cbd5e1` / `#94a3b8`. **Profundidad por luminosidad:** en
+oscuro cada nivel es un poco más claro (fondo `#0b1120` → card `#131c2e` →
+elemento elevado `#1a2438`); las sombras casi no se ven y no se usan para
+separar. `--color-accent` sigue siendo `#2563eb` en ambos temas, pero **no se
+usa como color de texto**: para texto va `--color-accent-text` (en oscuro
+`#2563eb` sobre `#0f172a` da 3,5:1 y no cumple AA).
+
+### 2.9 Regla de tema
+
+- `<html>` lleva `data-theme="light|dark"` (tema resuelto) y
+  `data-theme-preference="auto|light|dark"`. La preferencia vive en
+  `localStorage['theme-preference']`.
+- Los tokens claros están en `:root`; los oscuros en `:root[data-theme="dark"]` y,
+  sin JavaScript, en `@media (prefers-color-scheme: dark) :root:not([data-theme])`.
+  Un token nuevo se agrega **en los tres bloques**.
+- Un ajuste puntual solo para oscuro se escribe con
+  `:global(html[data-theme="dark"]) .clase { … }` y debe usar tokens.
+- Los colores de series y partidos no cambian con el tema; los logos y fotos no
+  se invierten.
+- Impresión siempre en claro; el selector se oculta.
+- En oscuro, las imágenes raster de `main` se atenúan (`brightness(0.88)`) y
+  recuperan su brillo al pasar el cursor sobre su enlace; los SVG no se tocan.
+- Los decorados blueprint (puntos, halos, arcos) se aclaran en oscuro para que
+  sigan siendo visibles.
+- `ThemeToggle` (radiogroup nativo de tres opciones con ícono y etiqueta) vive en
+  el sidebar, debajo del perfil y antes de los KPIs.
 
 ### 2.2 Tipografía
 
@@ -282,7 +333,7 @@ Todas las subpáginas del Observatorio siguen este orden, sin excepciones:
 
 `DashboardNav.astro` (Observatorio) y `EleccionesNav.astro` (Elecciones):
 
-- Barra **sticky** pegada arriba (`z-index: 30`), fondo blanco al 92 % con
+- Barra **sticky** pegada arriba (`z-index: 30`), fondo `--color-surface-overlay` con
   desenfoque, borde inferior de 1 px.
 - Ítems en fila, texto `0.88rem` peso 500 en gris secundario; contenido centrado
   hasta `1280px`.
@@ -343,7 +394,7 @@ existentes:
 | Página de dashboard (Observatorio, Elecciones) | `IndicadorPanel` con `<Chart id embedded />` dentro (la card es el panel) |
 | Cualquier otro lugar (blog, calculadoras, páginas nuevas) | `<Chart id="…" />` sin `embedded`: genera la **chart-card** |
 
-**Anatomía de la chart-card** (`ChartContainer.astro`): fondo blanco, borde 1 px,
+**Anatomía de la chart-card** (`ChartContainer.astro`): fondo `--color-surface` (blanco en claro), borde 1 px,
 radio M (12 px), padding `1.25rem`; en hover el borde pasa a azul al 30 % con
 sombra nivel 2.
 
@@ -459,7 +510,7 @@ suelto dentro de un `ChartDef`.
   Así quedan alineadas con el eje Y y no tapan el tramo más reciente de la serie,
   que es el de la derecha.
 - Formato del texto: `Etiqueta · valor` (p. ej. `Prom · 6,1 %`), tamaño
-  `10px`, color de su línea, fondo blanco al 90 %, borde `#cbd5e1` de 1 px.
+  `10px`, color de su línea, fondo `--color-chart-hover-bg`, borde del eje de 1 px.
 - Etiquetas fijas en todo el sitio: **Máx**, **Mín** y **Prom** (sin variantes
   como "Promedio" o "Promedio histórico").
 - Color: gris neutro `#64748b` para las tres, sin sugerir que un extremo es bueno
@@ -484,10 +535,14 @@ suelto dentro de un `ChartDef`.
 
 - Todo layout empieza con `baseLayout()` de `charts.ts`.
 - Fondo transparente; sin grilla vertical; grilla horizontal muy suave
-  (`rgba(208, 215, 220, 0.4)`); línea del eje X en `#d0d7de`.
+  (`COLORS.grid`, token `--color-chart-grid`); línea del eje X en `COLORS.border`.
+- Ningún `ChartDef` escribe neutros literales: usa `COLORS.textPrimary`,
+  `textMuted`, `border`, `grid` o `chartTheme()`, que leen los tokens del tema.
+  Al cambiar de tema, `Chart.astro` reconstruye el gráfico (conservando la vista
+  línea/barras). Los mapas usan `carto-darkmatter` en oscuro y `white-bg` en claro.
 - Ticks de `11px` en gris muted; texto general `12px` Google Sans Flex.
 - Sufijo del eje Y explícito: `%` por defecto; otras unidades lo sobrescriben.
-- Tooltip: fondo blanco, borde `#d0d7de`, texto `12px`.
+- Tooltip: fondo `--color-chart-hover-bg`, borde del eje, texto `12px`.
 - Altura definida en el `ChartDef` (`height`), nunca con CSS en la página.
 - Línea de serie de `2.2px`; relleno bajo la línea al 6 % del color.
 - Se permite el doble eje Y cuando el gráfico compara dos medidas de distinta
@@ -516,7 +571,8 @@ Antes de crear algo, se usa lo que existe.
 
 | Componente | Ubicación | Para qué |
 |---|---|---|
-| `BaseLayout` | `layouts/` | Layout único: sidebar, contenido, footer, SEO |
+| `BaseLayout` | `layouts/` | Layout único: sidebar, contenido, footer, SEO, tokens de ambos temas |
+| `ThemeToggle` | `components/` | Selector Automático / Claro / Oscuro del sidebar (spec 007) |
 | `Hero` | `components/` | Hero zone de toda página de sección |
 | `Card` | `components/` | Cards de proyecto, blog, relacionado y certificación (`variant`, `layout`) |
 | `Callout` | `components/` | Notas en contenido: `nota`, `tip`, `aviso`, `importante` |
@@ -553,7 +609,8 @@ Antes de crear algo, se usa lo que existe.
 ## 10. Accesibilidad
 
 - Contraste de texto AA como mínimo.
-- Foco visible: `outline: 2px solid var(--color-accent); outline-offset: 2px`.
+- Foco visible: `outline: 2px solid var(--color-focus); outline-offset: 2px`.
+- El contraste AA se cumple en **ambos** temas.
 - Un solo `h1` por página (el del hero o la cabecera editorial).
 - Skip-link "Saltar al contenido".
 - `aria-label` en navegación, gráficos y controles sin texto.
@@ -575,6 +632,7 @@ Antes de crear algo, se usa lo que existe.
 | **UI-10** | Las etiquetas de líneas de referencia (promedio, máximo, mínimo, meta) van a la izquierda del gráfico. |
 | **UI-11** | Antes de crear un componente se revisa el catálogo de la sección 8; uno nuevo requiere spec y se agrega al catálogo. |
 | **UI-12** | Cumplir la sección 10 de accesibilidad. |
+| **UI-13** | Todo color de interfaz funciona en claro y oscuro: se usan tokens de la sección 2 (texto azul con `--color-accent-text`) y un token nuevo se define en los bloques claro, oscuro y sin-JS (sección 2.9). |
 
 ## 12. Mantenimiento
 

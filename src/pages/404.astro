@@ -36,7 +36,7 @@ import { urls } from '../lib/urls';
     font-weight: 800;
     line-height: 1;
     letter-spacing: -0.04em;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
   .notfound__title {
     font-size: clamp(1.5rem, 4vw, 2.2rem);
@@ -62,19 +62,19 @@ import { urls } from '../lib/urls';
     border-radius: 0.5rem;
     font-weight: 600;
     font-size: 0.95rem;
-    background: var(--color-accent);
-    color: #fff;
-    border: 1px solid var(--color-accent);
+    background: var(--color-accent-fill);
+    color: var(--color-on-accent);
+    border: 1px solid var(--color-accent-fill);
     transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   }
-  .notfound__btn:hover { background: var(--color-accent-hover); color: #fff; }
+  .notfound__btn:hover { background: var(--color-accent-fill-hover); color: var(--color-on-accent); }
   .notfound__btn--ghost {
     background: transparent;
     color: var(--color-text-secondary);
     border-color: var(--color-border);
   }
   .notfound__btn--ghost:hover {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     border-color: var(--color-accent);
     background: transparent;
   }

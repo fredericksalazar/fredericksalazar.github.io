@@ -70,7 +70,8 @@ llaman así:
 1. `npx astro check` sin errores nuevos.
 2. `npm run build` exitoso.
 3. Si tocaste el pipeline en `odc-data-pipeline`: `pytest tests/`.
-4. Si tocaste interfaz: revisión visual con `npm run dev`.
+4. Si tocaste interfaz: revisión visual con `npm run dev` **en tema claro y oscuro**
+   (selector del sidebar).
 5. Si cambiaste algo descrito en `agents/`, actualiza ese documento.
 6. Informa al autor qué cambió, qué verificaste y qué quedó pendiente, sin
    maquillar los fallos.

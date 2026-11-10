@@ -1,5 +1,6 @@
 import type { ChartDef } from "./types";
 import { COLORS, baseLayout } from "../charts";
+import { chartTheme } from "../theme-colors";
 import type { PresEleccionData, PresCandidatosData, IdeologiaBloque } from "../types";
 
 // Colores constantes para candidatos e ideologías
@@ -41,7 +42,7 @@ export const presComparativoDesplazamientoIdeologico: ChartDef = {
       [0.0, "#7f1d1d"],   // Disminución fuerte (rojo oscuro)
       [0.3, "#ef4444"],   // Disminución media (rojo)
       [0.45, "#fee2e2"],  // Disminución leve (rojo claro)
-      [0.5, "#f8fafc"],   // Sin cambio (blanco)
+      [0.5, chartTheme().hoverBg],   // Sin cambio (blanco)
       [0.55, "#dbeafe"],  // Aumento leve (azul claro)
       [0.7, "#3b82f6"],   // Aumento medio (azul)
       [1.0, "#1e3a8a"]    // Aumento fuerte (azul oscuro)
@@ -311,7 +312,7 @@ export const pres2026_2vVotoNoPositivo: ChartDef = {
           y: [abs2, nul2, nm2],
           type: "bar",
           name: "2ª Vuelta (Balotaje)",
-          marker: { color: "#475569" },
+          marker: { color: COLORS.textSecondary },
           text: [abs2, nul2, nm2].map(v => `${v.toFixed(2)}%`),
           textposition: "outside",
           hovertemplate: "2ª Vuelta: %{y:.3f}% del censo<extra></extra>"
@@ -406,7 +407,7 @@ export const pres2026_2vAporteNetoMargen: ChartDef = {
         connector: { line: { color: COLORS.border, width: 1 } },
         increasing: { marker: { color: ABELARDO_COLOR } },
         decreasing: { marker: { color: CEPEDA_COLOR } },
-        totals: { marker: { color: "#475569" } },
+        totals: { marker: { color: COLORS.textSecondary } },
       }],
       layout: baseLayout({
         waterfallgap: 0.3,
@@ -486,7 +487,7 @@ export const pres2026_2vRetrocesoIzquierda: ChartDef = {
       [0.0, "#1e3a8a"],   // retroceso fuerte (azul oscuro)
       [0.3, "#3b82f6"],
       [0.46, "#dbeafe"],
-      [0.5, "#f8fafc"],   // sin cambio
+      [0.5, chartTheme().hoverBg],   // sin cambio
       [0.54, "#fee2e2"],
       [0.7, "#ef4444"],
       [1.0, "#7f1d1d"],   // avance fuerte (rojo oscuro)

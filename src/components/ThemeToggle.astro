@@ -1,0 +1,181 @@
+---
+import type { ThemePreference } from '../lib/theme-client';
+
+interface Props {
+  orientation?: 'horizontal' | 'vertical';
+  class?: string;
+}
+
+const { orientation = 'horizontal', class: className = '' } = Astro.props;
+
+const options: { value: ThemePreference; label: string; icon: string }[] = [
+  {
+    value: 'auto',
+    label: 'Automático',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>`,
+  },
+  {
+    value: 'light',
+    label: 'Claro',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`,
+  },
+  {
+    value: 'dark',
+    label: 'Oscuro',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`,
+  },
+];
+---
+
+<div class:list={['sidebar__theme', className]} data-theme-toggle>
+  <span class="sidebar__theme-label">Tema</span>
+  <div
+    class:list={['theme-switch', `theme-switch--${orientation}`]}
+    role="radiogroup"
+    aria-label="Tema de la página"
+  >
+    {options.map((option) => (
+      <label class="theme-switch__option">
+        <input
+          class="theme-switch__input"
+          type="radio"
+          name="theme-preference"
+          value={option.value}
+        />
+        <span class="theme-switch__content">
+          <span class="theme-switch__icon" set:html={option.icon} />
+          <span class="theme-switch__text">{option.label}</span>
+        </span>
+      </label>
+    ))}
+  </div>
+</div>
+
+<style>
+  .sidebar__theme {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .sidebar__theme-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .theme-switch {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.2rem;
+    padding: 0.2rem;
+    background: var(--color-surface-sunken);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+  }
+
+  .theme-switch--vertical {
+    grid-template-columns: 1fr;
+  }
+
+  .theme-switch__option {
+    position: relative;
+    min-width: 0;
+  }
+
+  .theme-switch__input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .theme-switch__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.18rem;
+    padding: 0.4rem 0.15rem;
+    border-radius: 0.35rem;
+    color: var(--color-text-muted);
+    font-size: 0.63rem;
+    font-weight: 600;
+    line-height: 1.1;
+    text-align: center;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .theme-switch__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .theme-switch__text {
+    white-space: nowrap;
+  }
+
+  .theme-switch__content:hover {
+    color: var(--color-text-primary);
+  }
+
+  .theme-switch__input:checked + .theme-switch__content {
+    background: var(--color-surface-raised);
+    color: var(--color-accent-text);
+    box-shadow: 0 1px 2px var(--color-shadow);
+  }
+
+  .theme-switch__input:focus-visible + .theme-switch__content {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar__theme {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .theme-switch__content {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import {
+    initTheme,
+    setPreference,
+    type ThemePreference,
+  } from '../lib/theme-client';
+
+  const bind = () => {
+    document
+      .querySelectorAll<HTMLInputElement>('input[name="theme-preference"]')
+      .forEach((input) => {
+        if (input.dataset.themeBound === 'true') return;
+        input.dataset.themeBound = 'true';
+        input.addEventListener('change', () => {
+          if (!input.checked) return;
+          setPreference(input.value as ThemePreference);
+        });
+      });
+  };
+
+  initTheme();
+  bind();
+
+  document.addEventListener('astro:page-load', () => {
+    initTheme();
+    bind();
+  });
+</script>

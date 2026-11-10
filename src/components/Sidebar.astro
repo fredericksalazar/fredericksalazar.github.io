@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { urls } from '../lib/urls';
+import ThemeToggle from './ThemeToggle.astro';
 
 const currentPath = Astro.url.pathname;
 
@@ -100,6 +101,9 @@ function isActive(href: string): boolean {
       <span class="sidebar__role">Data Engineer</span>
     </div>
   </div>
+
+  <!-- ── Selector de tema ───────────────────────────────────────────────── -->
+  <ThemeToggle />
 
   <!-- ── Stats Rápidas ───────────────────────────────────────────────────── -->
   <div class="sidebar__stats">
@@ -239,7 +243,7 @@ function isActive(href: string): boolean {
   .sidebar__stat-value {
     font-size: 1.1rem;
     font-weight: 700;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     line-height: 1;
   }
 
@@ -285,7 +289,7 @@ function isActive(href: string): boolean {
 
   .sidebar__nav-item--active {
     background-color: var(--color-active-bg);
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
 
   .sidebar__nav-icon {
@@ -321,7 +325,7 @@ function isActive(href: string): boolean {
 
   .sidebar__social-link:hover {
     background-color: var(--color-hover);
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
 
   /* ── Mobile ── */

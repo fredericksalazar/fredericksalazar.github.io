@@ -92,7 +92,7 @@
 
 .pyramid-dot--you {
   background: var(--color-dark);
-  border-color: #1f2328;
+  border-color: var(--color-text-primary);
   box-shadow: 0 0 10px var(--color-dark);
   transform: scale(1.25);
   z-index: 5;
@@ -160,14 +160,14 @@
   border-radius: 12px;
   position: relative;
   border: 1px solid var(--color-border, #d0d7de);
-  background: #f1f5f9;
+  background: var(--color-surface-sunken);
 }
 .termometro-segment {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #fff;
+  color: var(--color-on-accent);
   transition: all 0.3s ease;
 }
 .termometro-segment--pobreza {
@@ -202,7 +202,7 @@
   top: -6px;
   bottom: -6px;
   width: 4px;
-  background: #1f2328;
+  background: var(--color-text-primary);
   border-radius: 2px;
   transform: translateX(-50%);
   transition: left 0.6s cubic-bezier(0.25, 1, 0.5, 1);
@@ -216,8 +216,8 @@
   transform: translateX(-50%);
   width: 14px;
   height: 14px;
-  background: #1f2328;
-  border: 2.5px solid #fff;
+  background: var(--color-text-primary);
+  border: 2.5px solid var(--color-bg);
   border-radius: 50%;
   box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
@@ -272,7 +272,7 @@
   height: 10px;
   background: var(--color-border, #d0d7de);
   border-radius: 50%;
-  border: 2px solid #fff;
+  border: 2px solid var(--color-bg);
 }
 .cargo-gauge-tick-label {
   position: absolute;
@@ -310,7 +310,7 @@
   width: 16px;
   height: 16px;
   background: #ea580c;
-  border: 2.5px solid #fff;
+  border: 2.5px solid var(--color-bg);
   border-radius: 50%;
   box-shadow: 0 2px 6px rgba(234, 88, 12, 0.4);
 }
@@ -318,7 +318,7 @@
   position: absolute;
   top: -30px;
   background: #ea580c;
-  color: #fff;
+  color: var(--color-on-accent);
   font-size: 0.65rem;
   font-weight: 700;
   padding: 0.2rem 0.45rem;
@@ -374,7 +374,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--color-accent, #1d4ed8);
+  color: var(--color-accent-text, #1d4ed8);
   background: rgba(29, 78, 216, 0.08);
   padding: 0.25rem 0.6rem;
   border-radius: 100px;
@@ -399,7 +399,7 @@
   font-size: clamp(2.5rem, 6vw, 3.8rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: var(--color-accent, #1d4ed8);
+  color: var(--color-accent-text, #1d4ed8);
   font-family: "JetBrains Mono", ui-monospace, monospace;
   line-height: 1;
 }
@@ -463,4 +463,22 @@
   font-size: 0.78rem;
   color: var(--color-text-muted, #636c76);
   line-height: 1.35;
+}
+
+/* ── Shiki: temas duales claro/oscuro ─────────────────────────────────────── */
+.astro-code,
+.astro-code span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+
+html[data-theme="dark"] .astro-code,
+html[data-theme="dark"] .astro-code span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
+
+.astro-code {
+  border: 1px solid var(--color-code-border);
+  border-radius: 0.5rem;
 }

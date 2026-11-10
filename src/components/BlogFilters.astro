@@ -106,10 +106,10 @@ const { topTags, tipos } = Astro.props;
     transition: background 0.15s, color 0.15s, border-color 0.15s;
     font-family: inherit;
   }
-  .filters__chip:hover { background: var(--color-hover); color: var(--color-accent); }
+  .filters__chip:hover { background: var(--color-hover); color: var(--color-accent-text); }
   .filters__chip--active {
     background: var(--color-accent);
-    color: #fff;
+    color: var(--color-on-accent);
     border-color: var(--color-accent);
   }
 </style>

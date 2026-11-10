@@ -157,7 +157,7 @@ clusters requieren justificación en la spec.
 | **PRD-01** | **Toda página refuerza la marca:** identifica al autor y ofrece un camino hacia otro pilar o hacia el contacto. |
 | **PRD-02** | **Credibilidad antes que volumen:** mejor no publicar que publicar un dato o logro no verificable. |
 | **PRD-03** | **Indexable primero:** el contenido de valor está en el HTML inicial; lo interactivo es mejora, no requisito. |
-| **PRD-04** | **Una sola identidad visual:** blanco y azul de marca, Google Sans Flex, según `DESIGN-SYSTEM.md`. |
+| **PRD-04** | **Una sola identidad visual en dos temas:** azul de marca y Google Sans Flex, en tema claro (referencia) y oscuro, según `DESIGN-SYSTEM.md` y `specs/007-tema-claro-oscuro/spec.md`. |
 | **PRD-05** | **Rigor de datos:** fuente oficial, fecha de corte y metodología visibles en todo dato publicado. |
 | **PRD-06** | **Neutralidad política** en contenido electoral. |
 | **PRD-07** | **Nada inventado sobre el autor:** empresas, cargos, certificaciones y cifras salen de información real del autor. |

@@ -1,3 +1,5 @@
+import { chartTheme, getMapboxStyle } from "./theme-colors";
+
 interface PeriodoRow { periodo: string; }
 
 export const COLORS = {
@@ -12,50 +14,80 @@ export const COLORS = {
   acelerador: "rgba(34, 197, 94, 0.20)",
   metaBanda: "rgba(34, 197, 94, 0.08)",
   metaLinea: "rgba(34, 197, 94, 0.5)",
-  textPrimary: "#1f2328",
-  textMuted: "#636c76",
-  border: "#d0d7de",
+  get textPrimary() { return chartTheme().text; },
+  get textSecondary() { return chartTheme().textSecondary; },
+  get textMuted() { return chartTheme().muted; },
+  get border() { return chartTheme().border; },
+  get grid() { return chartTheme().grid; },
   ideologia: {
     "izquierda": "#dc2626",
     "centro": "#16a34a",
     "derecha": "#2563eb",
   }
-} as const;
-
-export const FONT = {
-  family: "'Google Sans Flex', 'Google Sans', system-ui, -apple-system, sans-serif",
-  size: 12,
-  color: COLORS.textPrimary,
 };
 
-export const baseLayout = (overrides: Record<string, unknown> = {}) => ({
-  font: FONT,
-  paper_bgcolor: "rgba(0,0,0,0)",
-  plot_bgcolor: "rgba(0,0,0,0)",
-  margin: { l: 48, r: 24, t: 16, b: 40 },
-  xaxis: {
-    type: "date",
-    showgrid: false,
-    showline: true,
-    linecolor: COLORS.border,
-    tickfont: { ...FONT, size: 11, color: COLORS.textMuted },
-    automargin: true,
-  },
-  yaxis: {
-    showgrid: true,
-    gridcolor: "rgba(208, 215, 220, 0.4)",
-    zeroline: false,
-    tickfont: { ...FONT, size: 11, color: COLORS.textMuted },
-    ticksuffix: "%",
-    automargin: true,
-  },
-  hoverlabel: {
-    bgcolor: "#ffffff",
-    bordercolor: COLORS.border,
-    font: { ...FONT, size: 12 },
-  },
-  ...overrides,
-});
+const FONT_FAMILY = "'Google Sans Flex', 'Google Sans', system-ui, -apple-system, sans-serif";
+
+export const FONT = {
+  get family() { return FONT_FAMILY; },
+  get size() { return 12; },
+  get color() { return chartTheme().text; },
+};
+
+export const baseLayout = (overrides: Record<string, unknown> = {}) => {
+  const theme = chartTheme();
+  const mapbox = overrides.mapbox as Record<string, unknown> | undefined;
+  const themedOverrides: Record<string, unknown> = mapbox
+    ? { ...overrides, mapbox: { ...mapbox, style: getMapboxStyle() } }
+    : { ...overrides };
+
+  // En oscuro, los ejes que un ChartDef redefine por completo perderían los
+  // colores del tema y Plotly usaría sus grises claros por defecto. Solo se
+  // completan las propiedades ausentes; en claro no se toca nada.
+  if (theme.mapStyle === "carto-darkmatter") {
+    for (const key of Object.keys(themedOverrides)) {
+      if (!/^[xy]axis\d*$/.test(key)) continue;
+      const axis = themedOverrides[key] as Record<string, unknown> | undefined;
+      if (!axis || typeof axis !== "object") continue;
+      themedOverrides[key] = {
+        gridcolor: theme.grid,
+        zerolinecolor: theme.border,
+        linecolor: theme.border,
+        ...axis,
+        tickfont: { color: theme.muted, ...(axis.tickfont as object | undefined) },
+      };
+    }
+  }
+
+  return {
+    font: { ...FONT },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
+    margin: { l: 48, r: 24, t: 16, b: 40 },
+    xaxis: {
+      type: "date",
+      showgrid: false,
+      showline: true,
+      linecolor: theme.border,
+      tickfont: { ...FONT, size: 11, color: theme.muted },
+      automargin: true,
+    },
+    yaxis: {
+      showgrid: true,
+      gridcolor: theme.grid,
+      zeroline: false,
+      tickfont: { ...FONT, size: 11, color: theme.muted },
+      ticksuffix: "%",
+      automargin: true,
+    },
+    hoverlabel: {
+      bgcolor: theme.hoverBg,
+      bordercolor: theme.border,
+      font: { ...FONT, size: 12 },
+    },
+    ...themedOverrides,
+  };
+};
 
 export const periodoToISODate = (periodo: string): string => `${periodo}-01`;
 
@@ -95,9 +127,9 @@ export interface LineasReferenciaOpts {
  * que un extremo es bueno o malo; se distinguen por etiqueta y trazo
  * (máx/mín discontinuas, promedio punteado).
  */
-const REF_GRIS = "#64748b";
+const refGris = () => chartTheme().reference;
 /** Tinta de texto para etiquetas combinadas (el texto no lleva color de serie). */
-const REF_TEXTO_COMBINADO = "#475569";
+const refTexto = () => chartTheme().text;
 /** Fracción del rango visible por debajo de la cual dos etiquetas se combinan. */
 const UMBRAL_COMBINAR = 0.06;
 
@@ -149,7 +181,7 @@ export function lineasReferencia(
   const formatoBase = opts.formato ?? ((v: number) => formatoDec(v, dec));
   const formatoRef = (r: ReferenceLine) =>
     r.decimales !== undefined ? formatoDec(r.valor, r.decimales) : formatoBase(r.valor);
-  const colorDe = (r: ReferenceLine) => r.color ?? REF_GRIS;
+  const colorDe = (r: ReferenceLine) => r.color ?? refGris();
 
   const shapes = refs.map((r) => ({
     type: "line", xref: "paper", x0: 0, x1: 1, yref: "y", y0: r.valor, y1: r.valor,
@@ -179,8 +211,8 @@ export function lineasReferencia(
     y: grupo[0].valor, yanchor: "bottom",
     text: grupo.map((r) => `${r.etiqueta} · ${formatoRef(r)}`).join(" · "),
     showarrow: false,
-    font: { size: 10, color: grupo.length === 1 ? colorDe(grupo[0]) : REF_TEXTO_COMBINADO, family: FONT.family },
-    bgcolor: "rgba(255,255,255,0.9)", bordercolor: "#cbd5e1", borderwidth: 1, borderpad: 3,
+    font: { size: 10, color: grupo.length === 1 ? colorDe(grupo[0]) : refTexto(), family: FONT.family },
+    bgcolor: chartTheme().hoverBg, bordercolor: chartTheme().border, borderwidth: 1, borderpad: 3,
   }));
 
   return { shapes, annotations };

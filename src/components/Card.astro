@@ -375,7 +375,7 @@ const HeadingTag = headingLevel;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ffffff;
+    background: var(--color-surface);
     padding: 1rem;
     position: relative;
   }
@@ -392,7 +392,7 @@ const HeadingTag = headingLevel;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ffffff;
+    background: var(--color-surface);
     padding: 1.5rem;
     border-bottom: 1px solid var(--color-border);
     position: relative;
@@ -411,7 +411,7 @@ const HeadingTag = headingLevel;
     right: 0.75rem;
     font-size: 0.7rem;
     font-weight: 700;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     background: rgba(37, 99, 235, 0.1);
     border: 1px solid rgba(37, 99, 235, 0.2);
     padding: 0.2rem 0.5rem;
@@ -439,15 +439,15 @@ const HeadingTag = headingLevel;
   }
 
   .card__overlay-btn {
-    background: rgba(255, 255, 255, 0.95);
-    color: #111;
+    background: var(--color-surface-overlay);
+    color: var(--color-text-primary);
     padding: 0.6rem 1.4rem;
     border-radius: 2rem;
     font-weight: 600;
     font-size: 0.9rem;
     transform: translateY(15px);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px var(--color-shadow-strong);
   }
 
   .card--project:hover .card__overlay-btn {
@@ -478,7 +478,7 @@ const HeadingTag = headingLevel;
   /* Meta (date, category) */
   .card__meta {
     font-size: 0.75rem;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     font-family: var(--font-mono);
     font-weight: 600;
     display: block;
@@ -530,7 +530,7 @@ const HeadingTag = headingLevel;
 
   .card:hover .card__title,
   .card__link:hover {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
 
   /* Description */
@@ -596,7 +596,7 @@ const HeadingTag = headingLevel;
     background: rgba(139, 92, 246, 0.1);
     border: 1px solid rgba(139, 92, 246, 0.2);
     border-radius: 100px;
-    color: #8b5cf6;
+    color: var(--color-text-violet);
   }
 
   .card__tag--link {
@@ -612,7 +612,7 @@ const HeadingTag = headingLevel;
 
   .card__tag--link:hover {
     border-color: var(--color-accent);
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
 
   /* ============================================
@@ -625,7 +625,7 @@ const HeadingTag = headingLevel;
     gap: 0.5rem;
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     transition: gap 0.2s ease;
     margin-top: auto;
   }
@@ -652,7 +652,7 @@ const HeadingTag = headingLevel;
   }
 
   .card__footer:hover {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
 
   /* ============================================
@@ -814,13 +814,13 @@ const HeadingTag = headingLevel;
     letter-spacing: 0.06em;
     padding: 0.18rem 0.5rem;
     border-radius: 0.3rem;
-    background: var(--color-accent);
-    color: #fff;
+    background: var(--color-accent-fill);
+    color: var(--color-on-accent);
   }
-  .card__tipo--tutorial { background: #16a34a; }
+  .card__tipo--tutorial { background: #15803d; }
   .card__tipo--analisis { background: var(--color-accent); }
   .card__tipo--informe { background: #0f1f4a; }
   .card__tipo--opinion { background: #9333ea; }
-  .card__tipo--caso-estudio { background: #ea580c; }
+  .card__tipo--caso-estudio { background: #c2410c; }
   .card__tipo--referencia { background: #475569; }
 </style>

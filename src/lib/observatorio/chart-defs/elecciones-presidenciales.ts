@@ -1,5 +1,6 @@
 import type { ChartDef } from "./types";
 import { COLORS, baseLayout } from "../charts";
+import { chartTheme } from "../theme-colors";
 import type { IdeologiaBloque, PresEleccionData, PresCandidatosData } from "../types";
 import { joinCandidatosIdeologia } from "../derivations-elecciones";
 import { simular2026_2V, construirInputs, montecarlo2026_2V } from "../simulacion-2026-2v";
@@ -487,7 +488,7 @@ export const pres2022_2vDeltaPetroDepto: ChartDef = {
         type: "bar", orientation: "h",
         x: rows.map(r => r.delta),
         y: rows.map(r => r.nombre),
-        marker: { color: rows.map(r => r.delta >= 0 ? "#dc2626" : "#94a3b8") },
+        marker: { color: rows.map(r => r.delta >= 0 ? "#dc2626" : COLORS.textMuted) },
         text: rows.map(r => new Intl.NumberFormat("es-CO", { signDisplay: "always" }).format(r.delta)),
         textposition: "auto",
         customdata: rows.map(r => [r.p1, r.p2, r.pct]),
@@ -899,7 +900,7 @@ export const pres2026_2vDeltaGanadorDepto: ChartDef = {
         type: "bar", orientation: "h",
         x: rows.map(r => r.delta),
         y: rows.map(r => r.nombre),
-        marker: { color: rows.map(r => r.delta >= 0 ? DE_COLOR : "#94a3b8") },
+        marker: { color: rows.map(r => r.delta >= 0 ? DE_COLOR : COLORS.textMuted) },
         text: rows.map(r => new Intl.NumberFormat("es-CO", { signDisplay: "always" }).format(r.delta)),
         textposition: "auto",
         customdata: rows.map(r => [r.p1, r.p2, r.pct]),
@@ -1236,7 +1237,7 @@ export const pres2026_2vMapaMunicipio: ChartDef = {
         computed[mode.id] = {
           locations, z, text,
           // Divergente: rojo (Cepeda) ← blanco (empate) → azul (De la Espriella).
-          colorscale: [[0, "#7f1d1d"], [0.25, "#ef4444"], [0.5, "#f8fafc"], [0.75, "#3b82f6"], [1, "#1e3a8a"]],
+          colorscale: [[0, "#7f1d1d"], [0.25, "#ef4444"], [0.5, chartTheme().hoverBg], [0.75, "#3b82f6"], [1, "#1e3a8a"]],
           zmin: -M, zmax: M, showscale: true,
           colorbar: { title: { text: "Margen (pp)" }, tickformat: "+.0%", thickness: 12, len: 0.6 },
         };
@@ -1373,7 +1374,7 @@ export const pres2026_2vDistribucionMargenes: ChartDef = {
       layout: baseLayout({
         bargap: 0.03,
         xaxis: { title: "Margen de victoria (pp) · negativo = Cepeda, positivo = De la Espriella", zeroline: true, zerolinecolor: COLORS.textMuted, zerolinewidth: 1.5, ticksuffix: " pp", automargin: true },
-        yaxis: { title: "Número de municipios", gridcolor: "rgba(208, 215, 220, 0.4)", automargin: true },
+        yaxis: { title: "Número de municipios", gridcolor: COLORS.grid, automargin: true },
         margin: { l: 60, r: 20, t: 16, b: 64 },
       }),
       pregunta: `De ${muns.length} municipios, De la Espriella ganó ${de} y Cepeda ${cep}. Solo ${reñidos} se definieron por menos de 5 pp y ${aplastantes} por más de 30 pp: pocos empates y muchos extremos — dos bloques territoriales contundentes.`,
@@ -1884,7 +1885,7 @@ export const pres2026_2vDiferenciaVariacion: ChartDef = {
       [0.0, "#7f1d1d"],   // Cepeda (rojo oscuro, negativo)
       [0.3, "#ef4444"],   // Cepeda (rojo, negativo)
       [0.45, "#fee2e2"],  // Cepeda (rojo muy claro, negativo)
-      [0.5, "#f8fafc"],   // Blanco / Neutro (0)
+      [0.5, chartTheme().hoverBg],   // Blanco / Neutro (0)
       [0.55, "#dbeafe"],  // De la Espriella (azul muy claro, positivo)
       [0.7, "#3b82f6"],   // De la Espriella (azul, positivo)
       [1.0, "#1e3a8a"]    // De la Espriella (azul oscuro, positivo)

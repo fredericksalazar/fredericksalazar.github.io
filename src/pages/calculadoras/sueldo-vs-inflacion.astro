@@ -357,7 +357,7 @@ const jsonLd = {
     color: var(--color-text-muted, #636c76);
     margin-bottom: 1rem;
   }
-  .calc__breadcrumb a { color: var(--color-accent, #2563eb); text-decoration: none; }
+  .calc__breadcrumb a { color: var(--color-accent-text, #2563eb); text-decoration: none; }
 
   .calc__form {
     display: flex;
@@ -384,7 +384,7 @@ const jsonLd = {
     padding: 0.65rem 0.85rem;
     border: 1px solid var(--color-border, #d0d7de);
     border-radius: 10px;
-    background: #fff;
+    background: var(--color-surface);
     color: var(--color-text-primary, #1f2328);
     font-family: "JetBrains Mono", ui-monospace, monospace;
   }
@@ -418,7 +418,7 @@ const jsonLd = {
     font-size: clamp(2.2rem, 5vw, 3.4rem);
     font-weight: 800;
     letter-spacing: -0.02em;
-    color: var(--color-accent, #2563eb);
+    color: var(--color-accent-text, #2563eb);
     font-family: "JetBrains Mono", ui-monospace, monospace;
   }
 
@@ -443,12 +443,12 @@ const jsonLd = {
     font-family: "JetBrains Mono", ui-monospace, monospace;
     color: var(--color-text-primary, #1f2328);
   }
-  .calc-stat--rojo .calc-stat__valor { color: #dc2626; }
+  .calc-stat--rojo .calc-stat__valor { color: var(--color-status-danger); }
   .calc-stat__label { font-size: 0.78rem; line-height: 1.45; color: var(--color-text-muted, #636c76); }
 
   .calc__chart-card {
     padding: 1.25rem;
-    background: #fff;
+    background: var(--color-surface);
     border: 1px solid var(--color-border, #d0d7de);
     border-radius: 18px;
     margin-bottom: 1.5rem;
@@ -474,8 +474,8 @@ const jsonLd = {
     padding: 0.45rem 1rem;
     border: 1px solid var(--color-border, #d0d7de);
     border-radius: 100px;
-    background: #fff;
-    color: var(--color-accent, #2563eb);
+    background: var(--color-surface);
+    color: var(--color-accent-text, #2563eb);
     text-decoration: none;
     cursor: pointer;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
@@ -514,5 +514,5 @@ const jsonLd = {
     line-height: 1.65;
     color: var(--color-text-muted, #636c76);
   }
-  .calc__metodologia a { color: var(--color-accent, #2563eb); }
+  .calc__metodologia a { color: var(--color-accent-text, #2563eb); }
 </style>

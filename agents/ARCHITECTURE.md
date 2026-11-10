@@ -220,6 +220,29 @@ Cada spec declara qué módulos toca. Entre paréntesis, el pilar de
   de buscadores en `public/`.
 - Sin `SearchAction` a propósito: el sitio no tiene buscador.
 
+### 5.9 Transversal: tema claro / oscuro (spec 007)
+- **Pre-pintado:** script inline en `BaseLayout` que lee
+  `localStorage['theme-preference']` y `prefers-color-scheme`, fija
+  `data-theme`/`data-theme-preference` y `meta[name="theme-color"]` antes del
+  primer pintado; se re-aplica en `astro:after-swap`. Sin JS, el tema sigue al
+  sistema por CSS.
+- **`lib/theme-client.ts`:** `getPreference`, `setPreference`, `resolveTheme`,
+  `applyTheme`, `initTheme` (idempotente con `window.__themeBound`) y
+  `onThemeChange`. Escucha cambios del sistema (solo en `auto`) y el evento
+  `storage` de otras pestañas; emite `themechange` en `document` cuando cambia el
+  tema resuelto.
+- **`lib/observatorio/theme-colors.ts`:** `chartTheme()` lee los tokens
+  `--color-chart-*` con `getComputedStyle` (fallback claro sin DOM) y
+  `getMapboxStyle()`. `charts.ts` expone `COLORS`/`FONT` con getters y
+  `baseLayout()` aplica el tema (en oscuro completa colores de ejes que un
+  `ChartDef` redefina).
+- **Re-render:** `Chart.astro` escucha `themechange` una sola vez y llama
+  `reactPlotly()` (`plotly-mount.ts`) con datos cacheados.
+- **Código:** Shiki con temas duales (`github-light`/`github-dark`,
+  `defaultColor: false`) y reglas `.astro-code` en `global.css`.
+- Sin dependencias nuevas: solo CSS, `matchMedia`, `localStorage` y lo ya
+  instalado.
+
 ## 6. Capa de datos
 
 ### 6.1 Inventario de datasets (`public/data/`)
@@ -312,6 +335,7 @@ nuevos, `npm run build` exitoso y, si se tocó el pipeline en `odc-data-pipeline
 | Pipeline ETL desacoplado en `odc-data-pipeline` y JSON en `public/data/` | Separa datos crudos pesados (microdatos GEIH, series mundiales) del sitio web manteniendo trazabilidad git de los contratos JSON. |
 | Plotly por CDN y gráficos en cliente | Interactividad sin inflar el HTML; datos fuera del bundle. |
 | Sin framework de islas | Menos JS y menos dependencias; la interactividad es acotada. |
+| Tema por tokens CSS + `data-theme` (sin filtros `invert`) | Un filtro global distorsiona marca, imágenes y gráficos; los tokens permiten contraste AA en ambos temas sin dependencias. |
 | og:image en PNG | Compatibilidad con previews de redes sociales. |
 | Wikipedia como fuente electoral y de salario mínimo | La Registraduría bloquea descargas automáticas; las tablas de salario mínimo se validan con anclas históricas. |
 | Determinismo en automatizaciones editoriales (`extract-inflacion-facts.mjs`) | Cero alucinaciones numéricas en LLMs: todos los cálculos, variaciones interanuales y efecto base se derivan en Node.js puro antes de la redacción. |

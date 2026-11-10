@@ -70,10 +70,10 @@ const vigente = informe?.versiones.find((v) => v.vigente) ?? informe?.versiones[
     position: relative;
     width: 100%;
     max-width: 420px;
-    background: #fff;
+    background: var(--color-surface);
     border-radius: 18px;
     padding: 1.75rem 1.75rem 1.5rem;
-    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+    box-shadow: 0 24px 60px var(--color-shadow-strong);
     text-align: center;
     transform: translateY(12px) scale(0.98);
     transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -108,7 +108,7 @@ const vigente = informe?.versiones.find((v) => v.vigente) ?? informe?.versiones[
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--color-accent, #2563eb);
+    color: var(--color-accent-text, #2563eb);
   }
   .informe-pop__title {
     font-size: 1.45rem;
@@ -134,15 +134,15 @@ const vigente = informe?.versiones.find((v) => v.vigente) ?? informe?.versiones[
     display: block;
     width: 100%;
     padding: 0.8rem 1rem;
-    background: var(--color-accent, #2563eb);
-    color: #fff;
+    background: var(--color-accent-fill, #2563eb);
+    color: var(--color-on-accent);
     font-size: 0.95rem;
     font-weight: 600;
     border-radius: 10px;
     text-decoration: none;
     transition: background 0.2s ease;
   }
-  .informe-pop__cta:hover { background: var(--color-accent-hover, #1d4ed8); color: #fff; }
+  .informe-pop__cta:hover { background: var(--color-accent-fill-hover, #1d4ed8); color: var(--color-on-accent); }
   .informe-pop__later {
     margin-top: 0.65rem;
     border: none;

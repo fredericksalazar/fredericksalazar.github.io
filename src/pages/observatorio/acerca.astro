@@ -123,8 +123,8 @@ const metodologia = [
       <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg" class="acerca-hero-svg">
         <defs>
           <linearGradient id="grad-card" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#ffffff" />
-            <stop offset="100%" stop-color="#eef4ff" />
+            <stop offset="0%" stop-color="var(--color-surface)" />
+            <stop offset="100%" stop-color="var(--color-blueprint-bg-end)" />
           </linearGradient>
           <linearGradient id="grad-bar" x1="0" y1="1" x2="0" y2="0">
             <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.25" />
@@ -132,11 +132,11 @@ const metodologia = [
           </linearGradient>
         </defs>
         <!-- Card principal -->
-        <rect x="60" y="60" width="360" height="240" rx="16" fill="url(#grad-card)" stroke="#cbd5ff" stroke-width="1.5" />
+        <rect x="60" y="60" width="360" height="240" rx="16" fill="url(#grad-card)" stroke="var(--color-blueprint-soft-strong)" stroke-width="1.5" />
         <!-- Header card -->
         <circle cx="84" cy="86" r="6" fill="#2563eb" />
-        <rect x="100" y="80" width="120" height="12" rx="3" fill="#cbd5ff" />
-        <rect x="100" y="98" width="80" height="8" rx="2" fill="#dbe5ff" />
+        <rect x="100" y="80" width="120" height="12" rx="3" fill="var(--color-blueprint-soft-strong)" />
+        <rect x="100" y="98" width="80" height="8" rx="2" fill="var(--color-blueprint-soft)" />
         <!-- Línea -->
         <polyline points="80,220 130,180 180,200 230,150 280,170 330,120 380,140" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
         <!-- Puntos -->
@@ -156,15 +156,15 @@ const metodologia = [
         <rect x="160" y="255" width="14" height="25" rx="2" fill="url(#grad-bar)" />
         <rect x="180" y="245" width="14" height="35" rx="2" fill="url(#grad-bar)" />
         <!-- Card flotante -->
-        <rect x="280" y="240" width="120" height="56" rx="10" fill="#ffffff" stroke="#cbd5ff" stroke-width="1.5" />
-        <text x="294" y="262" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#64748b" letter-spacing="1">FUENTES</text>
+        <rect x="280" y="240" width="120" height="56" rx="10" fill="var(--color-surface)" stroke="var(--color-blueprint-soft-strong)" stroke-width="1.5" />
+        <text x="294" y="262" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="var(--color-text-muted)" letter-spacing="1">FUENTES</text>
         <text x="294" y="284" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#2563eb">8+</text>
         <!-- Nodos satélite -->
-        <circle cx="40" cy="120" r="14" fill="#ffffff" stroke="#2563eb" stroke-width="1.5" />
+        <circle cx="40" cy="120" r="14" fill="var(--color-surface)" stroke="#2563eb" stroke-width="1.5" />
         <circle cx="40" cy="120" r="4" fill="#2563eb" />
-        <circle cx="440" cy="80" r="10" fill="#ffffff" stroke="#2563eb" stroke-width="1.5" />
+        <circle cx="440" cy="80" r="10" fill="var(--color-surface)" stroke="#2563eb" stroke-width="1.5" />
         <circle cx="440" cy="80" r="3" fill="#2563eb" />
-        <circle cx="430" cy="320" r="12" fill="#ffffff" stroke="#2563eb" stroke-width="1.5" />
+        <circle cx="430" cy="320" r="12" fill="var(--color-surface)" stroke="#2563eb" stroke-width="1.5" />
         <circle cx="430" cy="320" r="3.5" fill="#2563eb" />
       </svg>
     </div>
@@ -609,7 +609,7 @@ const metodologia = [
     --color-acc-soft: rgba(37, 99, 235, 0.08);
     --color-acc-border: rgba(37, 99, 235, 0.18);
     font-family: "Google Sans Flex", "Google Sans", system-ui, -apple-system, sans-serif;
-    color: #1e293b;
+    color: var(--color-text-primary);
   }
 
   /* ── Hero visual SVG ── */
@@ -634,7 +634,7 @@ const metodologia = [
     padding: 4.5rem 1.5rem;
   }
   .acerca-section--alt {
-    background: linear-gradient(180deg, #fafbff 0%, #f5f8ff 100%);
+    background: linear-gradient(180deg, var(--color-blueprint-bg-start) 0%, var(--color-blueprint-bg-end) 100%);
     border-top: 1px solid rgba(37, 99, 235, 0.06);
     border-bottom: 1px solid rgba(37, 99, 235, 0.06);
   }
@@ -655,7 +655,7 @@ const metodologia = [
     font-weight: 700;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     margin-bottom: 0.85rem;
   }
 
@@ -664,7 +664,7 @@ const metodologia = [
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.02em;
-    color: #0f172a;
+    color: var(--color-text-primary);
     margin: 0 0 1.25rem;
     max-width: 780px;
   }
@@ -676,7 +676,7 @@ const metodologia = [
   .acerca-lead {
     font-size: 1.05rem;
     line-height: 1.65;
-    color: #475569;
+    color: var(--color-text-secondary);
     max-width: 720px;
     margin: 0 0 2.25rem;
   }
@@ -695,7 +695,7 @@ const metodologia = [
   .acerca-intro__grid p {
     font-size: 1rem;
     line-height: 1.7;
-    color: #475569;
+    color: var(--color-text-secondary);
     margin: 0;
   }
 
@@ -712,21 +712,21 @@ const metodologia = [
     display: flex;
     gap: 0.85rem;
     padding: 1rem 1.1rem;
-    background: #ffffff;
+    background: var(--color-surface);
     border: 1px solid var(--color-acc-border);
     border-radius: 10px;
     align-items: flex-start;
     transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
   .friccion:hover {
-    border-color: var(--color-acc);
+    border-color: var(--color-accent-text);
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(37, 99, 235, 0.08);
   }
   .friccion__num {
     font-size: 0.78rem;
     font-weight: 700;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     background: var(--color-acc-soft);
     padding: 0.2rem 0.5rem;
     border-radius: 6px;
@@ -735,7 +735,7 @@ const metodologia = [
   }
   .friccion__text {
     font-size: 0.92rem;
-    color: #334155;
+    color: var(--color-text-secondary);
     line-height: 1.5;
   }
 
@@ -750,7 +750,7 @@ const metodologia = [
     padding: 2.25rem;
     border-radius: 16px;
     border: 1px solid var(--color-acc-border);
-    background: #ffffff;
+    background: var(--color-surface);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   .mv-card:hover {
@@ -758,10 +758,10 @@ const metodologia = [
     box-shadow: 0 12px 30px rgba(37, 99, 235, 0.1);
   }
   .mv-card--mision {
-    background: linear-gradient(180deg, #ffffff 0%, #f0f6ff 100%);
+    background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-blueprint-bg-end) 100%);
   }
   .mv-card--vision {
-    background: linear-gradient(180deg, #ffffff 0%, #eef4ff 100%);
+    background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-blueprint-bg-end) 100%);
   }
   .mv-card__icon {
     width: 44px;
@@ -781,7 +781,7 @@ const metodologia = [
   .mv-card__title {
     font-size: 1.3rem;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--color-text-primary);
     margin: 0.4rem 0 0.85rem;
     line-height: 1.3;
     letter-spacing: -0.01em;
@@ -789,7 +789,7 @@ const metodologia = [
   .mv-card p {
     font-size: 0.97rem;
     line-height: 1.65;
-    color: #475569;
+    color: var(--color-text-secondary);
     margin: 0;
   }
 
@@ -801,13 +801,13 @@ const metodologia = [
   }
   .capacidad {
     padding: 1.5rem;
-    background: #ffffff;
+    background: var(--color-surface);
     border: 1px solid var(--color-acc-border);
     border-radius: 12px;
     transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
   .capacidad:hover {
-    border-color: var(--color-acc);
+    border-color: var(--color-accent-text);
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(37, 99, 235, 0.08);
   }
@@ -816,7 +816,7 @@ const metodologia = [
     height: 40px;
     border-radius: 9px;
     background: var(--color-acc-soft);
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -829,13 +829,13 @@ const metodologia = [
   .capacidad__title {
     font-size: 1.02rem;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--color-text-primary);
     margin: 0 0 0.4rem;
   }
   .capacidad__desc {
     font-size: 0.9rem;
     line-height: 1.55;
-    color: #475569;
+    color: var(--color-text-secondary);
     margin: 0;
   }
 
@@ -849,7 +849,7 @@ const metodologia = [
     position: relative;
     padding: 1.6rem 1.5rem 1.5rem;
     border-radius: 12px;
-    background: #ffffff;
+    background: var(--color-surface);
     border: 1px solid var(--color-acc-border);
     border-left: 3px solid var(--color-acc);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -862,19 +862,19 @@ const metodologia = [
     font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     letter-spacing: 0.08em;
   }
   .principio__title {
     font-size: 1.05rem;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--color-text-primary);
     margin: 0.3rem 0 0.45rem;
   }
   .principio p {
     font-size: 0.9rem;
     line-height: 1.55;
-    color: #475569;
+    color: var(--color-text-secondary);
     margin: 0;
   }
 
@@ -888,7 +888,7 @@ const metodologia = [
     align-items: stretch;
     gap: 0.5rem;
     justify-content: center;
-    background: #ffffff;
+    background: var(--color-surface);
     border: 1px solid var(--color-acc-border);
     border-radius: 14px;
   }
@@ -910,8 +910,8 @@ const metodologia = [
     font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: 0.72rem;
     font-weight: 700;
-    color: var(--color-acc);
-    background: white;
+    color: var(--color-accent-text);
+    background: var(--color-surface);
     padding: 0.18rem 0.42rem;
     border-radius: 5px;
     letter-spacing: 0.04em;
@@ -919,11 +919,11 @@ const metodologia = [
   .pipe-step__label {
     font-size: 0.92rem;
     font-weight: 600;
-    color: #1e293b;
+    color: var(--color-text-primary);
   }
   .pipe-step__arrow {
     font-size: 1.1rem;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     margin-left: 0.4rem;
     opacity: 0.7;
   }
@@ -936,7 +936,7 @@ const metodologia = [
   }
   .fuente {
     padding: 1rem 1.2rem;
-    background: #ffffff;
+    background: var(--color-surface);
     border: 1px solid var(--color-acc-border);
     border-radius: 10px;
     display: flex;
@@ -945,18 +945,18 @@ const metodologia = [
     transition: border-color 0.2s ease, transform 0.2s ease;
   }
   .fuente:hover {
-    border-color: var(--color-acc);
+    border-color: var(--color-accent-text);
     transform: translateY(-2px);
   }
   .fuente__sigla {
     font-size: 0.95rem;
     font-weight: 700;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     letter-spacing: -0.01em;
   }
   .fuente__nombre {
     font-size: 0.82rem;
-    color: #64748b;
+    color: var(--color-text-muted);
     line-height: 1.4;
   }
 
@@ -970,7 +970,7 @@ const metodologia = [
   .metodologia__intro p {
     font-size: 1rem;
     line-height: 1.7;
-    color: #475569;
+    color: var(--color-text-secondary);
     margin: 0;
     max-width: 480px;
   }
@@ -986,17 +986,17 @@ const metodologia = [
     align-items: center;
     gap: 0.75rem;
     padding: 0.85rem 1rem;
-    background: #ffffff;
+    background: var(--color-surface);
     border: 1px solid var(--color-acc-border);
     border-radius: 8px;
     font-size: 0.93rem;
-    color: #334155;
+    color: var(--color-text-secondary);
     font-weight: 500;
   }
   .metodologia__lista svg {
     width: 18px;
     height: 18px;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     flex-shrink: 0;
   }
 
@@ -1012,16 +1012,16 @@ const metodologia = [
   }
   .audiencia__chip {
     padding: 0.55rem 1.1rem;
-    background: #ffffff;
+    background: var(--color-surface);
     border: 1px solid var(--color-acc-border);
     border-radius: 100px;
     font-size: 0.88rem;
     font-weight: 600;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   }
   .audiencia__chip:hover {
-    border-color: var(--color-acc);
+    border-color: var(--color-accent-text);
     transform: translateY(-2px);
     box-shadow: 0 6px 14px rgba(37, 99, 235, 0.12);
   }
@@ -1087,7 +1087,7 @@ const metodologia = [
     border-radius: 100px;
     font-size: 0.72rem;
     font-weight: 600;
-    color: #15803d;
+    color: var(--color-text-success);
     margin-bottom: 1rem;
   }
   .estado__dot {
@@ -1120,7 +1120,7 @@ const metodologia = [
     font-size: 0.78rem;
     font-weight: 700;
     letter-spacing: 0.18em;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     margin-bottom: 0.45rem;
     opacity: 0.85;
   }
@@ -1130,7 +1130,7 @@ const metodologia = [
 
   /* ── Stat strip ── */
   .stat-strip {
-    background: linear-gradient(135deg, #ffffff 0%, #f0f5ff 100%);
+    background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-blueprint-bg-end) 100%);
     border-bottom: 1px solid var(--color-acc-border);
   }
   .stat-strip__inner {
@@ -1150,7 +1150,7 @@ const metodologia = [
   .stat-strip__value {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     line-height: 1;
     letter-spacing: -0.01em;
     display: inline-flex;
@@ -1167,7 +1167,7 @@ const metodologia = [
   }
   .stat-strip__label {
     font-size: 0.78rem;
-    color: #64748b;
+    color: var(--color-text-muted);
     line-height: 1.3;
   }
   .stat-strip__divider {
@@ -1188,18 +1188,18 @@ const metodologia = [
     font-weight: 700;
     line-height: 1.18;
     letter-spacing: -0.02em;
-    color: #0f172a;
+    color: var(--color-text-primary);
     margin: 0;
   }
   .intro-h2 em {
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     font-style: normal;
     background: linear-gradient(180deg, transparent 65%, rgba(37, 99, 235, 0.15) 65%);
   }
   .intro-grid__body p {
     font-size: 1rem;
     line-height: 1.7;
-    color: #475569;
+    color: var(--color-text-secondary);
     margin: 0 0 1rem;
   }
   .intro-link {
@@ -1208,7 +1208,7 @@ const metodologia = [
     gap: 0.5rem;
     font-size: 0.92rem;
     font-weight: 600;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     text-decoration: none;
     margin-top: 0.5rem;
     transition: gap 0.2s ease;
@@ -1341,7 +1341,7 @@ const metodologia = [
     font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: 0.7rem;
     font-weight: 700;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     opacity: 0.4;
     letter-spacing: 0.08em;
   }
@@ -1366,7 +1366,7 @@ const metodologia = [
     font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: 1.4rem;
     font-weight: 700;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     line-height: 1;
     letter-spacing: -0.01em;
   }
@@ -1420,7 +1420,7 @@ const metodologia = [
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: white;
+    background: var(--color-surface);
     border: 2px solid var(--color-acc);
     display: inline-flex;
     align-items: center;
@@ -1437,7 +1437,7 @@ const metodologia = [
     font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: 0.85rem;
     font-weight: 700;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     letter-spacing: 0.04em;
     transition: color 0.2s ease;
   }
@@ -1447,7 +1447,7 @@ const metodologia = [
   .pipe-node__label {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #1e293b;
+    color: var(--color-text-primary);
     text-align: center;
   }
 
@@ -1468,13 +1468,13 @@ const metodologia = [
     align-items: center;
     gap: 0.95rem;
     padding: 0.95rem 1.1rem;
-    background: #ffffff;
+    background: var(--color-surface);
     border: 1px solid var(--color-acc-border);
     border-radius: 12px;
     transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
   .fuente-card:hover {
-    border-color: var(--color-acc);
+    border-color: var(--color-accent-text);
     transform: translateY(-2px);
     box-shadow: 0 10px 22px rgba(37, 99, 235, 0.1);
   }
@@ -1503,11 +1503,11 @@ const metodologia = [
   .fuente-card__sigla {
     font-size: 0.95rem;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--color-text-primary);
   }
   .fuente-card__nombre {
     font-size: 0.78rem;
-    color: #64748b;
+    color: var(--color-text-muted);
     line-height: 1.35;
   }
   .fuente-card__check {
@@ -1515,7 +1515,7 @@ const metodologia = [
     height: 22px;
     border-radius: 50%;
     background: rgba(34, 197, 94, 0.12);
-    color: #16a34a;
+    color: var(--color-status-positive);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1558,7 +1558,7 @@ const metodologia = [
   }
   .fuentes-group__pill--nacional {
     background: var(--color-acc-soft);
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     border: 1px solid var(--color-acc-border);
   }
   .fuentes-group__pill--internacional {
@@ -1566,11 +1566,14 @@ const metodologia = [
     color: #7c3aed;
     border: 1px solid rgba(168, 85, 247, 0.25);
   }
+  :global(html[data-theme="dark"]) .fuentes-group__pill--internacional {
+    color: var(--color-text-violet);
+  }
   .fuentes-group__count {
     font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: 0.72rem;
     font-weight: 600;
-    color: #64748b;
+    color: var(--color-text-muted);
     letter-spacing: 0.04em;
   }
   .fuente-card--intl:hover {
@@ -1680,7 +1683,7 @@ const metodologia = [
   .audiencia__chip svg {
     width: 14px;
     height: 14px;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
   }
 
   /* ── Audience grid (rediseño) ── */
@@ -1696,14 +1699,14 @@ const metodologia = [
   .audience-card {
     position: relative;
     padding: 1.6rem 1.4rem 1.5rem;
-    background: #ffffff;
+    background: var(--color-surface);
     border: 1px solid var(--color-acc-border);
     border-radius: 14px;
     overflow: hidden;
     transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
   .audience-card:hover {
-    border-color: var(--color-acc);
+    border-color: var(--color-accent-text);
     transform: translateY(-3px);
     box-shadow: 0 14px 28px rgba(37, 99, 235, 0.12);
   }
@@ -1724,7 +1727,7 @@ const metodologia = [
     align-items: center;
     justify-content: center;
     background: var(--color-acc-soft);
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     margin-bottom: 1rem;
     transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
   }
@@ -1735,14 +1738,14 @@ const metodologia = [
   .audience-card__title {
     font-size: 1.02rem;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--color-text-primary);
     margin: 0 0 0.4rem;
     letter-spacing: -0.01em;
   }
   .audience-card__desc {
     font-size: 0.88rem;
     line-height: 1.55;
-    color: #475569;
+    color: var(--color-text-secondary);
     margin: 0;
   }
   .audience-card__corner {
@@ -1770,13 +1773,13 @@ const metodologia = [
 
   /* ── Link inline ── */
   .acerca-link {
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     text-decoration: none;
     border-bottom: 1px solid rgba(37, 99, 235, 0.35);
     transition: border-color 0.2s ease;
   }
   .acerca-link:hover {
-    border-bottom-color: var(--color-acc);
+    border-bottom-color: var(--color-accent-text);
   }
 
   /* ── Founder Card ── */
@@ -1790,7 +1793,7 @@ const metodologia = [
     margin-top: 2rem;
     display: grid;
     grid-template-columns: 360px 1fr;
-    background: #ffffff;
+    background: var(--color-surface);
     border: 1px solid var(--color-acc-border);
     border-radius: 20px;
     overflow: hidden;
@@ -1943,7 +1946,7 @@ const metodologia = [
   }
   .founder-card__role-pill--soft {
     background: var(--color-acc-soft);
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     border: 1px solid var(--color-acc-border);
   }
 
@@ -1953,7 +1956,7 @@ const metodologia = [
     padding: 0.25rem 0 0.25rem 1.25rem;
     font-size: 1.08rem;
     line-height: 1.55;
-    color: #0f172a;
+    color: var(--color-text-primary);
     font-weight: 500;
     letter-spacing: -0.005em;
     border-left: 3px solid var(--color-acc);
@@ -1965,14 +1968,14 @@ const metodologia = [
     font-family: Georgia, serif;
     font-size: 2rem;
     line-height: 1;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
     opacity: 0.35;
   }
 
   .founder-card__bio {
     font-size: 0.95rem;
     line-height: 1.65;
-    color: #475569;
+    color: var(--color-text-secondary);
     margin: 0;
   }
 
@@ -1995,13 +1998,13 @@ const metodologia = [
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #64748b;
+    color: var(--color-text-muted);
   }
   .founder-stat dd {
     margin: 0;
     font-size: 0.9rem;
     font-weight: 600;
-    color: #0f172a;
+    color: var(--color-text-primary);
   }
   .founder-stat__live {
     color: #22c55e;
@@ -2020,8 +2023,8 @@ const metodologia = [
     align-items: center;
     gap: 0.5rem;
     padding: 0.55rem 0.95rem;
-    background: white;
-    color: #1e293b;
+    background: var(--color-surface);
+    color: var(--color-text-primary);
     border: 1px solid var(--color-acc-border);
     border-radius: 10px;
     font-size: 0.85rem;
@@ -2032,17 +2035,17 @@ const metodologia = [
   .founder-btn svg {
     width: 16px;
     height: 16px;
-    color: var(--color-acc);
+    color: var(--color-accent-text);
   }
   .founder-btn:hover {
     transform: translateY(-2px);
-    border-color: var(--color-acc);
+    border-color: var(--color-accent-text);
     box-shadow: 0 8px 18px rgba(37, 99, 235, 0.12);
   }
   .founder-btn--primary {
     background: var(--color-acc);
     color: white;
-    border-color: var(--color-acc);
+    border-color: var(--color-accent-text);
   }
   .founder-btn--primary svg {
     color: white;

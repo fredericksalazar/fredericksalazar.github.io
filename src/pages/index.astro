@@ -408,7 +408,7 @@ const latestPosts = allPosts
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.18em;
-    color: #2563eb;
+    color: var(--color-accent-text);
     text-transform: uppercase;
     margin: 0;
     animation: fadeInUp 0.5s ease-out 0.15s backwards;
@@ -417,7 +417,7 @@ const latestPosts = allPosts
   .hero__role-line {
     width: 28px;
     height: 1.5px;
-    background: linear-gradient(90deg, #2563eb, transparent);
+    background: linear-gradient(90deg, var(--color-accent-text), transparent);
     border-radius: 2px;
   }
 
@@ -434,11 +434,11 @@ const latestPosts = allPosts
   }
 
   .hero__name-first {
-    color: #2563eb;
+    color: var(--color-accent-text);
   }
 
   .hero__name-last {
-    color: #2563eb;
+    color: var(--color-accent-text);
   }
 
   .hero__name-dot {
@@ -449,7 +449,7 @@ const latestPosts = allPosts
   .hero__tagline {
     font-size: 1rem;
     font-weight: 400;
-    color: #475569;
+    color: var(--color-text-secondary);
     line-height: 1.55;
     margin: 0.25rem 0 0;
     max-width: 480px;
@@ -457,12 +457,12 @@ const latestPosts = allPosts
   }
 
   .hero__tagline-accent {
-    color: #2563eb;
+    color: var(--color-accent-text);
     font-weight: 700;
   }
 
   .hero__tagline em {
-    color: #0f172a;
+    color: var(--color-text-primary);
     font-style: normal;
     font-weight: 600;
     border-bottom: 2px solid rgba(37, 99, 235, 0.25);
@@ -482,12 +482,12 @@ const latestPosts = allPosts
     align-items: center;
     gap: 0.45rem;
     padding: 0.45rem 0.9rem;
-    background: white;
+    background: var(--color-surface);
     border: 1px solid rgba(37, 99, 235, 0.18);
     border-radius: 100px;
     font-size: 0.72rem;
     font-weight: 600;
-    color: #2563eb;
+    color: var(--color-accent-text);
     box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
     transition:
       transform 0.2s ease,
@@ -496,14 +496,14 @@ const latestPosts = allPosts
   }
 
   .hero__pill:hover {
-    border-color: #2563eb;
+    border-color: var(--color-accent-text);
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(37, 99, 235, 0.15);
   }
 
   /* ── Secciones ── */
   .section {
-    background: #f6f8fa;
+    background: var(--color-bg);
     border-bottom: 1px solid var(--color-border);
     padding: 5rem 2rem;
   }
@@ -514,7 +514,7 @@ const latestPosts = allPosts
   }
 
   .section--alt {
-    background: #ffffff;
+    background: var(--color-surface);
     border-bottom: 1px solid var(--color-border);
     padding: 5rem 2rem;
   }
@@ -531,7 +531,7 @@ const latestPosts = allPosts
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: #2563eb;
+    color: var(--color-accent-text);
     display: block;
     margin-bottom: 0.5rem;
   }
@@ -539,14 +539,14 @@ const latestPosts = allPosts
   .section__title {
     font-size: 2rem;
     font-weight: 700;
-    color: #1f2328;
+    color: var(--color-text-primary);
   }
 
   .section__link {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    color: #2563eb;
+    color: var(--color-accent-text);
     font-weight: 600;
     text-decoration: none;
     transition: gap 0.2s ease;
@@ -571,7 +571,7 @@ const latestPosts = allPosts
 
   /* ── Sobre mí + Tech Stack ── */
   .about-section {
-    background: #ffffff;
+    background: var(--color-surface);
     border-bottom: 1px solid var(--color-border);
     padding: 5rem 2rem;
   }
@@ -622,20 +622,20 @@ const latestPosts = allPosts
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(34, 197, 94, 0.95);
+    background: rgba(21, 128, 61, 0.95);
     backdrop-filter: blur(8px);
     padding: 0.5rem 1rem;
     border-radius: 100px;
     font-size: 0.8rem;
     font-weight: 600;
-    color: #ffffff;
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+    color: var(--color-on-accent);
+    box-shadow: 0 4px 12px rgba(21, 128, 61, 0.4);
   }
 
   .about-profile__status-dot {
     width: 8px;
     height: 8px;
-    background: #ffffff;
+    background: var(--color-surface);
     border-radius: 50%;
     animation: pulse 2s ease-in-out infinite;
   }
@@ -675,7 +675,7 @@ const latestPosts = allPosts
     gap: 0.4rem;
     font-size: 0.95rem;
     font-weight: 600;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     text-decoration: none;
     transition: gap 0.2s ease;
   }
@@ -724,7 +724,7 @@ const latestPosts = allPosts
     background: rgba(37, 99, 235, 0.08);
     border: 1px solid rgba(37, 99, 235, 0.25);
     border-radius: 6px;
-    color: #2563eb;
+    color: var(--color-accent-text);
     transition:
       border-color 0.2s,
       color 0.2s,
@@ -732,8 +732,8 @@ const latestPosts = allPosts
   }
 
   .techstack__pill:hover {
-    border-color: #2563eb;
-    color: #1d4ed8;
+    border-color: var(--color-accent-text);
+    color: var(--color-accent-text-hover);
     background: rgba(37, 99, 235, 0.15);
   }
 
@@ -774,7 +774,7 @@ const latestPosts = allPosts
 
   /* ── Sección de Datos e Interactivos (Home) ── */
   .section--interactivos {
-    background: #f6f8fa;
+    background: var(--color-bg);
     border-bottom: 1px solid var(--color-border);
     padding: 5rem 2rem;
   }
@@ -793,7 +793,7 @@ const latestPosts = allPosts
   }
   
   .int-card {
-    background: #ffffff;
+    background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: 20px;
     padding: 2.25rem;
@@ -805,7 +805,7 @@ const latestPosts = allPosts
   }
   
   .int-card--featured {
-    background: linear-gradient(135deg, #ffffff 0%, rgba(37, 99, 235, 0.03) 100%);
+    background: linear-gradient(135deg, var(--color-surface) 0%, rgba(37, 99, 235, 0.03) 100%);
     border: 1px solid rgba(37, 99, 235, 0.15);
     position: relative;
     overflow: hidden;
@@ -818,7 +818,7 @@ const latestPosts = allPosts
     left: 0;
     width: 4px;
     height: 100%;
-    background: var(--color-accent);
+    background: var(--color-accent-fill);
   }
   
   .int-card--small {
@@ -849,7 +849,7 @@ const latestPosts = allPosts
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
   
   .int-card__title {
@@ -882,8 +882,8 @@ const latestPosts = allPosts
     justify-content: center;
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
-    background: var(--color-accent);
-    color: #ffffff;
+    background: var(--color-accent-fill);
+    color: var(--color-on-accent);
     font-weight: 700;
     font-size: 0.9rem;
     border-radius: 12px;
@@ -894,22 +894,22 @@ const latestPosts = allPosts
   }
   
   .int-card__cta:hover {
-    background: var(--color-accent-hover);
-    color: #ffffff;
+    background: var(--color-accent-fill-hover);
+    color: var(--color-on-accent);
     transform: translateY(-1px);
   }
   
   .int-card__link {
     font-size: 0.88rem;
     font-weight: 600;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     margin-top: auto;
     display: inline-block;
     transition: color 0.2s ease;
   }
   
   .int-card:hover .int-card__link {
-    color: var(--color-accent-hover);
+    color: var(--color-accent-text-hover);
   }
 
   @media (max-width: 992px) {
@@ -958,7 +958,7 @@ const latestPosts = allPosts
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
   .informe-cta__title {
     font-size: 1.25rem;
@@ -984,15 +984,15 @@ const latestPosts = allPosts
     gap: 0.4rem;
     flex-shrink: 0;
     padding: 0.7rem 1.2rem;
-    background: var(--color-accent);
-    color: #fff;
+    background: var(--color-accent-fill);
+    color: var(--color-on-accent);
     font-size: 0.9rem;
     font-weight: 600;
     border-radius: 10px;
     transition: background 0.2s ease;
   }
   .informe-cta:hover .informe-cta__action {
-    background: var(--color-accent-hover);
+    background: var(--color-accent-fill-hover);
   }
   @media (max-width: 768px) {
     .informe-cta {

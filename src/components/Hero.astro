@@ -206,7 +206,7 @@ const TitleTag = titleAs;
         rgba(96, 165, 250, 0.08) 0%,
         transparent 60%
       ),
-      linear-gradient(180deg, #ffffff 0%, #fafbff 60%, #f5f8ff 100%);
+      linear-gradient(180deg, var(--color-blueprint-bg-start) 0%, var(--color-blueprint-bg-end) 100%);
     border-bottom: 1px solid rgba(37, 99, 235, 0.08);
   }
 
@@ -234,6 +234,37 @@ const TitleTag = titleAs;
       black 55%,
       transparent 100%
     );
+  }
+
+  /* Oscuro: el azul marino de los puntos y los halos al 7–12 % se pierden
+     sobre fondo oscuro; se aclaran para conservar el carácter blueprint. */
+  :global(html[data-theme="dark"]) .hero {
+    background:
+      radial-gradient(
+        ellipse 70% 60% at 90% -10%,
+        rgba(59, 130, 246, 0.16) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 60% 50% at -10% 110%,
+        rgba(96, 165, 250, 0.10) 0%,
+        transparent 60%
+      ),
+      linear-gradient(180deg, var(--color-blueprint-bg-start) 0%, var(--color-blueprint-bg-end) 100%);
+    border-bottom-color: var(--color-blueprint-border);
+  }
+  :global(html[data-theme="dark"]) .hero::before {
+    background-image: radial-gradient(circle, #60a5fa 0.9px, transparent 1.1px);
+    opacity: 0.22;
+  }
+  :global(html[data-theme="dark"]) .hero__orb--tl {
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.22) 0%, transparent 70%);
+  }
+  :global(html[data-theme="dark"]) .hero__arc {
+    border-color: rgba(96, 165, 250, 0.16);
+  }
+  :global(html[data-theme="dark"]) .hero__orb--br {
+    background: radial-gradient(circle, rgba(96, 165, 250, 0.16) 0%, transparent 70%);
   }
 
   /* Decorative orbs — contenidos dentro del hero */
@@ -372,7 +403,7 @@ const TitleTag = titleAs;
     border-radius: 100px;
     font-size: 0.72rem;
     font-weight: 600;
-    color: #15803d;
+    color: var(--color-text-success);
     letter-spacing: 0.01em;
     animation: fadeInUp 0.5s ease-out backwards;
   }
@@ -402,7 +433,7 @@ const TitleTag = titleAs;
     line-height: 0.96;
     letter-spacing: -0.025em;
     margin: 0;
-    color: #2563eb;
+    color: var(--color-accent-text);
     animation: fadeInUp 0.6s ease-out 0.1s backwards;
   }
 
@@ -410,7 +441,7 @@ const TitleTag = titleAs;
   .hero__subtitle {
     font-size: 1rem;
     font-weight: 400;
-    color: #475569;
+    color: var(--color-text-secondary);
     line-height: 1.55;
     margin: 0.25rem 0 0;
     max-width: 480px;
@@ -433,14 +464,14 @@ const TitleTag = titleAs;
   .hero__kpi-value {
     font-size: 2rem;
     font-weight: 700;
-    color: #2563eb;
+    color: var(--color-accent-text);
     line-height: 1;
   }
 
   .hero__kpi-label {
     font-size: 0.72rem;
     font-weight: 600;
-    color: #64748b;
+    color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
@@ -458,13 +489,13 @@ const TitleTag = titleAs;
     align-items: center;
     gap: 0.45rem;
     padding: 0.45rem 0.9rem;
-    background: white;
-    border: 1px solid rgba(37, 99, 235, 0.18);
+    background: var(--color-surface);
+    border: 1px solid var(--color-blueprint-border);
     border-radius: 100px;
     font-size: 0.72rem;
     font-weight: 600;
-    color: #2563eb;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    color: var(--color-accent-text);
+    box-shadow: 0 1px 2px var(--color-shadow);
     transition:
       transform 0.2s ease,
       border-color 0.2s ease,
@@ -472,9 +503,9 @@ const TitleTag = titleAs;
   }
 
   .hero__tag:hover {
-    border-color: #2563eb;
+    border-color: var(--color-accent-text);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 6px 16px var(--color-accent-glow);
   }
 
   /* ── Cloud Partners ── */
@@ -485,7 +516,7 @@ const TitleTag = titleAs;
     justify-content: center;
     gap: 2rem;
     padding: 1.25rem 3rem;
-    background: rgba(255, 255, 255, 0.85);
+    background: var(--color-surface-overlay);
     border-top: 1px solid rgba(37, 99, 235, 0.12);
     position: relative;
     z-index: var(--z-hero-partners);
@@ -503,7 +534,7 @@ const TitleTag = titleAs;
     font-size: 0.65rem;
     font-weight: 700;
     letter-spacing: 0.2em;
-    color: #2563eb;
+    color: var(--color-accent-text);
     text-transform: uppercase;
     flex-shrink: 0;
   }
@@ -553,7 +584,7 @@ const TitleTag = titleAs;
   .hero__partner-name {
     font-size: 0.6rem;
     font-weight: 600;
-    color: #2563eb;
+    color: var(--color-accent-text);
     text-align: center;
     white-space: nowrap;
     letter-spacing: 0.02em;

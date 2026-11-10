@@ -110,17 +110,17 @@ const chartElementId = `chart-${def.id}`;
   }
   .pres-toggle__switch {
     position: relative; display: inline-block; width: 38px; height: 22px;
-    background: #cbd5e1; border-radius: 22px; transition: background 0.25s ease; flex-shrink: 0;
+    background: var(--color-border); border-radius: 22px; transition: background 0.25s ease; flex-shrink: 0;
   }
   .pres-toggle__knob {
     position: absolute; top: 2px; left: 2px; width: 18px; height: 18px;
-    background: white; border-radius: 50%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.06);
+    background: var(--color-surface); border-radius: 50%;
+    box-shadow: 0 1px 3px var(--color-shadow-strong), 0 1px 2px var(--color-shadow);
     transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .pres-toggle__input:checked + .pres-toggle__switch { background: #2563eb; }
+  .pres-toggle__input:checked + .pres-toggle__switch { background: var(--color-accent-fill); }
   .pres-toggle__input:checked + .pres-toggle__switch .pres-toggle__knob { transform: translateX(16px); }
-  .pres-toggle__input:focus-visible + .pres-toggle__switch { outline: 2px solid #2563eb; outline-offset: 2px; }
+  .pres-toggle__input:focus-visible + .pres-toggle__switch { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 
   .pres-legend {
     display: flex; flex-wrap: wrap; gap: 0.4rem 0.5rem;
@@ -135,15 +135,15 @@ const chartElementId = `chart-${def.id}`;
   }
   .pres-chip {
     display: inline-flex; align-items: center; gap: 0.4rem;
-    padding: 0.3rem 0.65rem; background: white;
-    border: 1px solid rgba(37, 99, 235, 0.15); border-radius: 100px;
+    padding: 0.3rem 0.65rem; background: var(--color-surface);
+    border: 1px solid var(--color-blueprint-border); border-radius: 100px;
     font-size: 0.72rem; line-height: 1;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
-  .pres-chip:hover { border-color: rgba(37, 99, 235, 0.4); box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05); }
+  .pres-chip:hover { border-color: var(--color-accent-text); box-shadow: 0 2px 8px var(--color-shadow); }
   .pres-chip__dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-  .pres-chip__name { font-weight: 600; color: #1e293b; }
-  .pres-chip__period { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.65rem; color: #64748b; }
+  .pres-chip__name { font-weight: 600; color: var(--color-text-primary); }
+  .pres-chip__period { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.65rem; color: var(--color-text-muted); }
 
   /* ── Leyenda de candidatos en mapas ── */
   .cand-legend {
@@ -180,10 +180,10 @@ const chartElementId = `chart-${def.id}`;
   }
   .tendencia-tabs {
     display: flex;
-    background: #f1f5f9;
+    background: var(--color-surface-sunken);
     padding: 0.2rem;
     border-radius: 8px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--color-border);
   }
   .tendencia-tab {
     appearance: none;
@@ -192,32 +192,32 @@ const chartElementId = `chart-${def.id}`;
     padding: 0.35rem 0.85rem;
     font-size: 0.75rem;
     font-weight: 600;
-    color: #64748b;
+    color: var(--color-text-muted);
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .tendencia-tab:hover {
-    color: #0f172a;
+    color: var(--color-text-primary);
   }
   .tendencia-tab.active {
-    background: white;
-    color: #0f172a;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    box-shadow: 0 1px 3px var(--color-shadow), 0 1px 2px var(--color-shadow);
   }
   
   /* Active indicator variations according to tendency */
   .tendencia-tab.active[data-tendencia="izquierda"] {
     border-left: 3px solid #dc2626;
-    color: #dc2626;
+    color: var(--color-status-danger);
   }
   .tendencia-tab.active[data-tendencia="centro"] {
     border-left: 3px solid #16a34a;
-    color: #16a34a;
+    color: var(--color-status-positive);
   }
   .tendencia-tab.active[data-tendencia="derecha"] {
     border-left: 3px solid #2563eb;
-    color: #2563eb;
+    color: var(--color-accent-text);
   }
 
   .tendencia-map-footer {
@@ -238,7 +238,8 @@ const chartElementId = `chart-${def.id}`;
   import { getChartDef } from "../../lib/observatorio/chart-defs";
   import type { ChartContext, Vista } from "../../lib/observatorio/chart-defs/types";
   import { loadDatasets } from "../../lib/observatorio/data-client";
-  import { registerChart, mountPlotly } from "../../lib/observatorio/plotly-mount";
+  import { registerChart, mountPlotly, reactPlotly } from "../../lib/observatorio/plotly-mount";
+  import { onThemeChange } from "../../lib/theme-client";
   import { aVista } from "../../lib/observatorio/charts";
 
   /** Interruptor "Ver en barras" (UI-08): apagado = línea, encendido = barras. Único en todo el sitio. */
@@ -295,6 +296,70 @@ const chartElementId = `chart-${def.id}`;
     input.addEventListener("change", () => ctx.cambiarVista(input.checked ? "barras" : "linea"));
   }
 
+  const activeContexts = new Map<string, ChartContext & { cambiarVista(v: Vista): void }>();
+
+  async function renderChart(
+    host: HTMLElement,
+    mode: "mount" | "react",
+    signal?: AbortSignal,
+  ) {
+    const id = host.dataset.chartHost!;
+    const def = getChartDef(id);
+    if (!def) return;
+
+    const elementId = `chart-${def.id}`;
+    const root = host.closest<HTMLElement>("[data-chart-root]");
+    const headerSlot = root?.querySelector<HTMLElement>(`[data-chart-header-slot][data-for="${def.id}"]`);
+    const footerSlot = root?.querySelector<HTMLElement>(`[data-chart-footer-slot][data-for="${def.id}"]`);
+
+    const data = await loadDatasets(def.datasets);
+    if (signal?.aborted) return;
+    const result = await def.build(data);
+    if (signal?.aborted) return;
+
+    const vistas = def.vistas ?? [];
+    const conVistas = vistas.includes("barras");
+    const vista = activeContexts.get(def.id)?.vista() ?? vistas[0] ?? "linea";
+
+    if (headerSlot && conVistas) {
+      // Se reconstruye completa en cada ejecución para no duplicar el control.
+      headerSlot.innerHTML =
+        `<div class="chart-controls">${result.headerHtml ?? ""}${controlVistasHtml(vista)}</div>`;
+    } else if (headerSlot && result.headerHtml) {
+      headerSlot.innerHTML = result.headerHtml;
+    }
+    if (footerSlot && result.footerHtml) footerSlot.innerHTML = result.footerHtml;
+    if (result.pregunta && root) {
+      const preg = root.querySelector<HTMLElement>(".chart-card__question");
+      if (preg) preg.textContent = result.pregunta;
+    }
+
+    // Al re-renderizar por cambio de tema se conserva la vista que eligió el
+    // visitante (p. ej. "barras"), no la vista por defecto de la receta.
+    const vistaBase = vistas[0] ?? "linea";
+    const dibujo = vista !== vistaBase
+      ? aVista(result.traces, vista, result.layout)
+      : { trazas: result.traces, layout: result.layout };
+    const spec = {
+      traces: dibujo.trazas,
+      layout: dibujo.layout,
+      config: result.config,
+    };
+    if (mode === "react") {
+      await reactPlotly(elementId, spec);
+    } else {
+      await mountPlotly(elementId, spec);
+    }
+
+    const target = document.getElementById(elementId);
+    if (!target) return;
+    const ctx = crearContexto(target, result.traces, result.layout, vista);
+    activeContexts.set(def.id, ctx);
+    const control = headerSlot?.querySelector<HTMLElement>("[data-vistas-control]");
+    if (control) bindControlVistas(control, ctx);
+    result.onMount?.(target, ctx);
+  }
+
   function initCharts() {
     document.querySelectorAll<HTMLElement>("[data-chart-host]").forEach((host) => {
       const id = host.dataset.chartHost!;
@@ -304,39 +369,29 @@ const chartElementId = `chart-${def.id}`;
       host.dataset.registered = "true";
 
       const elementId = `chart-${def.id}`;
-      const root = host.closest<HTMLElement>("[data-chart-root]");
-      const headerSlot = root?.querySelector<HTMLElement>(`[data-chart-header-slot][data-for="${def.id}"]`);
-      const footerSlot = root?.querySelector<HTMLElement>(`[data-chart-footer-slot][data-for="${def.id}"]`);
-
       registerChart(elementId, async (signal) => {
-        const data = await loadDatasets(def.datasets);
-        if (signal.aborted) return;
-        const result = await def.build(data);
-        if (signal.aborted) return;
-        const vistas = def.vistas ?? [];
-        const conVistas = vistas.includes("barras");
-        if (headerSlot && conVistas) {
-          // Se reconstruye completa en cada ejecución (p. ej. "Reintentar") para no duplicar el control.
-          headerSlot.innerHTML =
-            `<div class="chart-controls">${result.headerHtml ?? ""}${controlVistasHtml(vistas[0])}</div>`;
-        } else if (headerSlot && result.headerHtml) {
-          headerSlot.innerHTML = result.headerHtml;
-        }
-        if (footerSlot && result.footerHtml) footerSlot.innerHTML = result.footerHtml;
-        if (result.pregunta && root) {
-          const preg = root.querySelector<HTMLElement>(".chart-card__question");
-          if (preg) preg.textContent = result.pregunta;
-        }
-        await mountPlotly(elementId, { traces: result.traces, layout: result.layout, config: result.config });
-        const target = document.getElementById(elementId);
-        if (target) {
-          const ctx = crearContexto(target, result.traces, result.layout, vistas[0] ?? "linea");
-          const control = headerSlot?.querySelector<HTMLElement>("[data-vistas-control]");
-          if (control) bindControlVistas(control, ctx);
-          result.onMount?.(target, ctx);
-        }
+        await renderChart(host, "mount", signal);
       });
     });
+  }
+
+  async function rerenderCharts() {
+    const hosts = document.querySelectorAll<HTMLElement>("[data-chart-host]");
+    await Promise.all(
+      Array.from(hosts).map(async (host) => {
+        if (host.dataset.registered !== "true") return;
+        try {
+          await renderChart(host, "react");
+        } catch (err) {
+          console.error(`[chart ${host.dataset.chartHost}] theme rerender failed:`, err);
+        }
+      }),
+    );
+  }
+
+  if (!(window as Window & { __chartThemeBound?: boolean }).__chartThemeBound) {
+    (window as Window & { __chartThemeBound?: boolean }).__chartThemeBound = true;
+    onThemeChange(() => { void rerenderCharts(); });
   }
 
   if (document.readyState === "loading") {

@@ -103,7 +103,7 @@ export const inflacionMensual: ChartDef = {
       hovermode: "x",
       bargap: 0.15,
       yaxis: {
-        showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)",
+        showgrid: true, gridcolor: COLORS.grid,
         zeroline: true, zerolinecolor: "rgba(100, 100, 100, 0.45)", zerolinewidth: 1,
         tickfont: { size: 11, color: COLORS.textMuted },
         ticksuffix: "%", automargin: true,
@@ -175,7 +175,7 @@ export const spread: ChartDef = {
     const layout = baseLayout({
       margin: { l: 48, r: 24, t: 16, b: 40 }, showlegend: false, barmode: "overlay",
       shapes: [{ type: "line", x0: x[0], x1: x[x.length - 1], y0: 0, y1: 0,
-        line: { color: "#1f2328", width: 2, dash: "solid" } }, ...ref.shapes],
+        line: { color: COLORS.textPrimary, width: 2, dash: "solid" } }, ...ref.shapes],
       annotations: ref.annotations,
       hovermode: "x",
     });
@@ -290,9 +290,9 @@ export const pibInflacion: ChartDef = {
         legend: { orientation: "h", yanchor: "bottom", y: 1.04, xanchor: "left", x: 0, font: { size: 11 }, bgcolor: "rgba(0,0,0,0)" },
         hovermode: "x unified",
         yaxis: {
-          showgrid: true, gridcolor: "rgba(208,215,220,0.4)",
+          showgrid: true, gridcolor: COLORS.grid,
           zeroline: true, zerolinecolor: "rgba(100,100,100,0.4)",
-          tickfont: { size: 11, color: "#636c76" }, ticksuffix: "%", automargin: true,
+          tickfont: { size: 11, color: COLORS.textMuted }, ticksuffix: "%", automargin: true,
         },
         shapes: [
           { type: "rect", xref: "x", yref: "y", x0: xMin, x1: xMax, y0: RANGO_META_BANREP.min, y1: RANGO_META_BANREP.max, fillcolor: COLORS.metaBanda, line: { width: 0 }, layer: "below" },

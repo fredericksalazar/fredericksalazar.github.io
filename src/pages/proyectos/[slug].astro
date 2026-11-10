@@ -217,7 +217,7 @@ const softwareSchema = isDataCompass ? {
   .breadcrumb { margin-bottom: 1.5rem; font-size: 0.85rem; max-width: 800px; margin-left: auto; margin-right: auto; }
   .breadcrumb--wide { max-width: 1080px; }
   .breadcrumb a { color: var(--color-text-muted); text-decoration: none; }
-  .breadcrumb a:hover { color: var(--color-accent); }
+  .breadcrumb a:hover { color: var(--color-accent-text); }
 
   article {
     max-width: 800px;
@@ -256,17 +256,17 @@ const softwareSchema = isDataCompass ? {
     transition: all 0.15s ease;
   }
   .btn--primary {
-    background: var(--color-accent); color: #fff;
+    background: var(--color-accent-fill); color: var(--color-on-accent);
     border: 1px solid transparent;
   }
-  .btn--primary:hover { background: var(--color-accent-hover); color: #fff; }
+  .btn--primary:hover { background: var(--color-accent-fill-hover); color: var(--color-on-accent); }
 
   .btn--outline {
     background: transparent; color: var(--color-text-secondary);
     border: 1px solid var(--color-border);
   }
   .btn--outline:hover {
-    border-color: var(--color-accent); color: var(--color-accent);
+    border-color: var(--color-accent); color: var(--color-accent-text);
   }
 
   .proj-cover {
@@ -293,7 +293,7 @@ const softwareSchema = isDataCompass ? {
     margin: 1.75rem 0 0.5rem;
   }
   .prose :global(p) { margin-bottom: 1.15rem; }
-  .prose :global(a) { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
+  .prose :global(a) { color: var(--color-accent-text); text-decoration: underline; text-underline-offset: 3px; }
   .prose :global(ul), .prose :global(ol) { margin: 0.75rem 0 1.15rem 1.5rem; }
   .prose :global(li) { margin-bottom: 0.35rem; }
   .prose :global(img) {
@@ -331,7 +331,7 @@ const softwareSchema = isDataCompass ? {
     align-items: center;
     gap: 0.5rem;
     background: var(--color-accent);
-    color: #ffffff;
+    color: var(--color-on-accent);
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
     font-size: 0.95rem;
@@ -342,7 +342,7 @@ const softwareSchema = isDataCompass ? {
   }
   .prose :global(.cta-button:hover) {
     background: var(--color-accent-hover);
-    color: #ffffff;
+    color: var(--color-on-accent);
     transform: translateY(-1px);
     box-shadow: 0 6px 16px rgba(37, 99, 235, 0.28);
   }
@@ -352,7 +352,7 @@ const softwareSchema = isDataCompass ? {
     border-top: 1px solid var(--color-border);
   }
   .back-link { font-size: 0.875rem; color: var(--color-text-muted); text-decoration: none; }
-  .back-link:hover { color: var(--color-accent); }
+  .back-link:hover { color: var(--color-accent-text); }
 
   /* ── Vista de Producto (Tilo) ────────────────────────────────────── */
   .prose :global(.tilo-product) {
@@ -402,7 +402,7 @@ const softwareSchema = isDataCompass ? {
   .prose :global(.tilo-brand__version) {
     font-size: 0.72rem;
     font-weight: 600;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     background: var(--color-active-bg);
     border: 1px solid var(--color-border);
     padding: 0.25rem 0.65rem;
@@ -426,7 +426,7 @@ const softwareSchema = isDataCompass ? {
   }
 
   .prose :global(.tilo-subnav a:hover) {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     background: var(--color-hover);
   }
 
@@ -439,7 +439,7 @@ const softwareSchema = isDataCompass ? {
   .prose :global(.tilo-hero__headline) {
     font-size: clamp(1.8rem, 3.8vw, 2.75rem);
     font-weight: 800;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     letter-spacing: -0.025em;
     line-height: 1.1;
     border: none;
@@ -487,8 +487,8 @@ const softwareSchema = isDataCompass ? {
   }
 
   .prose :global(a.tilo-btn--primary) {
-    background: var(--color-accent);
-    color: var(--color-sidebar);
+    background: var(--color-accent-fill);
+    color: var(--color-on-accent);
     border: 1px solid var(--color-accent);
     box-shadow: 0 4px 12px var(--color-accent-glow);
   }
@@ -496,7 +496,7 @@ const softwareSchema = isDataCompass ? {
   .prose :global(a.tilo-btn--primary:hover) {
     background: var(--color-accent-hover);
     border-color: var(--color-accent-hover);
-    color: var(--color-sidebar);
+    color: var(--color-on-accent);
     transform: translateY(-1px);
     box-shadow: 0 6px 16px var(--color-accent-glow);
   }
@@ -510,7 +510,7 @@ const softwareSchema = isDataCompass ? {
 
   .prose :global(a.tilo-btn--secondary:hover) {
     border-color: var(--color-accent);
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     background: var(--color-hover);
     transform: translateY(-1px);
   }
@@ -522,7 +522,7 @@ const softwareSchema = isDataCompass ? {
   }
 
   .prose :global(a.tilo-btn--ghost:hover) {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     border-color: var(--color-accent);
     background: var(--color-hover);
     transform: translateY(-1px);
@@ -578,7 +578,7 @@ const softwareSchema = isDataCompass ? {
   .prose :global(.tilo-section__subtitle) {
     font-size: 1.05rem;
     font-weight: 600;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     margin: 0;
   }
 
@@ -617,7 +617,7 @@ const softwareSchema = isDataCompass ? {
     height: 36px;
     border-radius: 8px;
     background: var(--color-active-bg);
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -702,7 +702,7 @@ const softwareSchema = isDataCompass ? {
   .prose :global(.tilo-step__num) {
     font-size: 2rem;
     font-weight: 800;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     line-height: 1;
     font-variant-numeric: tabular-nums;
   }
@@ -775,7 +775,7 @@ const softwareSchema = isDataCompass ? {
     content: "+";
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
 
   .prose :global(.tilo-faq-item[open] summary::after) {

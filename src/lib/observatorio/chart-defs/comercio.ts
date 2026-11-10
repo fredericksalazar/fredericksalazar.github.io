@@ -15,7 +15,7 @@ export const balanzaComercial: ChartDef = {
     const { x, y } = extractSerie(comercio!.serie, "balanza_comercial");
     const ref = lineasReferencia(y, { sufijo: "%", decimales: 2 });
     const barColors = y.map((v) =>
-      v !== null ? (v >= 0 ? "#16a34a" : "#dc2626") : "#cbd5e1",
+      v !== null ? (v >= 0 ? "#16a34a" : "#dc2626") : COLORS.border,
     );
     return {
       traces: [{
@@ -26,7 +26,7 @@ export const balanzaComercial: ChartDef = {
       layout: baseLayout({
         showlegend: false, margin: { l: 48, r: 24, t: 16, b: 40 }, hovermode: "x",
         shapes: [{ type: "line", xref: "paper", x0: 0, x1: 1, yref: "y", y0: 0, y1: 0,
-          line: { color: "#1f2328", width: 1.5, dash: "solid" } }, ...ref.shapes],
+          line: { color: COLORS.textPrimary, width: 1.5, dash: "solid" } }, ...ref.shapes],
         annotations: ref.annotations,
       }),
     };
@@ -52,7 +52,7 @@ export const apertura: ChartDef = {
         marker: { size: 5, color: COLORS.brand },
         text: y.map((v) => (typeof v === "number" ? v.toFixed(1) : "")),
         texttemplate: "%{text}", textposition: "top center",
-        textfont: { size: 8, color: "#475569" }, cliponaxis: false,
+        textfont: { size: 8, color: COLORS.textSecondary }, cliponaxis: false,
         hovertemplate: "<b>%{x|%Y}</b><br>Apertura: %{y:.2f}% PIB<extra></extra>",
       }],
       layout: baseLayout({ shapes, annotations }),
@@ -71,7 +71,7 @@ const MATRIZ_COLORS: Record<string, string> = {
   agropecuarios: "#16a34a",
   combustibles: "#f59e0b",
   manufacturas: COLORS.brand,
-  otros: "#64748b",
+  otros: COLORS.textMuted,
 };
 
 function buildMatriz(matriz: Record<string, Record<string, number | null>>) {
@@ -86,8 +86,8 @@ function buildMatriz(matriz: Record<string, Record<string, number | null>>) {
     barmode: "stack", showlegend: true,
     legend: { orientation: "h", yanchor: "bottom", y: 1.04, xanchor: "left", x: 0, font: { size: 11 }, bgcolor: "rgba(0,0,0,0)" },
     margin: { l: 48, r: 24, t: 16, b: 40 }, hovermode: "x",
-    yaxis: { showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
-      tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true },
+    yaxis: { showgrid: true, gridcolor: COLORS.grid, zeroline: false,
+      tickfont: { size: 11, color: COLORS.textMuted }, ticksuffix: "", automargin: true },
   });
   return { traces, layout };
 }
@@ -110,8 +110,8 @@ function buildMatrizParticipacion(matriz: Record<string, Record<string, number |
     barmode: "stack", showlegend: true,
     legend: { orientation: "h", yanchor: "bottom", y: 1.04, xanchor: "left", x: 0, font: { size: 11 }, bgcolor: "rgba(0,0,0,0)" },
     margin: { l: 48, r: 24, t: 16, b: 40 }, hovermode: "x",
-    yaxis: { showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
-      tickfont: { size: 11, color: "#636c76" }, ticksuffix: "%", automargin: true, range: [0, 100] },
+    yaxis: { showgrid: true, gridcolor: COLORS.grid, zeroline: false,
+      tickfont: { size: 11, color: COLORS.textMuted }, ticksuffix: "%", automargin: true, range: [0, 100] },
   });
   return { traces, layout };
 }
@@ -182,7 +182,7 @@ export const productosTradicionales: ChartDef = {
     const years = Object.keys(productos).sort();
     const items = [
       { key: "cafe", label: "Café", color: "#16a34a" },
-      { key: "carbon", label: "Carbón", color: "#1f2328" },
+      { key: "carbon", label: "Carbón", color: COLORS.textPrimary },
       { key: "petroleo", label: "Petróleo y derivados", color: "#f59e0b" },
       { key: "ferroniquel", label: "Ferroníquel", color: COLORS.brand },
     ];
@@ -198,8 +198,8 @@ export const productosTradicionales: ChartDef = {
         showlegend: true,
         legend: { orientation: "h", yanchor: "bottom", y: 1.04, xanchor: "left", x: 0, font: { size: 11 }, bgcolor: "rgba(0,0,0,0)" },
         margin: { l: 48, r: 24, t: 16, b: 40 }, hovermode: "x",
-        yaxis: { showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
-          tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true },
+        yaxis: { showgrid: true, gridcolor: COLORS.grid, zeroline: false,
+          tickfont: { size: 11, color: COLORS.textMuted }, ticksuffix: "", automargin: true },
       }),
     };
   },

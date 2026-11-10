@@ -1,4 +1,5 @@
 import { COLORS, baseLayout, extractSerie, lineasReferencia, periodoToISODate } from "../charts";
+import { chartTheme } from "../theme-colors";
 import { comercioPorPibJoin } from "../derivations";
 import type { ChartDef } from "./types";
 
@@ -14,7 +15,7 @@ export const crecimientoPib: ChartDef = {
   ariaLabel: "Crecimiento anual del PIB de Colombia",
   build({ pib }) {
     const { x, y } = extractSerie(pib!.serie, "crecimiento_pib");
-    const barColors = y.map((v) => v !== null ? (v >= 0 ? "#16a34a" : "#dc2626") : "#cbd5e1");
+    const barColors = y.map((v) => v !== null ? (v >= 0 ? "#16a34a" : "#dc2626") : COLORS.border);
     return {
       traces: [{ name: "Crecimiento PIB", x, y, type: "bar",
         marker: { color: barColors, line: { color: "rgba(0,0,0,0.05)", width: 0.5 } },
@@ -22,7 +23,7 @@ export const crecimientoPib: ChartDef = {
       layout: baseLayout({
         showlegend: false, margin: { l: 48, r: 24, t: 16, b: 40 }, hovermode: "x",
         shapes: [{ type: "line", xref: "paper", x0: 0, x1: 1, yref: "y", y0: 0, y1: 0,
-          line: { color: "#1f2328", width: 1.5, dash: "solid" } }],
+          line: { color: COLORS.textPrimary, width: 1.5, dash: "solid" } }],
       }),
     };
   },
@@ -70,7 +71,7 @@ export const poblacionPib: ChartDef = {
       ],
       layout: baseLayout({
         showlegend: true, legend: { orientation: "h", yanchor: "bottom", y: 1.04, xanchor: "left", x: 0, font: { size: 11 }, bgcolor: "rgba(0,0,0,0)" },
-        yaxis: { showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
+        yaxis: { showgrid: true, gridcolor: COLORS.grid, zeroline: false,
           tickfont: { size: 11, color: COLORS.brand }, ticksuffix: "", automargin: true },
         yaxis2: { overlaying: "y", side: "right", showgrid: false, tickfont: { size: 11, color: "#16a34a" }, automargin: true },
       }),
@@ -101,14 +102,14 @@ export const deudaPublica: ChartDef = {
     return {
       traces: [{
         name: "Deuda pública", x, y, mode: "lines",
-        line: { color: "#1e293b", width: 2.4 }, fill: "tozeroy",
+        line: { color: COLORS.textPrimary, width: 2.4 }, fill: "tozeroy",
         fillcolor: "rgba(30,41,59,0.06)",
         hovertemplate: "<b>%{x|%Y}</b><br>Deuda pública: <b>%{y:.1f}%</b> del PIB<extra></extra>",
       }],
       layout: baseLayout({
         margin: { l: 48, r: 24, t: 16, b: 40 }, showlegend: false, hovermode: "x",
-        yaxis: { showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
-          tickfont: { size: 11, color: "#636c76" }, ticksuffix: "%", automargin: true, range: [0, 100] },
+        yaxis: { showgrid: true, gridcolor: COLORS.grid, zeroline: false,
+          tickfont: { size: 11, color: COLORS.textMuted }, ticksuffix: "%", automargin: true, range: [0, 100] },
         shapes: [
           banda(0, 40, "rgba(34,197,94,0.10)"),
           banda(40, 60, "rgba(234,179,8,0.10)"),
@@ -120,7 +121,7 @@ export const deudaPublica: ChartDef = {
           text: "Pandemia<br><b>91.2%</b>", showarrow: true, arrowhead: 2,
           arrowcolor: "#dc2626", ax: -40, ay: -30,
           font: { size: 11, color: "#dc2626" },
-          bgcolor: "rgba(255,255,255,0.85)", bordercolor: "rgba(220,38,38,0.4)",
+          bgcolor: chartTheme().hoverBg, bordercolor: "rgba(220,38,38,0.4)",
           borderwidth: 1, borderpad: 4,
         }, ...ref.annotations],
       }),
@@ -161,7 +162,7 @@ export const pibComercio: ChartDef = {
         hovermode: "x unified",
         yaxis: {
           title: { text: "PIB (mil M USD)", font: { size: 11, color: COLORS.brand } },
-          showgrid: true, gridcolor: "rgba(208,215,220,0.4)", zeroline: false,
+          showgrid: true, gridcolor: COLORS.grid, zeroline: false,
           tickfont: { size: 11, color: COLORS.brand }, ticksuffix: "", automargin: true,
         },
         yaxis2: {

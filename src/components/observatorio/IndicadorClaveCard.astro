@@ -141,7 +141,7 @@ const tituloId = `ind-${def.id}`;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
 
   .ind-card__indice {
@@ -187,7 +187,7 @@ const tituloId = `ind-${def.id}`;
     font-size: 2rem;
     font-weight: 700;
     line-height: 1.1;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     font-variant-numeric: tabular-nums;
   }
 
@@ -226,6 +226,10 @@ const tituloId = `ind-${def.id}`;
     background: linear-gradient(180deg, rgba(248, 250, 255, 0.7) 0%, rgba(240, 245, 255, 0.45) 100%);
     border: 1px solid rgba(37, 99, 235, 0.12);
     border-radius: 9px;
+  }
+  :global(html[data-theme="dark"]) .ind-card__spark-box {
+    background: linear-gradient(180deg, rgba(96, 165, 250, 0.07) 0%, rgba(96, 165, 250, 0.02) 100%);
+    border-color: var(--color-blueprint-border);
   }
 
   .ind-card__spark {
@@ -285,7 +289,7 @@ const tituloId = `ind-${def.id}`;
   }
 
   .ind-card__fuente:hover {
-    color: var(--color-accent-hover);
+    color: var(--color-accent-text-hover);
   }
 
   .ind-card__destino {
@@ -295,7 +299,7 @@ const tituloId = `ind-${def.id}`;
     gap: 0.35rem;
     font-size: 0.84rem;
     font-weight: 600;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     text-decoration: none;
   }
 

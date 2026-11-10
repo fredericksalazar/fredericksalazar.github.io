@@ -31,8 +31,8 @@ export const poblacionCrecimiento: ChartDef = {
       layout: baseLayout({
         showlegend: false, hovermode: "x",
         yaxis: {
-          showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
-          tickfont: { size: 11, color: "#636c76" }, ticksuffix: "%", automargin: true,
+          showgrid: true, gridcolor: COLORS.grid, zeroline: false,
+          tickfont: { size: 11, color: COLORS.textMuted }, ticksuffix: "%", automargin: true,
         },
         shapes, annotations,
       }),
@@ -82,8 +82,8 @@ export const esperanzaVida: ChartDef = {
         legend: { orientation: "h", yanchor: "bottom", y: 1.04, xanchor: "left", x: 0, font: { size: 11 }, bgcolor: "rgba(0,0,0,0)" },
         hovermode: "x unified",
         yaxis: {
-          showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
-          tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true,
+          showgrid: true, gridcolor: COLORS.grid, zeroline: false,
+          tickfont: { size: 11, color: COLORS.textMuted }, ticksuffix: "", automargin: true,
         },
       }),
       footerHtml: `
@@ -123,15 +123,15 @@ export const giniEvolucion: ChartDef = {
     return {
       traces: [{
         name: "Gini", x, y, mode: "lines+markers",
-        line: { color: "#1e293b", width: 2.4 },
-        marker: { size: 5, color: "#1e293b" },
+        line: { color: COLORS.textPrimary, width: 2.4 },
+        marker: { size: 5, color: COLORS.textPrimary },
         hovertemplate: "<b>%{x|%Y}</b><br>Gini: <b>%{y:.1f}</b><extra></extra>",
       }],
       layout: baseLayout({
         margin: { l: 48, r: 24, t: 16, b: 40 }, showlegend: false, hovermode: "x",
         yaxis: {
-          showgrid: true, gridcolor: "rgba(208, 215, 220, 0.4)", zeroline: false,
-          tickfont: { size: 11, color: "#636c76" }, ticksuffix: "", automargin: true,
+          showgrid: true, gridcolor: COLORS.grid, zeroline: false,
+          tickfont: { size: 11, color: COLORS.textMuted }, ticksuffix: "", automargin: true,
           range: rangoY,
         },
         shapes: [

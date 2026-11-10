@@ -503,13 +503,13 @@ const experienciaData = [
     border-radius: 100px;
     font-size: 0.9rem;
     font-weight: 600;
-    color: #2563eb;
+    color: var(--color-accent-text);
   }
 
   .era-pill--accent {
     background: rgba(34, 197, 94, 0.1);
     border-color: rgba(34, 197, 94, 0.3);
-    color: #16a34a;
+    color: var(--color-status-positive);
   }
 
   /* ── Timeline ── */
@@ -593,7 +593,7 @@ const experienciaData = [
     border: 2px solid transparent !important;
     background:
       linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
-      linear-gradient(to right, #ffcb00, #2563eb) border-box !important;
+      linear-gradient(to right, #ffcb00, var(--color-accent-text)) border-box !important;
   }
 
   .timeline__marker--ubits {
@@ -656,7 +656,7 @@ const experienciaData = [
     border: 2px solid transparent !important;
     background:
       linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
-      linear-gradient(to right, #ef4444, #2563eb) border-box !important;
+      linear-gradient(to right, #ef4444, var(--color-accent-text)) border-box !important;
   }
 
   .timeline__logo {
@@ -689,18 +689,18 @@ const experienciaData = [
   .timeline__company {
     font-size: 1rem;
     font-weight: 500;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     margin: 0 0 0.25rem 0;
   }
 
   .timeline__company a {
-    color: #2563eb;
+    color: var(--color-accent-text);
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
   .timeline__company a:hover {
-    color: #1d4ed8;
+    color: var(--color-accent-text-hover);
     text-decoration: underline;
   }
 
@@ -736,7 +736,7 @@ const experienciaData = [
     padding: 0.15rem 0.5rem;
     background: rgba(139, 92, 246, 0.1);
     border: 1px solid rgba(139, 92, 246, 0.3);
-    color: #8b5cf6;
+    color: var(--color-text-violet);
   }
 
   .tag--small:hover {

@@ -168,7 +168,7 @@ const countByCategoria = {
     border-radius: 2rem;
     font-size: 0.72rem;
     font-weight: 600;
-    color: #2563eb;
+    color: var(--color-accent-text);
     letter-spacing: 0.01em;
     animation: fadeInUp 0.5s ease-out backwards;
   }
@@ -176,7 +176,7 @@ const countByCategoria = {
   .proj-badge-dot {
     width: 6px;
     height: 6px;
-    background: #2563eb;
+    background: var(--color-accent-text);
     border-radius: 50%;
     animation: pulse 2s infinite;
   }
@@ -190,7 +190,7 @@ const countByCategoria = {
     line-height: 0.96;
     letter-spacing: -0.025em;
     margin: 0;
-    color: #2563eb;
+    color: var(--color-accent-text);
     animation: fadeInUp 0.6s ease-out 0.1s backwards;
   }
 
@@ -198,7 +198,7 @@ const countByCategoria = {
   .proj-subtitle {
     font-size: 1rem;
     font-weight: 400;
-    color: #475569;
+    color: var(--color-text-secondary);
     line-height: 1.55;
     margin: 0.25rem 0 0;
     max-width: 480px;
@@ -223,14 +223,14 @@ const countByCategoria = {
   .proj-kpi-value {
     font-size: 2rem;
     font-weight: 700;
-    color: #2563eb;
+    color: var(--color-accent-text);
     line-height: 1;
   }
 
   .proj-kpi-label {
     font-size: 0.72rem;
     font-weight: 600;
-    color: #64748b;
+    color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
@@ -375,14 +375,14 @@ const countByCategoria = {
     border-radius: 0.4rem;
   }
 
-  .cat-badge--data-analysis    { background: rgba(37, 99, 235, 0.08); color: #2563eb; }
-  .cat-badge--ml               { background: rgba(37, 99, 235, 0.12); color: #1d4ed8; }
-  .cat-badge--software         { background: rgba(37, 99, 235, 0.06); color: #3b82f6; }
-  .cat-badge--data-engineering { background: rgba(37, 99, 235, 0.15); color: #1e40af; }
+  .cat-badge--data-analysis    { background: rgba(37, 99, 235, 0.08); color: var(--color-accent-text); }
+  .cat-badge--ml               { background: rgba(37, 99, 235, 0.12); color: var(--color-accent-text); }
+  .cat-badge--software         { background: rgba(37, 99, 235, 0.06); color: var(--color-accent-text); }
+  .cat-badge--data-engineering { background: rgba(37, 99, 235, 0.15); color: var(--color-accent-text); }
 
   .proj-date {
     font-size: 0.75rem;
-    color: #64748b;
+    color: var(--color-text-muted);
   }
 
   /* ── Intro ────────────────────────────────────────────────────────── */
@@ -434,13 +434,13 @@ const countByCategoria = {
   .filter-btn:hover {
     background: var(--color-hover);
     color: var(--color-text-primary);
-    border-color: var(--color-accent);
+    border-color: var(--color-accent-fill);
   }
 
   .filter-btn--active {
-    background: var(--color-accent);
-    color: #fff;
-    border-color: var(--color-accent);
+    background: var(--color-accent-fill);
+    color: var(--color-on-accent);
+    border-color: var(--color-accent-fill);
   }
 
   /* ── Projects Grid ────────────────────────────────────────────────── */
