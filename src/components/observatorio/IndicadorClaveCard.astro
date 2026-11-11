@@ -1,350 +1,620 @@
 ---
 /**
- * IndicadorClaveCard — tarjeta de un indicador clave en la Home del
- * Observatorio (spec 005, contrato sección 2).
+ * IndicadorClaveCard — Tarjeta de un indicador clave en la Home del
+ * Observatorio (`/observatorio/`, spec 008, contrato sección 2).
  *
- * Todo el contenido de valor va en el HTML inicial; la sparkline es mejora.
- * Sin juicios de valor (clarificación Q2): cambio y referencia en gris neutro,
- * nunca rojo/verde. La tarjeta entera enlaza al dominio (enlace "estirado");
- * la fuente es un enlace secundario por encima.
+ * Tres niveles de información:
+ * 1. Dato: nombre como enlace al dashboard, valor destacado con unidad y periodo.
+ * 2. Contexto: cambio descriptivo en una línea (sin juicio de color) y gráfico
+ *    principal de 150 px a ancho completo con lectura sincronizada por fila.
+ * 3. Detalle: `<details>` nativo con "Fuente: {nombre corto}" siempre visible y
+ *    explicación, posición frente a la referencia, fuente oficial y acceso
+ *    secundario al dashboard en el HTML inicial (funciona sin JavaScript).
  */
 import Chart from "./Chart.astro";
-import { sparklineId } from "../../lib/observatorio/chart-defs/sparkline";
+import { RANGO_META_BANREP } from "../../lib/observatorio/charts";
+import { kpiChartId } from "../../lib/observatorio/chart-defs/indicadores-clave";
 import {
-  GRUPOS,
   formatCambio,
   formatIndicador,
   formatPeriodoIndicador,
+  nombreCortoFuente,
   type IndicadorClave,
 } from "../../lib/observatorio/home";
 
 interface Props {
   indicador: IndicadorClave;
-  indice?: string;
 }
 
-const { indicador, indice } = Astro.props;
-const { def, valor, unidad, periodo, delta, variacion, referencia, fuente, periodoComparado, periodoInicioVentana, frescura } = indicador;
-const grupoTitulo = GRUPOS.find((g) => g.id === def.grupo)?.titulo ?? def.grupo;
+const { indicador } = Astro.props;
+const {
+  def,
+  valor,
+  unidad,
+  periodo,
+  delta,
+  variacion,
+  referencia,
+  fuente,
+  periodoComparado,
+  periodoInicioVentana,
+  frescura,
+} = indicador;
+
+if (!fuente) {
+  console.warn(`[home] El indicador "${def.id}" no tiene fuente en su dataset; se rotula "Detalle".`);
+}
 
 // "% del PIB" en una columna angosta parte la cifra: "del PIB" pasa junto al periodo.
 const esPctPib = unidad === "% PIB";
 const valorFmt = formatIndicador(valor, esPctPib ? "%" : unidad);
 const periodoCorto = formatPeriodoIndicador(periodo, def.periodicidad);
 const periodoFmt = `${esPctPib ? "del PIB · " : ""}${periodoCorto}`;
-const comparadoFmt = periodoComparado ? formatPeriodoIndicador(periodoComparado, def.periodicidad) : null;
+const comparadoFmt = periodoComparado
+  ? formatPeriodoIndicador(periodoComparado, def.periodicidad)
+  : null;
 const ventanaFmt = periodoInicioVentana
   ? `${formatPeriodoIndicador(periodoInicioVentana, def.periodicidad)} — ${periodoCorto}`
   : def.periodicidad === "mensual"
     ? "Últimos 24 meses"
     : "Últimos 20 años";
 
-const flecha = variacion === "subio" ? "↑" : variacion === "bajo" ? "↓" : variacion === "igual" ? "→" : "";
-let cambio: string | null = null;
-if (variacion && comparadoFmt) {
-  cambio = variacion === "igual" || delta === null || delta === 0
-    ? `Sin cambio frente a ${comparadoFmt}`
-    : `${variacion === "subio" ? "Subió" : "Bajó"} ${formatCambio(delta, unidad)} frente a ${comparadoFmt}`;
-}
+const esSinCambio = !variacion || variacion === "igual" || delta === null || delta === 0;
+const flecha = !comparadoFmt
+  ? ""
+  : esSinCambio
+    ? "→"
+    : variacion === "subio"
+      ? "↑"
+      : "↓";
+const direccionSr = !comparadoFmt
+  ? ""
+  : esSinCambio
+    ? "Sin cambio"
+    : variacion === "subio"
+      ? "Subió"
+      : "Bajó";
+const magnitudTexto = !comparadoFmt
+  ? "Sin cambio"
+  : esSinCambio
+    ? `frente a ${comparadoFmt}`
+    : `${formatCambio(delta!, unidad)} frente a ${comparadoFmt}`;
+
+const fuenteCorta = nombreCortoFuente(fuente);
+const referenciaFrase = referencia.frase.endsWith(".")
+  ? referencia.frase
+  : `${referencia.frase}.`;
+const refEtiquetaCorta =
+  def.referencia === "meta-oficial"
+    ? "Meta BanRep"
+    : def.referencia === "promedio-20a"
+      ? "Prom. 20 años"
+      : "Hace un año";
+const refValorTexto =
+  def.referencia === "meta-oficial"
+    ? `${RANGO_META_BANREP.min}–${RANGO_META_BANREP.max} %`
+    : referencia.valorReferencia !== null
+      ? formatIndicador(referencia.valorReferencia, esPctPib ? "%" : unidad)
+      : null;
+const maxPuntos = def.periodicidad === "mensual" ? 24 : 20;
 const tituloId = `ind-${def.id}`;
 ---
 
-<article class="ind-card" aria-labelledby={tituloId}>
-  <div class="ind-card__top">
-    <span class="ind-card__grupo">{grupoTitulo}</span>
-    {indice && <span class="ind-card__indice" aria-hidden="true">{indice}</span>}
-  </div>
-
-  <h3 class="ind-card__nombre" id={tituloId}>{def.nombre}</h3>
-  {frescura === "no-reciente" && (
-    <p class="ind-card__aviso">Dato no reciente</p>
-  )}
-
-  <p class="ind-card__valor">
-    <span class="ind-card__numero">{valorFmt}</span>
-    <time class="ind-card__periodo" datetime={periodo}>{periodoFmt}</time>
-  </p>
-
-  {cambio && (
-    <p class="ind-card__cambio">
-      <span class="ind-card__flecha" aria-hidden="true">{flecha}</span>
-      <span>{cambio}</span>
-    </p>
-  )}
-
-  <div class="ind-card__spark-box">
-    <div class="ind-card__spark">
-      <Chart id={sparklineId(def.id)} variant="sparkline" />
-    </div>
-    <div class="ind-card__spark-meta">
-      <span class="ind-card__ventana">{ventanaFmt}</span>
-      <span class="ind-card__referencia">{referencia.frase}</span>
-    </div>
-  </div>
-
-  <p class="ind-card__explicacion">{def.explicacion}</p>
-
-  <footer class="ind-card__pie">
-    {fuente && (
-      <a class="ind-card__fuente" href={fuente.url} target="_blank" rel="noopener">
-        Fuente: {fuente.nombre}
-      </a>
-    )}
+<article class="ind-card" data-indicador={def.id} aria-labelledby={tituloId}>
+  <h4 class="ind-card__nombre" id={tituloId}>
     <a
-      class="ind-card__destino"
+      class="ind-card__enlace"
       href={def.href}
+      aria-label={`${def.nombre}. ${def.destino}`}
       data-ga-event="home_indicador_click"
       data-ga-indicador={def.id}
       data-ga-destino={def.href}
     >
-      <span>{def.destino}</span>
-      <span class="ind-card__destino-arrow" aria-hidden="true">→</span>
+      {def.nombre}
+      <span class="ind-card__flecha-enlace" aria-hidden="true">→</span>
     </a>
-  </footer>
+  </h4>
+
+  <p class="ind-card__dato">
+    <span class="ind-card__valor" data-kpi-valor>{valorFmt}</span>
+    <time class="ind-card__periodo" data-kpi-periodo datetime={periodo}>{periodoFmt}</time>
+    {frescura === "no-reciente" && (
+      <span class="ind-card__aviso">Dato no reciente</span>
+    )}
+  </p>
+
+  <p class="ind-card__contexto" data-kpi-contexto>
+    {flecha && <span class="ind-card__flecha" aria-hidden="true">{flecha}</span>}
+    {direccionSr && <span class="sr">{direccionSr}</span>}
+    {" "}{magnitudTexto}
+  </p>
+
+  <div
+    class="ind-card__lectura"
+    data-kpi-lectura
+    tabindex="0"
+    role="slider"
+    aria-orientation="horizontal"
+    aria-label={`Recorrer la serie de ${def.nombre.toLowerCase()}, ${ventanaFmt}`}
+    aria-valuemin="0"
+    aria-valuemax={String(maxPuntos - 1)}
+    aria-valuenow={String(maxPuntos - 1)}
+    aria-valuetext={`${periodoCorto}: ${formatIndicador(valor, unidad)}`}
+  >
+    <Chart id={kpiChartId(def.id)} variant="kpi" />
+    <span class="ind-card__cursor" data-kpi-cursor hidden aria-hidden="true">
+      <span class="ind-card__cursor-linea" data-kpi-cursor-linea></span>
+      <span class="ind-card__cursor-punto" data-kpi-cursor-punto></span>
+      <span class="ind-card__tooltip" data-kpi-tooltip>
+        <span class="ind-card__tooltip-fila" data-kpi-tooltip-lectura hidden>
+          <span class="ind-card__tooltip-rotulo">
+            <span class="ind-card__swatch ind-card__swatch--lectura"></span>
+            <span class="ind-card__tooltip-etiqueta" data-kpi-tooltip-periodo></span>
+          </span>
+          <strong class="ind-card__tooltip-valor" data-kpi-tooltip-punto></strong>
+        </span>
+        <span class="ind-card__tooltip-fila">
+          <span class="ind-card__tooltip-rotulo">
+            <span class="ind-card__swatch ind-card__swatch--actual"></span>
+            <span class="ind-card__tooltip-etiqueta">Actual ({periodoCorto})</span>
+          </span>
+          <strong class="ind-card__tooltip-valor">{valorFmt}</strong>
+        </span>
+        {refValorTexto && (
+          <span class="ind-card__tooltip-fila" data-ref-tipo={def.referencia}>
+            <span class="ind-card__tooltip-rotulo">
+              <span class={`ind-card__swatch ind-card__swatch--ref ind-card__swatch--${def.referencia}`}></span>
+              <span class="ind-card__tooltip-etiqueta">{refEtiquetaCorta}</span>
+            </span>
+            <strong class="ind-card__tooltip-valor">{refValorTexto}</strong>
+          </span>
+        )}
+      </span>
+    </span>
+  </div>
+
+  <details class="ind-card__detalle">
+    <summary class="ind-card__summary">
+      {fuenteCorta ? `Fuente: ${fuenteCorta}` : "Detalle"}
+      <svg
+        class="ind-card__chevron"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </summary>
+    <p class="ind-card__explicacion">{def.explicacion}</p>
+    <p class="ind-card__referencia">{referenciaFrase}</p>
+    {fuente && (
+      <p class="ind-card__fuente-oficial">
+        <a href={fuente.url} target="_blank" rel="noopener">{fuente.nombre}</a>
+        <small>{fuente.indicador} · Corte {periodoCorto} · Serie {ventanaFmt}</small>
+      </p>
+    )}
+    <p class="ind-card__destino-sec">
+      <a href={def.href}>{def.destino} →</a>
+    </p>
+  </details>
 </article>
+
+<script>
+  import { initKpiLectura } from "../../lib/observatorio/kpi-lectura";
+  initKpiLectura();
+</script>
 
 <style>
   .ind-card {
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    background: var(--color-sidebar);
+    gap: 0.45rem;
+    background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 1.25rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    min-width: 0;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  :global(html[data-theme="dark"]) .ind-card {
+    background: var(--color-surface-raised);
   }
 
   .ind-card:hover,
   .ind-card:focus-within {
+    z-index: 5;
     border-color: var(--color-accent);
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.08);
-    transform: translateY(-2px);
-  }
-
-  .ind-card__top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-    margin-bottom: -0.15rem;
-  }
-
-  .ind-card__grupo {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.15rem 0.5rem;
-    background: var(--color-active-bg);
-    border-radius: 999px;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-accent-text);
-  }
-
-  .ind-card__indice {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--color-text-muted);
-    font-variant-numeric: tabular-nums;
-    opacity: 0.6;
+    box-shadow: 0 4px 16px var(--color-shadow);
   }
 
   .ind-card__nombre {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 700;
     line-height: 1.3;
+  }
+
+  .ind-card__enlace {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 0.35rem;
     color: var(--color-text-primary);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: color 0.15s ease;
   }
 
-  /* Aviso de frescura (KPI K6): texto explícito, no solo color. */
-  .ind-card__aviso {
-    align-self: flex-start;
-    margin: 0;
-    padding: 0.125rem 0.5rem;
-    border: 1px solid #d97706;
-    border-radius: 999px;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #b45309;
+  .ind-card__enlace:hover {
+    color: var(--color-accent-text);
   }
 
-  .ind-card__valor {
+  .ind-card__enlace:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .ind-card__flecha-enlace {
+    display: inline-block;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    color: var(--color-accent-text);
+    transition: transform 0.2s ease;
+  }
+
+  .ind-card__enlace:hover .ind-card__flecha-enlace,
+  .ind-card__enlace:focus-visible .ind-card__flecha-enlace {
+    transform: translateX(3px);
+  }
+
+  .ind-card__dato {
     margin: 0;
     display: flex;
     align-items: baseline;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.35rem 0.5rem;
+    min-width: 0;
   }
 
-  .ind-card__numero {
-    font-size: 2rem;
+  .ind-card__valor {
+    font-size: clamp(1.55rem, 2.1vw, 2rem);
     font-weight: 700;
-    line-height: 1.1;
+    line-height: 1.08;
     color: var(--color-accent-text);
     font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 
   .ind-card__periodo {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 600;
     color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
   }
 
-  .ind-card__cambio {
-    align-self: flex-start;
+  /* Aviso de frescura (KPI K6): texto explícito con tokens de estado. */
+  .ind-card__aviso {
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
+    padding: 0.1rem 0.45rem;
+    border: 1px solid var(--color-status-warning);
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .ind-card__contexto {
     margin: 0;
-    padding: 0.22rem 0.6rem;
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
     font-size: 0.78rem;
-    font-weight: 600;
+    font-weight: 500;
+    line-height: 1.35;
     color: var(--color-text-secondary);
     font-variant-numeric: tabular-nums;
+    min-height: 1.35em;
   }
 
   .ind-card__flecha {
     color: var(--color-text-primary);
     font-weight: 700;
+    margin-right: 0.15rem;
   }
 
-  .ind-card__spark-box {
+  .sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Zona de lectura (gráfico de 150 px a ancho completo + cursor superpuesto) */
+  .ind-card__lectura {
+    position: relative;
+    width: 100%;
+    min-height: 150px;
+    margin: 0.15rem 0;
+    border-radius: 6px;
+    cursor: crosshair;
+    touch-action: pan-y;
+    user-select: none;
+  }
+
+  .ind-card__lectura:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .ind-card__cursor {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .ind-card__cursor[hidden] {
+    display: none;
+  }
+
+  .ind-card__cursor-linea {
+    position: absolute;
+    width: 1px;
+    background: var(--color-text-muted);
+    opacity: 0.65;
+    transform: translateX(-0.5px);
+  }
+
+  .ind-card__cursor-punto {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-chart-serie);
+    border: 2px solid var(--color-surface);
+    box-shadow: 0 0 0 2px var(--color-accent-glow);
+    transform: translate(-50%, -50%);
+  }
+
+  .ind-card__cursor-punto[hidden] {
+    display: none;
+  }
+
+  /* Píldora flotante de hover: siempre ubicada por debajo del cursor y centrada
+     horizontalmente sin desbordar los bordes laterales de la tarjeta. */
+  .ind-card__tooltip {
+    position: absolute;
+    top: 16px;
+    left: 4px;
+    z-index: 12;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    padding: 0.35rem 0.5rem 0.45rem;
-    background: linear-gradient(180deg, rgba(248, 250, 255, 0.7) 0%, rgba(240, 245, 255, 0.45) 100%);
-    border: 1px solid rgba(37, 99, 235, 0.12);
-    border-radius: 9px;
-  }
-  :global(html[data-theme="dark"]) .ind-card__spark-box {
-    background: linear-gradient(180deg, rgba(96, 165, 250, 0.07) 0%, rgba(96, 165, 250, 0.02) 100%);
-    border-color: var(--color-blueprint-border);
-  }
-
-  .ind-card__spark {
-    height: 48px;
-  }
-
-  .ind-card__spark-meta {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-    padding-top: 0.25rem;
-    border-top: 1px dashed rgba(37, 99, 235, 0.14);
-  }
-
-  .ind-card__ventana {
+    gap: 0.18rem;
+    min-width: 9.25rem;
+    max-width: calc(100% - 8px);
+    padding: 0.32rem 0.5rem;
+    background: var(--color-chart-hover-bg);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--color-shadow);
     font-size: 0.68rem;
+    line-height: 1.25;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+  }
+
+  .ind-card__tooltip-fila {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.55rem;
+    white-space: nowrap;
+  }
+
+  .ind-card__tooltip-fila[hidden] {
+    display: none;
+  }
+
+  .ind-card__tooltip-rotulo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.32rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+  }
+
+  .ind-card__tooltip-valor {
+    color: var(--color-text-primary);
+    font-weight: 700;
+  }
+
+  .ind-card__tooltip-fila[data-ref-tipo="meta-oficial"] .ind-card__tooltip-valor {
+    color: var(--color-text-success);
+  }
+
+  .ind-card__swatch {
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .ind-card__swatch--actual {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-chart-serie);
+  }
+
+  .ind-card__swatch--lectura {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-chart-serie);
+  }
+
+  .ind-card__swatch--meta-oficial {
+    width: 8px;
+    height: 6px;
+    border-radius: 1px;
+    background: var(--color-active-bg);
+    border-top: 1.5px dotted var(--color-status-positive);
+    border-bottom: 1.5px dotted var(--color-status-positive);
+  }
+
+  .ind-card__swatch--promedio-20a,
+  .ind-card__swatch--hace-un-ano {
+    width: 8px;
+    height: 0;
+    border-top: 2px dotted var(--color-chart-reference);
+  }
+
+  /* Nivel 3: detalle bajo demanda (<details> nativo) */
+  .ind-card__detalle {
+    margin-top: auto;
+    padding-top: 0.55rem;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.78rem;
+    color: var(--color-text-secondary);
+  }
+
+  .ind-card__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    cursor: pointer;
+    list-style: none;
+    font-size: 0.72rem;
     font-weight: 600;
     color: var(--color-text-muted);
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.02em;
+    border-radius: 6px;
+    padding: 0.15rem 0;
+    user-select: none;
+    transition: color 0.15s ease;
+  }
+
+  .ind-card__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .ind-card__summary::marker {
+    content: "";
+  }
+
+  .ind-card__summary:hover {
+    color: var(--color-accent-text);
+  }
+
+  .ind-card__summary:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .ind-card__chevron {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    transition: transform 0.2s ease, color 0.15s ease;
+  }
+
+  .ind-card__detalle[open] .ind-card__chevron {
+    transform: rotate(180deg);
+    color: var(--color-accent-text);
+  }
+
+  .ind-card__explicacion,
+  .ind-card__referencia,
+  .ind-card__fuente-oficial,
+  .ind-card__destino-sec {
+    margin: 0.55rem 0 0;
+    line-height: 1.45;
+  }
+
+  .ind-card__explicacion {
+    color: var(--color-text-primary);
   }
 
   .ind-card__referencia {
-    margin: 0;
-    font-size: 0.72rem;
-    font-weight: 600;
     color: var(--color-text-secondary);
     font-variant-numeric: tabular-nums;
   }
 
-  .ind-card__explicacion {
-    margin: 0;
-    font-size: 0.84rem;
-    line-height: 1.48;
-    color: var(--color-text-muted);
-  }
-
-  .ind-card__pie {
-    margin-top: auto;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--color-border);
+  .ind-card__fuente-oficial {
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
-    font-size: 0.72rem;
+    gap: 0.15rem;
+    padding-top: 0.45rem;
+    border-top: 1px dashed var(--color-border);
   }
 
-  .ind-card__fuente {
-    position: relative;
-    z-index: 1;
-    align-self: flex-start;
-    color: var(--color-text-muted);
+  .ind-card__fuente-oficial a {
+    color: var(--color-accent-text);
+    font-weight: 600;
     text-decoration: underline;
     text-underline-offset: 2px;
   }
 
-  .ind-card__fuente:hover {
+  .ind-card__fuente-oficial a:hover {
     color: var(--color-accent-text-hover);
   }
 
-  .ind-card__destino {
+  .ind-card__fuente-oficial small {
+    font-size: 0.68rem;
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ind-card__destino-sec a {
     display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 0.35rem;
-    font-size: 0.84rem;
+    gap: 0.25rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: var(--color-accent-text);
     text-decoration: none;
   }
 
-  .ind-card__destino-arrow {
-    display: inline-block;
-    transition: transform 0.2s ease;
+  .ind-card__destino-sec a:hover {
+    color: var(--color-accent-text-hover);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
-  .ind-card:hover .ind-card__destino-arrow,
-  .ind-card:focus-within .ind-card__destino-arrow {
-    transform: translateX(4px);
-  }
-
-  /* Enlace "estirado": toda la tarjeta lleva al dominio; la fuente queda por encima. */
-  .ind-card__destino::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 12px;
-  }
-
-  .ind-card__destino:focus-visible {
-    outline: none;
-  }
-
-  .ind-card__destino:focus-visible::after {
-    outline: 2px solid var(--color-accent);
+  .ind-card__fuente-oficial a:focus-visible,
+  .ind-card__destino-sec a:focus-visible {
+    outline: 2px solid var(--color-focus);
     outline-offset: 2px;
-  }
-
-  .ind-card__fuente:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
+    border-radius: 4px;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .ind-card,
-    .ind-card__destino-arrow {
+    .ind-card__enlace,
+    .ind-card__flecha-enlace,
+    .ind-card__summary,
+    .ind-card__chevron {
       transition: none;
     }
 
-    .ind-card:hover,
-    .ind-card:focus-within,
-    .ind-card:hover .ind-card__destino-arrow,
-    .ind-card:focus-within .ind-card__destino-arrow {
+    .ind-card__enlace:hover .ind-card__flecha-enlace,
+    .ind-card__enlace:focus-visible .ind-card__flecha-enlace {
       transform: none;
     }
   }

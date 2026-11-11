@@ -172,10 +172,11 @@ Cada spec declara qué módulos toca. Entre paréntesis, el pilar de
   Este documento no lo duplica.
 - **Patrón central:** `ChartDef` registrado en `chart-defs/index.ts` + componente
   genérico `Chart.astro`.
-- **Home (spec 005):** catálogos y derivaciones en `lib/observatorio/home.ts`
+- **Home (spec 005, actualizada en spec 008):** catálogos y derivaciones en `lib/observatorio/home.ts`
   (módulo puro: la página le pasa los datasets de `data.ts`). Sus cifras se
-  generan en build; las mini tendencias `spark-*` son `ChartDef` generados por
-  `makeSparkline` y cargan la serie en cliente. `DOMINIOS` (en `home.ts`) es la
+  generan en build; los gráficos `kpi-*` son `ChartDef` generados por
+  `makeIndicadorClaveChart` y cargan la serie en cliente, con lectura sincronizada
+  por fila en `kpi-lectura.ts`. `DOMINIOS` (en `home.ts`) es la
   fuente única del menú `DashboardNav`. JSON-LD `DataCatalog` con
   `catalogoSchema()` de `lib/seo.ts`.
 - **Sin `distribution` en JSON-LD (decisión del autor, 2026-10-19):** ningún

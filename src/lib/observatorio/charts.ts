@@ -4,6 +4,7 @@ interface PeriodoRow { periodo: string; }
 
 export const COLORS = {
   brand: "#2563eb",
+  get serie() { return chartTheme().serie; },
   inflacion: "#dc2626",
   /** Meses con variación negativa del IPC (deflación). */
   deflacion: "#16a34a",

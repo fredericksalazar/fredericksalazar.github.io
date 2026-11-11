@@ -13,7 +13,7 @@
 >
 > Las marcas **⚑ DECIDIR** son valores que el autor aún debe fijar.
 >
-> Versión 0.3.0 · Borrador · 2026-10-19 (feature 005: portada del Observatorio, `IndicadorClaveCard`, sparklines)
+> Versión 0.4.0 · Borrador · 2026-11-10 (feature 008: rediseño de `IndicadorClaveCard`, `FilaIndicadoresClave`, gráficos `kpi-*` de 150 px y lectura sincronizada)
 
 ---
 
@@ -80,7 +80,7 @@ el texto violeta de etiquetas de certificación.
 | `--color-on-accent` | `#ffffff` | `#ffffff` | Texto sobre relleno azul |
 | `--color-focus` | `#2563eb` | `#60a5fa` | Anillo de foco |
 | `--color-code-bg` / `-border` | `#f6f8fa` / `#d0d7de` | `#0a0f1c` / `#2a3649` | Bloques de código |
-| `--color-chart-*` (`grid`, `axis`, `hover-bg`, `text`, `muted`, `reference`) | ver `BaseLayout` | ver `BaseLayout` | Neutros de Plotly, leídos por `theme-colors.ts` |
+| `--color-chart-*` (`grid`, `axis`, `hover-bg`, `text`, `muted`, `reference`, `serie`) | ver `BaseLayout` (`serie`: `#2563eb` en claro / `#3b82f6` en oscuro) | ver `BaseLayout` | Neutros y serie azul de Plotly, leídos por `theme-colors.ts` |
 | `--color-blueprint-*` (`bg-start`, `bg-end`, `dot`, `border`, `glow`, `soft`, `soft-strong`) | blanco → `#f5f8ff`, azules suaves | `#0d1427` → `#13203d`, azules translúcidos | Hero, `PanelBlueprint`, ilustraciones SVG del hero |
 | `--color-shadow` / `-strong` | slate al 8 % / 16 % | negro al 45 % / 60 % | Sombras |
 
@@ -103,7 +103,7 @@ usa como color de texto**: para texto va `--color-accent-text` (en oscuro
   Un token nuevo se agrega **en los tres bloques**.
 - Un ajuste puntual solo para oscuro se escribe con
   `:global(html[data-theme="dark"]) .clase { … }` y debe usar tokens.
-- Los colores de series y partidos no cambian con el tema; los logos y fotos no
+- Los colores de series y partidos no cambian con el tema (con la excepción de `--color-chart-serie`, que usa `#3b82f6` en tema oscuro en los gráficos `kpi-*` para garantizar contraste ≥ 3:1 sobre las tarjetas oscuras; spec 008, 2026-11-10); los logos y fotos no
   se invierten.
 - Impresión siempre en claro; el selector se oculta.
 - En oscuro, las imágenes raster de `main` se atenúan (`brightness(0.88)`) y
@@ -366,7 +366,7 @@ No enlaza la descarga de los JSON procesados (decisión del autor).
 ```
 1. <Hero> + <MapaColombia />        KPIs de contexto, cada uno con periodo y fuente
 2. <DashboardNav active="inicio" />
-3. "Cómo va Colombia"               01 · <PanelBlueprint> · grilla 4 columnas · <IndicadorClaveCard> × 8
+3. "Cómo va Colombia"               01 · <PanelBlueprint> · 2 × <FilaIndicadoresClave> ("Cada mes" y "Cada año") · grilla 4 columnas · <IndicadorClaveCard> × 4
 4. "Últimas publicaciones"          02 · <PanelBlueprint> · grilla 4 columnas · <Card variant="blog"> × 4
 5. "Quiénes somos" + Misión/Visión  03 · <PanelBlueprint> · bloque de identidad y propósito del Observatorio
 6. "Qué hacemos"                    04 · <PanelBlueprint> · grilla 3 columnas · 6 capacidades de la infraestructura
@@ -376,7 +376,10 @@ No enlaza la descarga de los JSON procesados (decisión del autor).
 
 - **Sin juicios de valor:** el cambio ("subió/bajó X frente a {periodo}") y la
   referencia (meta oficial, promedio de 20 años o hace un año) van en gris
-  neutro; nunca rojo/verde ni "mejor/peor".
+  neutro; nunca rojo/verde ni "mejor/peor". En el gráfico `kpi-inflacion`, la
+  banda del rango meta del BanRep (2–4 %) en verde suave (`COLORS.metaBanda` y
+  `META_BANREP`) es la única referencia con color propio: señala la zona objetivo
+  oficial sin cambiar el color de la serie (azul).
 - **Frescura:** la etiqueta "Dato no reciente" usa el color de aviso (sección 2.1)
   y siempre lleva texto.
 - **Grillas:** el panel de indicadores y el de publicaciones ocupan 4 columnas
@@ -544,7 +547,7 @@ suelto dentro de un `ChartDef`.
 - Sufijo del eje Y explícito: `%` por defecto; otras unidades lo sobrescriben.
 - Tooltip: fondo `--color-chart-hover-bg`, borde del eje, texto `12px`.
 - Altura definida en el `ChartDef` (`height`), nunca con CSS en la página.
-- Línea de serie de `2.2px`; relleno bajo la línea al 6 % del color.
+- Línea de serie de `2.2px`; relleno bajo la línea al 6 % del color (16 % en los gráficos compactos `kpi-*` para dar cuerpo visual dentro de la tarjeta).
 - Se permite el doble eje Y cuando el gráfico compara dos medidas de distinta
   escala (patrón de `poblacionPib` o `pibComercio`); cada eje lleva su unidad.
 
@@ -585,9 +588,10 @@ Antes de crear algo, se usa lo que existe.
 | `BandaOscura` | `components/observatorio/` | Sección de contraste a todo el ancho (azul marino, retícula y orbes, texto claro). Usada en Acerca |
 | `PanelBlueprint` | `components/observatorio/` | Contenedor de sección con estética blueprint sutil (gradiente blanco a `#f0f5ff`, retícula de puntos, halo radial azul, borde traslúcido y radio XL `24px`). Usado en las 5 secciones de la Home |
 | `PipelineBlueprint` | `components/observatorio/` | Mapa arquitectónico blueprint animado que conecta las fuentes oficiales con las 6 fases del pipeline automatizado hasta el Dashboard público |
-| `IndicadorClaveCard` | `components/observatorio/` | Tarjeta de indicador clave de la Home: pill de grupo, índice, valor, periodo, cambio y referencia neutrales, fuente y sparkline |
+| `FilaIndicadoresClave` | `components/observatorio/` | Fila de indicadores clave de la Home agrupada por frecuencia ("Cada mes" o "Cada año") con eje temporal compartido, pista de teclado y grilla de 4 columnas |
+| `IndicadorClaveCard` | `components/observatorio/` | Tarjeta de indicador clave de la Home en 3 niveles (Dato → Contexto con gráfico `kpi-*` de 150 px y lectura sincronizada → Detalle desplegable y fuente) |
 | `IndicadorPanel` | `components/observatorio/` | Panel narrativo con gráfico |
-| `Chart` + `ChartContainer` | `components/observatorio/` | Gráfico por id y su card; `variant="sparkline"` para mini tendencias dentro de otra card |
+| `Chart` + `ChartContainer` | `components/observatorio/` | Gráfico por id y su card; `variant="kpi"` para gráficos compactos de 150 px dentro de `IndicadorClaveCard` |
 | `GlosarioGrid` | `components/observatorio/` | Glosario |
 | `DashboardFooter` | `components/observatorio/` | Fuentes, definiciones y cobertura |
 | `PlotlyLoader` | `components/observatorio/` | Carga de Plotly (una vez por página) |
@@ -626,10 +630,10 @@ Antes de crear algo, se usa lo que existe.
 | **UI-04** | Toda página de sección usa `<Hero>` con subtítulo y tags propios; nunca se copia el texto de otro hero. |
 | **UI-05** | El Observatorio, sus subpáginas y las calculadoras usan `<MapaColombia />` como visual del hero. Elecciones no lleva visual. |
 | **UI-06** | La navegación de un dominio va en un menú horizontal sticky bajo el hero, con el patrón de la sección 5.3. |
-| **UI-07** | Todo gráfico se muestra en card: `IndicadorPanel` en dashboards o chart-card en el resto. *Excepción aprobada (spec 005, 2026-10-19): las sparklines `spark-*` viven dentro de `IndicadorClaveCard`, que es su card.* |
-| **UI-08** | Todo gráfico de línea tiene el interruptor "Ver en barras" (apagado = línea), declarado con `vistas: ["linea", "barras"]` en su `ChartDef`. *Excepción aprobada (spec 005, 2026-10-19): las sparklines `spark-*` (48 px, sin ejes, estáticas) no llevan interruptor.* |
+| **UI-07** | Todo gráfico se muestra en card: `IndicadorPanel` en dashboards o chart-card en el resto. *Excepción aprobada (spec 005, 2026-10-19; actualizada en spec 008, 2026-11-10): los gráficos `kpi-*` viven dentro de `IndicadorClaveCard`, que es su card.* |
+| **UI-08** | Todo gráfico de línea tiene el interruptor "Ver en barras" (apagado = línea), declarado con `vistas: ["linea", "barras"]` en su `ChartDef`. *Excepción aprobada (spec 008, 2026-11-10): los gráficos `kpi-*` dentro de `IndicadorClaveCard` no llevan interruptor (cada indicador tiene asignada su forma de gráfico —`linea`, `escalon` o `barras`— y el interruptor vive en el dashboard de dominio).* |
 | **UI-09** | Color por defecto azul de marca; varias series con la paleta categórica en orden fijo; el agente pregunta el color al autor antes de crear un gráfico. |
-| **UI-10** | Las etiquetas de líneas de referencia (promedio, máximo, mínimo, meta) van a la izquierda del gráfico. |
+| **UI-10** | Las etiquetas de líneas de referencia (promedio, máximo, mínimo, meta) van a la izquierda del gráfico. *Excepción aprobada (spec 008, 2026-11-10): los gráficos compactos `kpi-*` (150 px) dibujan la línea punteada o banda de referencia sin rótulo flotante para no tapar la serie; el texto de la referencia vive en el bloque desplegable de la tarjeta.* |
 | **UI-11** | Antes de crear un componente se revisa el catálogo de la sección 8; uno nuevo requiere spec y se agrega al catálogo. |
 | **UI-12** | Cumplir la sección 10 de accesibilidad. |
 | **UI-13** | Todo color de interfaz funciona en claro y oscuro: se usan tokens de la sección 2 (texto azul con `--color-accent-text`) y un token nuevo se define en los bloques claro, oscuro y sin-JS (sección 2.9). |

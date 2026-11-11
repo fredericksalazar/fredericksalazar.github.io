@@ -10,7 +10,7 @@ import MapaColombia from "../../components/observatorio/MapaColombia.astro";
 import DashboardNav from "../../components/observatorio/DashboardNav.astro";
 import PanelBlueprint from "../../components/observatorio/PanelBlueprint.astro";
 import PipelineBlueprint from "../../components/observatorio/PipelineBlueprint.astro";
-import IndicadorClaveCard from "../../components/observatorio/IndicadorClaveCard.astro";
+import FilaIndicadoresClave from "../../components/observatorio/FilaIndicadoresClave.astro";
 import PlotlyLoader from "../../components/observatorio/PlotlyLoader.astro";
 import DashboardFooter from "../../components/observatorio/DashboardFooter.astro";
 import Card from "../../components/Card.astro";
@@ -29,6 +29,7 @@ import {
   DATASETS_PUBLICADOS,
   buildFaqObservatorio,
   buildIndicadoresClave,
+  filasIndicadores,
   publicacionesRecientes,
   type DatasetObservatorio,
   type DatasetsHome,
@@ -189,14 +190,9 @@ const jsonLd = catalogoSchema(
         </div>
       </header>
 
-      <div class="panel-clave__grilla">
-        {indicadores.map((ind, idx) => (
-          <IndicadorClaveCard
-            indicador={ind}
-            indice={String(idx + 1).padStart(2, "0")}
-          />
-        ))}
-      </div>
+      {filasIndicadores(indicadores).map((fila) => (
+        <FilaIndicadoresClave fila={fila} />
+      ))}
     </PanelBlueprint>
 
     <!-- ─── 02 · Últimas publicaciones ─── -->
@@ -574,12 +570,6 @@ const jsonLd = catalogoSchema(
     height: 7px;
     border-radius: 50%;
     background: #16a34a;
-  }
-
-  .panel-clave__grilla {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.25rem;
   }
 
   /* ── 02 · Últimas publicaciones ── */
@@ -1268,7 +1258,6 @@ const jsonLd = catalogoSchema(
   }
 
   @media (max-width: 1024px) {
-    .panel-clave__grilla,
     .recientes,
     .capacidades {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1304,7 +1293,6 @@ const jsonLd = catalogoSchema(
       padding: 1.25rem 1rem 2rem;
     }
 
-    .panel-clave__grilla,
     .recientes,
     .capacidades {
       grid-template-columns: minmax(0, 1fr);

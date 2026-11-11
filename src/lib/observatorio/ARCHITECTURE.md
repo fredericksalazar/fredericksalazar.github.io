@@ -68,8 +68,10 @@ src/lib/observatorio/
   presidentes-client.ts  ← Lookup de presidentes por año (runtime).
   fuentes.ts             ← Fallback temporal de fuentes mientras pipeline no las publique.
   home.ts                ← Home: catálogos (INDICADORES_CLAVE, DOMINIOS, DATASETS_PUBLICADOS),
-                           frescura y publicaciones recientes. Módulo PURO: no importa data.ts,
-                           porque chart-defs/sparkline.ts lo usa y va al bundle del cliente.
+                           filas por frecuencia, frescura y publicaciones recientes. Módulo PURO:
+                           no importa data.ts, porque chart-defs/indicadores-clave.ts lo usa y va al bundle del cliente.
+  kpi-lectura.ts         ← Coordinador ligero de lectura sincronizada por fila (ratón, táctil y teclado)
+                           para las tarjetas de indicadores clave de la Home (spec 008).
   chart-defs/
     types.ts             ← ChartDef y ChartBuildResult.
     index.ts             ← REGISTRY: aquí se registran todos los chart-defs.
@@ -80,19 +82,20 @@ src/lib/observatorio/
     externo.ts           ← Defs del dominio "sector externo / monetario".
     demografia.ts        ← Defs del dominio "demografía".
     comparativo.ts       ← Fábrica makeComparativoSet para comparativos entre países.
-    sparkline.ts         ← Fábrica makeSparkline: mini tendencias `spark-*` de la Home
-                           (excepción UI-07/UI-08 aprobada en la spec 005).
+    indicadores-clave.ts ← Fábrica makeIndicadorClaveChart: gráficos `kpi-*` de 150 px de la Home
+                           con referencia dibujada y lectura sincronizada (excepción UI-07/UI-08, spec 008).
     elecciones.ts        ← Defs de elecciones presidenciales.
     historico.ts         ← Barras históricas anuales: `buildHistorico` (interruptor de
                            color-presidente.ts, apagado al cargar; `referencias` = Máx/Mín/Prom).
 
 src/components/observatorio/
   Chart.astro            ← Componente genérico ÚNICO. Recibe un id de chart-def
-                           (`variant="sparkline"` para micrográficas dentro de otra card).
+                           (`variant="kpi"` para gráficos compactos dentro de IndicadorClaveCard).
   ChartContainer.astro   ← Shell visual (card + estados loading/error).
   PlotlyLoader.astro     ← Carga del CDN. UNA sola instancia por página.
   KpiRow.astro           ← KPIs (build-time, SEO crítico).
-  IndicadorClaveCard.astro ← Tarjeta de indicador clave de la Home (sin juicios de valor).
+  FilaIndicadoresClave.astro ← Fila de indicadores clave de la Home agrupada por frecuencia ("Cada mes" / "Cada año").
+  IndicadorClaveCard.astro ← Tarjeta de indicador clave de la Home en 3 niveles (sin juicios de valor).
   PanelBlueprint.astro   ← Contenedor reutilizable de sección con estética blueprint sutil (Home).
   PipelineBlueprint.astro ← Mapa arquitectónico blueprint animado de fuentes → pipeline → dashboard (Home).
   BandaOscura.astro      ← Sección de contraste a todo el ancho (Acerca).

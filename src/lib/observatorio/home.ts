@@ -2,14 +2,14 @@
  * home.ts — Catálogos y derivaciones de la Home del Observatorio (`/observatorio/`).
  *
  * Módulo **puro**: no lee archivos. La página le pasa los datasets leídos en
- * build con `data.ts`, y `chart-defs/sparkline.ts` puede importarlo sin
+ * build con `data.ts`, y `chart-defs/indicadores-clave.ts` puede importarlo sin
  * arrastrar `node:fs` al bundle del cliente.
  *
  * Los catálogos solo declaran QUÉ mostrar; ninguna cifra vive aquí (ARQ-02).
  */
 import { absUrls, urls } from "../urls";
 import type { DatasetName } from "./data-client";
-import { referenciaIndicador, valoresNoNulos, yearOf } from "./derivations";
+import { ejeCompartido, referenciaIndicador, valoresNoNulos, yearOf } from "./derivations";
 import type { ReferenciaCalculada, TipoReferencia } from "./derivations";
 import { formatPeriodoCorto } from "./formatters";
 import type { Fuente, Indicador, Variacion } from "./types";
@@ -17,7 +17,7 @@ import type { Fuente, Indicador, Variacion } from "./types";
 // ───────────────────────────── Tipos ─────────────────────────────
 
 export type Periodicidad = "mensual" | "anual";
-export type GrupoIndicador = "precios" | "actividad" | "empleo" | "externo" | "contexto";
+export type FormaGrafico = "linea" | "escalon" | "barras";
 
 /** Forma mínima común de los datasets del Observatorio (contrato sección 3). */
 export interface DatasetObservatorio {
@@ -35,13 +35,16 @@ export type DatasetsHome = Partial<Record<DatasetName, DatasetObservatorio>>;
 
 export interface IndicadorClaveDef {
   id: string;
-  grupo: GrupoIndicador;
   nombre: string;
   dataset: DatasetName;
   /** Clave en `indicadores` y en `serie` del dataset. */
   campo: string;
   /** Se declara por indicador: un dataset puede mezclar series mensuales y anuales. */
   periodicidad: Periodicidad;
+  /** Forma del gráfico principal en la tarjeta (spec 008). */
+  forma: FormaGrafico;
+  /** `true` si el eje Y parte de cero (solo el salario mínimo; las barras ya parten de cero). */
+  desdeCero?: boolean;
   /** Contra qué periodo calcula el pipeline el `delta` (empleo compara interanual). */
   comparacion: "anterior" | "interanual";
   referencia: TipoReferencia;
@@ -52,6 +55,14 @@ export interface IndicadorClaveDef {
   href: string;
   /** Texto del enlace al dominio ("Ver dashboard de …"). */
   destino: string;
+}
+
+export interface FilaIndicadores {
+  ritmo: Periodicidad;
+  titulo: string;
+  indicadores: IndicadorClave[];
+  ejeCompartido: string[];
+  ventanaTexto: string;
 }
 
 export interface IndicadorClave {
@@ -66,7 +77,7 @@ export interface IndicadorClave {
   frescura: "reciente" | "no-reciente";
   /** Periodo contra el que se mide `delta` ("YYYY-MM"), o null si no hay. */
   periodoComparado: string | null;
-  /** Primer periodo incluido en la ventana de la miniserie (sparkline). */
+  /** Primer periodo incluido en la ventana de la serie del gráfico. */
   periodoInicioVentana: string | null;
 }
 
@@ -107,11 +118,11 @@ export const DOMINIOS: DominioObservatorio[] = [
 export const INDICADORES_CLAVE: IndicadorClaveDef[] = [
   {
     id: "inflacion-anual",
-    grupo: "precios",
     nombre: "Inflación anual",
     dataset: "inflacion",
     campo: "inflacion_anual",
     periodicidad: "mensual",
+    forma: "linea",
     comparacion: "anterior",
     referencia: "meta-oficial",
     explicacion: "Cuánto subieron los precios de la canasta familiar en los últimos doce meses.",
@@ -121,11 +132,11 @@ export const INDICADORES_CLAVE: IndicadorClaveDef[] = [
   },
   {
     id: "tasa-banrep",
-    grupo: "precios",
     nombre: "Tasa de intervención BanRep",
     dataset: "inflacion",
     campo: "tasa_interes",
     periodicidad: "mensual",
+    forma: "escalon",
     comparacion: "anterior",
     referencia: "promedio-20a",
     explicacion: "Lo que el Banco de la República cobra a los bancos; marca el costo del crédito.",
@@ -135,11 +146,11 @@ export const INDICADORES_CLAVE: IndicadorClaveDef[] = [
   },
   {
     id: "crecimiento-pib",
-    grupo: "actividad",
     nombre: "Crecimiento del PIB",
     dataset: "pib",
     campo: "crecimiento_pib",
     periodicidad: "anual",
+    forma: "barras",
     comparacion: "anterior",
     referencia: "promedio-20a",
     explicacion: "Cuánto creció la producción de bienes y servicios del país frente al año anterior.",
@@ -149,11 +160,11 @@ export const INDICADORES_CLAVE: IndicadorClaveDef[] = [
   },
   {
     id: "pib-percapita",
-    grupo: "actividad",
     nombre: "PIB por habitante",
     dataset: "pib",
     campo: "pib_percapita",
     periodicidad: "anual",
+    forma: "linea",
     comparacion: "anterior",
     referencia: "hace-un-ano",
     explicacion: "El tamaño de la economía repartido entre cada habitante, en dólares corrientes.",
@@ -163,11 +174,11 @@ export const INDICADORES_CLAVE: IndicadorClaveDef[] = [
   },
   {
     id: "desempleo",
-    grupo: "empleo",
     nombre: "Tasa de desempleo",
     dataset: "empleo",
     campo: "tasa_desempleo",
     periodicidad: "mensual",
+    forma: "linea",
     comparacion: "interanual",
     referencia: "promedio-20a",
     explicacion: "Porcentaje de personas que buscan trabajo y no lo consiguen.",
@@ -177,11 +188,11 @@ export const INDICADORES_CLAVE: IndicadorClaveDef[] = [
   },
   {
     id: "trm",
-    grupo: "externo",
     nombre: "Dólar (TRM)",
     dataset: "externo",
     campo: "trm",
     periodicidad: "mensual",
+    forma: "linea",
     comparacion: "anterior",
     referencia: "hace-un-ano",
     explicacion: "Cuántos pesos cuesta un dólar; mueve el precio de lo importado y lo exportado.",
@@ -191,11 +202,11 @@ export const INDICADORES_CLAVE: IndicadorClaveDef[] = [
   },
   {
     id: "cuenta-corriente",
-    grupo: "externo",
     nombre: "Cuenta corriente",
     dataset: "externo",
     campo: "cuenta_corriente",
     periodicidad: "anual",
+    forma: "barras",
     comparacion: "anterior",
     referencia: "promedio-20a",
     explicacion: "Lo que el país recibe del exterior menos lo que le paga; si es negativa, hay déficit.",
@@ -205,11 +216,12 @@ export const INDICADORES_CLAVE: IndicadorClaveDef[] = [
   },
   {
     id: "salario-minimo",
-    grupo: "contexto",
     nombre: "Salario mínimo",
     dataset: "salario-minimo",
     campo: "salario_minimo",
     periodicidad: "anual",
+    forma: "escalon",
+    desdeCero: true,
     comparacion: "anterior",
     referencia: "hace-un-ano",
     explicacion: "El ingreso mensual mínimo legal en Colombia, sin el auxilio de transporte.",
@@ -217,14 +229,6 @@ export const INDICADORES_CLAVE: IndicadorClaveDef[] = [
     href: urls.calculadora("sueldo-vs-inflacion"),
     destino: "Compara tu sueldo con la inflación",
   },
-];
-
-export const GRUPOS: { id: GrupoIndicador; titulo: string }[] = [
-  { id: "precios", titulo: "Precios y dinero" },
-  { id: "actividad", titulo: "Actividad y bienestar" },
-  { id: "empleo", titulo: "Empleo" },
-  { id: "externo", titulo: "Sector externo" },
-  { id: "contexto", titulo: "Contexto" },
 ];
 
 // ───────────────────────────── Formato (es-CO) ─────────────────────────────
@@ -256,6 +260,53 @@ export function formatCambio(delta: number, unidad: string): string {
 /** "Sep 2026" en series mensuales; "2025" en anuales (el pipeline las fecha en diciembre). */
 export function formatPeriodoIndicador(periodo: string, periodicidad: Periodicidad): string {
   return periodicidad === "anual" ? yearOf(periodo) : formatPeriodoCorto(periodo);
+}
+
+/**
+ * Nombre corto de la fuente (texto de `fuente.nombre` antes del primer `" — "`,
+ * o el nombre completo si no hay separador; `null` si `fuente` es `null`).
+ */
+export function nombreCortoFuente(fuente: Fuente | null): string | null {
+  if (!fuente) return null;
+  const idx = fuente.nombre.indexOf(" — ");
+  return idx >= 0 ? fuente.nombre.slice(0, idx).trim() : fuente.nombre.trim();
+}
+
+/**
+ * Agrupa los indicadores clave en dos filas según su ritmo de publicación
+ * (`"mensual"` → "Cada mes", `"anual"` → "Cada año") y calcula su eje de
+ * tiempo compartido (spec 008, FR-002 y FR-003).
+ */
+export function filasIndicadores(indicadores: IndicadorClave[]): FilaIndicadores[] {
+  const configs: { ritmo: Periodicidad; titulo: string; prefijo: string }[] = [
+    {
+      ritmo: "mensual",
+      titulo: "Cada mes",
+      prefijo: "Últimos 24 meses de cada serie sobre un mismo eje",
+    },
+    {
+      ritmo: "anual",
+      titulo: "Cada año",
+      prefijo: "Últimos 20 años de cada serie sobre un mismo eje",
+    },
+  ];
+  return configs.map(({ ritmo, titulo, prefijo }) => {
+    const inds = indicadores.filter((i) => i.def.periodicidad === ritmo);
+    const ventanas = inds
+      .filter((i): i is IndicadorClave & { periodoInicioVentana: string } => !!i.periodoInicioVentana)
+      .map((i) => ({ inicio: i.periodoInicioVentana, fin: i.periodo }));
+    const eje = ejeCompartido(ventanas, ritmo);
+    const desde = eje.length > 0 ? formatPeriodoIndicador(eje[0], ritmo) : "";
+    const hasta = eje.length > 0 ? formatPeriodoIndicador(eje[eje.length - 1], ritmo) : "";
+    const ventanaTexto = eje.length > 0 ? `${prefijo}, ${desde} — ${hasta}` : prefijo;
+    return {
+      ritmo,
+      titulo,
+      indicadores: inds,
+      ejeCompartido: eje,
+      ventanaTexto,
+    };
+  });
 }
 
 // ───────────────────────────── Derivaciones ─────────────────────────────

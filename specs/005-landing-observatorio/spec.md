@@ -256,13 +256,13 @@ del Observatorio y ofrece al menos un enlace al perfil del autor.
 - **FR-004**: Cada indicador del panel DEBE mostrar: nombre en lenguaje sencillo,
   valor actual con unidad, periodo del dato, dirección y magnitud del cambio frente
   al periodo anterior, una tendencia reciente, la fuente oficial y una línea que
-  explique qué significa el número para una persona no experta.
+  explique qué significa el número para una persona no experta. *(Enmendado por la spec 008, 2026-11-10: ver `specs/008-rediseno-kpis-observatorio/spec.md`)*
 - **FR-005**: El panel DEBE agrupar los indicadores por tema siguiendo la
   convención de los referentes: **Precios y dinero** (inflación anual, tasa de
   intervención BanRep), **Actividad y bienestar** (crecimiento del PIB, PIB per
   cápita), **Empleo** (tasa de desempleo) y **Sector externo** (TRM, balanza
   comercial o cuenta corriente) y **Contexto** (salario mínimo). La población
-  se muestra como cifra de contexto en el hero.
+  se muestra como cifra de contexto en el hero. *(Enmendado por la spec 008, 2026-11-10: ver `specs/008-rediseno-kpis-observatorio/spec.md`)*
 - **FR-006**: Cada indicador DEBE mostrar una referencia objetiva que permita
   juzgar el valor: la meta oficial cuando exista (inflación: meta del 3 % con
   rango 2–4 %); el promedio de los últimos 20 años del propio dataset cuando no
@@ -271,13 +271,13 @@ del Observatorio y ofrece al menos un enlace al perfil del autor.
   La Home NO DEBE emitir juicios de valor (semáforos ni etiquetas de
   "favorable/desfavorable"): describe la posición del dato frente a su referencia
   ("por encima de la meta", "bajo su promedio histórico") y deja la
-  interpretación al lector.
+  interpretación al lector. *(Enmendado por la spec 008, 2026-11-10: ver `specs/008-rediseno-kpis-observatorio/spec.md`)*
 - **FR-007**: La señal de dirección DEBE ser descriptiva ("subió/bajó/igual" y
   su magnitud) y NO DEBE usar colores ni símbolos que impliquen "mejoró/empeoró",
   para no confundir el sentido en indicadores contracíclicos (desempleo,
   inflación).
 - **FR-008**: Cada indicador del panel DEBE enlazar al dashboard del dominio que
-  lo explica.
+  lo explica. *(Enmendado por la spec 008, 2026-11-10: ver `specs/008-rediseno-kpis-observatorio/spec.md`)*
 - **FR-009**: Los valores, periodos y fuentes del panel y del resumen DEBEN estar
   presentes en el contenido inicial de la página (legibles sin ejecutar scripts);
   las tendencias son una mejora visual.

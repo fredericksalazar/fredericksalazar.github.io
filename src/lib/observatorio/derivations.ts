@@ -281,3 +281,72 @@ export function referenciaIndicador(
     ? { tipo, valorReferencia: previo, posicion: "arriba", frase: `${nfPct1.format(pct)} % más alto que ${ref}` }
     : { tipo, valorReferencia: previo, posicion: "abajo", frase: `${nfPct1.format(Math.abs(pct))} % más bajo que ${ref}` };
 }
+
+/**
+ * Construye la lista ordenada e inclusiva de periodos `"YYYY-MM"` que cubre
+ * todas las ventanas de una fila (`mensual` con paso de 1 mes; `anual` con
+ * paso de 1 año en `"YYYY-12"`). Función pura (REGLA 10).
+ */
+export function ejeCompartido(
+  ventanas: { inicio: string; fin: string }[],
+  periodicidad: "mensual" | "anual",
+): string[] {
+  const validas = ventanas.filter((v) => v.inicio && v.fin);
+  if (validas.length === 0) return [];
+  const minInicio = validas.map((v) => v.inicio).sort()[0];
+  const maxFin = validas.map((v) => v.fin).sort().at(-1)!;
+  if (minInicio > maxFin) return [];
+
+  const periodos: string[] = [];
+  if (periodicidad === "anual") {
+    const y0 = parseInt(yearOf(minInicio), 10);
+    const y1 = parseInt(yearOf(maxFin), 10);
+    for (let y = y0; y <= y1; y++) {
+      periodos.push(`${String(y).padStart(4, "0")}-12`);
+    }
+    return periodos;
+  }
+
+  let [y, m] = minInicio.split("-").map((n) => parseInt(n, 10));
+  const [yFin, mFin] = maxFin.split("-").map((n) => parseInt(n, 10));
+  while (y < yFin || (y === yFin && m <= mFin)) {
+    periodos.push(`${String(y).padStart(4, "0")}-${String(m).padStart(2, "0")}`);
+    m += 1;
+    if (m > 12) {
+      m = 1;
+      y += 1;
+    }
+  }
+  return periodos;
+}
+
+export type ResultadoLecturaPeriodo =
+  | { tipo: "vigente"; valor: number }
+  | { tipo: "dato"; valor: number }
+  | { tipo: "sin-publicar" }
+  | { tipo: "fuera-de-ventana" };
+
+/**
+ * Determina el resultado de leer un `periodo` del eje compartido sobre la
+ * `serie` de un indicador (spec 008, data-model 3.2). Nunca inventa un valor.
+ */
+export function lecturaEnPeriodo(
+  serie: Map<string, number>,
+  periodo: string,
+  periodoVigente: string,
+  primerPeriodo: string,
+): ResultadoLecturaPeriodo {
+  if (periodo === periodoVigente && serie.has(periodo)) {
+    return { tipo: "vigente", valor: serie.get(periodo)! };
+  }
+  if (serie.has(periodo)) {
+    return { tipo: "dato", valor: serie.get(periodo)! };
+  }
+  if (periodo > periodoVigente) {
+    return { tipo: "sin-publicar" };
+  }
+  if (periodo < primerPeriodo) {
+    return { tipo: "fuera-de-ventana" };
+  }
+  return { tipo: "fuera-de-ventana" };
+}
