@@ -1,0 +1,63 @@
+---
+/**
+ * /proyectos/tilo/privacy-en.html — Tilo privacy policy (English).
+ * URL fija: la enlazan la extensión y la ficha de la Chrome Web Store.
+ * TEXTO LEGAL LITERAL: no resumir, reordenar ni añadir promesas.
+ */
+import TiloPolicyPage from '../../../components/tilo/TiloPolicyPage.astro';
+import { SITE_URL } from '../../../lib/urls';
+---
+
+<TiloPolicyPage
+  lang="en"
+  title="Privacy policy · Tilo"
+  description="What data Tilo, the new tab for Chrome, uses: no servers of its own, no accounts, no analytics or ads."
+>
+  <h1>Tilo privacy policy</h1>
+  <p class="tilo-policy__updated">Last updated: <time datetime="2026-10-30">October 30, 2026</time></p>
+
+  <p>Tilo is a Chrome extension that replaces the new tab page. It is made by Frederick Salazar. Tilo has no servers of its own, uses no accounts, includes no analytics or ads, and never sells or shares your data with anyone for commercial purposes.</p>
+
+  <h2>What is stored on your device</h2>
+  <ul>
+    <li><strong>Shortcuts:</strong> saved as bookmarks in Chrome's “Shortcuts” folder. If Chrome sync is on, Chrome syncs them with your Google Account like any other bookmark.</li>
+    <li><strong>Preferences (search engine, background, theme and language):</strong> in Chrome storage (<code>chrome.storage.sync</code>), which also travels with your account if sync is on.</li>
+    <li><strong>Tasks, background image, city and latest weather:</strong> only on this device (<code>chrome.storage.local</code>).</li>
+  </ul>
+
+  <h2>What leaves your browser, and to whom</h2>
+  <div class="tilo-policy__table" role="region" aria-label="What leaves your browser, and to whom" tabindex="0">
+    <table>
+      <thead>
+        <tr><th scope="col">Feature</th><th scope="col">Data sent</th><th scope="col">Service</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Weather with your location (only if you choose it)</td><td>Approximate coordinates</td><td>Open-Meteo (weather) and BigDataCloud (city name)</td></tr>
+        <tr><td>Weather if you don't share your location</td><td>Your IP address (seen by the service when it replies)</td><td>ipapi.co</td></tr>
+        <tr><td>Weather with a typed city</td><td>The name you type, then its coordinates</td><td>Open-Meteo</td></tr>
+        <tr><td>Shortcut icons</td><td>The address of each shortcut</td><td>Google (favicon service t3.gstatic.com)</td></tr>
+        <tr><td>Speed test (only when you start it)</td><td>Test traffic and your IP</td><td>Cloudflare (speed.cloudflare.com)</td></tr>
+        <tr><td>Search box</td><td>What you search for</td><td>Your Chrome search engine or the one you choose in Tilo</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Before using your location, Tilo asks you and lets you choose between using it, typing your city or not showing the weather. All connections use HTTPS. The donation buttons (Buy Me a Coffee and PayPal) and the link to the author's website only open those pages when you click them.</p>
+
+  <h2>Your choices</h2>
+  <ul>
+    <li>Change or turn off the weather in Customize → Weather. Turning it off deletes the saved location and weather.</li>
+    <li>Delete all Tilo data by uninstalling the extension. Shortcuts stay in your bookmarks until you delete the folder.</li>
+  </ul>
+
+  <h2>Limited use</h2>
+  <p>The use of information received by Tilo adheres to the <a href="https://developer.chrome.com/docs/webstore/program-policies/user-data-faq" rel="noopener noreferrer">Chrome Web Store User Data Policy</a>, including the Limited Use requirements. Data is only used to provide the features described here and is never transferred, sold or used for advertising, creditworthiness or any purpose unrelated to the new tab.</p>
+
+  <h2>Children</h2>
+  <p>Tilo is not directed at children under 13 and does not collect data to identify them.</p>
+
+  <h2>Changes</h2>
+  <p>If the data Tilo uses changes, this page will be updated and you will be told inside the extension before the change takes effect.</p>
+
+  <h2>Contact</h2>
+  <p>Frederick Salazar · <a href="mailto:frederick.ssalazar@gmail.com">frederick.ssalazar@gmail.com</a> · <a href={`${SITE_URL}/`}>fredericksalazar.github.io</a></p>
+</TiloPolicyPage>

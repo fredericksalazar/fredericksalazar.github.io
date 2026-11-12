@@ -30,6 +30,16 @@ interface Props {
   breadcrumbs?: Crumb[];
   /** Emite WebSite JSON-LD (solo la home). */
   website?: boolean;
+  /** Idioma de la página (BCP 47). Default: es-CO. */
+  lang?: string;
+  /** URL canónica absoluta. Default: derivada de Astro.url.pathname. */
+  canonical?: string;
+  /** Versiones alternativas por idioma → <link rel="alternate" hreflang>. */
+  alternates?: { hreflang: string; href: string }[];
+  /** Usa `title` tal cual, sin el sufijo de marca. */
+  exactTitle?: boolean;
+  /** No carga recursos de terceros (Google Fonts). Ver BaseLayout `sinRastreo`. */
+  sinRastreo?: boolean;
 }
 
 const {
@@ -47,6 +57,11 @@ const {
   articleTags = [],
   breadcrumbs,
   website = false,
+  lang = 'es-CO',
+  canonical,
+  alternates = [],
+  exactTitle = false,
+  sinRastreo = false,
 } = Astro.props;
 
 const DEFAULT_KEYWORDS = 'data engineer colombia, arquitecto de datos, big data latam, apache spark, databricks, azure data, python data engineering, frederick salazar, machine learning colombia, ETL pipelines, data warehouse';
@@ -62,10 +77,11 @@ const SITE_NAME   = 'Frederick Salazar — Data Engineer & Arquitecto de Datos';
 // (límite SEO de Bing/Google). Para títulos ya descriptivos y largos se omite la
 // marca en vez de provocar truncado. Mantén cada `title` de página ≤ 60.
 const TITLE_SUFFIX = ' | Frederick Salazar';
-const FULL_TITLE  = title.length + TITLE_SUFFIX.length <= 60
+const FULL_TITLE  = exactTitle ? title : title.length + TITLE_SUFFIX.length <= 60
   ? `${title}${TITLE_SUFFIX}`
   : title;
-const CANONICAL   = new URL(Astro.url.pathname, SITE_URL).href;
+const CANONICAL   = canonical ?? new URL(Astro.url.pathname, SITE_URL).href;
+const OG_LOCALE   = lang.replace('-', '_');
 const IMAGE_URL   = new URL(image, SITE_URL).href;
 ---
 
@@ -73,7 +89,7 @@ const IMAGE_URL   = new URL(image, SITE_URL).href;
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="generator" content={Astro.generator} />
-<meta name="language" content="es-CO" />
+<meta name="language" content={lang} />
 <meta name="geo.region" content="CO" />
 <meta name="geo.placename" content="Cali" />
 <meta name="geo.position" content="3.4516;-76.5320" />
@@ -87,6 +103,7 @@ const IMAGE_URL   = new URL(image, SITE_URL).href;
 <meta name="robots" content={robotsContent} />
 <meta name="keywords" content={RESOLVED_KEYWORDS} />
 <link rel="canonical" href={CANONICAL} />
+{alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
 
 <!-- ── Dublin Core (para mejor indexación) ─────────────────────────────────────── -->
 <meta name="DC.title" content={FULL_TITLE} />
@@ -94,7 +111,7 @@ const IMAGE_URL   = new URL(image, SITE_URL).href;
 <meta name="DC.subject" content={description} />
 <meta name="DC.description" content={description} />
 <meta name="DC.publisher" content="Frederick Salazar" />
-<meta name="DC.language" content="es-CO" />
+<meta name="DC.language" content={lang} />
 
 <!-- ── Open Graph ────────────────────────────────────────────────────────────── -->
 <meta property="og:type" content={type} />
@@ -108,7 +125,7 @@ const IMAGE_URL   = new URL(image, SITE_URL).href;
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content={RESOLVED_IMAGE_ALT} />
 <meta property="og:site_name" content={SITE_NAME} />
-<meta property="og:locale" content="es_CO" />
+<meta property="og:locale" content={OG_LOCALE} />
 
 {type === 'article' && (
   <>
@@ -148,15 +165,16 @@ const IMAGE_URL   = new URL(image, SITE_URL).href;
 <!-- ── RSS feed ───────────────────────────────────────────────────────────────── -->
 <link rel="alternate" type="application/rss+xml" title="Blog · Frederick Salazar" href={urls.rss()} />
 
-<!-- ── Google Fonts: Google Sans Flex ───────────────────────────── -->
-<!-- Solo el rango de pesos que usa el sitio (400–800): el archivo de fuente
-     variable es más liviano que el rango completo 100..900. -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400..800&display=swap"
-  rel="stylesheet"
-/>
+<!-- ── Google Fonts: Google Sans Flex (400–800, archivo variable) ───────────
+     Se omite en modo sinRastreo: la página no carga recursos de terceros. -->
+{!sinRastreo && <link rel="preconnect" href="https://fonts.googleapis.com" />}
+{!sinRastreo && <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />}
+{!sinRastreo && (
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400..800&display=swap"
+    rel="stylesheet"
+  />
+)}
 
 <!-- ── JSON-LD: Person Schema (entidad del autor, en todas las páginas) ───────── -->
 <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />

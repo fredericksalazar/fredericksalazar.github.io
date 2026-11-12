@@ -13,6 +13,7 @@ orden: 3
 ---
 
 import FaqSchema from "../../components/blog/FaqSchema.astro";
+import { urls } from "../../lib/urls";
 
 <FaqSchema
   items={[
@@ -280,6 +281,7 @@ import FaqSchema from "../../components/blog/FaqSchema.astro";
         <li>La prueba de velocidad solo se ejecuta cuando la inicias.</li>
         <li>Nunca vendemos ni compartimos tus datos.</li>
       </ul>
+      <p class="tilo-privacy-panel__more"><a href={urls.tiloPrivacidad()}>Lee la política de privacidad completa</a></p>
     </div>
   </section>
 
@@ -369,7 +371,7 @@ import FaqSchema from "../../components/blog/FaqSchema.astro";
         </div>
       </div>
 
-      <p class="tilo-legal-footnote">Chrome es una marca de Google LLC. Tilo no está afiliado a Google. · © 2026 Frederick Salazar.</p>
+      <p class="tilo-legal-footnote">Chrome es una marca de Google LLC. Tilo no está afiliado a Google. · © 2026 Frederick Salazar. · <a href={urls.tiloPrivacidad()}>Política de privacidad</a></p>
     </div>
   </section>
 

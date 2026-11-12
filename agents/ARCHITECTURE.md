@@ -121,6 +121,15 @@ src/styles/global.css   Import de Tailwind y estilos de calculadoras
 - **Multipágina con View Transitions** (`<ClientRouter />`): navegación fluida
   sin perder HTML indexable.
 - **`trailingSlash: 'always'`**, `prefetch` al pasar el cursor.
+- **Excepción `.html` exacto:** las políticas de privacidad de Tilo
+  (`/proyectos/tilo/privacidad.html`, `privacy-en.html`) tienen URL fija porque
+  las enlazan la extensión y la Chrome Web Store. La integración `htmlFilePages`
+  de `astro.config.mjs` convierte `privacidad.html/index.html` en el archivo
+  `privacidad.html`. Las otras 7 traducciones son estáticas en
+  `public/proyectos/tilo/`. Enlaces con `urls.tiloPrivacidad(lang)`.
+- **Modo `sinRastreo` de `BaseLayout`:** omite Google Analytics, Google Fonts,
+  el popup del informe y `ClientRouter`. Lo usan las políticas de Tilo, que
+  prometen no rastrear.
 - **Sin framework de islas** (ni React, ni Vue, ni Svelte): la interactividad es
   TypeScript/JS en `<script>` de componentes `.astro`.
 - **Dos momentos de lectura de datos:**

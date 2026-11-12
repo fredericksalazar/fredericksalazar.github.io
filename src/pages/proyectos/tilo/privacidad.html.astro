@@ -1,0 +1,63 @@
+---
+/**
+ * /proyectos/tilo/privacidad.html — Política de privacidad de Tilo (español).
+ * URL fija: la enlazan la extensión y la ficha de la Chrome Web Store.
+ * TEXTO LEGAL LITERAL: no resumir, reordenar ni añadir promesas.
+ */
+import TiloPolicyPage from '../../../components/tilo/TiloPolicyPage.astro';
+import { SITE_URL } from '../../../lib/urls';
+---
+
+<TiloPolicyPage
+  lang="es"
+  title="Política de privacidad · Tilo"
+  description="Qué datos usa Tilo, la nueva pestaña para Chrome: sin servidores propios, sin cuentas, sin analítica ni anuncios."
+>
+  <h1>Política de privacidad de Tilo</h1>
+  <p class="tilo-policy__updated">Última actualización: <time datetime="2026-10-30">30 de octubre de 2026</time></p>
+
+  <p>Tilo es una extensión de Chrome que sustituye la página de nueva pestaña. Está hecha por Frederick Salazar. Tilo no tiene servidores propios, no usa cuentas, no incluye analítica ni anuncios y no vende ni comparte tus datos con nadie para fines comerciales.</p>
+
+  <h2>Qué se guarda en tu equipo</h2>
+  <ul>
+    <li><strong>Accesos directos:</strong> se guardan como marcadores en la carpeta «Accesos directos» de Chrome. Si tienes la sincronización de Chrome activada, Chrome los sincroniza con tu cuenta de Google como cualquier otro marcador.</li>
+    <li><strong>Preferencias (motor de búsqueda, fondo, tema e idioma):</strong> en el almacenamiento de Chrome (<code>chrome.storage.sync</code>), que también viaja con tu cuenta si la sincronización está activada.</li>
+    <li><strong>Tareas, imagen de fondo, ciudad y último clima:</strong> solo en este equipo (<code>chrome.storage.local</code>).</li>
+  </ul>
+
+  <h2>Qué sale de tu navegador y a quién</h2>
+  <div class="tilo-policy__table" role="region" aria-label="Qué sale de tu navegador y a quién" tabindex="0">
+    <table>
+      <thead>
+        <tr><th scope="col">Función</th><th scope="col">Dato que se envía</th><th scope="col">Servicio</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Clima con tu ubicación (solo si lo eliges)</td><td>Coordenadas aproximadas</td><td>Open-Meteo (tiempo) y BigDataCloud (nombre de la ciudad)</td></tr>
+        <tr><td>Clima si no compartes la ubicación</td><td>Tu dirección IP (la ve el servicio al responder)</td><td>ipapi.co</td></tr>
+        <tr><td>Clima con una ciudad escrita</td><td>El nombre que escribes y luego sus coordenadas</td><td>Open-Meteo</td></tr>
+        <tr><td>Iconos de los accesos directos</td><td>La dirección de cada acceso directo</td><td>Google (servicio de favicons t3.gstatic.com)</td></tr>
+        <tr><td>Prueba de velocidad (solo al iniciarla)</td><td>Tráfico de prueba y tu IP</td><td>Cloudflare (speed.cloudflare.com)</td></tr>
+        <tr><td>Buscador</td><td>Lo que buscas</td><td>El motor que tengas en Chrome o el que elijas en Tilo</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Antes de usar tu ubicación, Tilo te pregunta y te deja elegir entre usarla, escribir tu ciudad o no mostrar el clima. Todas las conexiones usan HTTPS. Los botones de donación (Buy Me a Coffee y PayPal) y el enlace a la web del autor solo abren esas páginas cuando los pulsas.</p>
+
+  <h2>Tus opciones</h2>
+  <ul>
+    <li>Cambiar o desactivar el clima en Personalizar → Clima. Al desactivarlo se borran la ubicación y el tiempo guardados.</li>
+    <li>Borrar todos los datos de Tilo desinstalando la extensión. Los accesos directos se quedan en tus marcadores hasta que borres la carpeta.</li>
+  </ul>
+
+  <h2>Uso limitado</h2>
+  <p>El uso de la información que Tilo recibe cumple la <a href="https://developer.chrome.com/docs/webstore/program-policies/user-data-faq?hl=es" rel="noopener noreferrer">política de datos de usuario de la Chrome Web Store</a>, incluidos sus requisitos de uso limitado. Los datos solo se usan para ofrecer las funciones descritas aquí y nunca se transfieren, venden ni usan para publicidad, para evaluar la solvencia o con fines ajenos a la nueva pestaña.</p>
+
+  <h2>Menores</h2>
+  <p>Tilo no está dirigida a menores de 13 años y no recoge datos para identificarlos.</p>
+
+  <h2>Cambios</h2>
+  <p>Si cambia qué datos se usan, se actualizará esta página y se avisará dentro de la extensión antes de aplicar el cambio.</p>
+
+  <h2>Contacto</h2>
+  <p>Frederick Salazar · <a href="mailto:frederick.ssalazar@gmail.com">frederick.ssalazar@gmail.com</a> · <a href={`${SITE_URL}/`}>fredericksalazar.github.io</a></p>
+</TiloPolicyPage>

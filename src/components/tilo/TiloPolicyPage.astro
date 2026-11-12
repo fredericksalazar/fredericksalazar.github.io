@@ -1,0 +1,180 @@
+---
+/**
+ * TiloPolicyPage.astro
+ * Envoltorio de la política de privacidad de Tilo (es / en).
+ *
+ * - URLs fijas en `.html` (la extensión y la Chrome Web Store apuntan a ellas):
+ *   ver `urls.tiloPrivacidad()` y la integración `tiloPrivacyHtml`.
+ * - Modo `sinRastreo`: sin analítica, sin Google Fonts, sin popups ni scripts
+ *   externos. El texto legal vive en cada página y no se edita aquí.
+ * - Las otras 7 versiones (fr, it, de, pt, ja, ko, zh) son archivos estáticos
+ *   en public/proyectos/tilo/ que se suben tal cual.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { urls, absUrls, TILO_POLICY_FILES, type TiloPolicyLang } from '../../lib/urls';
+
+interface Props {
+  lang: 'es' | 'en';
+  title: string;
+  description: string;
+}
+
+const { lang, title, description } = Astro.props;
+
+/** Orden del selector, nombre nativo y hreflang de cada versión. */
+const LANGS: { key: TiloPolicyLang; name: string; hreflang: string }[] = [
+  { key: 'es', name: 'Español', hreflang: 'es' },
+  { key: 'en', name: 'English', hreflang: 'en' },
+  { key: 'fr', name: 'Français', hreflang: 'fr' },
+  { key: 'it', name: 'Italiano', hreflang: 'it' },
+  { key: 'de', name: 'Deutsch', hreflang: 'de' },
+  { key: 'pt', name: 'Português', hreflang: 'pt-BR' },
+  { key: 'ja', name: '日本語', hreflang: 'ja' },
+  { key: 'ko', name: '한국어', hreflang: 'ko' },
+  { key: 'zh', name: '中文', hreflang: 'zh-CN' },
+];
+
+const alternates = [
+  ...LANGS.map((l) => ({ hreflang: l.hreflang, href: absUrls.tiloPrivacidad(l.key) })),
+  { hreflang: 'x-default', href: absUrls.tiloPrivacidad('en') },
+];
+
+const t = lang === 'es'
+  ? { back: '← Tilo', nav: 'Idioma de la política', legal: 'Chrome es una marca de Google LLC. Tilo no está afiliado a Google. · © 2026 Frederick Salazar.' }
+  : { back: '← Tilo', nav: 'Policy language', legal: 'Chrome is a trademark of Google LLC. Tilo is not affiliated with Google. · © 2026 Frederick Salazar.' };
+
+// No existe aún /proyectos/tilo/en/: ambas versiones vuelven a la página de Tilo.
+const backHref = urls.proyecto('tilo');
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  lang={lang}
+  canonical={absUrls.tiloPrivacidad(lang)}
+  alternates={alternates}
+  exactTitle
+  sinRastreo
+  image="/images/proyectos/tilo-cover.png"
+>
+  <div class="tilo-policy">
+    <nav class="tilo-policy__back"><a href={backHref}>{t.back}</a></nav>
+
+    <nav class="tilo-policy__langs" aria-label={t.nav}>
+      <ul>
+        {LANGS.map((l) => (
+          <li>
+            {l.key === lang
+              ? <span aria-current="page" lang={l.hreflang}>{l.name}</span>
+              : <a href={urls.tiloPrivacidad(l.key)} hreflang={l.hreflang} lang={l.hreflang}>{l.name}</a>}
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <article class="tilo-policy__body">
+      <slot />
+    </article>
+
+    <p class="tilo-policy__legal">{t.legal}</p>
+  </div>
+</BaseLayout>
+
+<style>
+  .tilo-policy {
+    max-width: 720px;
+    margin: 0 auto;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+
+  .tilo-policy__back { margin-bottom: 1.25rem; font-size: 0.9rem; }
+  .tilo-policy__back a { color: var(--color-text-muted); text-decoration: none; }
+  .tilo-policy__back a:hover { color: var(--color-accent-text); }
+
+  .tilo-policy__langs ul {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+    list-style: none; margin: 0 0 2rem; padding: 0;
+    font-size: 0.85rem;
+  }
+  .tilo-policy__langs a,
+  .tilo-policy__langs span {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    color: var(--color-text-secondary);
+  }
+  .tilo-policy__langs a:hover { border-color: var(--color-accent); color: var(--color-accent-text); }
+  .tilo-policy__langs span[aria-current] {
+    background: var(--color-accent-fill);
+    border-color: transparent;
+    color: var(--color-on-accent);
+    font-weight: 600;
+  }
+
+  .tilo-policy__body :global(h1) {
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    font-weight: 700; line-height: 1.2;
+    color: var(--color-text-primary);
+    margin-bottom: 0.5rem;
+  }
+  .tilo-policy__body :global(.tilo-policy__updated) {
+    font-size: 0.9rem; color: var(--color-text-muted);
+    margin-bottom: 1.75rem;
+  }
+  .tilo-policy__body :global(h2) {
+    font-size: 1.3rem; font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 2.25rem 0 0.75rem;
+    padding-bottom: 0.4rem; border-bottom: 1px solid var(--color-border);
+  }
+  .tilo-policy__body :global(p) { margin-bottom: 1.1rem; }
+  .tilo-policy__body :global(ul) { margin: 0.75rem 0 1.1rem 1.4rem; list-style: disc; }
+  .tilo-policy__body :global(li) { margin-bottom: 0.45rem; }
+  .tilo-policy__body :global(strong) { color: var(--color-text-primary); font-weight: 600; }
+  .tilo-policy__body :global(a) {
+    color: var(--color-accent-text);
+    text-decoration: underline; text-underline-offset: 3px;
+    overflow-wrap: anywhere;
+  }
+  .tilo-policy__body :global(code) {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.85em;
+    background: var(--color-tag-bg); border: 1px solid var(--color-tag-border);
+    padding: 0.1rem 0.35rem; border-radius: 0.3rem;
+  }
+
+  /* Tabla con desplazamiento horizontal en el móvil */
+  .tilo-policy__body :global(.tilo-policy__table) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.25rem 0 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+  }
+  .tilo-policy__body :global(table) {
+    width: 100%; min-width: 560px;
+    border-collapse: collapse;
+    font-size: 0.9rem; line-height: 1.55;
+  }
+  .tilo-policy__body :global(th),
+  .tilo-policy__body :global(td) {
+    padding: 0.6rem 0.85rem;
+    text-align: left; vertical-align: top;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .tilo-policy__body :global(tr:last-child td) { border-bottom: none; }
+  .tilo-policy__body :global(th) {
+    background: var(--color-hover);
+    color: var(--color-text-primary); font-weight: 600;
+  }
+
+  .tilo-policy__legal {
+    margin-top: 3rem; padding-top: 1.25rem;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.8rem; color: var(--color-text-muted);
+  }
+</style>

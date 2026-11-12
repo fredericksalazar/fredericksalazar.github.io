@@ -25,6 +25,20 @@ const withSlash = (path: string) => (path.endsWith('/') ? path : `${path}/`);
 /** Convierte una ruta relativa en URL absoluta usando SITE_URL. */
 export const absolute = (path: string) => `${SITE_URL}${path}`;
 
+/** Idiomas de la política de privacidad de Tilo → archivo publicado. */
+export const TILO_POLICY_FILES = {
+  es: 'privacidad.html',
+  en: 'privacy-en.html',
+  fr: 'privacy-fr.html',
+  it: 'privacy-it.html',
+  de: 'privacy-de.html',
+  pt: 'privacy-pt.html',
+  ja: 'privacy-ja.html',
+  ko: 'privacy-ko.html',
+  zh: 'privacy-zh.html',
+} as const;
+export type TiloPolicyLang = keyof typeof TILO_POLICY_FILES;
+
 /**
  * Rutas internas (relativas). Úsalas en `href="..."`.
  * Todas garantizan trailing slash cuando corresponde.
@@ -62,6 +76,11 @@ export const urls = {
   calculadoras: () => '/calculadoras/',
   calculadora: (slug: string) => withSlash(`/calculadoras/${slug}`),
 
+  // Tilo · políticas de privacidad. Son archivos .html reales con URL fija
+  // (la extensión y la Chrome Web Store apuntan a ellas): NO llevan slash.
+  // Ver la integración `tiloPrivacyHtml` en astro.config.mjs.
+  tiloPrivacidad: (lang: TiloPolicyLang = 'es') => `/proyectos/tilo/${TILO_POLICY_FILES[lang]}`,
+
   // Archivos reales (NO llevan trailing slash)
   rss: () => '/rss.xml',
   llms: () => '/llms.txt',
@@ -96,6 +115,8 @@ export const absUrls = {
 
   calculadoras: () => absolute(urls.calculadoras()),
   calculadora: (slug: string) => absolute(urls.calculadora(slug)),
+
+  tiloPrivacidad: (lang: TiloPolicyLang = 'es') => absolute(urls.tiloPrivacidad(lang)),
 
   rss: () => absolute(urls.rss()),
 } as const;

@@ -6,7 +6,7 @@
  * Todos los `href="/..."` internos deben:
  *   - Terminar en `/` (rutas de página), o
  *   - Apuntar a un archivo real (.xml, .txt, .ico, .svg, .png, .jpg, .webp,
- *     .pdf, .json, etc.).
+ *     .pdf, .json, .html, etc.).
  *
  * Si encuentra cualquier href interno que no cumpla, el build falla con un
  * informe de archivos y líneas afectadas.
@@ -18,7 +18,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 
 const DIST = new URL('../dist/', import.meta.url).pathname;
-const EXEMPT_FILE_EXTENSIONS = /\.(xml|txt|ico|svg|png|jpe?g|webp|gif|pdf|json|woff2?|ttf|otf|css|js|mjs|map|avif|wasm)$/i;
+const EXEMPT_FILE_EXTENSIONS = /\.(xml|txt|ico|svg|png|jpe?g|webp|gif|pdf|json|woff2?|ttf|otf|css|js|mjs|map|avif|wasm|html)$/i;
 const HREF_REGEX = /\bhref\s*=\s*"(\/[^"#?]*?)(\?[^"#]*)?(#[^"]*)?"/g;
 
 async function walk(dir) {

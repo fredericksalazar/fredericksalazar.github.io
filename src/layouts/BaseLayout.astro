@@ -31,6 +31,20 @@ interface Props {
   breadcrumbs?: Crumb[];
   /** Emite WebSite JSON-LD (solo la home). */
   website?: boolean;
+  /** Idioma de la página (BCP 47). Default: es-CO. */
+  lang?: string;
+  /** URL canónica absoluta (si no deriva de la ruta, p. ej. archivos .html). */
+  canonical?: string;
+  /** Versiones por idioma → <link rel="alternate" hreflang>. */
+  alternates?: { hreflang: string; href: string }[];
+  /** Usa `title` tal cual, sin sufijo de marca. */
+  exactTitle?: boolean;
+  /**
+   * Página sin rastreo ni terceros (p. ej. políticas de privacidad): omite
+   * Google Analytics, Google Fonts, el popup del informe y ClientRouter (así
+   * la navegación hacia esta página es una carga completa, sin arrastrar gtag).
+   */
+  sinRastreo?: boolean;
 }
 
 const {
@@ -38,6 +52,7 @@ const {
   fullWidth = false, noindex = false,
   keywords, publishedTime, modifiedTime, articleAuthor, articleSection, articleTags,
   breadcrumbs, website = false,
+  lang = 'es-CO', canonical, alternates, exactTitle = false, sinRastreo = false,
 } = Astro.props;
 
 // El popup del informe aparece en todo el sitio salvo en las propias páginas
@@ -46,7 +61,7 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
 ---
 
 <!doctype html>
-<html lang="es-CO">
+<html lang={lang}>
   <head>
     <SEOHead
       title={title}
@@ -63,10 +78,16 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
       articleTags={articleTags}
       breadcrumbs={breadcrumbs}
       website={website}
+      lang={lang}
+      canonical={canonical}
+      alternates={alternates}
+      exactTitle={exactTitle}
+      sinRastreo={sinRastreo}
     />
     <!-- Google Sans Flex: las etiquetas <link> de fuentes viven en SEOHead
          (preconnect + stylesheet). No duplicar aquí. -->
-    <!-- Google tag (gtag.js) -->
+    {!sinRastreo && (
+      <Fragment>
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-ZFSVVSZG6K"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
@@ -101,6 +122,8 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
         gtag('event', el.getAttribute('data-ga-event'), params);
       });
     </script>
+      </Fragment>
+    )}
     <!-- ── Estado del sidebar: se aplica antes del primer paint para evitar
          un flash del sidebar abierto cuando el usuario lo dejó plegado. ── -->
     <script is:inline>
@@ -164,7 +187,7 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
       })();
     </script>
     <!-- ── View Transitions: navegación fluida con MPA estático ── -->
-    <ClientRouter />
+    {!sinRastreo && <ClientRouter />}
   </head>
 
   <body>
@@ -199,7 +222,7 @@ const isInformePage = Astro.url.pathname.startsWith('/observatorio/informes');
 
     <Footer />
 
-    {!isInformePage && <InformePopup />}
+    {!isInformePage && !sinRastreo && <InformePopup />}
 
     <script is:inline>
       (() => {
